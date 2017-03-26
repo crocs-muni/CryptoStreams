@@ -1,0 +1,3 @@
+[submodule "eacirc-core"]
+	path = eacirc-core
+	url = https://github.com/crocs-muni/eacirc-core/

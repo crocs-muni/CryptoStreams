@@ -1,7 +1,7 @@
 #include "sha3_factory.h"
 #include "hash_functions/hash_functions.h"
 #include "sha3_interface.h"
-#include <core/memory.h>
+#include <eacirc-core/memory.h>
 
 static void _check_rounds(const std::string& algorithm, unsigned rounds) {
     if (rounds > 0)

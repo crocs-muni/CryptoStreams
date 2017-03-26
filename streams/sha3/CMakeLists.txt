@@ -96,4 +96,4 @@ add_library(sha3 STATIC EXCLUDE_FROM_ALL
     #    hash_functions/TIB3/inupfin512
     #    hash_functions/TIB3/Tib_sha3
     )
-target_link_libraries(sha3 core)
+target_link_libraries(sha3 eacirc-core)

@@ -1,5 +1,5 @@
 #include "sha3_stream.h"
-#include "eacirc/streams.h"
+#include "streams.h"
 #include "sha3_factory.h"
 #include "sha3_interface.h"
 #include <algorithm>

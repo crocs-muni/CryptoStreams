@@ -1,5 +1,5 @@
 #include "block_stream.h"
-#include "eacirc/streams.h"
+#include "streams.h"
 #include "block_factory.h"
 #include "block_cipher.h"
 

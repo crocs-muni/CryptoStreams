@@ -1,11 +1,11 @@
 #include "generator.h"
-#include <core/logger.h>
-#include <core/random.h>
-#include <fstream>
+#include "streams.h"
+
+#include <eacirc-core/logger.h>
+#include <eacirc-core/random.h>
 #include <pcg/pcg_random.hpp>
 
-#include "../eacirc/streams.h"
-
+#include <fstream>
 #include <sstream>
 #include <iomanip>
 

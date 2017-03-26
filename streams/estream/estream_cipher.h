@@ -1,8 +1,8 @@
 #pragma once
 
 #include <array>
-#include <core/optional.h>
-#include <core/random.h>
+#include <eacirc-core/optional.h>
+#include <eacirc-core/random.h>
 #include <memory>
 
 struct estream_interface;

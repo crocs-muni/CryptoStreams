@@ -1,0 +1,42 @@
+# user-specific project files
+*.suo
+*.user
+*.Debug
+*.Release
+*.sdf
+*.opensdf
+
+# object files, linked application, build filed
+*.o
+*.ocpp
+*.oc
+*.obj
+*.a
+*.lib
+*.exe
+*.hi
+*.asv
+[Dd]ebug*/
+[Rr]elease*/
+[Bb]uild*/
+[Rr]un/
+
+
+# backup and system files
+*~
+*.autosave
+notes.txt
+*.dgml
+*.cd
+*.swp
+
+# Oneclick result files, logs, XMLs
+Oneclick/exec/processed_results.txt
+Oneclick/exec/*.bat
+Oneclick/exec/configs
+Oneclick/exec/results
+Oneclick/exec/*.log
+Oneclick/exec/*.pl
+Oneclick/exec/*.xml
+
+

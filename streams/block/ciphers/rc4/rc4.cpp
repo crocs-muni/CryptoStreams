@@ -1,6 +1,6 @@
 #include "rc4.h"
 #include <algorithm>
-#include <core/memory.h>
+#include <eacirc-core/memory.h>
 
 
 /*********************************************************************

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../eacirc/seed.h"
-#include <core/json.h>
-#include <core/stream.h>
+#include "stream.h"
 #include <memory>
 #include <iostream>
 #include <fstream>
+#include <eacirc-core/json.h>
+#include <eacirc-core/seed.h>
 
 struct generator {
     generator(std::string cofig);

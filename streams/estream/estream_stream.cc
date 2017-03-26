@@ -1,5 +1,5 @@
 #include "estream_stream.h"
-#include "eacirc/streams.h"
+#include "streams.h"
 
 static estream_init_frequency create_init_frequency(const std::string& frequency) {
   // clang-format off

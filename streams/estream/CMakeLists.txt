@@ -106,4 +106,5 @@ add_library(estream STATIC EXCLUDE_FROM_ALL
     #    ciphers/cryptmt/sse2.cpp            # do not include!
     #    ciphers/decim/decim-128.c         # do not include!
     )
-target_link_libraries(estream core)
+
+target_link_libraries(estream eacirc-core)

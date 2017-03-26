@@ -1,9 +1,9 @@
 #pragma once
 
 #include "estream_cipher.h"
-#include <core/json.h>
-#include <core/random.h>
-#include <core/stream.h>
+#include "stream.h"
+#include <eacirc-core/json.h>
+#include <eacirc-core/random.h>
 
 enum class estream_init_frequency { ONLY_ONCE, EVERY_VECTOR };
 

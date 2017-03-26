@@ -11,4 +11,5 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/des/single_des
     ciphers/des/triple_des
     )
-target_link_libraries(block core)
+
+target_link_libraries(block eacirc-core)

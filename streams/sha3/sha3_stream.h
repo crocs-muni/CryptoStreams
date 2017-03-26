@@ -1,9 +1,9 @@
 #pragma once
 
-#include <core/json.h>
-#include <core/stream.h>
+#include "stream.h"
 #include <memory>
-#include <core/random.h>
+#include <eacirc-core/json.h>
+#include <eacirc-core/random.h>
 
 struct sha3_interface;
 
