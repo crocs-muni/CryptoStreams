@@ -14,6 +14,7 @@ struct estream_stream : stream {
 
 private:
     const estream_init_frequency _initfreq;
+    const std::size_t _block_size;
 
     polymorphic_generator _rng;
     std::unique_ptr<stream> _source;
