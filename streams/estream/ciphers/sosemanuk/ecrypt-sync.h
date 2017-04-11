@@ -84,6 +84,8 @@ class ECRYPT_Sosemanuk : public estream_interface {
 
 public:
     /* Mandatory functions */
+    ECRYPT_Sosemanuk(int rounds)
+        : estream_interface(rounds) {}
 
     /*
      * Key and message independent initialization. This function will be
