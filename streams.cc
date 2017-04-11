@@ -133,9 +133,9 @@ private:
  * The vector consists 2 parts of same length. The first part is random,
  * the second is copy of the first with one flipped bit
  */
-template <typename Generator> struct rng_stream : stream {
+struct sac_stream : stream {
     template <typename Seeder>
-    rng_stream(Seeder&& seeder, const std::size_t osize)
+    sac_stream(Seeder&& seeder, const std::size_t osize)
         : stream(osize)
         , _rng(std::forward<Seeder>(seeder))
         , _data(osize) {
@@ -159,8 +159,77 @@ template <typename Generator> struct rng_stream : stream {
     }
 
 private:
-    Generator _rng;
+    pcg32 _rng;
     std::vector<value_type> _data;
+};
+
+
+struct sac_fixed_pos_stream : stream {
+    template <typename Seeder>
+    sac_fixed_pos_stream(Seeder&& seeder, const std::size_t osize, const std::size_t flip_bit_position)
+        : stream(osize)
+        , _rng(std::forward<Seeder>(seeder))
+        , _data(osize)
+        , _flip_bit_position(flip_bit_position) {
+        if (osize % 2 == 1)
+            throw std::runtime_error(
+                    "Stream's osize has to be even (so it contains 2 vectors of same legth).");
+        if (_flip_bit_position >= osize*8)
+            throw std::runtime_error(
+                    "Position of the flipped bit has to be in range of vector size.");
+
+    }
+
+    vec_view next() override {
+        std::generate_n(_data.data(), osize() / 2, [this]() {
+            return std::uniform_int_distribution<std::uint8_t>()(_rng);
+        });
+
+        std::copy_n(_data.begin(), osize() / 2, _data.begin() + osize() / 2);
+
+        _data[_flip_bit_position / 8] ^= (1 << (_flip_bit_position % 8));
+        return make_cview(_data);
+    }
+
+private:
+    pcg32 _rng;
+    std::vector<value_type> _data;
+    const std::size_t _flip_bit_position;
+};
+
+
+struct sac_2d_all_pos : stream {
+    template <typename Seeder>
+    sac_2d_all_pos(Seeder&& seeder, const std::size_t osize)
+        : stream(osize)
+        , _rng(std::forward<Seeder>(seeder))
+        , _data(osize) {
+
+    }
+
+    vec_view next() override {
+        if (_flip_bit_position == 0) {
+            std::generate_n(_data.data(), osize() / 2, [this]() {
+                return std::uniform_int_distribution<std::uint8_t>()(_rng);
+            });
+            std::copy_n(_data.begin(), osize(), _origin_data.begin());
+        } else {
+            std::copy_n(_origin_data.begin(), osize(), _data.begin());
+
+            _data[_flip_bit_position / 8] ^= (1 << (_flip_bit_position % 8));
+        }
+
+        _flip_bit_position = (_flip_bit_position + 1) % (osize() * 8);
+
+        return make_cview(_data);
+    }
+
+private:
+    pcg32 _rng;
+    std::vector<value_type> _data;
+    // storing copy is not optimal, can be done faster with more conditions
+    std::vector<value_type> _origin_data;
+    std::size_t _flip_bit_position;
 };
 
 std::unique_ptr<stream>
@@ -182,8 +251,15 @@ make_stream(const json& config, default_seed_source& seeder, std::size_t osize =
         return std::make_unique<mt19937_stream>(seeder, osize);
     else if (type == "pcg32-stream")
         return std::make_unique<pcg32_stream>(seeder, osize);
-    else if (type == "sac-pcg32")
-        return std::make_unique<pcg32_stream>(seeder, osize);
+    else if (type == "sac")
+        return std::make_unique<sac_stream>(seeder, osize);
+    else if (type == "sac-fixed-position") {
+        const std::size_t pos = std::size_t(config.at("position"));
+        return std::make_unique<sac_fixed_pos_stream>(seeder, osize, pos);
+    }
+    else if (type == "sac-2d-all-positions")
+        return std::make_unique<sac_2d_all_pos>(seeder, osize);
+
 #ifdef BUILD_estream
     else if (type == "estream")
         return std::make_unique<estream_stream>(config, seeder, osize);
