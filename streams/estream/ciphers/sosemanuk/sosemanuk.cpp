@@ -331,11 +331,15 @@ static INLINE void encode32le(unsigned char* dst, unum32 val) {
 
 /* ======================================================================== */
 
+static int num_rounds;
+
 #ifdef SOSEMANUK_ECRYPT
 void ECRYPT_Sosemanuk::ECRYPT_init(void) {
+    num_rounds = _rounds;
     return;
 }
 #endif
+
 
 #ifdef SOSEMANUK_ECRYPT
 void ECRYPT_Sosemanuk::ECRYPT_keysetup(const u8* key, u32 keysize, u32 ivsize)
@@ -569,23 +573,27 @@ void sosemanuk_init(sosemanuk_run_context* rc,
  *   i0 to i4 = input register numbers (the fifth is a scratch register)
  *   o0 to o3 = output register numbers
  */
-#define FSS(zc, S, i0, i1, i2, i3, i4, o0, o1, o2, o3)                                             \
+#define FSS(zc, S, i0, i1, i2, i3, i4, o0, o1, o2, o3, rNum)                                       \
     do {                                                                                           \
+      if (num_rounds >= (rNum)) {                                                                  \
         KA(zc, r##i0, r##i1, r##i2, r##i3);                                                        \
         S(r##i0, r##i1, r##i2, r##i3, r##i4);                                                      \
         SERPENT_LT(r##o0, r##o1, r##o2, r##o3);                                                    \
+      }                                                                                            \
     } while (0)
 
 /*
  * Last Serpent round. Contrary to the "true" Serpent, we keep
  * the linear transformation for that last round.
  */
-#define FSF(zc, S, i0, i1, i2, i3, i4, o0, o1, o2, o3)                                             \
+#define FSF(zc, S, i0, i1, i2, i3, i4, o0, o1, o2, o3, rNum)                                       \
     do {                                                                                           \
+      if (num_rounds >= (rNum)) {                                                                  \
         KA(zc, r##i0, r##i1, r##i2, r##i3);                                                        \
         S(r##i0, r##i1, r##i2, r##i3, r##i4);                                                      \
         SERPENT_LT(r##o0, r##o1, r##o2, r##o3);                                                    \
         KA(zc + 4, r##o0, r##o1, r##o2, r##o3);                                                    \
+      }                                                                                            \
     } while (0)
 
     register unum32 r0, r1, r2, r3, r4;
@@ -630,64 +638,40 @@ void sosemanuk_init(sosemanuk_run_context* rc,
      * Encrypt IV with Serpent24. Some values are extracted from the
      * output of the twelfth, eighteenth and twenty-fourth rounds.
      */
-    if (_rounds < 2)
-        FSS(0, S0, 0, 1, 2, 3, 4, 1, 4, 2, 0);
-    if (_rounds < 3)
-        FSS(4, S1, 1, 4, 2, 0, 3, 2, 1, 0, 4);
-    if (_rounds < 4)
-        FSS(8, S2, 2, 1, 0, 4, 3, 0, 4, 1, 3);
-    if (_rounds < 5)
-        FSS(12, S3, 0, 4, 1, 3, 2, 4, 1, 3, 2);
-    if (_rounds < 6)
-        FSS(16, S4, 4, 1, 3, 2, 0, 1, 0, 4, 2);
-    if (_rounds < 7)
-        FSS(20, S5, 1, 0, 4, 2, 3, 0, 2, 1, 4);
-    if (_rounds < 8)
-        FSS(24, S6, 0, 2, 1, 4, 3, 0, 2, 3, 1);
-    if (_rounds < 9)
-        FSS(28, S7, 0, 2, 3, 1, 4, 4, 1, 2, 0);
-    if (_rounds < 10)
-        FSS(32, S0, 4, 1, 2, 0, 3, 1, 3, 2, 4);
-    if (_rounds < 11)
-        FSS(36, S1, 1, 3, 2, 4, 0, 2, 1, 4, 3);
-    if (_rounds < 12)
-        FSS(40, S2, 2, 1, 4, 3, 0, 4, 3, 1, 0);
-    if (_rounds < 13)
-        FSS(44, S3, 4, 3, 1, 0, 2, 3, 1, 0, 2);
+    FSS(0, S0, 0, 1, 2, 3, 4, 1, 4, 2, 0, 1);
+    FSS(4, S1, 1, 4, 2, 0, 3, 2, 1, 0, 4, 2);
+    FSS(8, S2, 2, 1, 0, 4, 3, 0, 4, 1, 3, 3);
+    FSS(12, S3, 0, 4, 1, 3, 2, 4, 1, 3, 2, 4);
+    FSS(16, S4, 4, 1, 3, 2, 0, 1, 0, 4, 2, 5);
+    FSS(20, S5, 1, 0, 4, 2, 3, 0, 2, 1, 4, 6);
+    FSS(24, S6, 0, 2, 1, 4, 3, 0, 2, 3, 1, 7);
+    FSS(28, S7, 0, 2, 3, 1, 4, 4, 1, 2, 0, 8);
+    FSS(32, S0, 4, 1, 2, 0, 3, 1, 3, 2, 4, 9);
+    FSS(36, S1, 1, 3, 2, 4, 0, 2, 1, 4, 3, 10);
+    FSS(40, S2, 2, 1, 4, 3, 0, 4, 3, 1, 0, 11);
+    FSS(44, S3, 4, 3, 1, 0, 2, 3, 1, 0, 2, 12);
     rc->s09 = r3;
     rc->s08 = r1;
     rc->s07 = r0;
     rc->s06 = r2;
 
-    if (_rounds < 14)
-        FSS(48, S4, 3, 1, 0, 2, 4, 1, 4, 3, 2);
-    if (_rounds < 15)
-        FSS(52, S5, 1, 4, 3, 2, 0, 4, 2, 1, 3);
-    if (_rounds < 16)
-        FSS(56, S6, 4, 2, 1, 3, 0, 4, 2, 0, 1);
-    if (_rounds < 17)
-        FSS(60, S7, 4, 2, 0, 1, 3, 3, 1, 2, 4);
-    if (_rounds < 18)
-        FSS(64, S0, 3, 1, 2, 4, 0, 1, 0, 2, 3);
-    if (_rounds < 19)
-        FSS(68, S1, 1, 0, 2, 3, 4, 2, 1, 3, 0);
+    FSS(48, S4, 3, 1, 0, 2, 4, 1, 4, 3, 2, 13);
+    FSS(52, S5, 1, 4, 3, 2, 0, 4, 2, 1, 3, 14);
+    FSS(56, S6, 4, 2, 1, 3, 0, 4, 2, 0, 1, 15);
+    FSS(60, S7, 4, 2, 0, 1, 3, 3, 1, 2, 4, 16);
+    FSS(64, S0, 3, 1, 2, 4, 0, 1, 0, 2, 3, 17);
+    FSS(68, S1, 1, 0, 2, 3, 4, 2, 1, 3, 0, 18);
     rc->r1 = r2;
     rc->s04 = r1;
     rc->r2 = r3;
     rc->s05 = r0;
 
-    if (_rounds < 20)
-        FSS(72, S2, 2, 1, 3, 0, 4, 3, 0, 1, 4);
-    if (_rounds < 21)
-        FSS(76, S3, 3, 0, 1, 4, 2, 0, 1, 4, 2);
-    if (_rounds < 22)
-        FSS(80, S4, 0, 1, 4, 2, 3, 1, 3, 0, 2);
-    if (_rounds < 23)
-        FSS(84, S5, 1, 3, 0, 2, 4, 3, 2, 1, 0);
-    if (_rounds < 24)
-        FSS(88, S6, 3, 2, 1, 0, 4, 3, 2, 4, 1);
-    if (_rounds < 25)
-        FSF(92, S7, 3, 2, 4, 1, 0, 0, 1, 2, 3);
+    FSS(72, S2, 2, 1, 3, 0, 4, 3, 0, 1, 4, 19);
+    FSS(76, S3, 3, 0, 1, 4, 2, 0, 1, 4, 2, 20);
+    FSS(80, S4, 0, 1, 4, 2, 3, 1, 3, 0, 2, 21);
+    FSS(84, S5, 1, 3, 0, 2, 4, 3, 2, 1, 0, 22);
+    FSS(88, S6, 3, 2, 1, 0, 4, 3, 2, 4, 1, 23);
+    FSF(92, S7, 3, 2, 4, 1, 0, 0, 1, 2, 3, 24);
     rc->s03 = r0;
     rc->s02 = r1;
     rc->s01 = r2;
@@ -891,11 +875,13 @@ static void sosemanuk_internal(sosemanuk_run_context* rc)
  * value (dropped from the LFSR) and "ee" gets the value computed
  * from the LFSR and FSM.
  */
-#define STEP(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, dd, ee)                                       \
+#define STEP(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, dd, ee, rNum)                                 \
     do {                                                                                           \
+      if (num_rounds >= (rNum)) {                                                                  \
         FSM(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9);                                               \
         LRU(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, dd);                                           \
         CC1(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, ee);                                           \
+      }                                                                                            \
     } while (0)
 
 /*
@@ -918,8 +904,9 @@ static void sosemanuk_internal(sosemanuk_run_context* rc)
 #else
 
 #ifdef SOSEMANUK_ECRYPT
-#define SRD(S, x0, x1, x2, x3, ooff)                                                               \
+#define SRD(S, x0, x1, x2, x3, ooff, rNum)                                                         \
     do {                                                                                           \
+      if (num_rounds >= (rNum)) {                                                                  \
         PSPIN(u0, u1, u2, u3);                                                                     \
         S(u0, u1, u2, u3, u4);                                                                     \
         PSPOUT(u##x0, u##x1, u##x2, u##x3);                                                        \
@@ -928,6 +915,7 @@ static void sosemanuk_internal(sosemanuk_run_context* rc)
         dst[(ooff / 4) + 2] = src[(ooff / 4) + 2] ^ U32TO32_LITTLE(u##x2 ^ v2);                    \
         dst[(ooff / 4) + 3] = src[(ooff / 4) + 3] ^ U32TO32_LITTLE(u##x3 ^ v3);                    \
         POUT((unsigned char*)dst + ooff);                                                          \
+      }                                                                                            \
     } while (0)
 #else
 #define OUTWORD_BASE (rc->buf)
@@ -1037,31 +1025,31 @@ static void sosemanuk_internal(sosemanuk_run_context* rc)
     while (counter-- > 0) {
 #endif
 
-        STEP(00, 01, 02, 03, 04, 05, 06, 07, 08, 09, v0, u0);
-        STEP(01, 02, 03, 04, 05, 06, 07, 08, 09, 00, v1, u1);
-        STEP(02, 03, 04, 05, 06, 07, 08, 09, 00, 01, v2, u2);
-        STEP(03, 04, 05, 06, 07, 08, 09, 00, 01, 02, v3, u3);
-        SRD(S2, 2, 3, 1, 4, 0);
-        STEP(04, 05, 06, 07, 08, 09, 00, 01, 02, 03, v0, u0);
-        STEP(05, 06, 07, 08, 09, 00, 01, 02, 03, 04, v1, u1);
-        STEP(06, 07, 08, 09, 00, 01, 02, 03, 04, 05, v2, u2);
-        STEP(07, 08, 09, 00, 01, 02, 03, 04, 05, 06, v3, u3);
-        SRD(S2, 2, 3, 1, 4, 16);
-        STEP(08, 09, 00, 01, 02, 03, 04, 05, 06, 07, v0, u0);
-        STEP(09, 00, 01, 02, 03, 04, 05, 06, 07, 08, v1, u1);
-        STEP(00, 01, 02, 03, 04, 05, 06, 07, 08, 09, v2, u2);
-        STEP(01, 02, 03, 04, 05, 06, 07, 08, 09, 00, v3, u3);
-        SRD(S2, 2, 3, 1, 4, 32);
-        STEP(02, 03, 04, 05, 06, 07, 08, 09, 00, 01, v0, u0);
-        STEP(03, 04, 05, 06, 07, 08, 09, 00, 01, 02, v1, u1);
-        STEP(04, 05, 06, 07, 08, 09, 00, 01, 02, 03, v2, u2);
-        STEP(05, 06, 07, 08, 09, 00, 01, 02, 03, 04, v3, u3);
-        SRD(S2, 2, 3, 1, 4, 48);
-        STEP(06, 07, 08, 09, 00, 01, 02, 03, 04, 05, v0, u0);
-        STEP(07, 08, 09, 00, 01, 02, 03, 04, 05, 06, v1, u1);
-        STEP(08, 09, 00, 01, 02, 03, 04, 05, 06, 07, v2, u2);
-        STEP(09, 00, 01, 02, 03, 04, 05, 06, 07, 08, v3, u3);
-        SRD(S2, 2, 3, 1, 4, 64);
+        STEP(00, 01, 02, 03, 04, 05, 06, 07, 08, 09, v0, u0, 1);
+        STEP(01, 02, 03, 04, 05, 06, 07, 08, 09, 00, v1, u1, 2);
+        STEP(02, 03, 04, 05, 06, 07, 08, 09, 00, 01, v2, u2, 3);
+        STEP(03, 04, 05, 06, 07, 08, 09, 00, 01, 02, v3, u3, 4);
+        SRD(S2, 2, 3, 1, 4, 0, 5);
+        STEP(04, 05, 06, 07, 08, 09, 00, 01, 02, 03, v0, u0, 6);
+        STEP(05, 06, 07, 08, 09, 00, 01, 02, 03, 04, v1, u1, 7);
+        STEP(06, 07, 08, 09, 00, 01, 02, 03, 04, 05, v2, u2, 8);
+        STEP(07, 08, 09, 00, 01, 02, 03, 04, 05, 06, v3, u3, 9);
+        SRD(S2, 2, 3, 1, 4, 16, 10);
+        STEP(08, 09, 00, 01, 02, 03, 04, 05, 06, 07, v0, u0, 11);
+        STEP(09, 00, 01, 02, 03, 04, 05, 06, 07, 08, v1, u1, 12);
+        STEP(00, 01, 02, 03, 04, 05, 06, 07, 08, 09, v2, u2, 13);
+        STEP(01, 02, 03, 04, 05, 06, 07, 08, 09, 00, v3, u3, 14);
+        SRD(S2, 2, 3, 1, 4, 32, 15);
+        STEP(02, 03, 04, 05, 06, 07, 08, 09, 00, 01, v0, u0, 16);
+        STEP(03, 04, 05, 06, 07, 08, 09, 00, 01, 02, v1, u1, 17);
+        STEP(04, 05, 06, 07, 08, 09, 00, 01, 02, 03, v2, u2, 18);
+        STEP(05, 06, 07, 08, 09, 00, 01, 02, 03, 04, v3, u3, 19);
+        SRD(S2, 2, 3, 1, 4, 48, 20);
+        STEP(06, 07, 08, 09, 00, 01, 02, 03, 04, 05, v0, u0, 21);
+        STEP(07, 08, 09, 00, 01, 02, 03, 04, 05, 06, v1, u1, 22);
+        STEP(08, 09, 00, 01, 02, 03, 04, 05, 06, 07, v2, u2, 23);
+        STEP(09, 00, 01, 02, 03, 04, 05, 06, 07, 08, v3, u3, 24);
+        SRD(S2, 2, 3, 1, 4, 64, 25);
 
 #ifdef SOSEMANUK_SPEED
     }
