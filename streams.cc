@@ -154,7 +154,7 @@ struct sac_stream : stream {
         std::uniform_int_distribution<std::size_t> dist{0, osize() / 2 * 8};
         std::size_t pos = dist(_rng) + osize() / 2 * 8;
 
-        _data[pos / 8] ^= (1 << (pos % 8));
+        _data[pos / 8] ^= (1 << (pos % 8)); // TODO: valgrind invalid read and write, [pos / 8] is out of range
         return make_cview(_data);
     }
 
@@ -203,13 +203,13 @@ struct sac_2d_all_pos : stream {
     sac_2d_all_pos(Seeder&& seeder, const std::size_t osize)
         : stream(osize)
         , _rng(std::forward<Seeder>(seeder))
-        , _data(osize) {
-
-    }
+        , _data(osize)
+        , _origin_data(osize)
+        , _flip_bit_position(0) { }
 
     vec_view next() override {
         if (_flip_bit_position == 0) {
-            std::generate_n(_data.data(), osize() / 2, [this]() {
+            std::generate_n(_data.data(), osize(), [this]() {
                 return std::uniform_int_distribution<std::uint8_t>()(_rng);
             });
             std::copy_n(_data.begin(), osize(), _origin_data.begin());
@@ -232,6 +232,48 @@ private:
     std::size_t _flip_bit_position;
 };
 
+struct column_stream : stream {
+    column_stream(const json& config, default_seed_source& seeder, const std::size_t osize)
+        : stream(osize)
+        , _internal_bit_size(std::size_t(config.at("size")) * 8)
+        , _buf(_internal_bit_size)
+        , _position(0)
+        , _source(make_stream(config.at("stream"), seeder, _internal_bit_size)) {
+        for (auto &v : _buf)
+            v.resize(osize);
+    }
+
+    vec_view next() override {
+        // regenerate the buffer
+        if ((_position % _internal_bit_size) == 0) {
+            _position = 0;
+
+            // memset _buf to 0; change to STL?
+            for (auto &vec : _buf)
+                for (auto &val : vec)
+                    val = 0;
+
+            for (std::size_t i = 0; i < osize() * 8; ++i) {
+                auto vec = _source->next().data();
+
+                // something like matrix transpose
+                for (std::size_t j = 0; j < _internal_bit_size; ++j) {
+                    _buf[j][i/8] += ((vec[j/8] & (0x1 << (j % 8))) >> j) << i;
+                }
+
+            }
+        }
+
+        return make_cview(_buf[_position++]); // return and increment
+    }
+
+private:
+    std::size_t _internal_bit_size;
+    std::vector<std::vector<value_type>> _buf; // change to array (maxe osize() constexpression), or init it to given size
+    std::size_t _position;
+    std::unique_ptr<stream> _source;
+};
+
 std::unique_ptr<stream>
 make_stream(const json& config, default_seed_source& seeder, std::size_t osize = 0) {
     const std::string type = config.at("type");
@@ -245,20 +287,22 @@ make_stream(const json& config, default_seed_source& seeder, std::size_t osize =
         return std::make_unique<true_stream>(osize);
     else if (type == "false-stream")
         return std::make_unique<false_stream>(osize);
-    else if (type == "counter")
-        return std::make_unique<counter>(osize);
     else if (type == "mt19937-stream")
         return std::make_unique<mt19937_stream>(seeder, osize);
     else if (type == "pcg32-stream")
         return std::make_unique<pcg32_stream>(seeder, osize);
+    else if (type == "counter")
+        return std::make_unique<counter>(osize);
     else if (type == "sac")
-        return std::make_unique<sac_stream>(seeder, osize);
+        return std::make_unique<sac_stream>(seeder, osize*2);
     else if (type == "sac-fixed-position") {
         const std::size_t pos = std::size_t(config.at("position"));
-        return std::make_unique<sac_fixed_pos_stream>(seeder, osize, pos);
+        return std::make_unique<sac_fixed_pos_stream>(seeder, osize*2, pos);
     }
     else if (type == "sac-2d-all-positions")
         return std::make_unique<sac_2d_all_pos>(seeder, osize);
+    else if (type == "column")
+        return std::make_unique<column_stream>(config, seeder, osize);
 
 #ifdef BUILD_estream
     else if (type == "estream")
