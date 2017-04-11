@@ -72,6 +72,8 @@ class ECRYPT_Rabbit : public estream_interface {
     RABBIT_ctx _ctx;
 
 public:
+    ECRYPT_Rabbit(int rounds)
+        : estream_interface(rounds) {}
     /* Mandatory functions */
 
     /*
