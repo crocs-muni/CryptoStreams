@@ -238,7 +238,7 @@ struct column_stream : stream {
         , _internal_bit_size(std::size_t(config.at("size")) * 8)
         , _buf(_internal_bit_size)
         , _position(0)
-        , _source(make_stream(config.at("stream"), seeder, _internal_bit_size)) {
+        , _source(make_stream(config.at("stream"), seeder, _internal_bit_size/8)) {
         for (auto &v : _buf)
             v.resize(osize);
     }
@@ -258,7 +258,7 @@ struct column_stream : stream {
 
                 // something like matrix transpose
                 for (std::size_t j = 0; j < _internal_bit_size; ++j) {
-                    _buf[j][i/8] += ((vec[j/8] & (0x1 << (j % 8))) >> j) << i;
+                    _buf[j][i/8] += ((vec[j/8] & (0x1 << (j % 8))) >> j) << (i % 8);
                 }
 
             }
@@ -271,6 +271,36 @@ private:
     std::size_t _internal_bit_size;
     std::vector<std::vector<value_type>> _buf; // change to array (maxe osize() constexpression), or init it to given size
     std::size_t _position;
+    std::unique_ptr<stream> _source;
+};
+
+struct column_fixed_position_stream : stream {
+    column_fixed_position_stream(const json& config, default_seed_source& seeder, const std::size_t osize, const std::size_t position)
+        : stream(osize)
+        , _data(osize)
+        , _position(position)
+        , _source(make_stream(config.at("stream"), seeder, std::size_t(config.at("size")))) { }
+
+    vec_view next() override {
+        for (auto &val : _data)
+            val = 0;
+
+        std::size_t rev_pos = 7 - (_position % 8);
+
+        for (std::size_t i = 0; i < osize() * 8; ++i) {
+            auto vec = _source->next().data();
+
+            std::size_t rev_i = 7 - (i % 8);
+            _data[i/8] += ((vec[_position/8] & (0x1 << rev_pos)) >> rev_pos) << rev_i;
+
+        }
+
+        return make_cview(_data); // return and increment
+    }
+
+private:
+    std::vector<value_type> _data; // change to array (maxe osize() constexpression), or init it to given size
+    const std::size_t _position;
     std::unique_ptr<stream> _source;
 };
 
@@ -303,6 +333,10 @@ make_stream(const json& config, default_seed_source& seeder, std::size_t osize =
         return std::make_unique<sac_2d_all_pos>(seeder, osize);
     else if (type == "column")
         return std::make_unique<column_stream>(config, seeder, osize);
+    else if (type == "column-fixed-position") {
+        const std::size_t pos = std::size_t(config.at("position"));
+        return std::make_unique<column_fixed_position_stream>(config, seeder, osize, pos);
+    }
 
 #ifdef BUILD_estream
     else if (type == "estream")
