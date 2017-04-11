@@ -67,7 +67,7 @@ static std::unique_ptr<estream_interface> create_cipher(const std::string& name,
     if (name == "F-FCSR")           return std::make_unique<ECRYPT_FFCSR>();
     if (name == "Fubuki")           return std::make_unique<ECRYPT_Fubuki>(!round ? 4 : *round);
     if (name == "Grain")            return std::make_unique<ECRYPT_Grain>(!round ? 13 : *round);
-    if (name == "HC-128")           return std::make_unique<ECRYPT_HC128>();
+    if (name == "HC-128")           return std::make_unique<ECRYPT_HC128>(!round ? 2 : *round);
     if (name == "Hermes")           return std::make_unique<ECRYPT_Hermes>(!round ? 10 : *round);
     if (name == "LEX")              return std::make_unique<ECRYPT_Lex>(!round ? 10 : *round);
     if (name == "MAG")              return std::make_unique<ECRYPT_Mag>();
@@ -79,7 +79,7 @@ static std::unique_ptr<estream_interface> create_cipher(const std::string& name,
     if (name == "Salsa20")          return std::make_unique<ECRYPT_Salsa>(!round ? 12 : *round);
     if (name == "SFINKS")           return std::make_unique<ECRYPT_Sfinks>();
     if (name == "SOSEMANUK")        return std::make_unique<ECRYPT_Sosemanuk>();
-    if (name == "TEA")              return std::make_unique<ECRYPT_TEA>();
+    if (name == "TEA")              return std::make_unique<ECRYPT_TEA>(!round ? 32 : *round);
     // if (name == "Trivium")          return std::make_unique<ECRYPT_Trivium>();
     if (name == "TSC-4")            return std::make_unique<ECRYPT_Tsc4>(!round ? 32 : *round);
     if (name == "WG")               return std::make_unique<ECRYPT_Wg>();

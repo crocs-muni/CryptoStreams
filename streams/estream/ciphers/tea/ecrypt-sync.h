@@ -69,7 +69,8 @@ class ECRYPT_TEA : public estream_interface {
 
 public:
     /* Mandatory functions */
-
+    ECRYPT_TEA(int rounds)
+        : estream_interface(rounds) {}
     /*
      * Key and message independent initialization. This function will be
      * called once when the program starts (e.g., to build expanded S-box

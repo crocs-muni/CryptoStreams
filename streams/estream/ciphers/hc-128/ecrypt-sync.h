@@ -101,7 +101,8 @@ class ECRYPT_HC128 : public estream_interface {
 
 public:
     /* Mandatory functions */
-
+    ECRYPT_HC128(int rounds)
+        : estream_interface(rounds) {}
     /*
      * Key and message independent initialization. This function will be
      * called once when the program starts (e.g., to build expanded S-box
