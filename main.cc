@@ -25,7 +25,7 @@ int main(const int argc, const char** argv) try {
     auto cfg = options.parse(make_view(argv, argc));
 
     if (cfg.help) {
-        std::cout << "Usage: eacirc [options]" << std::endl;
+        std::cout << "Usage: eacirc-streams [options]" << std::endl;
 
         options.print(std::cout);
     } else if (cfg.version) {
