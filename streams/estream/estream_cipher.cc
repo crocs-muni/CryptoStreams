@@ -62,7 +62,7 @@ static std::unique_ptr<estream_interface> create_cipher(const std::string& name,
     if (name == "CryptMT")          return std::make_unique<ECRYPT_Cryptmt>();
     if (name == "DECIM")            return std::make_unique<ECRYPT_Decim>(!round ? 8 : *round);
     if (name == "DICING")           return std::make_unique<ECRYPT_Dicing>();
-    if (name == "Dragon")           return std::make_unique<ECRYPT_Dragon>();
+    if (name == "Dragon")           return std::make_unique<ECRYPT_Dragon>(!round ? 16 : *round);
     if (name == "Edon80")           return std::make_unique<ECRYPT_Edon80>();
     if (name == "F-FCSR")           return std::make_unique<ECRYPT_FFCSR>(!round ? 5 : *round);
     if (name == "Fubuki")           return std::make_unique<ECRYPT_Fubuki>(!round ? 4 : *round);
