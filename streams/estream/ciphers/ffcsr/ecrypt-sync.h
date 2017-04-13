@@ -65,6 +65,8 @@ class ECRYPT_FFCSR : public estream_interface {
     FFCSR_ctx _ctx;
 
 public:
+    ECRYPT_FFCSR(int rounds)
+        : estream_interface(rounds) {}
     /* Mandatory functions */
 
     /*
