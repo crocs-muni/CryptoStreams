@@ -25,7 +25,6 @@
 #include "ciphers/salsa20/ecrypt-sync.h"
 #include "ciphers/sfinks/ecrypt-sync.h"
 #include "ciphers/sosemanuk/ecrypt-sync.h"
-#include "ciphers/tea/ecrypt-sync.h"
 // #include "ciphers/trivium/ecrypt-sync.h"     // stopped working after IDE update
 #include "ciphers/tsc-4/ecrypt-sync.h"
 #include "ciphers/wg/ecrypt-sync.h"
@@ -79,7 +78,6 @@ static std::unique_ptr<estream_interface> create_cipher(const std::string& name,
     if (name == "Salsa20")          return std::make_unique<ECRYPT_Salsa>(!round ? 20 : *round);
     if (name == "SFINKS")           return std::make_unique<ECRYPT_Sfinks>();
     if (name == "SOSEMANUK")        return std::make_unique<ECRYPT_Sosemanuk>(!round ? 25 : *round);
-    if (name == "TEA")              return std::make_unique<ECRYPT_TEA>(!round ? 32 : *round);
     // if (name == "Trivium")          return std::make_unique<ECRYPT_Trivium>();
     if (name == "TSC-4")            return std::make_unique<ECRYPT_Tsc4>(!round ? 32 : *round);
     if (name == "WG")               return std::make_unique<ECRYPT_Wg>();
