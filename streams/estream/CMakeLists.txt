@@ -13,7 +13,6 @@ add_library(estream STATIC EXCLUDE_FROM_ALL
     ciphers/wg/ecrypt-sync.h
     ciphers/tsc-4/ecrypt-sync.h
     ciphers/trivium/ecrypt-sync.h
-    ciphers/tea/ecrypt-sync.h
     ciphers/sosemanuk/ecrypt-sync.h
     ciphers/sosemanuk/sosemanuk.h
     ciphers/sfinks/ecrypt-sync.h
@@ -70,7 +69,6 @@ add_library(estream STATIC EXCLUDE_FROM_ALL
     ciphers/zk-crypt/zk-crypt-v3.cpp
     ciphers/wg/wg.cpp
     ciphers/tsc-4/tsc-4.cpp
-    ciphers/tea/tea.cpp
     ciphers/sosemanuk/sosemanuk.cpp
     ciphers/sfinks/sfinks.cpp
     ciphers/salsa20/salsa20.cpp

@@ -103,6 +103,8 @@ class ECRYPT_Dragon : public estream_interface {
 
 public:
     /* Mandatory functions */
+    ECRYPT_Dragon(int rounds)
+        : estream_interface(rounds) {}
 
     /*
      * Key and message independent initialization. This function will be

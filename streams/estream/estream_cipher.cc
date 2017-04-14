@@ -25,7 +25,6 @@
 #include "ciphers/salsa20/ecrypt-sync.h"
 #include "ciphers/sfinks/ecrypt-sync.h"
 #include "ciphers/sosemanuk/ecrypt-sync.h"
-#include "ciphers/tea/ecrypt-sync.h"
 // #include "ciphers/trivium/ecrypt-sync.h"     // stopped working after IDE update
 #include "ciphers/tsc-4/ecrypt-sync.h"
 #include "ciphers/wg/ecrypt-sync.h"
@@ -62,12 +61,12 @@ static std::unique_ptr<estream_interface> create_cipher(const std::string& name,
     if (name == "CryptMT")          return std::make_unique<ECRYPT_Cryptmt>();
     if (name == "DECIM")            return std::make_unique<ECRYPT_Decim>(!round ? 8 : *round);
     if (name == "DICING")           return std::make_unique<ECRYPT_Dicing>();
-    if (name == "Dragon")           return std::make_unique<ECRYPT_Dragon>();
+    if (name == "Dragon")           return std::make_unique<ECRYPT_Dragon>(!round ? 16 : *round);
     if (name == "Edon80")           return std::make_unique<ECRYPT_Edon80>();
-    if (name == "F-FCSR")           return std::make_unique<ECRYPT_FFCSR>();
+    if (name == "F-FCSR")           return std::make_unique<ECRYPT_FFCSR>(!round ? 5 : *round);
     if (name == "Fubuki")           return std::make_unique<ECRYPT_Fubuki>(!round ? 4 : *round);
     if (name == "Grain")            return std::make_unique<ECRYPT_Grain>(!round ? 13 : *round);
-    if (name == "HC-128")           return std::make_unique<ECRYPT_HC128>(!round ? 2 : *round);
+    if (name == "HC-128")           return std::make_unique<ECRYPT_HC128>();
     if (name == "Hermes")           return std::make_unique<ECRYPT_Hermes>(!round ? 10 : *round);
     if (name == "LEX")              return std::make_unique<ECRYPT_Lex>(!round ? 10 : *round);
     if (name == "MAG")              return std::make_unique<ECRYPT_Mag>();
@@ -75,11 +74,10 @@ static std::unique_ptr<estream_interface> create_cipher(const std::string& name,
     if (name == "Mir-1")            return std::make_unique<ECRYPT_Mir>();
     if (name == "Pomaranch")        return std::make_unique<ECRYPT_Pomaranch>();
     if (name == "Py")               return std::make_unique<ECRYPT_Py>();
-    if (name == "Rabbit")           return std::make_unique<ECRYPT_Rabbit>();
-    if (name == "Salsa20")          return std::make_unique<ECRYPT_Salsa>(!round ? 12 : *round);
+    if (name == "Rabbit")           return std::make_unique<ECRYPT_Rabbit>(!round ? 4 : *round);
+    if (name == "Salsa20")          return std::make_unique<ECRYPT_Salsa>(!round ? 20 : *round);
     if (name == "SFINKS")           return std::make_unique<ECRYPT_Sfinks>();
     if (name == "SOSEMANUK")        return std::make_unique<ECRYPT_Sosemanuk>(!round ? 25 : *round);
-    if (name == "TEA")              return std::make_unique<ECRYPT_TEA>(!round ? 32 : *round);
     // if (name == "Trivium")          return std::make_unique<ECRYPT_Trivium>();
     if (name == "TSC-4")            return std::make_unique<ECRYPT_Tsc4>(!round ? 32 : *round);
     if (name == "WG")               return std::make_unique<ECRYPT_Wg>();

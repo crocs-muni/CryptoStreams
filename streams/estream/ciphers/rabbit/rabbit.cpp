@@ -130,7 +130,7 @@ void ECRYPT_Rabbit::ECRYPT_keysetup(const u8* key, u32 keysize, u32 ivsize) {
     ctx->master_ctx.carry = 0;
 
     /* Iterate the system four times */
-    for (i = 0; i < 4; i++)
+    for (i = 0; (i < 4 && i < _rounds); i++)
         RABBIT_next_state(&(ctx->master_ctx));
 
     /* Modify the counters */
@@ -175,7 +175,7 @@ void ECRYPT_Rabbit::ECRYPT_ivsetup(const u8* iv) {
     ctx->work_ctx.carry = ctx->master_ctx.carry;
 
     /* Iterate the system four times */
-    for (i = 0; i < 4; i++)
+    for (i = 0; (i < 4 && i < _rounds); i++)
         RABBIT_next_state(&(ctx->work_ctx));
 }
 
