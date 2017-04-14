@@ -14,30 +14,8 @@ else()
     message(FATAL_ERROR "unsuported compiler id:${CMAKE_CXX_COMPILER_ID}, path: ${CMAKE_CXX_COMPILER}")
 endif()
 
-add_executable(eacirc-streams main.cc
-        generator
-        stream.h
-        streams.cc
-        streams.h
-        )
 
-set_target_properties(eacirc-streams PROPERTIES
-        LINKER_LANGUAGE CXX
-        )
-
-add_subdirectory(eacirc-core)
-
-add_subdirectory(streams/estream)
-add_subdirectory(streams/sha3)
-add_subdirectory(streams/block)
-
-target_link_libraries(eacirc-streams eacirc-core)
-
-build_stream(eacirc-streams estream)
-build_stream(eacirc-streams sha3)
-build_stream(eacirc-streams block)
-
-# === Provide sources as Library ===
+# === Provide sources as library
 add_library(eacirc-streams-lib STATIC
         stream
         streams.h
@@ -49,3 +27,24 @@ set_target_properties(eacirc-streams-lib PROPERTIES
         )
 
 target_link_libraries(eacirc-streams-lib eacirc-core)
+
+
+# === eacirc generator executable
+add_executable(eacirc-streams main.cc generator)
+
+set_target_properties(eacirc-streams PROPERTIES
+        LINKER_LANGUAGE CXX
+        )
+
+
+add_subdirectory(eacirc-core)
+
+add_subdirectory(streams/estream)
+add_subdirectory(streams/sha3)
+add_subdirectory(streams/block)
+
+target_link_libraries(eacirc-streams eacirc-core eacirc-streams-lib)
+
+build_stream(eacirc-streams estream)
+build_stream(eacirc-streams sha3)
+build_stream(eacirc-streams block)
