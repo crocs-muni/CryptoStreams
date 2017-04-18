@@ -94,7 +94,10 @@ estream_cipher::estream_cipher(const std::string& name, core::optional<unsigned>
     : _ivtype(create_ivtype(ivtype))
     , _keytype(create_keytype(keytype))
     , _encryptor(create_cipher(name, round))
-    , _decryptor(create_cipher(name, round)) {}
+    , _decryptor(create_cipher(name, round)) {
+    _encryptor->ECRYPT_init();
+    _decryptor->ECRYPT_init();
+}
 
 estream_cipher::estream_cipher(estream_cipher&&) = default;
 estream_cipher::~estream_cipher() = default;
