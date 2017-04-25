@@ -33,7 +33,7 @@ generator::generator(json const& config)
     : _config(config)
     , _seed(seed::create(config.at("seed")))
     , _tv_count(config.at("tv-count"))
-    , _o_file(out_name(config.at("stream")), std::ios::binary) {
+    , _o_file_name(out_name(config.at("stream"))) {
 
     seed_seq_from<pcg32> main_seeder(_seed);
 
@@ -42,9 +42,11 @@ generator::generator(json const& config)
 
 void generator::generate() {
 
+    std::ofstream o_file(_o_file_name, std::ios::binary);
+
     for (std::size_t i = 0; i < _tv_count; ++i) {
         vec_view n = _stream_a->next();
         for (auto o : n)
-            _o_file << o;
+            o_file << o;
     }
 }
