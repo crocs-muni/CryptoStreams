@@ -12,11 +12,11 @@ static estream_init_frequency create_init_frequency(const std::string& frequency
 }
 
 static std::size_t compute_vector_size(const std::size_t block_size, const std::size_t osize) {
-    if (block_size > osize)
-        return block_size;
-    if (block_size % osize)
-        return ((osize / block_size) + 1) * block_size;
-    return osize;
+  if (block_size > osize)
+    return block_size;
+  if (block_size % osize)
+    return ((osize / block_size) + 1) * block_size;
+  return osize;
 }
 
 estream_stream::estream_stream(const json& config, default_seed_source& seeder, std::size_t osize)
@@ -32,6 +32,8 @@ estream_stream::estream_stream(const json& config, default_seed_source& seeder, 
                      ? core::optional<unsigned>{core::nullopt_t{}}
                      : core::optional<unsigned>{unsigned(config.at("round"))},
                  config.at("iv-type"), config.at("key-type")) {
+  logger::info() << "stream source is estream cipher: " << config.at("algorithm") << std::endl;
+
   if (_initfreq == estream_init_frequency::ONLY_ONCE) {
     _algorithm.setup_key(_rng);
     _algorithm.setup_iv(_rng);
