@@ -20,7 +20,7 @@ static std::string out_name(json const& config) {
     std::stringstream ss;
     std::string a = config.at("algorithm");
     ss << a << "_r";
-    ss << std::setw(2) << std::setfill('0') << config.at("round");
+    ss << std::setw(2) << std::setfill('0') << std::size_t(config.at("round"));
     ss << "_b" << config.at("block-size");
     ss << ".bin";
     return ss.str();
