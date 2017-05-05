@@ -6,7 +6,7 @@
 
 ## Quickstart
 
-**Give me the data, I do not want to run anything. See the [files](https://owncloud.cesnet.cz/index.php/s/oHnFUgVRlckEYNg) and [notes](https://github.com/crocs-muni/eacirc-streams/wiki#direct-access-to-generated-data).**
+**Give me the data, I do not want to run anything. See the [files](https://drive.google.com/drive/folders/0B5Z1zst5NzwXQmFKaXgxREJWNk0?usp=sharing) and [notes](https://github.com/crocs-muni/eacirc-streams/wiki#direct-access-to-generated-data).**
 
 I want to run it myself, but no compilation. See [latest release and follow simple instructions](https://github.com/crocs-muni/eacirc-streams/releases/latest).
 
