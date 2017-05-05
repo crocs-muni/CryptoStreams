@@ -31,7 +31,7 @@ estream_stream::estream_stream(const json& config, default_seed_source& seeder, 
                  config.at("round").is_null()
                      ? core::optional<unsigned>{core::nullopt_t{}}
                      : core::optional<unsigned>{unsigned(config.at("round"))},
-                 config.at("iv-type"), config.at("key-type")) {
+                 config.at("iv-type"), config.at("key-type"), config.count("heatmap") != 0 ? std::uint64_t(config.at("heatmap")) : 0x0u) {
   if (_initfreq == estream_init_frequency::ONLY_ONCE) {
     _algorithm.setup_key(_rng);
     _algorithm.setup_iv(_rng);

@@ -9,7 +9,7 @@ static void _check_rounds(const std::string& algorithm, unsigned rounds) {
                                  "\" cannot be limited in rounds"};
 }
 
-std::unique_ptr<sha3_interface> sha3_factory::create(const std::string& name, unsigned rounds) {
+std::unique_ptr<sha3_interface> sha3_factory::create(const std::string& name, unsigned rounds, const std::uint64_t heatmap) {
     // clang-format off
     if (name == "Abacus")         return std::make_unique<Abacus>(rounds);
     if (name == "ARIRANG")        return std::make_unique<Arirang>(rounds);
@@ -23,8 +23,8 @@ std::unique_ptr<sha3_interface> sha3_factory::create(const std::string& name, un
     if (name == "CRUNCH")         return std::make_unique<Crunch>(rounds);
     if (name == "CubeHash")       return std::make_unique<Cubehash>(rounds);
     if (name == "DCH")            return std::make_unique<DCH>(rounds);
-    if (name == "DynamicSHA")     return std::make_unique<DSHA>(rounds);
-    if (name == "DynamicSHA2")    return std::make_unique<DSHA2>(rounds);
+    if (name == "DynamicSHA")     return std::make_unique<DSHA>(rounds, heatmap);
+    if (name == "DynamicSHA2")    return std::make_unique<DSHA2>(rounds, heatmap);
     if (name == "ECHO")           return std::make_unique<Echo>(rounds);
     // if (name == "ECOH")           return std::make_unique<Ecoh>(rounds);
     if (name == "EDON") {         _check_rounds(name, rounds);
@@ -36,7 +36,7 @@ std::unique_ptr<sha3_interface> sha3_factory::create(const std::string& name, un
     if (name == "Grostl")         return std::make_unique<Grostl>(rounds);
     if (name == "Hamsi")          return std::make_unique<Hamsi>(rounds);
     if (name == "JH")             return std::make_unique<JH>(rounds);
-    if (name == "Keccak")         return std::make_unique<Keccak>(rounds);
+    if (name == "Keccak")         return std::make_unique<Keccak>(rounds, heatmap);
     if (name == "Khichidi") {     _check_rounds(name, rounds);
                                   return std::make_unique<Khichidi>();
     }
@@ -70,7 +70,7 @@ std::unique_ptr<sha3_interface> sha3_factory::create(const std::string& name, un
                                   return std::make_unique<StreamHash>();
     }
     // if (name == "SWIFFTX")        return std::make_unique<Swifftx>(rounds);
-    if (name == "Tangle")         return std::make_unique<Tangle>(rounds);
+    if (name == "Tangle")         return std::make_unique<Tangle>(rounds, heatmap);
     // if (name == "TIB3")           return std::make_unique<Tib>(rounds);
     if (name == "Twister")        return std::make_unique<Twister>(rounds);
     //if (name == "Vortex")         return std::make_unique<Vortex>(rounds);

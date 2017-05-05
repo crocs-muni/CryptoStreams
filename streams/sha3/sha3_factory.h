@@ -5,5 +5,5 @@
 struct sha3_interface;
 
 struct sha3_factory {
-    static std::unique_ptr<sha3_interface> create(const std::string& algorithm, unsigned rounds);
+    static std::unique_ptr<sha3_interface> create(const std::string& algorithm, unsigned rounds, const std::uint64_t heatmap);
 };

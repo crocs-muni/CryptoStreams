@@ -12,6 +12,7 @@
 
 #include "../../estream_interface.h"
 #include "../ecrypt-portable.h"
+#include <cstdint>
 
 /* ------------------------------------------------------------------------- */
 
@@ -102,13 +103,36 @@ typedef struct {
     u8 iv_size;
 } DECIM_ctx;
 
+
 /* ------------------------------------------------------------------------- */
 class ECRYPT_Decim : public estream_interface {
     DECIM_ctx _ctx;
 
+private:
+    std::uint64_t _LFSR01;
+    std::uint64_t _LFSR02;
+    std::uint64_t _LFSR03;
+    std::uint64_t _LFSR04;
+    std::uint64_t _clock;
+    std::uint64_t _ABSG01;
+    std::uint64_t _ABSG02;
+    std::uint64_t _ABSG03;
+    std::uint64_t _ABSG04;
+
 public:
-    ECRYPT_Decim(int rounds)
-        : estream_interface(rounds) {}
+    ECRYPT_Decim(int rounds, std::uint64_t heatmap)
+        : estream_interface(rounds)
+        , _LFSR01(heatmap & 0x0001)
+        , _LFSR02(heatmap & 0x0002)
+        , _LFSR03(heatmap & 0x0004)
+        , _LFSR04(heatmap & 0x0008)
+        , _clock(heatmap & 0x0010)
+        , _ABSG01(heatmap & 0x0020)
+        , _ABSG02(heatmap & 0x0040)
+        , _ABSG03(heatmap & 0x0080)
+        , _ABSG04(heatmap & 0x0100) {}
+
+
     /* Mandatory functions */
 
     /*

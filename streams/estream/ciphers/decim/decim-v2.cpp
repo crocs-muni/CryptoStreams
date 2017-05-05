@@ -1,4 +1,5 @@
-/*
+/**
+*
 *DECIMv2 reference implementation.
 *
 *This code is supposed to run on any conforming C implementation (C90
@@ -27,6 +28,7 @@
 */
 
 #include "decimv2.h"
+
 
 /* Not needed */
 void ECRYPT_Decim::ECRYPT_init(void) {}
@@ -81,7 +83,7 @@ void ECRYPT_Decim::ECRYPT_ivsetup(const u8* iv) {
     }
 
     for (j = 0; j < 1152; j++)
-        decim_lfsr_init(ctx);
+        decim_lfsr_init(ctx, _LFSR01, _LFSR02, _LFSR03, _LFSR04, _clock);
 
     /* reset ABSG state */
     ctx->immediate_finding = 0;
@@ -98,10 +100,10 @@ void ECRYPT_Decim::ECRYPT_ivsetup(const u8* iv) {
 
     /* fill the buffer */
     while (ctx->buffer_end < 64) {
-        decim_step(ctx);
-        decim_step(ctx);
-        decim_step(ctx);
-        decim_step(ctx);
+        decim_step_init(ctx);
+        decim_step_init(ctx);
+        decim_step_init(ctx);
+        decim_step_init(ctx);
     }
 
     ctx->bits_in_byte = 0;
@@ -123,10 +125,9 @@ void ECRYPT_Decim::DECIM_process_bytes(
     int is_stream_byte = 0;
     u32 bytes_processed = 0;
     int i, e;
-
     while (bytes_processed < msglen) {
         for (e = 0; e < _rounds / 2; e++)
-            decim_step(ctx);
+            decim_step(ctx, _LFSR01, _LFSR02, _LFSR03, _LFSR04, _clock, _ABSG01, _ABSG02, _ABSG03, _ABSG04);
         // decim_step(ctx);
         // decim_step(ctx);
         // decim_step(ctx);
@@ -143,8 +144,8 @@ void ECRYPT_Decim::DECIM_process_bytes(
             // printf("ERROR BUFFER EMPTY\n");
             for (i = 0; i < 4; i++) {
                 for (e = 0; e < _rounds; e++) {
-                    decim_lfsr_filter(ctx);
-                    decim_lfsr_clock(ctx);
+                    decim_lfsr_filter(ctx, _LFSR01, _LFSR02, _LFSR03, _LFSR04);
+                    decim_lfsr_clock(ctx, _clock);
                     ctx->buffer_end++;
                     ctx->buffer[ctx->buffer_end] = ctx->bool_out;
                 }
@@ -197,7 +198,7 @@ void ECRYPT_Decim::DECIM_keystream_bytes(DECIM_ctx* ctx, u8* keystream, u32 leng
     while (bytes_outputed < length) {
         // nR 4 by default
         for (e = 0; e < _rounds / 2; e++)
-            decim_step(ctx);
+            decim_step(ctx, _LFSR01, _LFSR02, _LFSR03, _LFSR04, _clock, _ABSG01, _ABSG02, _ABSG03, _ABSG04);
         // decim_step(ctx);
         // decim_step(ctx);
         // decim_step(ctx);
@@ -215,8 +216,8 @@ void ECRYPT_Decim::DECIM_keystream_bytes(DECIM_ctx* ctx, u8* keystream, u32 leng
             printf("ERROR BUFFER EMPTY\n");
             for (i = 0; i < 4; i++) {
                 for (e = 0; e < _rounds; e++) {
-                    decim_lfsr_filter(ctx);
-                    decim_lfsr_clock(ctx);
+                    decim_lfsr_filter(ctx, _LFSR01, _LFSR02, _LFSR03, _LFSR04);
+                    decim_lfsr_clock(ctx, _clock);
                     ctx->buffer_end++;
                     ctx->buffer[ctx->buffer_end] = ctx->bool_out;
                 }
@@ -235,99 +236,219 @@ void ECRYPT_Decim::DECIM_keystream_bytes(DECIM_ctx* ctx, u8* keystream, u32 leng
  * Here follows the auxiliary functions
  * */
 
-void decim_lfsr_clock(DECIM_ctx* ctx) {
-    memcpy(ctx->lfsr_state, ctx->lfsr_state + 1, 16);
-    memcpy(ctx->lfsr_state + 16, ctx->lfsr_state + 17, 16);
-    memcpy(ctx->lfsr_state + 32, ctx->lfsr_state + 33, 16);
-    memcpy(ctx->lfsr_state + 48, ctx->lfsr_state + 49, 16);
-    memcpy(ctx->lfsr_state + 64, ctx->lfsr_state + 65, 16);
-    memcpy(ctx->lfsr_state + 80, ctx->lfsr_state + 81, 16);
-    memcpy(ctx->lfsr_state + 96, ctx->lfsr_state + 97, 16);
-    memcpy(ctx->lfsr_state + 112, ctx->lfsr_state + 113, 16);
-    memcpy(ctx->lfsr_state + 128, ctx->lfsr_state + 129, 16);
-    memcpy(ctx->lfsr_state + 144, ctx->lfsr_state + 145, 16);
-    memcpy(ctx->lfsr_state + 160, ctx->lfsr_state + 161, 16);
-    memcpy(ctx->lfsr_state + 176, ctx->lfsr_state + 177, 16);
-    memcpy(ctx->lfsr_state + 192, ctx->lfsr_state + 193, 16);
-    memcpy(ctx->lfsr_state + 208, ctx->lfsr_state + 209, 16);
-    memcpy(ctx->lfsr_state + 224, ctx->lfsr_state + 225, 16);
-    memcpy(ctx->lfsr_state + 240, ctx->lfsr_state + 241, 16);
-    memcpy(ctx->lfsr_state + 256, ctx->lfsr_state + 257, 16);
-    memcpy(ctx->lfsr_state + 272, ctx->lfsr_state + 273, 16);
+void decim_lfsr_clock(DECIM_ctx* ctx, std::uint64_t clock) {
+    if(clock){
+        memcpy(ctx->lfsr_state, ctx->lfsr_state + 1, 16);
+        memcpy(ctx->lfsr_state + 16, ctx->lfsr_state + 17, 16);
+        memcpy(ctx->lfsr_state + 32, ctx->lfsr_state + 33, 16);
+        memcpy(ctx->lfsr_state + 48, ctx->lfsr_state + 49, 16);
+        memcpy(ctx->lfsr_state + 64, ctx->lfsr_state + 65, 16);
+        memcpy(ctx->lfsr_state + 80, ctx->lfsr_state + 81, 16);
+        memcpy(ctx->lfsr_state + 96, ctx->lfsr_state + 97, 16);
+        memcpy(ctx->lfsr_state + 112, ctx->lfsr_state + 113, 16);
+        memcpy(ctx->lfsr_state + 128, ctx->lfsr_state + 129, 16);
+        memcpy(ctx->lfsr_state + 144, ctx->lfsr_state + 145, 16);
+        memcpy(ctx->lfsr_state + 160, ctx->lfsr_state + 161, 16);
+        memcpy(ctx->lfsr_state + 176, ctx->lfsr_state + 177, 16);
+        memcpy(ctx->lfsr_state + 192, ctx->lfsr_state + 193, 16);
+        memcpy(ctx->lfsr_state + 208, ctx->lfsr_state + 209, 16);
+        memcpy(ctx->lfsr_state + 224, ctx->lfsr_state + 225, 16);
+        memcpy(ctx->lfsr_state + 240, ctx->lfsr_state + 241, 16);
+        memcpy(ctx->lfsr_state + 256, ctx->lfsr_state + 257, 16);
+        memcpy(ctx->lfsr_state + 272, ctx->lfsr_state + 273, 16);
+    }
 }
 
-void decim_lfsr_filter(DECIM_ctx* ctx) {
+void decim_lfsr_filter(DECIM_ctx* ctx, std::uint64_t LFSR01, std::uint64_t LFSR02, std::uint64_t LFSR03, std::uint64_t LFSR04) {
     u8 b, c;
 
     /* compute the boolean function */
     c = ctx->lfsr_state[1];
-    b = ctx->lfsr_state[21];
-    c ^= ctx->lfsr_state[21];
-    b += ctx->lfsr_state[39];
-    c ^= ctx->lfsr_state[39];
-    b += ctx->lfsr_state[51];
-    c ^= ctx->lfsr_state[51];
-    b += ctx->lfsr_state[73];
-    c ^= ctx->lfsr_state[73];
-    b += ctx->lfsr_state[120];
-    c ^= ctx->lfsr_state[120];
-    b += ctx->lfsr_state[159];
-    c ^= ctx->lfsr_state[159];
-    b += ctx->lfsr_state[187];
-    c ^= ctx->lfsr_state[187];
-    b += ctx->lfsr_state[203];
-    c ^= ctx->lfsr_state[203];
-    b += ctx->lfsr_state[236];
-    c ^= ctx->lfsr_state[236];
-    b += ctx->lfsr_state[244];
-    c ^= ctx->lfsr_state[244];
-    b += ctx->lfsr_state[263];
-    c ^= ctx->lfsr_state[263];
-    b += ctx->lfsr_state[276];
-    c ^= ctx->lfsr_state[276];
-    b += ctx->lfsr_state[287];
-    c ^= ctx->lfsr_state[287];
-    ctx->bool_out = ((b >> 1) & 0x01) ^ c;
+          b = ctx->lfsr_state[21];
+            if(LFSR01){
+            c ^= ctx->lfsr_state[21];
+            b += ctx->lfsr_state[39];
+            c ^= ctx->lfsr_state[39];
+            b += ctx->lfsr_state[51];
+            c ^= ctx->lfsr_state[51];
+            b += ctx->lfsr_state[73];
+            c ^= ctx->lfsr_state[73];
+            b += ctx->lfsr_state[120];
+            c ^= ctx->lfsr_state[120];
+            }
+            if(LFSR02){
+                if(LFSR01){
+                    b += ctx->lfsr_state[159];
+                    c ^= ctx->lfsr_state[159];
+                }else{
+                b = ctx->lfsr_state[159];
+                c = ctx->lfsr_state[159];
+                }
 
-    /* compute the next bit for the LFSR*/
-    b = ctx->lfsr_state[0];
-    b ^= ctx->lfsr_state[3];
-    b ^= ctx->lfsr_state[4];
-    b ^= ctx->lfsr_state[41];
-    b ^= ctx->lfsr_state[84];
-    b ^= ctx->lfsr_state[103];
-    b ^= ctx->lfsr_state[134];
-    b ^= ctx->lfsr_state[163];
-    b ^= ctx->lfsr_state[164];
-    b ^= ctx->lfsr_state[165];
-    b ^= ctx->lfsr_state[206];
-    b ^= ctx->lfsr_state[253];
-    b ^= ctx->lfsr_state[270];
-    b ^= ctx->lfsr_state[283];
-    ctx->lfsr_state[288] = b; /* next bit */
+            b += ctx->lfsr_state[187];
+            c ^= ctx->lfsr_state[187];
+            b += ctx->lfsr_state[203];
+            c ^= ctx->lfsr_state[203];
+            b += ctx->lfsr_state[236];
+            c ^= ctx->lfsr_state[236];
+            b += ctx->lfsr_state[244];
+            c ^= ctx->lfsr_state[244];
+            b += ctx->lfsr_state[263];
+            c ^= ctx->lfsr_state[263];
+            b += ctx->lfsr_state[276];
+            c ^= ctx->lfsr_state[276];
+            b += ctx->lfsr_state[287];
+            c ^= ctx->lfsr_state[287];
+        }
+      ctx->bool_out = ((b>>1)&0x01)^c;
+
+      /* compute the next bit for the LFSR*/
+          b  = ctx->lfsr_state[0];
+          if(LFSR03){
+          b ^= ctx->lfsr_state[3];
+          b ^= ctx->lfsr_state[4];
+          b ^= ctx->lfsr_state[41];
+          b ^= ctx->lfsr_state[84];
+          b ^= ctx->lfsr_state[103];
+          b ^= ctx->lfsr_state[134];
+          }
+          if(LFSR04){
+              if(LFSR03){
+                  b ^= ctx->lfsr_state[163];
+              }else{
+                  b = ctx->lfsr_state[163];
+              }
+
+          b ^= ctx->lfsr_state[164];
+          b ^= ctx->lfsr_state[165];
+          b ^= ctx->lfsr_state[206];
+          b ^= ctx->lfsr_state[253];
+          b ^= ctx->lfsr_state[270];
+          b ^= ctx->lfsr_state[283];
+        }
+      ctx->lfsr_state[288] = b;   /* next bit */
 }
 
-void decim_absg(DECIM_ctx* ctx, u8 bit) {
-    ctx->bit_searched = (ctx->searching ? ctx->bit_searched : bit);
-    ctx->out = ctx->searching & (ctx->immediate_finding ^ bit);
-    ctx->immediate_finding = ctx->searching & (ctx->bit_searched ^ bit);
-    ctx->searching = !ctx->searching | ctx->immediate_finding;
+
+
+void decim_absg(DECIM_ctx* ctx, u8 bit, std::uint64_t ABSG01, std::uint64_t ABSG02, std::uint64_t ABSG03, std::uint64_t ABSG04) {
+    if(ABSG01) ctx->bit_searched = (ctx->searching ? ctx->bit_searched : bit);
+    if(ABSG02) ctx->out = ctx->searching & (ctx->immediate_finding ^ bit);
+    if(ABSG03) ctx->immediate_finding = ctx->searching & (ctx->bit_searched ^ bit);
+    if(ABSG04) ctx->searching = !ctx->searching | ctx->immediate_finding;
 }
 
-void decim_lfsr_init(DECIM_ctx* ctx) {
-    decim_lfsr_filter(ctx);
+void decim_absg_init(DECIM_ctx *ctx, u8 bit)
+{
+  ctx->bit_searched = (ctx->searching ? ctx->bit_searched : bit);
+  ctx->out  = ctx->searching & (ctx->immediate_finding ^ bit);
+  ctx->immediate_finding = ctx->searching & (ctx->bit_searched ^ bit);
+  ctx->searching  = !ctx->searching |ctx->immediate_finding;
+
+}
+
+void decim_lfsr_init(DECIM_ctx* ctx, std::uint64_t LFSR01, std::uint64_t LFSR02, std::uint64_t LFSR03, std::uint64_t LFSR04, std::uint64_t clock) {
+    decim_lfsr_filter(ctx, LFSR01, LFSR02, LFSR03, LFSR04); //tu
     ctx->lfsr_state[288] ^= ctx->bool_out ^ ctx->lfsr_state[1];
-    decim_lfsr_clock(ctx);
+    decim_lfsr_clock(ctx, clock);
 }
 
-void decim_step(DECIM_ctx* ctx) {
-    decim_lfsr_filter(ctx);
-    decim_lfsr_clock(ctx);
-    decim_absg(ctx, ctx->bool_out);
+void decim_step(DECIM_ctx* ctx, std::uint64_t LFSR01, std::uint64_t LFSR02, std::uint64_t LFSR03, std::uint64_t LFSR04, std::uint64_t clock, std::uint64_t ABSG01, std::uint64_t ABSG02, std::uint64_t ABSG03, std::uint64_t ABSG04) {
+    decim_lfsr_filter(ctx, LFSR01, LFSR02, LFSR03, LFSR04);
+    decim_lfsr_clock(ctx, clock);
+    decim_absg(ctx, ctx->bool_out, ABSG01, ABSG02, ABSG03, ABSG04);
     if (!ctx->searching && (ctx->buffer_end < 64)) {
         ctx->buffer[ctx->buffer_end] = ctx->out;
         ctx->buffer_end++;
     }
+}
+
+void decim_step_init(DECIM_ctx *ctx)
+{
+  decim_lfsr_filter_init(ctx);
+  decim_lfsr_clock_init(ctx);
+  decim_absg_init(ctx, ctx->bool_out);
+  if ( !ctx->searching && (ctx->buffer_end<64)){
+    ctx->buffer[ctx->buffer_end]=ctx->out;
+    ctx->buffer_end++;
+  }
+}
+
+void decim_lfsr_filter_init(DECIM_ctx *ctx)
+{
+  u8 b,c;
+
+        /* compute the boolean function */
+      c = ctx->lfsr_state[1];
+      b = ctx->lfsr_state[21];
+        c ^= ctx->lfsr_state[21];
+        b += ctx->lfsr_state[39];
+        c ^= ctx->lfsr_state[39];
+        b += ctx->lfsr_state[51];
+        c ^= ctx->lfsr_state[51];
+        b += ctx->lfsr_state[73];
+        c ^= ctx->lfsr_state[73];
+        b += ctx->lfsr_state[120];
+        c ^= ctx->lfsr_state[120];
+        b += ctx->lfsr_state[159];
+        c ^= ctx->lfsr_state[159];
+        b += ctx->lfsr_state[187];
+        c ^= ctx->lfsr_state[187];
+        b += ctx->lfsr_state[203];
+        c ^= ctx->lfsr_state[203];
+        b += ctx->lfsr_state[236];
+        c ^= ctx->lfsr_state[236];
+        b += ctx->lfsr_state[244];
+        c ^= ctx->lfsr_state[244];
+        b += ctx->lfsr_state[263];
+        c ^= ctx->lfsr_state[263];
+        b += ctx->lfsr_state[276];
+        c ^= ctx->lfsr_state[276];
+        b += ctx->lfsr_state[287];
+        c ^= ctx->lfsr_state[287];
+
+  ctx->bool_out = ((b>>1)&0x01)^c;
+
+  /* compute the next bit for the LFSR*/
+
+      b  = ctx->lfsr_state[0];
+      b ^= ctx->lfsr_state[3];
+      b ^= ctx->lfsr_state[4];
+      b ^= ctx->lfsr_state[41];
+      b ^= ctx->lfsr_state[84];
+      b ^= ctx->lfsr_state[103];
+      b ^= ctx->lfsr_state[134];
+      b ^= ctx->lfsr_state[163];
+      b ^= ctx->lfsr_state[164];
+      b ^= ctx->lfsr_state[165];
+      b ^= ctx->lfsr_state[206];
+      b ^= ctx->lfsr_state[253];
+      b ^= ctx->lfsr_state[270];
+      b ^= ctx->lfsr_state[283];
+
+  ctx->lfsr_state[288] = b;   /* next bit */
+}
+
+void decim_lfsr_clock_init(DECIM_ctx *ctx)
+{
+      memcpy(ctx->lfsr_state, ctx->lfsr_state+1, 16);
+      memcpy(ctx->lfsr_state+16, ctx->lfsr_state+17, 16);
+      memcpy(ctx->lfsr_state+32, ctx->lfsr_state+33, 16);
+      memcpy(ctx->lfsr_state+48, ctx->lfsr_state+49, 16);
+      memcpy(ctx->lfsr_state+64, ctx->lfsr_state+65, 16);
+      memcpy(ctx->lfsr_state+80, ctx->lfsr_state+81, 16);
+      memcpy(ctx->lfsr_state+96, ctx->lfsr_state+97, 16);
+      memcpy(ctx->lfsr_state+112, ctx->lfsr_state+113, 16);
+      memcpy(ctx->lfsr_state+128, ctx->lfsr_state+129, 16);
+      memcpy(ctx->lfsr_state+144, ctx->lfsr_state+145, 16);
+      memcpy(ctx->lfsr_state+160, ctx->lfsr_state+161, 16);
+      memcpy(ctx->lfsr_state+176, ctx->lfsr_state+177, 16);
+      memcpy(ctx->lfsr_state+192, ctx->lfsr_state+193, 16);
+      memcpy(ctx->lfsr_state+208, ctx->lfsr_state+209, 16);
+      memcpy(ctx->lfsr_state+224, ctx->lfsr_state+225, 16);
+      memcpy(ctx->lfsr_state+240, ctx->lfsr_state+241, 16);
+      memcpy(ctx->lfsr_state+256, ctx->lfsr_state+257, 16);
+      memcpy(ctx->lfsr_state+272, ctx->lfsr_state+273, 16);
 }
 
 void decim_process_buffer(DECIM_ctx* ctx, int* is_stream_byte, u8* stream_byte) {

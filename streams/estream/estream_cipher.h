@@ -14,7 +14,7 @@ struct estream_cipher {
   constexpr static unsigned block_size = 16;
 
   estream_cipher(const std::string& name, core::optional<unsigned> round, const std::string& ivtype,
-                 const std::string& keytype);
+                 const std::string& keytype, const std::uint64_t heatmap);
 
   estream_cipher(estream_cipher&&);
   ~estream_cipher();

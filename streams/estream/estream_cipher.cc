@@ -54,12 +54,12 @@ static estream_keytype create_keytype(const std::string& ivtype) {
 }
 
 static std::unique_ptr<estream_interface> create_cipher(const std::string& name,
-                                                        core::optional<unsigned> round) {
+                                                        core::optional<unsigned> round, const std::uint64_t heatmap) {
   // clang-format off
     if (name == "ABC")              return std::make_unique<ECRYPT_ABC>();
     if (name == "Achterbahn")       return std::make_unique<ECRYPT_Achterbahn>();
     if (name == "CryptMT")          return std::make_unique<ECRYPT_Cryptmt>();
-    if (name == "DECIM")            return std::make_unique<ECRYPT_Decim>(!round ? 8 : *round);
+    if (name == "DECIM")            return std::make_unique<ECRYPT_Decim>(!round ? 8 : *round, heatmap);
     if (name == "DICING")           return std::make_unique<ECRYPT_Dicing>();
     if (name == "Dragon")           return std::make_unique<ECRYPT_Dragon>(!round ? 16 : *round);
     if (name == "Edon80")           return std::make_unique<ECRYPT_Edon80>();
@@ -90,11 +90,11 @@ static std::unique_ptr<estream_interface> create_cipher(const std::string& name,
 }
 
 estream_cipher::estream_cipher(const std::string& name, core::optional<unsigned> round,
-                               const std::string& ivtype, const std::string& keytype)
+                               const std::string& ivtype, const std::string& keytype, const std::uint64_t heatmap)
     : _ivtype(create_ivtype(ivtype))
     , _keytype(create_keytype(keytype))
-    , _encryptor(create_cipher(name, round))
-    , _decryptor(create_cipher(name, round)) {
+    , _encryptor(create_cipher(name, round, heatmap))
+    , _decryptor(create_cipher(name, round, heatmap)) {
     _encryptor->ECRYPT_init();
     _decryptor->ECRYPT_init();
 }

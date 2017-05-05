@@ -35,7 +35,7 @@ sha3_stream::sha3_stream(const json& config, default_seed_source &seeder, std::s
     , _round(config.at("round"))
     , _hash_size(std::size_t(config.at("hash-bitsize")) / 8)
     , _source(make_stream(config.at("source"), seeder, _hash_size)) // TODO: hash-input-size?
-    , _hasher(sha3_factory::create(config.at("algorithm"), unsigned(_round)))
+    , _hasher(sha3_factory::create(config.at("algorithm"), unsigned(_round), config.count("heatmap") != 0 ? std::uint64_t(config.at("heatmap")) : 0x0u))
     , _data(compute_hash_size(_hash_size, osize)) { // round osize to multiple of _hash_size
 
     if ((std::size_t(config.at("hash-bitsize")) % 8) != 0)
