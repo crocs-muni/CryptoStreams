@@ -86,10 +86,12 @@ struct file_stream : stream {
         , _data(osize) {}
 
     vec_view next() override {
-        _istream.read(_data.data(), osize());
+        _istream.read(reinterpret_cast<char*>(_data.data()), osize());
 
-        if (_istream.fail())
+        if (_istream.fail()) {
+            perror("stream failbit (or badbit). error state:");
             throw std::runtime_error("I/O error while reading a file " + _path);
+        }
         if (_istream.eof())
             throw std::runtime_error("end of file " + _path + " reached, not enough data!");
 
@@ -98,7 +100,7 @@ struct file_stream : stream {
 
 private:
     const std::string _path;
-    std::basic_ifstream<std::uint8_t> _istream;
+    std::ifstream _istream;
     std::vector<value_type> _data;
 };
 
