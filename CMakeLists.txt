@@ -57,3 +57,27 @@ target_link_libraries(eacirc-streams eacirc-core eacirc-streams-lib)
 build_stream(eacirc-streams estream)
 build_stream(eacirc-streams sha3)
 build_stream(eacirc-streams block)
+
+option(test "Build all tests." ON)
+
+##############
+# Building of testsuite
+##############
+#if (test)
+enable_testing()
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+
+add_executable(testsuite testsuite/stream-tests.cc)
+
+
+# Standard linking to gtest stuff.
+target_link_libraries(testsuite gtest gtest_main)
+
+
+# Extra linking for the project.
+target_link_libraries(testsuite eacirc-core eacirc-streams-lib)
+
+build_stream(testsuite estream)
+build_stream(testsuite sha3)
+build_stream(testsuite block)
+#endif()
