@@ -67,8 +67,13 @@ option(test "Build all tests." ON)
 enable_testing()
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
-add_executable(testsuite testsuite/stream-tests.cc)
+add_executable(testsuite
+        testsuite/stream-tests.cc
+        testsuite/test_main.cc
+        testsuite/sha3_streams_tests.cc
+        testsuite/test-utils/sha3_test_case)
 
+file(COPY testsuite/test_vectors DESTINATION resources)
 
 # Standard linking to gtest stuff.
 target_link_libraries(testsuite gtest gtest_main)

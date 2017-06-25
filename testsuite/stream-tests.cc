@@ -10,14 +10,6 @@
 const static int testing_size = 1536;
 const static seed seed1 = seed::create("1fe40505e131963c");
 
-int main(int argc, char** argv) {
-    /* initialize google test framework */
-    ::testing::InitGoogleTest(&argc, argv);
-
-    /* run all testsuite */
-    return RUN_ALL_TESTS();
-}
-
 TEST(true_stream, basic_test) {
     std::unique_ptr<true_stream> tstream = std::make_unique<true_stream>(testing_size);
 
@@ -115,6 +107,26 @@ TEST(sac_streams, fixed_position) {
     ASSERT_EQ(difference_position, 1); // Difference should be in second byte
     ASSERT_EQ(position_in_byte, 2); // Position x of changed bit, where position_in_byte = 2^x
 }
+
+TEST(column_streams, basic_test_with_counter) {
+    json json_config = {
+            {"size", 5},
+            {"stream", {
+                {"type", "counter"}
+                       }}
+    };
+
+    seed_seq_from<pcg32> seeder(seed1);
+
+    std::unique_ptr<column_stream> stream = std::make_unique<column_stream>(json_config, seeder, 5);
+
+    // TODO: finich column test
+//    for(auto it : stream->next()) {
+//        std::cout << it << std::endl;
+//    }
+}
+
+
 
 
 
