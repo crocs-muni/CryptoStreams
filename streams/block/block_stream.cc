@@ -31,7 +31,6 @@ namespace block {
             throw std::runtime_error("The block size is at least 8 bytes");
         if (osize == 0)
             throw std::runtime_error("The output size has to be at least 1 byte");
-
         /* others modes than ECB are not implemented yet
         vec_view iv_view = _iv->next();
         _encryptor->ivsetup(iv_view.data(), iv_view.size());
