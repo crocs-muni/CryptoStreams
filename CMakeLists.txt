@@ -68,12 +68,18 @@ enable_testing()
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 add_executable(testsuite
-        testsuite/stream-tests.cc
         testsuite/test_main.cc
+        testsuite/stream_tests.cc
         testsuite/sha3_streams_tests.cc
-        testsuite/test-utils/sha3_test_case)
+        testsuite/estream_streams_tests.cc
+        testsuite/test-utils/test_streams
+        testsuite/test-utils/sha3_test_case
+        testsuite/test-utils/estream_test_case
+        testsuite/test-utils/estream_test_case
+        testsuite/test-utils/common_functions.h
+        )
 
-file(COPY testsuite/test_vectors DESTINATION resources)
+file(COPY testsuite/test-resources DESTINATION resources)
 
 # Standard linking to gtest stuff.
 target_link_libraries(testsuite gtest gtest_main)

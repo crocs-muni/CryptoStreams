@@ -10,6 +10,8 @@ struct estream_interface;
 enum class estream_ivtype { ZEROS, ONES, RANDOM, BIASRANDOM };
 enum class estream_keytype { ZEROS, ONES, RANDOM, BIASRANDOM };
 
+static std::unique_ptr<estream_interface> create_cipher(const std::string& name, core::optional<unsigned> round);
+
 struct estream_cipher {
   constexpr static unsigned block_size = 16;
 

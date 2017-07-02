@@ -17,6 +17,7 @@ struct sha3_stream : stream {
 private:
     const std::size_t _round;
     const std::size_t _hash_size;
+    const std::size_t _source_size;
 
     std::unique_ptr<stream> _source;
     std::unique_ptr<sha3_interface> _hasher;

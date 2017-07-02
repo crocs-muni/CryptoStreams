@@ -3,43 +3,42 @@
 
 #include <streams/sha3/sha3_interface.h>
 #include <string>
-#include <stdexcept>
 #include <algorithm>
+#include <stream.h>
+#include "common_functions.h"
 
-class sha3_test_case {
+namespace testsuite {
 
-private:
-    std::string _input;
-    std::string _output;
+    class sha3_test_case {
 
-    int _length;
+    private:
+        std::string _plaintext;
+        std::string _hash;
 
-public:
+        int _length;
 
-    void operator()(std::unique_ptr<sha3_interface>& hasher);
+    public:
 
-    friend std::istream& operator>>( std::istream& input, sha3_test_case& test_case) {
-        input >> test_case._length;
-        input >> test_case._input;
-        input >> test_case._output;
+        void operator()(std::unique_ptr<sha3_interface> &hasher);
 
-        // Hexadecimal to lower case
-        std::transform(test_case._output.begin(), test_case._output.end(), test_case._output.begin(), ::tolower);
+        void operator()(std::unique_ptr<stream> &stream);
 
-        return input;
-    }
+        friend std::istream &operator>>(std::istream &input, sha3_test_case &test_case) {
+            input >> test_case._length;
+            input >> test_case._plaintext;
+            input >> test_case._hash;
 
-private:
-    unsigned char hex2char(char input) {
-        if(input >= '0' && input <= '9')
-            return input - '0';
-        if(input >= 'A' && input <= 'F')
-            return input - 'A' + 10;
-        if(input >= 'a' && input <= 'f')
-            return input - 'a' + 10;
-        throw std::invalid_argument("Invalid input string");
-    }
-};
+            // Hexadecimal to lower case, in order to be compatible with std::hex
+            std::transform(test_case._hash.begin(), test_case._hash.end(), test_case._hash.begin(), ::tolower);
+
+            return input;
+        }
+
+        size_t length();
+        std::string input();
+
+    };
+}
 
 
 #endif //EACIRC_STREAMS_SHA3_TEST_CASE_H

@@ -1,4 +1,5 @@
 #include "streams.h"
+#include <testsuite/test-utils/test_streams.h>
 
 namespace _impl {
     template <typename std::uint8_t value>
@@ -231,6 +232,8 @@ make_stream(const json& config, default_seed_source& seeder, std::size_t osize =
     else if (type == "column-fixed-position") {
         const std::size_t pos = std::size_t(config.at("position"));
         return std::make_unique<column_fixed_position_stream>(config, seeder, osize, pos);
+    } else if (type == "test-stream") { // TODO: allow only when testing is enabled
+        return std::make_unique<testsuite::test_stream>(config, osize);
     }
 
 #ifdef BUILD_estream

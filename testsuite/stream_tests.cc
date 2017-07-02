@@ -55,9 +55,7 @@ TEST(counter_stream, basic_test) {
 }
 
 TEST(sac_streams, basic_test) {
-    seed s = seed::create("1fe40505e131963c");
-
-    seed_seq_from<pcg32> seeder(s);
+    seed_seq_from<pcg32> seeder(seed1);
     std::unique_ptr<sac_stream> stream = std::make_unique<sac_stream>(seeder, testing_size*2);
 
     int i = 0;
@@ -120,7 +118,7 @@ TEST(column_streams, basic_test_with_counter) {
 
     std::unique_ptr<column_stream> stream = std::make_unique<column_stream>(json_config, seeder, 5);
 
-    // TODO: finich column test
+    // TODO: finish column test
 //    for(auto it : stream->next()) {
 //        std::cout << it << std::endl;
 //    }
