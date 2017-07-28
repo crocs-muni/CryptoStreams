@@ -7,7 +7,7 @@
 namespace testsuite {
 
     struct test_stream : stream {
-        test_stream(const json& config, std::size_t osize);
+        test_stream(const json& config);
 
         vec_view next() override;
 

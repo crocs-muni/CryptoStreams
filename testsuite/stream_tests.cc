@@ -6,9 +6,9 @@
 #include "stream.h"
 #include "streams.h"
 #include <eacirc-core/seed.h>
+#include <testsuite/test-utils/test_case.h>
 
 const static int testing_size = 1536;
-const static seed seed1 = seed::create("1fe40505e131963c");
 
 TEST(true_stream, basic_test) {
     std::unique_ptr<true_stream> tstream = std::make_unique<true_stream>(testing_size);
@@ -55,7 +55,7 @@ TEST(counter_stream, basic_test) {
 }
 
 TEST(sac_streams, basic_test) {
-    seed_seq_from<pcg32> seeder(seed1);
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
     std::unique_ptr<sac_stream> stream = std::make_unique<sac_stream>(seeder, testing_size*2);
 
     int i = 0;
@@ -78,7 +78,7 @@ TEST(sac_streams, basic_test) {
 }
 
 TEST(sac_streams, fixed_position) {
-    seed_seq_from<pcg32> seeder(seed1);
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
     std::unique_ptr<sac_fixed_pos_stream> stream = std::make_unique<sac_fixed_pos_stream>(seeder, testing_size*2, 9);
 
     int i = 0;
@@ -114,7 +114,7 @@ TEST(column_streams, basic_test_with_counter) {
                        }}
     };
 
-    seed_seq_from<pcg32> seeder(seed1);
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
 
     std::unique_ptr<column_stream> stream = std::make_unique<column_stream>(json_config, seeder, 5);
 

@@ -77,7 +77,7 @@ add_executable(testsuite
         testsuite/test-utils/estream_test_case
         testsuite/test-utils/estream_test_case
         testsuite/test-utils/common_functions.h
-        )
+        testsuite/test-utils/test_case.h)
 
 file(COPY testsuite/test-resources DESTINATION resources)
 

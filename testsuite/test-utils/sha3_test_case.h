@@ -2,40 +2,36 @@
 #define EACIRC_STREAMS_SHA3_TEST_CASE_H
 
 #include <streams/sha3/sha3_interface.h>
-#include <string>
-#include <algorithm>
-#include <stream.h>
-#include "common_functions.h"
+#include <eacirc-core/seed.h>
+#include <streams/sha3/sha3_factory.h>
+#include "test_case.h"
 
 namespace testsuite {
 
-    class sha3_test_case {
+    class sha3_test_case : test_case {
 
     private:
-        std::string _plaintext;
-        std::string _hash;
-
-        int _length;
+        size_t _length;
+        json _stream_config;
 
     public:
+        const static json base_config;
 
-        void operator()(std::unique_ptr<sha3_interface> &hasher);
+        const size_t& length() const;
+        const std::string& input() const;
 
-        void operator()(std::unique_ptr<stream> &stream);
+        sha3_test_case(std::string&& algorithm, std::size_t round)
+                : test_case(algorithm, round, "sha3")
+                , _stream_config(base_config)
+                {}
 
-        friend std::istream &operator>>(std::istream &input, sha3_test_case &test_case) {
-            input >> test_case._length;
-            input >> test_case._plaintext;
-            input >> test_case._hash;
+        std::unique_ptr<stream> prepare_stream();
 
-            // Hexadecimal to lower case, in order to be compatible with std::hex
-            std::transform(test_case._hash.begin(), test_case._hash.end(), test_case._hash.begin(), ::tolower);
+        void test(std::unique_ptr<sha3_interface> &hasher) const;
 
-            return input;
-        }
+        void operator()();
 
-        size_t length();
-        std::string input();
+        friend std::istream &operator>>(std::istream &input, sha3_test_case &test_case);
 
     };
 }

@@ -233,7 +233,7 @@ make_stream(const json& config, default_seed_source& seeder, std::size_t osize =
         const std::size_t pos = std::size_t(config.at("position"));
         return std::make_unique<column_fixed_position_stream>(config, seeder, osize, pos);
     } else if (type == "test-stream") { // TODO: allow only when testing is enabled
-        return std::make_unique<testsuite::test_stream>(config, osize);
+        return std::make_unique<testsuite::test_stream>(config);
     }
 
 #ifdef BUILD_estream
