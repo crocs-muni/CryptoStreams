@@ -8,6 +8,6 @@
 #include <testsuite/test-utils/estream_test_case.h>
 #include <eacirc-core/seed.h>
 
-TEST(decim_stream, test_vectors) {
+TEST(decim, test_vectors) {
     testsuite::estream_test_case("DECIM", 8)();
 }

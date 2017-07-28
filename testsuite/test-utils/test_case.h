@@ -80,7 +80,11 @@ namespace testsuite {
                 , _round(round)
                 , _competition(competition)
                 , _test_vectors(get_test_vectors_filename(algorithm, round, competition),  std::ifstream::in)
-                {}
+                {
+                    if (!_test_vectors.is_open()) {
+                        throw std::runtime_error("Not able to open file: \"" + get_test_vectors_filename(algorithm, round, competition) + "\"");
+                    }
+                }
 
         virtual ~test_case() {
             _test_vectors.close();

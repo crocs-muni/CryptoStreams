@@ -11,15 +11,13 @@ namespace testsuite {
 
     const json sha3_test_case::base_config = {
             {"type", "sha3"},
-            {"hash-bitsize", 256},
             {"source", {{"type", "test-stream"}}}
     };
 
     void sha3_test_case::test(std::unique_ptr<sha3_interface> &hasher) const {
         std::size_t hash_size = std::get<1>(_ciphertext[0]).size();
 
-        unsigned char hash[hash_size];
-
+        unsigned char hash[hash_size/2];
         hasher->Hash(hash_size * 4, (unsigned char*) _plaintext.data(), _length, hash);
 
         std::stringstream ss;
@@ -51,12 +49,14 @@ namespace testsuite {
     }
 
     std::unique_ptr<stream> sha3_test_case::prepare_stream() {
+        std::size_t hash_size =  std::get<1>(_ciphertext[0]).size();
         _stream_config["algorithm"] = _algorithm;
         _stream_config["round"] = _round;
         _stream_config["source"]["outputs"] = {input()};
+        _stream_config["hash-bitsize"] = hash_size * 4;
 
         seed_seq_from<pcg32> seeder(seed1);
-        return make_stream(_stream_config, seeder, 256 / 8);
+        return make_stream(_stream_config, seeder, hash_size / 2);
     }
 
     std::istream &operator>>(std::istream &input, sha3_test_case &test_case) {
