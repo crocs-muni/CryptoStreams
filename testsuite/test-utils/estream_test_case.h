@@ -7,53 +7,49 @@
 #include <algorithm>
 #include <vector>
 #include <sstream>
+#include <stream.h>
+#include <eacirc-core/seed.h>
 #include "common_functions.h"
+#include "test_case.h"
 
 namespace testsuite {
-    class estream_test_case {
+    class estream_test_case : test_case {
 
     private:
-        std::string _plaintext;
         std::string _key;
         std::string _iv;
-        std::vector<std::tuple<std::int32_t , std::string>> _ciphertext;
 
+        json _stream_config;
+        std::unique_ptr<estream_interface> _cipher;
     public:
+        const static json base_config;
 
-        void operator()(std::unique_ptr<estream_interface>& encryptor);
+        estream_test_case(std::string&& algorithm, std::size_t round)
+                : test_case(algorithm, round, "estream")
+                , _stream_config(base_config)
+                , _cipher(create_cipher(_algorithm,
+                                        core::optional<unsigned>{unsigned(_round)}))
+        {}
 
-        //void operator()(std::unique_ptr<stream>& stream);
+        const std::string& plaintext() const;
 
-        friend std::istream& operator>>(std::istream& input, estream_test_case& test_case) {
-            test_case._plaintext.clear();
-            test_case._ciphertext.clear();
-            test_case._key.clear();
-            test_case._iv.clear();
+        const std::string& key() const;
 
+        const std::string& iv() const;
 
-            input >> test_case._plaintext;
-            input >> test_case._key;
-            input >> test_case._iv;
+        const json& stream_config() const;
 
-            std::string cipher_line;
-            std::getline(input, cipher_line);
-            std::getline(input, cipher_line);
-            std::stringstream cipher_stream(cipher_line);
+        unsigned long block_size() const;
 
-            std::uint32_t position;
-            std::string ciphertext;
+        void test(std::unique_ptr<estream_interface>& encryptor) const;
 
-            while (cipher_stream >> position) {
-                cipher_stream >> ciphertext;
+        void test(std::unique_ptr<stream>&& encryptor, std::unique_ptr<estream_interface>& decryptor) const;
 
-                // Hexadecimal to lower case, in order to be compatible with std::hex
-                std::transform(ciphertext.begin(), ciphertext.end(), ciphertext.begin(), ::tolower);
-                test_case._ciphertext.push_back(std::make_tuple(position, ciphertext));
-            }
+        std::unique_ptr<stream> prepare_stream();
 
+        void operator()();
 
-            return input;
-        }
+        friend std::istream& operator>>(std::istream& input, estream_test_case& test_case);
     };
 }
 
