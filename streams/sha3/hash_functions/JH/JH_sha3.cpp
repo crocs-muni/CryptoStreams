@@ -52,16 +52,16 @@ const unsigned char JH_E8_bitslice_roundconstant[42][32]={
 {0x35,0xb4,0x98,0x31,0xdb,0x41,0x15,0x70,0xea,0x1e,0xf,0xbb,0xed,0xcd,0x54,0x9b,0x9a,0xd0,0x63,0xa1,0x51,0x97,0x40,0x72,0xf6,0x75,0x9d,0xbf,0x91,0x47,0x6f,0xe2}};
 
 /*swapping bit 2i with bit 2i+1 of 64-bit x*/
-#define JH_SWAP1(x)   (x) = ((((x) & 0x55555555UL) << 1) | (((x) & 0xaaaaaaaaUL) >> 1));
+#define JH_SWAP1(x)   (x) = ((((x) & 0x5555555555555555ULL) << 1) | (((x) & 0xaaaaaaaaaaaaaaaaULL) >> 1));
 /*swapping bits 4i||4i+1 with bits 4i+2||4i+3 of 64-bit x*/
-#define JH_SWAP2(x)   (x) = ((((x) & 0x33333333UL) << 2) | (((x) & 0xccccccccUL) >> 2));
+#define JH_SWAP2(x)   (x) = ((((x) & 0x3333333333333333ULL) << 2) | (((x) & 0xccccccccccccccccULL) >> 2));
 /*swapping bits 8i||8i+1||8i+2||8i+3 with bits 8i+4||8i+5||8i+6||8i+7 of 64-bit x*/
-#define JH_SWAP4(x)   (x) = ((((x) & 0x0f0f0f0fUL) << 4) | (((x) & 0xf0f0f0f0UL) >> 4));
+#define JH_SWAP4(x)   (x) = ((((x) & 0x0f0f0f0f0f0f0f0fULL) << 4) | (((x) & 0xf0f0f0f0f0f0f0f0ULL) >> 4));
 /*swapping bits 16i||16i+1||......||16i+7  with bits 16i+8||16i+9||......||16i+15 of 64-bit x*/
-#define JH_SWAP8(x)   (x) = ((((x) & 0x00ff00ffUL) << 8) | (((x) & 0xff00ff00UL) >> 8));
+#define JH_SWAP8(x)   (x) = ((((x) & 0x00ff00ff00ff00ffULL) << 8) | (((x) & 0xff00ff00ff00ff00ULL) >> 8));
 /*swapping bits 32j||32j+1||......||32j+15 with bits 32j+16||32j+17||......||32j+31 of x*/
-#define JH_SWAP16(x)  (x) = (((x)  << 16) | ((x) >> 16));
-
+#define JH_SWAP16(x)  (x) = ((((x) & 0x0000ffff0000ffffULL) << 16) | (((x) & 0xffff0000ffff0000ULL) >> 16));
+#define JH_SWAP32(x)  (x) = (((x) << 32) | ((x) >> 32));
 /*The MDS transform*/
 #define JH_L(m0,m1,m2,m3,m4,m5,m6,m7) \
       (m4) ^= (m1);                \
