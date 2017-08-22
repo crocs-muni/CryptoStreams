@@ -15,8 +15,8 @@ Hamsi::Hamsi(const int numRounds) {
 	} else {
 		hamsiNumRounds256 = numRounds;
 		hamsiNumRounds384 = numRounds;
-		hamsiPFNumRounds256 = numRounds;
-		hamsiPFNumRounds384 = numRounds;
+		hamsiPFNumRounds256 = 2*numRounds;
+		hamsiPFNumRounds384 = 2*numRounds;
 	}
 }
 
