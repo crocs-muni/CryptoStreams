@@ -22,6 +22,8 @@ namespace testsuite {
         const std::size_t _round;
         const std::string _competition;
 
+        std::uint64_t _test_vectors_tested = 0;
+
         std::ifstream _test_vectors;
 
         std::string _plaintext;

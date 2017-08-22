@@ -32,12 +32,19 @@ namespace testsuite {
     void sha3_test_case::operator()() {
         std::unique_ptr<sha3_interface> hasher = sha3_factory::create(_algorithm, _round);
 
+        _test_vectors_tested = 0;
+
         while (_test_vectors >> *this) {
+            _test_vectors_tested++;
             test(hasher);
             if (length() != 0 && length() % 8 == 0) { // unfortunately our sha3 streams are built so that it fits only multiple of 8
                 test_case::test(prepare_stream());
             }
         }
+
+
+
+        std::cout << "Number of test vectors tested for function: \"" << _algorithm << "\"[" << _round << "] is: " << _test_vectors_tested << std::endl;
     }
 
     const size_t& sha3_test_case::length() const {
