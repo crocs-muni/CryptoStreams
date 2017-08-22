@@ -30,7 +30,7 @@
 	midkey[c + 1] ^= tmp.key[1]; \
 	LESAMNTA_F256_2(tmp.msg, tmp.t); \
 	midmsg[c]     ^= tmp.msg[0]; \
-	midmsg[c + 1] ^= tmp.msg[1]; 
+	midmsg[c + 1] ^= tmp.msg[1];
 
 #define LESAMNTA_ROUND256_OUTPUT(a,b,c,d) \
 	tmp.msg[0] = midmsg[a]     ^ midkey[b]; \
@@ -1659,47 +1659,12 @@ void Lesamnta::Compression256(unsigned int *H, const unsigned int *M, const int 
 		LESAMNTA_ROUND256(0, 4, 2, 4 * i + 2);
 		LESAMNTA_ROUND256(6, 2, 0, 4 * i + 3);
 	}*/
-
-	//1
-	if (rounds >= 1) LESAMNTA_ROUND256(4, 0, 6, 4 * i);
-	if (rounds >= 2) LESAMNTA_ROUND256(2, 6, 4, 4 * i + 1);
-	if (rounds >= 3) LESAMNTA_ROUND256(0, 4, 2, 4 * i + 2);
-	if (rounds >= 4) LESAMNTA_ROUND256(6, 2, 0, 4 * i + 3);
-	//2
-	if (rounds >= 5) LESAMNTA_ROUND256(4, 0, 6, 4 * i);
-	if (rounds >= 6) LESAMNTA_ROUND256(2, 6, 4, 4 * i + 1);
-	if (rounds >= 7) LESAMNTA_ROUND256(0, 4, 2, 4 * i + 2);
-	if (rounds >= 8) LESAMNTA_ROUND256(6, 2, 0, 4 * i + 3);
-	//3
-	if (rounds >= 9) LESAMNTA_ROUND256(4, 0, 6, 4 * i);
-	if (rounds >= 10) LESAMNTA_ROUND256(2, 6, 4, 4 * i + 1);
-	if (rounds >= 11) LESAMNTA_ROUND256(0, 4, 2, 4 * i + 2);
-	if (rounds >= 12) LESAMNTA_ROUND256(6, 2, 0, 4 * i + 3);
-	//4
-	if (rounds >= 13) LESAMNTA_ROUND256(4, 0, 6, 4 * i);
-	if (rounds >= 14) LESAMNTA_ROUND256(2, 6, 4, 4 * i + 1);
-	if (rounds >= 15) LESAMNTA_ROUND256(0, 4, 2, 4 * i + 2);
-	if (rounds >= 16) LESAMNTA_ROUND256(6, 2, 0, 4 * i + 3);
-	//5
-	if (rounds >= 17) LESAMNTA_ROUND256(4, 0, 6, 4 * i);
-	if (rounds >= 18) LESAMNTA_ROUND256(2, 6, 4, 4 * i + 1);
-	if (rounds >= 19) LESAMNTA_ROUND256(0, 4, 2, 4 * i + 2);
-	if (rounds >= 20) LESAMNTA_ROUND256(6, 2, 0, 4 * i + 3);
-	//6
-	if (rounds >= 21) LESAMNTA_ROUND256(4, 0, 6, 4 * i);
-	if (rounds >= 22) LESAMNTA_ROUND256(2, 6, 4, 4 * i + 1);
-	if (rounds >= 23) LESAMNTA_ROUND256(0, 4, 2, 4 * i + 2);
-	if (rounds >= 24) LESAMNTA_ROUND256(6, 2, 0, 4 * i + 3);
-	//7
-	if (rounds >= 25) LESAMNTA_ROUND256(4, 0, 6, 4 * i);
-	if (rounds >= 26) LESAMNTA_ROUND256(2, 6, 4, 4 * i + 1);
-	if (rounds >= 27) LESAMNTA_ROUND256(0, 4, 2, 4 * i + 2);
-	if (rounds >= 28) LESAMNTA_ROUND256(6, 2, 0, 4 * i + 3);
-	//8
-	if (rounds >= 29) LESAMNTA_ROUND256(4, 0, 6, 4 * i);
-	if (rounds >= 30) LESAMNTA_ROUND256(2, 6, 4, 4 * i + 1);
-	if (rounds >= 31) LESAMNTA_ROUND256(0, 4, 2, 4 * i + 2);
-	if (rounds >= 32) LESAMNTA_ROUND256(6, 2, 0, 4 * i + 3);
+    for (i = 0; i < 8; i++) {
+        if (rounds >= (i * 4 + 1)) LESAMNTA_ROUND256(4, 0, 6, 4 * i);
+        if (rounds >= (i * 4 + 2)) LESAMNTA_ROUND256(2, 6, 4, 4 * i + 1);
+	    if (rounds >= (i * 4 + 3)) LESAMNTA_ROUND256(0, 4, 2, 4 * i + 2);
+	    if (rounds >= (i * 4 + 4)) LESAMNTA_ROUND256(6, 2, 0, 4 * i + 3);
+    }
 
 	for (i = 0; i < 8; i++) {
 		H[i] = M[i] ^ midmsg[i];
@@ -1729,45 +1694,12 @@ void Lesamnta::Output256(unsigned int *H, const unsigned int *M, const int round
 	}*/
 
 	//1
-	if (rounds >=1) LESAMNTA_ROUND256_OUTPUT(4, 0, 6, 4 * i);
-	if (rounds >=2) LESAMNTA_ROUND256_OUTPUT(2, 6, 4, 4 * i + 1);
-	if (rounds >=3) LESAMNTA_ROUND256_OUTPUT(0, 4, 2, 4 * i + 2);
-	if (rounds >=4) LESAMNTA_ROUND256_OUTPUT(6, 2, 0, 4 * i + 3);
-	//2
-	if (rounds >=5) LESAMNTA_ROUND256_OUTPUT(4, 0, 6, 4 * i);
-	if (rounds >=6) LESAMNTA_ROUND256_OUTPUT(2, 6, 4, 4 * i + 1);
-	if (rounds >=7) LESAMNTA_ROUND256_OUTPUT(0, 4, 2, 4 * i + 2);
-	if (rounds >=8) LESAMNTA_ROUND256_OUTPUT(6, 2, 0, 4 * i + 3);
-	//3
-	if (rounds >=9) LESAMNTA_ROUND256_OUTPUT(4, 0, 6, 4 * i);
-	if (rounds >=10) LESAMNTA_ROUND256_OUTPUT(2, 6, 4, 4 * i + 1);
-	if (rounds >=11) LESAMNTA_ROUND256_OUTPUT(0, 4, 2, 4 * i + 2);
-	if (rounds >=12) LESAMNTA_ROUND256_OUTPUT(6, 2, 0, 4 * i + 3);
-	//4
-	if (rounds >=13) LESAMNTA_ROUND256_OUTPUT(4, 0, 6, 4 * i);
-	if (rounds >=14) LESAMNTA_ROUND256_OUTPUT(2, 6, 4, 4 * i + 1);
-	if (rounds >=15) LESAMNTA_ROUND256_OUTPUT(0, 4, 2, 4 * i + 2);
-	if (rounds >=16) LESAMNTA_ROUND256_OUTPUT(6, 2, 0, 4 * i + 3);
-	//5
-	if (rounds >=17) LESAMNTA_ROUND256_OUTPUT(4, 0, 6, 4 * i);
-	if (rounds >=18) LESAMNTA_ROUND256_OUTPUT(2, 6, 4, 4 * i + 1);
-	if (rounds >=19) LESAMNTA_ROUND256_OUTPUT(0, 4, 2, 4 * i + 2);
-	if (rounds >=20) LESAMNTA_ROUND256_OUTPUT(6, 2, 0, 4 * i + 3);
-	//6
-	if (rounds >=21) LESAMNTA_ROUND256_OUTPUT(4, 0, 6, 4 * i);
-	if (rounds >=22) LESAMNTA_ROUND256_OUTPUT(2, 6, 4, 4 * i + 1);
-	if (rounds >=23) LESAMNTA_ROUND256_OUTPUT(0, 4, 2, 4 * i + 2);
-	if (rounds >=24) LESAMNTA_ROUND256_OUTPUT(6, 2, 0, 4 * i + 3);
-	//7
-	if (rounds >=25) LESAMNTA_ROUND256_OUTPUT(4, 0, 6, 4 * i);
-	if (rounds >=26) LESAMNTA_ROUND256_OUTPUT(2, 6, 4, 4 * i + 1);
-	if (rounds >=27) LESAMNTA_ROUND256_OUTPUT(0, 4, 2, 4 * i + 2);
-	if (rounds >=28) LESAMNTA_ROUND256_OUTPUT(6, 2, 0, 4 * i + 3);
-	//8
-	if (rounds >=29) LESAMNTA_ROUND256_OUTPUT(4, 0, 6, 4 * i);
-	if (rounds >=30) LESAMNTA_ROUND256_OUTPUT(2, 6, 4, 4 * i + 1);
-	if (rounds >=31) LESAMNTA_ROUND256_OUTPUT(0, 4, 2, 4 * i + 2);
-	if (rounds >=32) LESAMNTA_ROUND256_OUTPUT(6, 2, 0, 4 * i + 3);
+	for (i = 0; i < 8; i++) {
+        if (rounds >= (i * 4 + 1)) LESAMNTA_ROUND256_OUTPUT(4, 0, 6, 4 * i);
+        if (rounds >= (i * 4 + 2)) LESAMNTA_ROUND256_OUTPUT(2, 6, 4, 4 * i + 1);
+	    if (rounds >= (i * 4 + 3)) LESAMNTA_ROUND256_OUTPUT(0, 4, 2, 4 * i + 2);
+	    if (rounds >= (i * 4 + 4)) LESAMNTA_ROUND256_OUTPUT(6, 2, 0, 4 * i + 3);
+    }
 
 	for (i = 0; i < 8; i++) {
 		H[i] = M[i] ^ midmsg[i];
@@ -1796,46 +1728,13 @@ void Lesamnta::Compression512(unsigned int *H, const unsigned int *M, const int 
 		LESAMNTA_ROUND512(12,  4,  0, 4 * i + 3);
 	}*/
 
-	//1
-	if (rounds >= 1) LESAMNTA_ROUND512( 8,  0, 12, 4 * i);
-	if (rounds >= 2) LESAMNTA_ROUND512( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 3) LESAMNTA_ROUND512( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 4) LESAMNTA_ROUND512(12,  4,  0, 4 * i + 3);
-	//2
-	if (rounds >= 5) LESAMNTA_ROUND512( 8,  0, 12, 4 * i);
-	if (rounds >= 6) LESAMNTA_ROUND512( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 7) LESAMNTA_ROUND512( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 8) LESAMNTA_ROUND512(12,  4,  0, 4 * i + 3);
-	//3
-	if (rounds >= 9) LESAMNTA_ROUND512( 8,  0, 12, 4 * i);
-	if (rounds >= 10) LESAMNTA_ROUND512( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 11) LESAMNTA_ROUND512( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 12) LESAMNTA_ROUND512(12,  4,  0, 4 * i + 3);
-	//4
-	if (rounds >= 13) LESAMNTA_ROUND512( 8,  0, 12, 4 * i);
-	if (rounds >= 14) LESAMNTA_ROUND512( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 15) LESAMNTA_ROUND512( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 16) LESAMNTA_ROUND512(12,  4,  0, 4 * i + 3);
-	//5
-	if (rounds >= 17) LESAMNTA_ROUND512( 8,  0, 12, 4 * i);
-	if (rounds >= 18) LESAMNTA_ROUND512( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 19) LESAMNTA_ROUND512( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 20) LESAMNTA_ROUND512(12,  4,  0, 4 * i + 3);
-	//6
-	if (rounds >= 21) LESAMNTA_ROUND512( 8,  0, 12, 4 * i);
-	if (rounds >= 22) LESAMNTA_ROUND512( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 23) LESAMNTA_ROUND512( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 24) LESAMNTA_ROUND512(12,  4,  0, 4 * i + 3);
-	//7
-	if (rounds >= 25) LESAMNTA_ROUND512( 8,  0, 12, 4 * i);
-	if (rounds >= 26) LESAMNTA_ROUND512( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 27) LESAMNTA_ROUND512( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 28) LESAMNTA_ROUND512(12,  4,  0, 4 * i + 3);
-	//8
-	if (rounds >= 29) LESAMNTA_ROUND512( 8,  0, 12, 4 * i);
-	if (rounds >= 30) LESAMNTA_ROUND512( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 31) LESAMNTA_ROUND512( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 32) LESAMNTA_ROUND512(12,  4,  0, 4 * i + 3);
+    for (i = 0; i < 8; i++) {
+        if (rounds >= (i * 4 + 1)) LESAMNTA_ROUND512( 8,  0, 12, 4 * i);
+        if (rounds >= (i * 4 + 2)) LESAMNTA_ROUND512( 4, 12,  8, 4 * i + 1);
+	    if (rounds >= (i * 4 + 3)) LESAMNTA_ROUND512( 0,  8,  4, 4 * i + 2);
+	    if (rounds >= (i * 4 + 4)) LESAMNTA_ROUND512(12,  4,  0, 4 * i + 3);
+    }
+
 
 	for (i = 0; i < 16; i++) {
 		H[i] = M[i] ^ midmsg[i];
@@ -1864,46 +1763,12 @@ void Lesamnta::Output512(unsigned int *H, const unsigned int *M, const int round
 		LESAMNTA_ROUND512_OUTPUT(12,  4,  0, 4 * i + 3);
 	}*/
 
-	//1
-	if (rounds >= 1) LESAMNTA_ROUND512_OUTPUT( 8,  0, 12, 4 * i);
-	if (rounds >= 2) LESAMNTA_ROUND512_OUTPUT( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 3) LESAMNTA_ROUND512_OUTPUT( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 4) LESAMNTA_ROUND512_OUTPUT(12,  4,  0, 4 * i + 3);
-	//2
-	if (rounds >= 5) LESAMNTA_ROUND512_OUTPUT( 8,  0, 12, 4 * i);
-	if (rounds >= 6) LESAMNTA_ROUND512_OUTPUT( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 7) LESAMNTA_ROUND512_OUTPUT( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 8) LESAMNTA_ROUND512_OUTPUT(12,  4,  0, 4 * i + 3);
-	//3
-	if (rounds >= 9) LESAMNTA_ROUND512_OUTPUT( 8,  0, 12, 4 * i);
-	if (rounds >= 10) LESAMNTA_ROUND512_OUTPUT( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 11) LESAMNTA_ROUND512_OUTPUT( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 12) LESAMNTA_ROUND512_OUTPUT(12,  4,  0, 4 * i + 3);
-	//4
-	if (rounds >= 13) LESAMNTA_ROUND512_OUTPUT( 8,  0, 12, 4 * i);
-	if (rounds >= 14) LESAMNTA_ROUND512_OUTPUT( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 15) LESAMNTA_ROUND512_OUTPUT( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 16) LESAMNTA_ROUND512_OUTPUT(12,  4,  0, 4 * i + 3);
-	//5
-	if (rounds >= 17) LESAMNTA_ROUND512_OUTPUT( 8,  0, 12, 4 * i);
-	if (rounds >= 18) LESAMNTA_ROUND512_OUTPUT( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 19) LESAMNTA_ROUND512_OUTPUT( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 20) LESAMNTA_ROUND512_OUTPUT(12,  4,  0, 4 * i + 3);
-	//6
-	if (rounds >= 21) LESAMNTA_ROUND512_OUTPUT( 8,  0, 12, 4 * i);
-	if (rounds >= 22) LESAMNTA_ROUND512_OUTPUT( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 23) LESAMNTA_ROUND512_OUTPUT( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 24) LESAMNTA_ROUND512_OUTPUT(12,  4,  0, 4 * i + 3);
-	//7
-	if (rounds >= 25) LESAMNTA_ROUND512_OUTPUT( 8,  0, 12, 4 * i);
-	if (rounds >= 26) LESAMNTA_ROUND512_OUTPUT( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 27) LESAMNTA_ROUND512_OUTPUT( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 28) LESAMNTA_ROUND512_OUTPUT(12,  4,  0, 4 * i + 3);
-	//8
-	if (rounds >= 29) LESAMNTA_ROUND512_OUTPUT( 8,  0, 12, 4 * i);
-	if (rounds >= 30) LESAMNTA_ROUND512_OUTPUT( 4, 12,  8, 4 * i + 1);
-	if (rounds >= 31) LESAMNTA_ROUND512_OUTPUT( 0,  8,  4, 4 * i + 2);
-	if (rounds >= 32) LESAMNTA_ROUND512_OUTPUT(12,  4,  0, 4 * i + 3);
+    for (i = 0; i < 8; i++) {
+        if (rounds >= (i * 4 + 1)) LESAMNTA_ROUND512_OUTPUT( 8,  0, 12, 4 * i);
+        if (rounds >= (i * 4 + 2)) LESAMNTA_ROUND512_OUTPUT( 4, 12,  8, 4 * i + 1);
+	    if (rounds >= (i * 4 + 3)) LESAMNTA_ROUND512_OUTPUT( 0,  8,  4, 4 * i + 2);
+	    if (rounds >= (i * 4 + 4)) LESAMNTA_ROUND512_OUTPUT(12,  4,  0, 4 * i + 3);
+    }
 
 	for (i = 0; i < 16; i++) {
 		H[i] = M[i] ^ midmsg[i];
