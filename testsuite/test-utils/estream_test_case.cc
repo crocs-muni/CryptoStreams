@@ -117,11 +117,15 @@ namespace testsuite {
     void estream_test_case::operator()() {
         _cipher->ECRYPT_init();
 
+        _test_vectors_tested = 0;
         while(_test_vectors >> *this) {
+            _test_vectors_tested++;
             test(_cipher);
             test_case::test(prepare_stream());
             test(prepare_stream(), _cipher);
         }
+
+        std::cout << "Number of test vectors tested for function: \"" << _algorithm << "\"[" << _round << "] is: " << _test_vectors_tested << std::endl;
     }
 }
 
