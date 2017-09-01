@@ -6,6 +6,10 @@
 #include <eacirc-core/random.h>
 #include <random>
 
+#ifdef BUILD_testsuite
+#include <testsuite/test-utils/test_streams.h>
+#endif
+
 #ifdef BUILD_estream
 #include <streams/estream/estream_stream.h>
 #endif

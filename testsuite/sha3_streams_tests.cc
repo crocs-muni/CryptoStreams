@@ -81,9 +81,9 @@ TEST(md6, test_vectors) {
     testsuite::sha3_test_case("MD6", 168)();
 }
 
-TEST(simd, test_vectors) {
-    testsuite::sha3_test_case("SIMD", 4)();
-}
+//TEST(simd, test_vectors) {
+//    testsuite::sha3_test_case("SIMD", 4)();
+//}
 
 TEST(tangle, test_vectors) {
     testsuite::sha3_test_case("Tangle", 72)();
