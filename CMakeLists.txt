@@ -26,7 +26,7 @@ endif()
 
 # === Provide sources as library
 add_library(eacirc-streams-lib STATIC
-        stream
+        stream.h
         streams.h
         streams.cc
         )
@@ -69,6 +69,7 @@ else()
     enable_testing()
     include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
+    # === testsuite executable
     add_executable(testsuite
             testsuite/test_main.cc
             testsuite/stream_tests.cc

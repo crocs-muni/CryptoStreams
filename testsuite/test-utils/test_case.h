@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <stream.h>
 #include "common_functions.h"
+#include "gtest/gtest.h"
+
 
 namespace testsuite {
 
