@@ -1,35 +1,5 @@
 #include "streams.h"
 
-namespace _impl {
-    template <typename std::uint8_t value>
-    const_stream<value>::const_stream(const std::size_t osize)
-        : stream(osize)
-        , _data(osize) {
-        std::fill_n(_data.begin(), osize, value);
-    }
-
-    template <typename std::uint8_t value>
-    vec_view const_stream<value>::next() {
-        return make_cview(_data);
-    }
-
-
-    template <typename Generator>
-    template <typename Seeder>
-    rng_stream<Generator>::rng_stream(Seeder&& seeder, const std::size_t osize)
-        : stream(osize)
-        , _rng(std::forward<Seeder>(seeder))
-        , _data(osize) {}
-
-    template <typename Generator>
-    vec_view rng_stream<Generator>::next() {
-        std::generate_n(_data.data(), osize(), [this]() {
-            return std::uniform_int_distribution<std::uint8_t>()(_rng);
-        });
-        return make_cview(_data);
-    }
-} // namespace _impl
-
 file_stream::file_stream(const json &config, const std::size_t osize)
     : stream(osize)
     , _path(config.at("path").get<std::string>())
@@ -61,84 +31,6 @@ vec_view counter::next() {
         }
         value = std::numeric_limits<value_type>::min();
     }
-    return make_cview(_data);
-}
-
-template <typename Seeder>
-sac_stream::sac_stream(Seeder&& seeder, const std::size_t osize)
-    : stream(osize)
-    , _rng(std::forward<Seeder>(seeder))
-    , _data(osize) {
-    if (osize % 2 == 1)
-        throw std::runtime_error(
-                "Stream's osize has to be even (so it contains 2 vectors of same legth).");
-}
-
-vec_view sac_stream::next() {
-    std::generate_n(_data.data(), osize() / 2, [this]() {
-        return std::uniform_int_distribution<std::uint8_t>()(_rng);
-    });
-
-    std::copy_n(_data.begin(), osize() / 2, _data.begin() + osize() / 2);
-
-    std::uniform_int_distribution<std::size_t> dist{0, osize() / 2 * 8};
-    std::size_t pos = dist(_rng) + osize() / 2 * 8;
-
-    _data[pos / 8] ^= (1 << (pos % 8)); // TODO: valgrind invalid read and write, [pos / 8] is out of range
-    return make_cview(_data);
-}
-
-
-
-template <typename Seeder>
-sac_fixed_pos_stream::sac_fixed_pos_stream(Seeder&& seeder, const std::size_t osize, const std::size_t flip_bit_position)
-    : stream(osize)
-    , _rng(std::forward<Seeder>(seeder))
-    , _data(osize)
-    , _flip_bit_position(flip_bit_position) {
-    if (osize % 2 == 1)
-        throw std::runtime_error(
-                "Stream's osize has to be even (so it contains 2 vectors of same legth).");
-    if (_flip_bit_position >= osize*8)
-        throw std::runtime_error(
-                "Position of the flipped bit has to be in range of vector size.");
-
-}
-
-vec_view sac_fixed_pos_stream::next() {
-    std::generate_n(_data.data(), osize() / 2, [this]() {
-        return std::uniform_int_distribution<std::uint8_t>()(_rng);
-    });
-
-    std::copy_n(_data.begin(), osize() / 2, _data.begin() + osize() / 2);
-
-    _data[_flip_bit_position / 8] ^= (1 << (_flip_bit_position % 8));
-    return make_cview(_data);
-}
-
-
-template <typename Seeder>
-sac_2d_all_pos::sac_2d_all_pos(Seeder&& seeder, const std::size_t osize)
-    : stream(osize)
-    , _rng(std::forward<Seeder>(seeder))
-    , _data(osize)
-    , _origin_data(osize)
-    , _flip_bit_position(0) { }
-
-vec_view sac_2d_all_pos::next() {
-    if (_flip_bit_position == 0) {
-        std::generate_n(_data.data(), osize(), [this]() {
-            return std::uniform_int_distribution<std::uint8_t>()(_rng);
-        });
-        std::copy_n(_data.begin(), osize(), _origin_data.begin());
-    } else {
-        std::copy_n(_origin_data.begin(), osize(), _data.begin());
-
-        _data[_flip_bit_position / 8] ^= (1 << (_flip_bit_position % 8));
-    }
-
-    _flip_bit_position = (_flip_bit_position + 1) % (osize() * 8);
-
     return make_cview(_data);
 }
 
