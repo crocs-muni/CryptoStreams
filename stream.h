@@ -4,6 +4,7 @@
 #include <eacirc-core/memory.h>
 #include <eacirc-core/view.h>
 #include <eacirc-core/dataset.h>
+#include <eacirc-core/logger.h>
 #include <vector>
 
 using value_type = std::uint8_t;

@@ -9,7 +9,9 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/rc4/rc4
     ciphers/des/des
     ciphers/des/single_des
-    ciphers/des/triple_des
+    ciphers/des/triple_des    
+    ciphers/blowfish/blowfish
+    ciphers/blowfish/blowfish_factory
     )
 
 target_link_libraries(block eacirc-core)

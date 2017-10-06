@@ -31,5 +31,5 @@ private:
 
     std::unique_ptr<stream> _stream_a;
 
-    std::ofstream _o_file;
+    std::string _o_file_name;
 };

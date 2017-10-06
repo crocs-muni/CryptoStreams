@@ -20,7 +20,7 @@ static std::string out_name(json const& config) {
     std::stringstream ss;
     std::string a = config.at("algorithm");
     ss << a << "_r";
-    ss << std::setw(2) << std::setfill('0') << config.at("round");
+    ss << std::setw(2) << std::setfill('0') << std::size_t(config.at("round"));
     ss << "_b" << config.at("block-size");
     ss << ".bin";
     return ss.str();
@@ -33,7 +33,7 @@ generator::generator(json const& config)
     : _config(config)
     , _seed(seed::create(config.at("seed")))
     , _tv_count(config.at("tv-count"))
-    , _o_file(out_name(config.at("stream")), std::ios::binary) {
+    , _o_file_name(out_name(config.at("stream"))) {
 
     seed_seq_from<pcg32> main_seeder(_seed);
 
@@ -42,9 +42,11 @@ generator::generator(json const& config)
 
 void generator::generate() {
 
+    std::ofstream o_file(_o_file_name, std::ios::binary);
+
     for (std::size_t i = 0; i < _tv_count; ++i) {
         vec_view n = _stream_a->next();
         for (auto o : n)
-            _o_file << o;
+            o_file << o;
     }
 }
