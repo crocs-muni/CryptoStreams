@@ -72,7 +72,7 @@ struct file_stream : stream {
 
 private:
     const std::string _path;
-    std::basic_ifstream<std::uint8_t> _istream;
+    std::ifstream _istream;
     std::vector<value_type> _data;
 };
 
