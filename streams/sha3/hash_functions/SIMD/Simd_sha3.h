@@ -30,7 +30,7 @@ int Hash(int hashbitlen, const BitSequence *data, SimdDataLength databitlen,
  */
 private:
 void IncreaseCounter(simdHashState *state, SimdDataLength databitlen);
-int InitIV(simdHashState *state, int hashbitlen, const unsigned long *IV);
+int InitIV(simdHashState *state, int hashbitlen, const uint32_t *IV);
 
 };
 

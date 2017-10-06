@@ -36,7 +36,7 @@ int SimdRequiredAlignment(void) {
 #define SIMD_STEP4(state, w, i, r, s, A, B, C, D, F)				\
   {                                                                     \
     int j;                                                              \
-    unsigned long R[4];                                                           \
+    uint32_t R[4];                                                           \
     if (SIMD_PRINT_SOME) {                                                   \
       for (j=0; j < 4; j++) {                                           \
         printf ("%08x/%2i/%2i: %08x %08x %08x %08x\n",                  \
@@ -51,16 +51,20 @@ int SimdRequiredAlignment(void) {
     for(j=0; j<4; j++) {                                                \
       state->D[j] = state->D[j] + w[j] +                                \
         F(state->A[j], state->B[j], state->C[j]);                       \
-      state->D[j] = SIMD_T32(SIMD_ROTL32(SIMD_T32(state->D[j]), s) + R[(j+(i&1)+1)&3]); \
+      state->D[j] = SIMD_T32(SIMD_ROTL32(SIMD_T32(state->D[j]), s) + R[(j^(((i)%3)+1))]); \
       state->A[j] = R[j];                                               \
     }                                                                   \
   }
-  
-const int simd_p8[4][8] = {
-  {1,0, 3,2, 5,4, 7,6},
-  {2,3, 0,1, 6,7, 4,5},
-  {7,6, 5,4, 3,2, 1,0},
-  {4,5, 6,7, 0,1, 2,3}};
+
+const int p8_xor [] = {1, 6, 2, 3, 5, 7, 4};
+
+//const int simd_p8[4][8] = {
+//  {1,0, 3,2, 5,4, 7,6},
+//  {2,3, 0,1, 6,7, 4,5},
+//  {7,6, 5,4, 3,2, 1,0},
+//  {4,5, 6,7, 0,1, 2,3}};
+
+#define tabsize(t) (sizeof(t)/sizeof(t[0]))
 
 #define SIMD_STEP8(state, w, i, r, s, A, B, C, D, F)				\
   {                                                                     \
@@ -80,7 +84,7 @@ const int simd_p8[4][8] = {
     for(j=0; j<8; j++) {                                                \
       state->D[j] = state->D[j] + w[j] +                                \
         F(state->A[j], state->B[j], state->C[j]);                       \
-      state->D[j] = SIMD_T32(SIMD_ROTL32(SIMD_T32(state->D[j]), s) + R[simd_p8[i & 3][j]]);	\
+      state->D[j] = SIMD_T32(SIMD_ROTL32(SIMD_T32(state->D[j]), s) + R[j^p8_xor[(i) % tabsize(p8_xor)]]);	\
       state->A[j] = R[j];                                               \
     }                                                                   \
   }
@@ -88,7 +92,7 @@ const int simd_p8[4][8] = {
 void SimdRound4(simdHashState * state, int y[128], int i,
            int r, int s, int t, int u) {
   int code = i<2? 185: 233;
-  unsigned long w[8][4];
+  uint32_t w[8][4];
   int a, b;
 
   /*
@@ -98,24 +102,24 @@ void SimdRound4(simdHashState * state, int y[128], int i,
 
   for(a=0; a<8; a++)
     for(b=0; b<4; b++)
-      w[a][b] = (((unsigned long) (y[SIMD_Q4[8*i+a][b]] * code)) << 16) |
-                (((unsigned long) (y[SIMD_P4[8*i+a][b]] * code)) & 0xffff);
+      w[a][b] = (((uint32_t) (y[SIMD_Q4[8*i+a][b]] * code)) << 16) |
+                (((uint32_t) (y[SIMD_P4[8*i+a][b]] * code)) & 0xffff);
 
-  SIMD_STEP4(state, w[0], 0, r, s, A, B, C, D, SIMD_IF);
-  SIMD_STEP4(state, w[1], 1, s, t, D, A, B, C, SIMD_IF);
-  SIMD_STEP4(state, w[2], 2, t, u, C, D, A, B, SIMD_IF);
-  SIMD_STEP4(state, w[3], 3, u, r, B, C, D, A, SIMD_IF);
+  SIMD_STEP4(state, w[0], 8*i+0, r, s, A, B, C, D, SIMD_IF);
+  SIMD_STEP4(state, w[1], 8*i+1, s, t, D, A, B, C, SIMD_IF);
+  SIMD_STEP4(state, w[2], 8*i+2, t, u, C, D, A, B, SIMD_IF);
+  SIMD_STEP4(state, w[3], 8*i+3, u, r, B, C, D, A, SIMD_IF);
 
-  SIMD_STEP4(state, w[4], 4, r, s, A, B, C, D, SIMD_MAJ);
-  SIMD_STEP4(state, w[5], 5, s, t, D, A, B, C, SIMD_MAJ);
-  SIMD_STEP4(state, w[6], 6, t, u, C, D, A, B, SIMD_MAJ);
-  SIMD_STEP4(state, w[7], 7, u, r, B, C, D, A, SIMD_MAJ);
+  SIMD_STEP4(state, w[4], 8*i+4, r, s, A, B, C, D, SIMD_MAJ);
+  SIMD_STEP4(state, w[5], 8*i+5, s, t, D, A, B, C, SIMD_MAJ);
+  SIMD_STEP4(state, w[6], 8*i+6, t, u, C, D, A, B, SIMD_MAJ);
+  SIMD_STEP4(state, w[7], 8*i+7, u, r, B, C, D, A, SIMD_MAJ);
 }
 
 void SimdRound8(simdHashState * state, int y[128], int i,
            int r, int s, int t, int u) {
   int code = i<2? 185: 233;
-  unsigned long w[8][8];
+  uint32_t w[8][8];
   int a, b;
 
   /*
@@ -125,18 +129,18 @@ void SimdRound8(simdHashState * state, int y[128], int i,
 
   for(a=0; a<8; a++)
     for(b=0; b<8; b++)
-      w[a][b] = (((unsigned long) (y[SIMD_Q8[8*i+a][b]] * code)) << 16) |
-                (((unsigned long) (y[SIMD_P8[8*i+a][b]] * code)) & 0xffff);
+      w[a][b] = (((uint32_t) (y[SIMD_Q8[8*i+a][b]] * code)) << 16) |
+                (((uint32_t) (y[SIMD_P8[8*i+a][b]] * code)) & 0xffff);
 
-  SIMD_STEP8(state, w[0], 0, r, s, A, B, C, D, SIMD_IF);
-  SIMD_STEP8(state, w[1], 1, s, t, D, A, B, C, SIMD_IF);
-  SIMD_STEP8(state, w[2], 2, t, u, C, D, A, B, SIMD_IF);
-  SIMD_STEP8(state, w[3], 3, u, r, B, C, D, A, SIMD_IF);
+  SIMD_STEP8(state, w[0], 8*i+0, r, s, A, B, C, D, SIMD_IF);
+  SIMD_STEP8(state, w[1], 8*i+1, s, t, D, A, B, C, SIMD_IF);
+  SIMD_STEP8(state, w[2], 8*i+2, t, u, C, D, A, B, SIMD_IF);
+  SIMD_STEP8(state, w[3], 8*i+3, u, r, B, C, D, A, SIMD_IF);
 
-  SIMD_STEP8(state, w[4], 4, r, s, A, B, C, D, SIMD_MAJ);
-  SIMD_STEP8(state, w[5], 5, s, t, D, A, B, C, SIMD_MAJ);
-  SIMD_STEP8(state, w[6], 6, t, u, C, D, A, B, SIMD_MAJ);
-  SIMD_STEP8(state, w[7], 7, u, r, B, C, D, A, SIMD_MAJ);
+  SIMD_STEP8(state, w[4], 8*i+4, r, s, A, B, C, D, SIMD_MAJ);
+  SIMD_STEP8(state, w[5], 8*i+5, s, t, D, A, B, C, SIMD_MAJ);
+  SIMD_STEP8(state, w[6], 8*i+6, t, u, C, D, A, B, SIMD_MAJ);
+  SIMD_STEP8(state, w[7], 8*i+7, u, r, B, C, D, A, SIMD_MAJ);
 }
 
 
@@ -471,7 +475,7 @@ void SIMD_Compress(simdHashState * state, const unsigned char *M, int final, con
   /* we can XOR word-by-word */
   
   {
-    unsigned long * message = (unsigned long *) M;
+    uint32_t * message = (uint32_t *) M;
     
     for(i=0; i<n; i++) {
       state->A[i] ^= message[i];
@@ -482,7 +486,7 @@ void SIMD_Compress(simdHashState * state, const unsigned char *M, int final, con
   }
 #else
   /* we have to be extra-careful */
-#define SIMD_PACK(i)  (((unsigned long) M[i]) ^ (((unsigned long) M[i+1]) << 8) ^ (((unsigned long) M[i+2]) << 16) ^ (((unsigned long) M[i+3]) << 24))
+#define SIMD_PACK(i)  (((uint32_t) M[i]) ^ (((uint32_t) M[i+1]) << 8) ^ (((uint32_t) M[i+2]) << 16) ^ (((uint32_t) M[i+3]) << 24))
   for(j=0; j<n; j++) {
     state->A[j] ^= SIMD_PACK(4*j);
     state->B[j] ^= SIMD_PACK(4*j+4*n);
@@ -502,27 +506,27 @@ void SIMD_Compress(simdHashState * state, const unsigned char *M, int final, con
 
   /* Run the feistel ladders */
   if (n == 4) {
-    if (rounds >= 1) SimdRound4(state, y, 0, 3,  20, 14, 27);
-    if (rounds >= 2) SimdRound4(state, y, 1, 26,  4, 23, 11);
-    if (rounds >= 3) SimdRound4(state, y, 2, 19, 28,  7, 22);
-    if (rounds >= 4) SimdRound4(state, y, 3, 15,  5, 29, 9);
+    if (rounds >= 1) SimdRound4(state, y, 0,  3, 23, 17, 27);
+    if (rounds >= 2) SimdRound4(state, y, 1, 28, 19, 22,  7);
+    if (rounds >= 3) SimdRound4(state, y, 2, 29,  9, 15,  5);
+    if (rounds >= 4) SimdRound4(state, y, 3,  4, 13, 10, 25);
 
-    if (rounds >= 1) SIMD_STEP4(state, IV[0], 0, 15, 5, A, B, C, D, SIMD_IF);
-    if (rounds >= 2) SIMD_STEP4(state, IV[1], 1, 5, 29, D, A, B, C, SIMD_IF);
-    if (rounds >= 3) SIMD_STEP4(state, IV[2], 2, 29, 9, C, D, A, B, SIMD_IF);
-    if (rounds >= 4) SIMD_STEP4(state, IV[3], 3, 9, 15, B, C, D, A, SIMD_IF);
+    if (rounds >= 1) SIMD_STEP4(state, IV[0], 32, 4,  13, A, B, C, D, SIMD_IF);
+    if (rounds >= 2) SIMD_STEP4(state, IV[1], 33, 13, 10, D, A, B, C, SIMD_IF);
+    if (rounds >= 3) SIMD_STEP4(state, IV[2], 34, 10, 25, C, D, A, B, SIMD_IF);
+    if (rounds >= 4) SIMD_STEP4(state, IV[3], 35, 25,  4, B, C, D, A, SIMD_IF);
   }
   else
  {
-    if (rounds >= 1) SimdRound8(state, y, 0, 3,  20, 14, 27);
-    if (rounds >= 2) SimdRound8(state, y, 1, 26,  4, 23, 11);
-    if (rounds >= 3) SimdRound8(state, y, 2, 19, 28,  7, 22);
-    if (rounds >= 4) SimdRound8(state, y, 3, 15,  5, 29, 9);
+    if (rounds >= 1) SimdRound8(state, y, 0,  3, 23, 17, 27);
+    if (rounds >= 2) SimdRound8(state, y, 1, 28, 19, 22,  7);
+    if (rounds >= 3) SimdRound8(state, y, 2, 29,  9, 15,  5);
+    if (rounds >= 4) SimdRound8(state, y, 3,  4, 13, 10, 25);
 
-    if (rounds >= 1) SIMD_STEP8(state, IV[0], 0, 15, 5, A, B, C, D, SIMD_IF);
-    if (rounds >= 2) SIMD_STEP8(state, IV[1], 1, 5, 29, D, A, B, C, SIMD_IF);
-    if (rounds >= 3) SIMD_STEP8(state, IV[2], 2, 29, 9, C, D, A, B, SIMD_IF);
-    if (rounds >= 4) SIMD_STEP8(state, IV[3], 3, 9, 15, B, C, D, A, SIMD_IF);
+    if (rounds >= 1) SIMD_STEP8(state, IV[0], 32, 4,  13, A, B, C, D, SIMD_IF);
+    if (rounds >= 2) SIMD_STEP8(state, IV[1], 33, 13, 10, D, A, B, C, SIMD_IF);
+    if (rounds >= 3) SIMD_STEP8(state, IV[2], 34, 10, 25, C, D, A, B, SIMD_IF);
+    if (rounds >= 4) SIMD_STEP8(state, IV[3], 35, 25,  4, B, C, D, A, SIMD_IF);
   }
 }
 

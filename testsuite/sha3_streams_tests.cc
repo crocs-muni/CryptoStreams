@@ -78,7 +78,7 @@ TEST(luffa, test_vectors) {
 TEST(md6, test_vectors) {
     testsuite::sha3_test_case("MD6", 96)();
     testsuite::sha3_test_case("MD6", 104)();
-    testsuite::sha3_test_case("MD6", 168)();
+    testsuite::sha3_test_case("MD6", 105)();
 }
 
 TEST(simd, test_vectors) {

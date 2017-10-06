@@ -1,0 +1,44 @@
+language: cpp
+
+sudo: false
+
+matrix:
+  include:
+    - os: linux
+      compiler: gcc-5
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-5']
+      env: [CC_COMPILER=gcc-5, CXX_COMPILER=g++-5, BUILD_testsuite=ON, TEST_COMMAND=./testsuite]
+    - os: linux
+      compiler: gcc-5
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-5']
+      env: [CC_COMPILER=gcc-5, CXX_COMPILER=g++-5, BUILD_testsuite=OFF]
+    - os: linux
+      compiler: clang-3.7
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
+          packages: ['g++-5', 'clang-3.7']
+      env: [CC_COMPILER=clang-3.7, CXX_COMPILER=clang++-3.7, BUILD_testsuite=ON, TEST_COMMAND=./testsuite]
+    - os: linux
+      compiler: clang-3.7
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
+          packages: ['g++-5', 'clang-3.7']
+      env: [CC_COMPILER=clang-3.7, CXX_COMPILER=clang++-3.7, BUILD_testsuite=OFF]
+
+before_script:
+  - wget --no-check-certificate https://cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.sh
+  - sh cmake-3.5.2-Linux-x86_64.sh --exclude-subdir --prefix=$HOME
+
+script:
+  - mkdir -p build && cd build
+  - CC=$CC_COMPILER CXX=$CXX_COMPILER cmake .. -DCMAKE_BUILD_TYPE=Debug -DBUILD_testsuite=$BUILD_testsuite
+  - make
+  - $TEST_COMMAND
