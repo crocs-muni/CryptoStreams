@@ -68,29 +68,6 @@ namespace testsuite {
         return make_stream(_stream_config, seeder, block_size());
     }
 
-    std::istream &operator>>(std::istream &input, estream_test_case &test_case) {
-        test_case._plaintext.clear();
-        test_case._ciphertext.clear();
-        test_case._key.clear();
-        test_case._iv.clear();
-
-        input >> test_case._plaintext;
-        input >> test_case._key;
-        input >> test_case._iv;
-
-        input.get();
-        test_case.load_ciphertext();
-
-        hex_string2string(test_case._plaintext);
-        hex_string2string(test_case._key);
-        hex_string2string(test_case._iv);
-
-        std::uint32_t position;
-        std::string ciphertext;
-
-        return input;
-    }
-
     void estream_test_case::test(std::unique_ptr<stream>&& encryptor, std::unique_ptr<estream_interface>& decryptor) const {
         std::stringstream ss;
 
@@ -126,6 +103,29 @@ namespace testsuite {
         }
 
         std::cout << "Number of test vectors tested for function: \"" << _algorithm << "\"[" << _round << "] is: " << _test_vectors_tested << std::endl;
+    }
+
+    std::istream &operator>>(std::istream &input, estream_test_case &test_case) {
+        test_case._plaintext.clear();
+        test_case._ciphertext.clear();
+        test_case._key.clear();
+        test_case._iv.clear();
+
+        input >> test_case._plaintext;
+        input >> test_case._key;
+        input >> test_case._iv;
+
+        input.get();
+        test_case.load_ciphertext(input);
+
+        hex_string2string(test_case._plaintext);
+        hex_string2string(test_case._key);
+        hex_string2string(test_case._iv);
+
+        std::uint32_t position;
+        std::string ciphertext;
+
+        return input;
     }
 }
 

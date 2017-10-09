@@ -73,7 +73,7 @@ namespace testsuite {
         input >> test_case._length;
         input >> test_case._plaintext;
         input.get();
-        test_case.load_ciphertext();
+        test_case.load_ciphertext(input);
 
         hex_string2string(test_case._plaintext); //
 
