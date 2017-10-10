@@ -18,7 +18,7 @@ namespace testsuite {
         unsigned char cipher[_plaintext.size()];
 
 
-        for (int i = 0; i < _plaintext.size(); i++) {
+        for (uint32_t i = 0; i < _plaintext.size(); i++) {
             cipher[i] = 0;
         }
 
@@ -74,7 +74,7 @@ namespace testsuite {
         vec_view ciphertext = encryptor->next();
 
         char plain[ciphertext.size()];
-        for (int i = 0; i < ciphertext.size(); i++) {
+        for (uint32_t i = 0; i < ciphertext.size(); i++) {
             plain[i] = 0;
         }
 
@@ -121,9 +121,6 @@ namespace testsuite {
         hex_string2string(test_case._plaintext);
         hex_string2string(test_case._key);
         hex_string2string(test_case._iv);
-
-        std::uint32_t position;
-        std::string ciphertext;
 
         return input;
     }

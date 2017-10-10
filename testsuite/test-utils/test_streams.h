@@ -20,7 +20,7 @@ namespace testsuite {
         std::vector<std::string> _values;
 
         /** Last position from _values which was returned **/
-        int _position;
+        uint32_t _position;
     };
 }
 

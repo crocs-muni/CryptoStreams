@@ -30,6 +30,7 @@ namespace testsuite {
 
         sha3_test_case(std::string&& algorithm, std::size_t round)
                 : test_case(algorithm, round, "sha3")
+                , _length(0)
                 , _stream_config(base_config)
                 {}
 

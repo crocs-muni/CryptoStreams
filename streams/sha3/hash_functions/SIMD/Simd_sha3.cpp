@@ -245,6 +245,9 @@ int Simd::Final(BitSequence *hashval) {
     hashval[simdState.hashbitlen/8 + 1] = bs[simdState.hashbitlen/8 + 1] & mask;
   }
 
+  free(simdState.A);
+  free(simdState.buffer);
+
   return SIMD_SUCCESS;
 }
 

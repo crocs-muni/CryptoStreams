@@ -30,7 +30,7 @@ namespace testsuite {
     static void hex_string2string(std::string& str) {
         assert(str.length()  % 2 == 0);
 
-        for (int i = 0; i < str.size() / 2; i++) {
+        for (uint32_t i = 0; i < str.size() / 2; i++) {
             str[i] = (hex2char(str.at(2 * i)) << 4) + hex2char(str.at(2 * i + 1));
         }
 

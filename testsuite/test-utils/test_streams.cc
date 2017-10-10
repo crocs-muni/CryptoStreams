@@ -14,7 +14,7 @@ testsuite::test_stream::test_stream(const json &config)
 vec_view testsuite::test_stream::next() {
     std::string current_output = _values[(_position + 1 < _values.size()) ? _position++ : _position];
 
-    for (int i = 0; i < current_output.size(); i++) {
+    for (uint32_t i = 0; i < current_output.size(); i++) {
         _data[i] = current_output[i];
     }
 
