@@ -58,12 +58,6 @@ int SimdRequiredAlignment(void) {
 
 const int p8_xor [] = {1, 6, 2, 3, 5, 7, 4};
 
-//const int simd_p8[4][8] = {
-//  {1,0, 3,2, 5,4, 7,6},
-//  {2,3, 0,1, 6,7, 4,5},
-//  {7,6, 5,4, 3,2, 1,0},
-//  {4,5, 6,7, 0,1, 2,3}};
-
 #define tabsize(t) (sizeof(t)/sizeof(t[0]))
 
 #define SIMD_STEP8(state, w, i, r, s, A, B, C, D, F)				\

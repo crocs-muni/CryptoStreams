@@ -63,7 +63,7 @@ const unsigned char JH_E8_bitslice_roundconstant[42][32]={
 #define JH_SWAP16(x)  (x) = ((((x) & 0x0000ffff0000ffffULL) << 16) | (((x) & 0xffff0000ffff0000ULL) >> 16));
 #define JH_SWAP32(x)  (x) = (((x) << 32) | ((x) >> 32));
 /*The MDS transform*/
-#define JH_L(m0,m1,m2,m3,m4,m5,m6,m7) \
+#define JH_L(m0, m1, m2, m3, m4, m5, m6, m7) \
       (m4) ^= (m1);                \
       (m5) ^= (m2);                \
       (m6) ^= (m0) ^ (m3);         \
@@ -74,7 +74,7 @@ const unsigned char JH_E8_bitslice_roundconstant[42][32]={
       (m3) ^= (m4);
 
 /*The Sbox*/
-#define JH_Sbox(m0,m1,m2,m3,cc)       \
+#define JH_Sbox(m0, m1, m2, m3, cc)       \
       m3  = ~(m3);                 \
       m0 ^= ((~(m2)) & (cc));      \
       temp0 = (cc) ^ ((m0) & (m1));\
@@ -88,251 +88,301 @@ const unsigned char JH_E8_bitslice_roundconstant[42][32]={
       m2 ^= temp0;
 
 /*The bijective function E8, in bitslice form*/
-void JH::E8()
-{
-      jh_uint32 i,j,roundnumber,temp0;
+void JH::E8() {
+    jh_uint32 i, j, roundnumber, temp0;
 
-      /*perform 42 rounds*/
-      for (roundnumber = 0; roundnumber < jhNumRounds; roundnumber = roundnumber+7) {
-            /*round 7*roundnumber+0: Sbox, MDS and swapping layer*/
-		  if (jhNumRounds >= roundnumber+1) {
-			for (i = 0; i < 4; i++) {
-                  JH_Sbox(jhState.x[0][i],jhState.x[2][i], jhState.x[4][i], jhState.x[6][i],((jh_uint32*)JH_E8_bitslice_roundconstant[roundnumber])[i] );
-                  JH_Sbox(jhState.x[1][i],jhState.x[3][i], jhState.x[5][i], jhState.x[7][i],((jh_uint32*)JH_E8_bitslice_roundconstant[roundnumber])[i+4] );
-                  JH_L(jhState.x[0][i],jhState.x[2][i],jhState.x[4][i],jhState.x[6][i],jhState.x[1][i],jhState.x[3][i],jhState.x[5][i],jhState.x[7][i]);
-                  JH_SWAP1(jhState.x[1][i]); JH_SWAP1(jhState.x[3][i]); JH_SWAP1(jhState.x[5][i]); JH_SWAP1(jhState.x[7][i]);
+    /*perform 42 rounds*/
+    for (roundnumber = 0; roundnumber < jhNumRounds; roundnumber = roundnumber + 7) {
+        /*round 7*roundnumber+0: Sbox, MDS and swapping layer*/
+        if(jhNumRounds >= roundnumber + 1) {
+            for (i = 0; i < 4; i++) {
+                JH_Sbox(jhState.x[0][i], jhState.x[2][i], jhState.x[4][i], jhState.x[6][i],
+                        ((jh_uint32*) JH_E8_bitslice_roundconstant[roundnumber])[i]);
+                JH_Sbox(jhState.x[1][i], jhState.x[3][i], jhState.x[5][i], jhState.x[7][i],
+                        ((jh_uint32*) JH_E8_bitslice_roundconstant[roundnumber])[i + 4]);
+                JH_L(jhState.x[0][i], jhState.x[2][i], jhState.x[4][i], jhState.x[6][i], jhState.x[1][i],
+                     jhState.x[3][i], jhState.x[5][i], jhState.x[7][i]);
+                JH_SWAP1(jhState.x[1][i]);
+                JH_SWAP1(jhState.x[3][i]);
+                JH_SWAP1(jhState.x[5][i]);
+                JH_SWAP1(jhState.x[7][i]);
             }
-		  }
+        }
 
-		  if (jhNumRounds >= roundnumber+2) {
+        if(jhNumRounds >= roundnumber + 2) {
             /*round 7*roundnumber+1: Sbox, MDS and swapping layer*/
             for (i = 0; i < 4; i++) {
-                  JH_Sbox(jhState.x[0][i],jhState.x[2][i], jhState.x[4][i], jhState.x[6][i],((jh_uint32*)JH_E8_bitslice_roundconstant[roundnumber+1])[i] );
-                  JH_Sbox(jhState.x[1][i],jhState.x[3][i], jhState.x[5][i], jhState.x[7][i],((jh_uint32*)JH_E8_bitslice_roundconstant[roundnumber+1])[i+4] );
-                  JH_L(jhState.x[0][i],jhState.x[2][i],jhState.x[4][i],jhState.x[6][i],jhState.x[1][i],jhState.x[3][i],jhState.x[5][i],jhState.x[7][i]);
-                  JH_SWAP2(jhState.x[1][i]); JH_SWAP2(jhState.x[3][i]); JH_SWAP2(jhState.x[5][i]); JH_SWAP2(jhState.x[7][i]);
+                JH_Sbox(jhState.x[0][i], jhState.x[2][i], jhState.x[4][i], jhState.x[6][i],
+                        ((jh_uint32*) JH_E8_bitslice_roundconstant[roundnumber + 1])[i]);
+                JH_Sbox(jhState.x[1][i], jhState.x[3][i], jhState.x[5][i], jhState.x[7][i],
+                        ((jh_uint32*) JH_E8_bitslice_roundconstant[roundnumber + 1])[i + 4]);
+                JH_L(jhState.x[0][i], jhState.x[2][i], jhState.x[4][i], jhState.x[6][i], jhState.x[1][i],
+                     jhState.x[3][i], jhState.x[5][i], jhState.x[7][i]);
+                JH_SWAP2(jhState.x[1][i]);
+                JH_SWAP2(jhState.x[3][i]);
+                JH_SWAP2(jhState.x[5][i]);
+                JH_SWAP2(jhState.x[7][i]);
             }
-		  }
+        }
 
-		  if (jhNumRounds >= roundnumber+3) {
+        if(jhNumRounds >= roundnumber + 3) {
             /*round 7*roundnumber+2: Sbox, MDS and swapping layer*/
             for (i = 0; i < 4; i++) {
-                  JH_Sbox(jhState.x[0][i],jhState.x[2][i], jhState.x[4][i], jhState.x[6][i],((jh_uint32*)JH_E8_bitslice_roundconstant[roundnumber+2])[i] );
-                  JH_Sbox(jhState.x[1][i],jhState.x[3][i], jhState.x[5][i], jhState.x[7][i],((jh_uint32*)JH_E8_bitslice_roundconstant[roundnumber+2])[i+4] );
-                  JH_L(jhState.x[0][i],jhState.x[2][i],jhState.x[4][i],jhState.x[6][i],jhState.x[1][i],jhState.x[3][i],jhState.x[5][i],jhState.x[7][i]);
-                  JH_SWAP4(jhState.x[1][i]); JH_SWAP4(jhState.x[3][i]); JH_SWAP4(jhState.x[5][i]); JH_SWAP4(jhState.x[7][i]);
+                JH_Sbox(jhState.x[0][i], jhState.x[2][i], jhState.x[4][i], jhState.x[6][i],
+                        ((jh_uint32*) JH_E8_bitslice_roundconstant[roundnumber + 2])[i]);
+                JH_Sbox(jhState.x[1][i], jhState.x[3][i], jhState.x[5][i], jhState.x[7][i],
+                        ((jh_uint32*) JH_E8_bitslice_roundconstant[roundnumber + 2])[i + 4]);
+                JH_L(jhState.x[0][i], jhState.x[2][i], jhState.x[4][i], jhState.x[6][i], jhState.x[1][i],
+                     jhState.x[3][i], jhState.x[5][i], jhState.x[7][i]);
+                JH_SWAP4(jhState.x[1][i]);
+                JH_SWAP4(jhState.x[3][i]);
+                JH_SWAP4(jhState.x[5][i]);
+                JH_SWAP4(jhState.x[7][i]);
             }
-		  }
+        }
 
-		  if (jhNumRounds >= roundnumber+4) {
+        if(jhNumRounds >= roundnumber + 4) {
             /*round 7*roundnumber+3: Sbox, MDS and swapping layer*/
             for (i = 0; i < 4; i++) {
-                  JH_Sbox(jhState.x[0][i],jhState.x[2][i], jhState.x[4][i], jhState.x[6][i],((jh_uint32*)JH_E8_bitslice_roundconstant[roundnumber+3])[i] );
-                  JH_Sbox(jhState.x[1][i],jhState.x[3][i], jhState.x[5][i], jhState.x[7][i],((jh_uint32*)JH_E8_bitslice_roundconstant[roundnumber+3])[i+4] );
-                  JH_L(jhState.x[0][i],jhState.x[2][i],jhState.x[4][i],jhState.x[6][i],jhState.x[1][i],jhState.x[3][i],jhState.x[5][i],jhState.x[7][i]);
-                  JH_SWAP8(jhState.x[1][i]); JH_SWAP8(jhState.x[3][i]); JH_SWAP8(jhState.x[5][i]); JH_SWAP8(jhState.x[7][i]);
+                JH_Sbox(jhState.x[0][i], jhState.x[2][i], jhState.x[4][i], jhState.x[6][i],
+                        ((jh_uint32*) JH_E8_bitslice_roundconstant[roundnumber + 3])[i]);
+                JH_Sbox(jhState.x[1][i], jhState.x[3][i], jhState.x[5][i], jhState.x[7][i],
+                        ((jh_uint32*) JH_E8_bitslice_roundconstant[roundnumber + 3])[i + 4]);
+                JH_L(jhState.x[0][i], jhState.x[2][i], jhState.x[4][i], jhState.x[6][i], jhState.x[1][i],
+                     jhState.x[3][i], jhState.x[5][i], jhState.x[7][i]);
+                JH_SWAP8(jhState.x[1][i]);
+                JH_SWAP8(jhState.x[3][i]);
+                JH_SWAP8(jhState.x[5][i]);
+                JH_SWAP8(jhState.x[7][i]);
             }
-		  }
+        }
 
-		  if (jhNumRounds >= roundnumber+5) {
+        if(jhNumRounds >= roundnumber + 5) {
             /*round 7*roundnumber+4: Sbox, MDS and swapping layer*/
             for (i = 0; i < 4; i++) {
-                  JH_Sbox(jhState.x[0][i],jhState.x[2][i], jhState.x[4][i], jhState.x[6][i],((jh_uint32*)JH_E8_bitslice_roundconstant[roundnumber+4])[i] );
-                  JH_Sbox(jhState.x[1][i],jhState.x[3][i], jhState.x[5][i], jhState.x[7][i],((jh_uint32*)JH_E8_bitslice_roundconstant[roundnumber+4])[i+4] );
-                  JH_L(jhState.x[0][i],jhState.x[2][i],jhState.x[4][i],jhState.x[6][i],jhState.x[1][i],jhState.x[3][i],jhState.x[5][i],jhState.x[7][i]);
-                  JH_SWAP16(jhState.x[1][i]); JH_SWAP16(jhState.x[3][i]); JH_SWAP16(jhState.x[5][i]); JH_SWAP16(jhState.x[7][i]);
+                JH_Sbox(jhState.x[0][i], jhState.x[2][i], jhState.x[4][i], jhState.x[6][i],
+                        ((jh_uint32*) JH_E8_bitslice_roundconstant[roundnumber + 4])[i]);
+                JH_Sbox(jhState.x[1][i], jhState.x[3][i], jhState.x[5][i], jhState.x[7][i],
+                        ((jh_uint32*) JH_E8_bitslice_roundconstant[roundnumber + 4])[i + 4]);
+                JH_L(jhState.x[0][i], jhState.x[2][i], jhState.x[4][i], jhState.x[6][i], jhState.x[1][i],
+                     jhState.x[3][i], jhState.x[5][i], jhState.x[7][i]);
+                JH_SWAP16(jhState.x[1][i]);
+                JH_SWAP16(jhState.x[3][i]);
+                JH_SWAP16(jhState.x[5][i]);
+                JH_SWAP16(jhState.x[7][i]);
             }
-		  }
+        }
 
-		  if (jhNumRounds >= roundnumber+6) {
+        if(jhNumRounds >= roundnumber + 6) {
             /*round 7*roundnumber+5: Sbox and MDS layer*/
             for (i = 0; i < 4; i++) {
-                  JH_Sbox(jhState.x[0][i],jhState.x[2][i], jhState.x[4][i], jhState.x[6][i],((jh_uint32*)JH_E8_bitslice_roundconstant[roundnumber+5])[i] );
-                  JH_Sbox(jhState.x[1][i],jhState.x[3][i], jhState.x[5][i], jhState.x[7][i],((jh_uint32*)JH_E8_bitslice_roundconstant[roundnumber+5])[i+4] );
-                  JH_L(jhState.x[0][i],jhState.x[2][i],jhState.x[4][i],jhState.x[6][i],jhState.x[1][i],jhState.x[3][i],jhState.x[5][i],jhState.x[7][i]);
+                JH_Sbox(jhState.x[0][i], jhState.x[2][i], jhState.x[4][i], jhState.x[6][i],
+                        ((jh_uint32*) JH_E8_bitslice_roundconstant[roundnumber + 5])[i]);
+                JH_Sbox(jhState.x[1][i], jhState.x[3][i], jhState.x[5][i], jhState.x[7][i],
+                        ((jh_uint32*) JH_E8_bitslice_roundconstant[roundnumber + 5])[i + 4]);
+                JH_L(jhState.x[0][i], jhState.x[2][i], jhState.x[4][i], jhState.x[6][i], jhState.x[1][i],
+                     jhState.x[3][i], jhState.x[5][i], jhState.x[7][i]);
             }
             /*round 7*roundnumber+5: swapping layer*/
-            for (j = 1; j < 8; j = j+2) for (i = 0; i < 4; i = i+2) {
-                  temp0 = jhState.x[j][i]; jhState.x[j][i] = jhState.x[j][i+1]; jhState.x[j][i+1] = temp0;
-            }
-		  }
+            for (j = 1; j < 8; j = j + 2)
+                for (i = 0; i < 4; i = i + 2) {
+                    temp0 = jhState.x[j][i];
+                    jhState.x[j][i] = jhState.x[j][i + 1];
+                    jhState.x[j][i + 1] = temp0;
+                }
+        }
 
-		  if (jhNumRounds >= roundnumber+7) {
+        if(jhNumRounds >= roundnumber + 7) {
             /*round 7*roundnumber+6: Sbox and MDS layer*/
             for (i = 0; i < 4; i++) {
-                  JH_Sbox(jhState.x[0][i],jhState.x[2][i], jhState.x[4][i], jhState.x[6][i],((jh_uint32*)JH_E8_bitslice_roundconstant[roundnumber+6])[i] );
-                  JH_Sbox(jhState.x[1][i],jhState.x[3][i], jhState.x[5][i], jhState.x[7][i],((jh_uint32*)JH_E8_bitslice_roundconstant[roundnumber+6])[i+4] );
-                  JH_L(jhState.x[0][i],jhState.x[2][i],jhState.x[4][i],jhState.x[6][i],jhState.x[1][i],jhState.x[3][i],jhState.x[5][i],jhState.x[7][i]);
+                JH_Sbox(jhState.x[0][i], jhState.x[2][i], jhState.x[4][i], jhState.x[6][i],
+                        ((jh_uint32*) JH_E8_bitslice_roundconstant[roundnumber + 6])[i]);
+                JH_Sbox(jhState.x[1][i], jhState.x[3][i], jhState.x[5][i], jhState.x[7][i],
+                        ((jh_uint32*) JH_E8_bitslice_roundconstant[roundnumber + 6])[i + 4]);
+                JH_L(jhState.x[0][i], jhState.x[2][i], jhState.x[4][i], jhState.x[6][i], jhState.x[1][i],
+                     jhState.x[3][i], jhState.x[5][i], jhState.x[7][i]);
             }
             /*round 7*roundnumber+6: swapping layer*/
-            for (j = 1; j < 8; j = j+2) for (i = 0; i < 2; i++) {
-                  temp0 = jhState.x[j][i]; jhState.x[j][i] = jhState.x[j][i+2]; jhState.x[j][i+2] = temp0;
-            }
-		  }
-      }
+            for (j = 1; j < 8; j = j + 2)
+                for (i = 0; i < 2; i++) {
+                    temp0 = jhState.x[j][i];
+                    jhState.x[j][i] = jhState.x[j][i + 2];
+                    jhState.x[j][i + 2] = temp0;
+                }
+        }
+    }
 
 }
 
 /* the compresssion function F8 */
-void JH::F8()
-{
-      jh_uint32 i;
+void JH::F8() {
+    jh_uint32 i;
 
-      /*xor the 512-bit message with the first half of the 1024-bit hash state*/
-      for (i = 0; i < 16; i++)  jhState.x[i >> 2][i & 3] ^= ((jh_uint32*)jhState.buffer)[i];
+    /*xor the 512-bit message with the first half of the 1024-bit hash state*/
+    for (i = 0; i < 16; i++) jhState.x[i >> 2][i & 3] ^= ((jh_uint32*) jhState.buffer)[i];
 
-      /*perform 42 rounds*/
-	  JH::E8();
+    /*perform 42 rounds*/
+    JH::E8();
 
-      /*xor the 512-bit message with the second half of the 1024-bit hash state*/
-      for (i = 0; i < 16; i++)  jhState.x[(i+16) >> 2][i & 3] ^= ((jh_uint32*)jhState.buffer)[i];
+    /*xor the 512-bit message with the second half of the 1024-bit hash state*/
+    for (i = 0; i < 16; i++) jhState.x[(i + 16) >> 2][i & 3] ^= ((jh_uint32*) jhState.buffer)[i];
 }
 
 /*before hashing a message, initialize the hash state as H0 */
-int JH::Init(int hashbitlen)
-{
-	  jhState.databitlen = 0;
-	  jhState.datasize_in_buffer = 0;
+int JH::Init(int hashbitlen) {
+    jhState.databitlen = 0;
+    jhState.datasize_in_buffer = 0;
 
-      /*initialize the initial hash value of JH*/
-      jhState.hashbitlen = hashbitlen;
+    /*initialize the initial hash value of JH*/
+    jhState.hashbitlen = hashbitlen;
 
-      /*load the intital hash value into state*/
-      switch (hashbitlen)
-      {
-            case 224: memcpy(jhState.x,JH224_H0,128); break;
-            case 256: memcpy(jhState.x,JH256_H0,128); break;
-            case 384: memcpy(jhState.x,JH384_H0,128); break;
-            case 512: memcpy(jhState.x,JH512_H0,128); break;
-      }
+    /*load the intital hash value into state*/
+    switch (hashbitlen) {
+        case 224:
+            memcpy(jhState.x, JH224_H0, 128);
+            break;
+        case 256:
+            memcpy(jhState.x, JH256_H0, 128);
+            break;
+        case 384:
+            memcpy(jhState.x, JH384_H0, 128);
+            break;
+        case 512:
+            memcpy(jhState.x, JH512_H0, 128);
+            break;
+    }
 
-      return(SUCCESS);
+    return (SUCCESS);
 }
 
 
 /*hash each 512-bit message block, except the last partial block*/
-int JH::Update(const BitSequence *data, DataLength databitlen)
-{
-      DataLength index,len; /*the starting address of the data to be compressed*/
+int JH::Update(const BitSequence* data, DataLength databitlen) {
+    DataLength index, len; /*the starting address of the data to be compressed*/
 
-      jhState.databitlen += databitlen;
-      index = 0;
+    jhState.databitlen += databitlen;
+    index = 0;
 
-      /*if there is remaining data in the buffer, fill it to a full message block first*/
-      /*we assume that the size of the data in the buffer is the multiple of 8 bits if it is not at the end of a message*/
+    /*if there is remaining data in the buffer, fill it to a full message block first*/
+    /*we assume that the size of the data in the buffer is the multiple of 8 bits if it is not at the end of a message*/
 
-      /*There is data in the buffer, but the incoming data is insufficient for a full block*/
-      if ( (jhState.datasize_in_buffer > 0 ) && (( jhState.datasize_in_buffer + databitlen) < 512)  ) {
-            if ( (databitlen & 7) == 0 ) {
-                 memcpy(jhState.buffer + (jhState.datasize_in_buffer >> 3), data, 64-(jhState.datasize_in_buffer >> 3)) ;
-		    }
-            else memcpy(jhState.buffer + (jhState.datasize_in_buffer >> 3), data, 64-(jhState.datasize_in_buffer >> 3)+1) ;
-            jhState.datasize_in_buffer += databitlen;
-            databitlen = 0;
-      }
+    /*There is data in the buffer, but the incoming data is insufficient for a full block*/
+    if((jhState.datasize_in_buffer > 0) && ((jhState.datasize_in_buffer + databitlen) < 512)) {
+        if((databitlen & 7) == 0) {
+            memcpy(jhState.buffer + (jhState.datasize_in_buffer >> 3), data, 64 - (jhState.datasize_in_buffer >> 3));
+        } else
+            memcpy(jhState.buffer + (jhState.datasize_in_buffer >> 3), data,
+                   64 - (jhState.datasize_in_buffer >> 3) + 1);
+        jhState.datasize_in_buffer += databitlen;
+        databitlen = 0;
+    }
 
-      /*There is data in the buffer, and the incoming data is sufficient for a full block*/
-      if ( (jhState.datasize_in_buffer > 0 ) && (( jhState.datasize_in_buffer + databitlen) >= 512)  ) {
-	        memcpy( jhState.buffer + (jhState.datasize_in_buffer >> 3), data, 64-(jhState.datasize_in_buffer >> 3) ) ;
-	        index = 64-(jhState.datasize_in_buffer >> 3);
-	        databitlen = databitlen - (512 - jhState.datasize_in_buffer);
-	        JH::F8();
-	        jhState.datasize_in_buffer = 0;
-      }
+    /*There is data in the buffer, and the incoming data is sufficient for a full block*/
+    if((jhState.datasize_in_buffer > 0) && ((jhState.datasize_in_buffer + databitlen) >= 512)) {
+        memcpy(jhState.buffer + (jhState.datasize_in_buffer >> 3), data, 64 - (jhState.datasize_in_buffer >> 3));
+        index = 64 - (jhState.datasize_in_buffer >> 3);
+        databitlen = databitlen - (512 - jhState.datasize_in_buffer);
+        JH::F8();
+        jhState.datasize_in_buffer = 0;
+    }
 
-      /*hash the remaining full message blocks*/
-      for ( ; databitlen >= 512; index = index+64, databitlen = databitlen - 512) {
-            memcpy(jhState.buffer, data+index, 64);
-            JH::F8();
-      }
+    /*hash the remaining full message blocks*/
+    for (; databitlen >= 512; index = index + 64, databitlen = databitlen - 512) {
+        memcpy(jhState.buffer, data + index, 64);
+        JH::F8();
+    }
 
-      /*store the partial block into buffer, assume that -- if part of the last byte is not part of the message, then that part consists of 0 bits*/
-      if ( databitlen > 0) {
-            if ((databitlen & 7) == 0)
-                  memcpy(jhState.buffer, data+index, (databitlen & 0x1ff) >> 3);
-            else
-                  memcpy(jhState.buffer, data+index, ((databitlen & 0x1ff) >> 3)+1);
-            jhState.datasize_in_buffer = databitlen;
-      }
+    /*store the partial block into buffer, assume that -- if part of the last byte is not part of the message, then that part consists of 0 bits*/
+    if(databitlen > 0) {
+        if((databitlen & 7) == 0)
+            memcpy(jhState.buffer, data + index, (databitlen & 0x1ff) >> 3);
+        else
+            memcpy(jhState.buffer, data + index, ((databitlen & 0x1ff) >> 3) + 1);
+        jhState.datasize_in_buffer = databitlen;
+    }
 
-      return(SUCCESS);
+    return (SUCCESS);
 }
 
 /*pad the message, process the padded block(s), truncate the hash value H to obtain the message digest*/
-int JH::Final(BitSequence *hashval)
-{
-      unsigned int i;
+int JH::Final(BitSequence* hashval) {
+    unsigned int i;
 
-      if ( (jhState.databitlen & 0x1ff) == 0 ) {
-            /*pad the message when databitlen is multiple of 512 bits, then process the padded block*/
-            memset(jhState.buffer, 0, 64);
-            jhState.buffer[0]  = 0x80;
-            jhState.buffer[63] = jhState.databitlen & 0xff;
-            jhState.buffer[62] = (jhState.databitlen >> 8)  & 0xff;
-            jhState.buffer[61] = (jhState.databitlen >> 16) & 0xff;
-            jhState.buffer[60] = (jhState.databitlen >> 24) & 0xff;
-            jhState.buffer[59] = (jhState.databitlen >> 32) & 0xff;
-            jhState.buffer[58] = (jhState.databitlen >> 40) & 0xff;
-            jhState.buffer[57] = (jhState.databitlen >> 48) & 0xff;
-            jhState.buffer[56] = (jhState.databitlen >> 56) & 0xff;
-            JH::F8();
-      }
-      else {
-		    /*set the rest of the bytes in the buffer to 0*/
-            if ( (jhState.datasize_in_buffer & 7) == 0)
-                  for (i = (jhState.databitlen & 0x1ff) >> 3; i < 64; i++)  jhState.buffer[i] = 0;
-            else
-                  for (i = ((jhState.databitlen & 0x1ff) >> 3)+1; i < 64; i++)  jhState.buffer[i] = 0;
+    if((jhState.databitlen & 0x1ff) == 0) {
+        /*pad the message when databitlen is multiple of 512 bits, then process the padded block*/
+        memset(jhState.buffer, 0, 64);
+        jhState.buffer[0] = 0x80;
+        jhState.buffer[63] = jhState.databitlen & 0xff;
+        jhState.buffer[62] = (jhState.databitlen >> 8) & 0xff;
+        jhState.buffer[61] = (jhState.databitlen >> 16) & 0xff;
+        jhState.buffer[60] = (jhState.databitlen >> 24) & 0xff;
+        jhState.buffer[59] = (jhState.databitlen >> 32) & 0xff;
+        jhState.buffer[58] = (jhState.databitlen >> 40) & 0xff;
+        jhState.buffer[57] = (jhState.databitlen >> 48) & 0xff;
+        jhState.buffer[56] = (jhState.databitlen >> 56) & 0xff;
+        JH::F8();
+    } else {
+        /*set the rest of the bytes in the buffer to 0*/
+        if((jhState.datasize_in_buffer & 7) == 0)
+            for (i = (jhState.databitlen & 0x1ff) >> 3; i < 64; i++) jhState.buffer[i] = 0;
+        else
+            for (i = ((jhState.databitlen & 0x1ff) >> 3) + 1; i < 64; i++) jhState.buffer[i] = 0;
 
-            /*pad and process the partial block when databitlen is not multiple of 512 bits, then hash the padded blocks*/
-            jhState.buffer[((jhState.databitlen & 0x1ff) >> 3)] |= 1 << (7- (jhState.databitlen & 7));
+        /*pad and process the partial block when databitlen is not multiple of 512 bits, then hash the padded blocks*/
+        jhState.buffer[((jhState.databitlen & 0x1ff) >> 3)] |= 1 << (7 - (jhState.databitlen & 7));
 
-            JH::F8();
-            memset(jhState.buffer, 0, 64);
-            jhState.buffer[63] = jhState.databitlen & 0xff;
-            jhState.buffer[62] = (jhState.databitlen >> 8) & 0xff;
-            jhState.buffer[61] = (jhState.databitlen >> 16) & 0xff;
-            jhState.buffer[60] = (jhState.databitlen >> 24) & 0xff;
-            jhState.buffer[59] = (jhState.databitlen >> 32) & 0xff;
-            jhState.buffer[58] = (jhState.databitlen >> 40) & 0xff;
-            jhState.buffer[57] = (jhState.databitlen >> 48) & 0xff;
-            jhState.buffer[56] = (jhState.databitlen >> 56) & 0xff;
-            JH::F8();
-      }
+        JH::F8();
+        memset(jhState.buffer, 0, 64);
+        jhState.buffer[63] = jhState.databitlen & 0xff;
+        jhState.buffer[62] = (jhState.databitlen >> 8) & 0xff;
+        jhState.buffer[61] = (jhState.databitlen >> 16) & 0xff;
+        jhState.buffer[60] = (jhState.databitlen >> 24) & 0xff;
+        jhState.buffer[59] = (jhState.databitlen >> 32) & 0xff;
+        jhState.buffer[58] = (jhState.databitlen >> 40) & 0xff;
+        jhState.buffer[57] = (jhState.databitlen >> 48) & 0xff;
+        jhState.buffer[56] = (jhState.databitlen >> 56) & 0xff;
+        JH::F8();
+    }
 
-      /*truncating the final hash value to generate the message digest*/
-      switch(jhState.hashbitlen) {
-            case 224: memcpy(hashval,(unsigned char*)jhState.x+64+36,28);  break;
-            case 256: memcpy(hashval,(unsigned char*)jhState.x+64+32,32);  break;
-            case 384: memcpy(hashval,(unsigned char*)jhState.x+64+16,48);  break;
-            case 512: memcpy(hashval,(unsigned char*)jhState.x+64,64);     break;
-      }
+    /*truncating the final hash value to generate the message digest*/
+    switch (jhState.hashbitlen) {
+        case 224:
+            memcpy(hashval, (unsigned char*) jhState.x + 64 + 36, 28);
+            break;
+        case 256:
+            memcpy(hashval, (unsigned char*) jhState.x + 64 + 32, 32);
+            break;
+        case 384:
+            memcpy(hashval, (unsigned char*) jhState.x + 64 + 16, 48);
+            break;
+        case 512:
+            memcpy(hashval, (unsigned char*) jhState.x + 64, 64);
+            break;
+    }
 
-      return(SUCCESS);
+    return (SUCCESS);
 }
 
 /* hash a message,
    three inputs: message digest size in bits (hashbitlen); message (data); message length in bits (databitlen)
    one output:   message digest (hashval)
 */
-int JH::Hash(int hashbitlen, const BitSequence *data,DataLength databitlen, BitSequence *hashval)
-{
-      //hashState state;
+int JH::Hash(int hashbitlen, const BitSequence* data, DataLength databitlen, BitSequence* hashval) {
+    //hashState state;
 
-      if ( hashbitlen == 224 || hashbitlen == 256 || hashbitlen == 384 || hashbitlen == 512 ) {
-            JH::Init(hashbitlen);
-            JH::Update(data, databitlen);
-            JH::Final(hashval);
-            return SUCCESS;
-      }
-      else
-            return(BAD_HASHLEN);
+    if(hashbitlen == 224 || hashbitlen == 256 || hashbitlen == 384 || hashbitlen == 512) {
+        JH::Init(hashbitlen);
+        JH::Update(data, databitlen);
+        JH::Final(hashval);
+        return SUCCESS;
+    } else
+        return (BAD_HASHLEN);
 }
 
 JH::JH(const int numRounds) {
-	if (numRounds == -1) {
-		jhNumRounds = JH_DEFAULT_NUM_ROUNDS;
-	} else {
-		jhNumRounds = numRounds;
-	}
+    if(numRounds == -1) {
+        jhNumRounds = JH_DEFAULT_NUM_ROUNDS;
+    } else {
+        jhNumRounds = numRounds;
+    }
 }

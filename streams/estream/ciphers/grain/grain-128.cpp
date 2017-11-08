@@ -37,6 +37,8 @@ u8 grain_keystream(GRAIN_ctx* ctx, int numRounds = 13) {
     NBit = ctx->LFSR[0];  //^ctx->NFSR[0]^ctx->NFSR[26]^ctx->NFSR[56]^ctx->NFSR[91]^ctx->NFSR[96]^(ctx->NFSR[3]&ctx->NFSR[67])^(ctx->NFSR[11]&ctx->NFSR[13])^(ctx->NFSR[17]&ctx->NFSR[18])^(ctx->NFSR[27]&ctx->NFSR[59])^(ctx->NFSR[40]&ctx->NFSR[48])^(ctx->NFSR[61]&ctx->NFSR[65])^(ctx->NFSR[68]&ctx->NFSR[84]);
     LBit = ctx->LFSR[0]; //^ctx->LFSR[7]^ctx->LFSR[38]^ctx->LFSR[70]^ctx->LFSR[81]^ctx->LFSR[96];
 
+    /** Custom round reduction **/
+    /** Reduces influence of keystream state **/
     if (numRounds > 1) {
         outbit ^= ctx->NFSR[15]; //^ctx->NFSR[36]^ctx->NFSR[45]^ctx->NFSR[64]^ctx->NFSR[73]^ctx->NFSR[89]^ctx->LFSR[93]^(ctx->NFSR[12]&ctx->LFSR[8])^(ctx->LFSR[13]&ctx->LFSR[20])^(ctx->NFSR[95]&ctx->LFSR[42])^(ctx->LFSR[60]&ctx->LFSR[79])^(ctx->NFSR[12]&ctx->NFSR[95]&ctx->LFSR[95]);
         NBit ^= ctx->NFSR[0]; //^ctx->NFSR[26]^ctx->NFSR[56]^ctx->NFSR[91]^ctx->NFSR[96]^(ctx->NFSR[3]&ctx->NFSR[67])^(ctx->NFSR[11]&ctx->NFSR[13])^(ctx->NFSR[17]&ctx->NFSR[18])^(ctx->NFSR[27]&ctx->NFSR[59])^(ctx->NFSR[40]&ctx->NFSR[48])^(ctx->NFSR[61]&ctx->NFSR[65])^(ctx->NFSR[68]&ctx->NFSR[84]);
