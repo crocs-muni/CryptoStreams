@@ -39,4 +39,7 @@ Oneclick/exec/*.log
 Oneclick/exec/*.pl
 Oneclick/exec/*.xml
 
+# IDE files
+.idea
+
 
