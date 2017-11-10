@@ -58,6 +58,20 @@ namespace testsuite {
 
         /**
          * Reads test vector from input stream
+         *
+         * STRUCTURE OF TEST VECTORS (All present in test-resources/sha3/{function-name}/test-vectors-{round-number}.txt)
+         * {bitsize-of-plaintext} {plaintext in hex}
+         * {ciphertext in hex}
+         * {bitsize-of-plaintext2} {plaintext2 in hex}
+         * {ciphertext2 in hex}
+         *
+         * STRUCTURE OF CIPHERTEXT
+         * two options
+         * - whole plaintext
+         * - tuples (index where ciphertext begins) (ciphretext in hex)
+         *     for example "0 FF 5 EE" means that first byte is FF and sixth byte is EE
+         *
+         *
          * @param input stream
          * @param test_case test_case instance
          * @return input stream

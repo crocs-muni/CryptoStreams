@@ -95,6 +95,23 @@ namespace testsuite {
 
         /**
          * Reads test vector from input stream
+         *
+         * STRUCTURE OF TEST VECTORS (All present in test-resources/estream/{function-name}/test-vectors-{round-number}.txt)
+         * {plaintext in hex}
+         * {key in hex}
+         * {initialization vector}
+         * {ciphertext}
+         * {plaintext2 in hex}
+         * {key2 in hex}
+         * {initialization vector2}
+         * {ciphertext2}
+         *
+         * STRUCTURE OF CIPHERTEXT
+         * two options
+         * - whole plaintext
+         * - tuples (index where ciphertext begins) (ciphretext)
+         *     for example "0 FF 5 EE" means that first byte is FF and sixth byte is EE
+         *
          * @param input stream
          * @param test_case test_case instance
          * @return input stream
