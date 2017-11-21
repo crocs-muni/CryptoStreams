@@ -29,7 +29,7 @@ void Simd::IncreaseCounter(simdHashState *state, SimdDataLength databitlen) {
  * Initialize the hashState with a given IV.
  * If the IV is NULL, initialize with zeros.
  */
-int Simd::InitIV(simdHashState *state, int hashbitlen, const unsigned long *IV) {
+int Simd::InitIV(simdHashState *state, int hashbitlen, const uint32_t *IV) {
 
   int n;
 
@@ -55,20 +55,20 @@ int Simd::InitIV(simdHashState *state, int hashbitlen, const unsigned long *IV) 
    */
   state->buffer += ((unsigned char*)NULL - state->buffer)&15;
 
-  state->A = (unsigned long*) malloc((4*n+4)*sizeof(unsigned long));
+  state->A = (uint32_t*) malloc((4*n+4)*sizeof(uint32_t));
   /*
    * Align the buffer to a 128 bit boundary.
    */
-  state->A += ((unsigned long*)NULL - state->A)&3;
+  state->A += ((uint32_t*)NULL - state->A)&3;
 
   state->B = state->A+n;
   state->C = state->B+n;
   state->D = state->C+n;
 
   if (IV)
-    memcpy(state->A, IV, 4*n*sizeof(unsigned long));
+    memcpy(state->A, IV, 4*n*sizeof(uint32_t));
   else
-    memset(state->A, 0, 4*n*sizeof(unsigned long));
+    memset(state->A, 0, 4*n*sizeof(uint32_t));
 
   return SIMD_SUCCESS;
 }
@@ -102,9 +102,9 @@ int Simd::Init(int hashbitlen) {
       init = (char*) malloc(simdState.blocksize);
       memset(init, 0, simdState.blocksize);
 #if defined __STDC__ && __STDC_VERSION__ >= 199901L
-      snprintf(init, simdState.blocksize, "SIMD-%i v1.0", hashbitlen);
+      snprintf(init, simdState.blocksize, "SIMD-%i v1.1", hashbitlen);
 #else
-      sprintf(init, "SIMD-%i v1.0", hashbitlen);
+      sprintf(init, "SIMD-%i v1.1", hashbitlen);
 #endif
       SIMD_Compress(&simdState, (unsigned char*) init, 0, simdNumRounds);
       free(init);
@@ -170,20 +170,22 @@ int Simd::Update(const BitSequence *data, SimdDataLength databitlen) {
 int Simd::Final(BitSequence *hashval) {
 #ifdef SIMD_HAS_64
   unsigned long long l;
+  int current = simdState.count & (simdState.blocksize - 1);
 #else
   unsigned long l;
+  int current = state->count_low & (state->blocksize - 1);
 #endif
   unsigned int i;
   BitSequence bs[64];
+  int isshort = 1;
 
   /* 
    * If there is still some data in the buffer, hash it
    */
-  if (simdState.count & (simdState.blocksize - 1)) {
+  if (current) {
     /* 
      * We first need to zero out the end of the buffer.
      */
-    int current = simdState.count & (simdState.blocksize - 1);
     if (current & 7) {
       BitSequence mask = 0xff >> (current&7);
       simdState.buffer[current/8] &= ~mask;
@@ -203,6 +205,8 @@ int Simd::Final(BitSequence *hashval) {
     simdState.buffer[i] = l & 0xff;
     l >>= 8;
   }
+  if (simdState.count < 16384)
+    isshort = 2;
 #else
   l = simdState.count_low;
   for (i=0; i<4; i++) {
@@ -214,9 +218,11 @@ int Simd::Final(BitSequence *hashval) {
     simdState.buffer[4+i] = l & 0xff;
     l >>= 8;
   }
+  if (state->count_high == 0 && state->count_low < 16384)
+    isshort = 2;
 #endif
 
-  SIMD_Compress(&simdState, simdState.buffer, 1, simdNumRounds);
+  SIMD_Compress(&simdState, simdState.buffer, isshort, simdNumRounds);
     
 
   /*
@@ -238,6 +244,9 @@ int Simd::Final(BitSequence *hashval) {
     BitSequence mask = 0xff << (8 - (simdState.hashbitlen%8));
     hashval[simdState.hashbitlen/8 + 1] = bs[simdState.hashbitlen/8 + 1] & mask;
   }
+
+  free(simdState.A);
+  free(simdState.buffer);
 
   return SIMD_SUCCESS;
 }

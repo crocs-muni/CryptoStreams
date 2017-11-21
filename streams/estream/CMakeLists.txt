@@ -31,7 +31,7 @@ add_library(estream STATIC EXCLUDE_FROM_ALL
     ciphers/hermes/ecrypt-sync.h
     ciphers/hc-128/ecrypt-sync.h
     ciphers/grain/ecrypt-sync.h
-    ciphers/grain/grain-v1.h
+    ciphers/grain/grain-128.h
     ciphers/fubuki/ecrypt-sync.h
     ciphers/ffcsr/ecrypt-sync.h
     ciphers/ffcsr/ffcsrh-sync.h
@@ -81,7 +81,7 @@ add_library(estream STATIC EXCLUDE_FROM_ALL
     ciphers/lex/lex.cpp
     ciphers/hermes/hermes.cpp
     ciphers/hc-128/hc-128.cpp
-    ciphers/grain/grain-v1.cpp
+    ciphers/grain/grain-128.cpp
     ciphers/fubuki/fubuki.cpp
     ciphers/ffcsr/f-fcsr-h.cpp
     ciphers/edon80/edon80.cpp

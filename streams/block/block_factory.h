@@ -11,6 +11,7 @@
 #include "ciphers/rc4/rc4.h"
 #include "ciphers/des/single_des.h"
 #include "ciphers/des/triple_des.h"
+#include "ciphers/blowfish/blowfish_factory.h"
 
 
 namespace block {
@@ -23,6 +24,7 @@ namespace block {
         if (name == "RC4")  return std::make_unique<rc4>(round, block_size);
         if (name == "SINGLE-DES")  return std::make_unique<single_des>(round, encrypt);
         if (name == "TRIPLE-DES")  return std::make_unique<triple_des>(round, encrypt);
+        if (name == "BLOWFISH") return std::make_unique<blowfish_factory>(round);
         // clang-format on
 
         throw std::runtime_error("requested block cipher named \"" + name +

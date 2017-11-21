@@ -23,7 +23,7 @@ namespace block {
         , _encryptor(make_block_cipher(config.at("algorithm"), unsigned(_round), unsigned(_block_size), true))
         , _data(compute_vector_size(_block_size, osize))
     {
-        logger::info() << "stream source is cipher: " << config.at("algorithm") << std::endl;
+        logger::info() << "stream source is block cipher: " << config.at("algorithm") << std::endl;
 
         if (int(config.at("round")) < 0)
             throw std::runtime_error("The least number of rounds is 0.");

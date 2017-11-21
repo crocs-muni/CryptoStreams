@@ -34,7 +34,7 @@ void ECRYPT_Decim::ECRYPT_init(void) {}
 void ECRYPT_Decim::ECRYPT_keysetup(const u8* key, u32 keysize, u32 ivsize) {
     DECIM_ctx* ctx = &_ctx;
     /* save the key */
-    memcpy(ctx->key, key, 16);
+    memcpy(ctx->key, key, 10);
 
     /* save the IV size in the cipher's context */
     ctx->iv_size = ivsize;
@@ -43,6 +43,8 @@ void ECRYPT_Decim::ECRYPT_keysetup(const u8* key, u32 keysize, u32 ivsize) {
 void ECRYPT_Decim::ECRYPT_ivsetup(const u8* iv) {
     DECIM_ctx* ctx = &_ctx;
     int i, j;
+    u8 piv[10] ;
+
     /* reset ABSG internal state */
     ctx->immediate_finding = 0;
     ctx->bit_searched = 0;
@@ -50,9 +52,9 @@ void ECRYPT_Decim::ECRYPT_ivsetup(const u8* iv) {
 
     /* clear the output buffer */
     ctx->buffer_end = 0;
-    for (i = 0; i < 64; i++)
+    for (i = 0; i < 32; i++)
         ctx->buffer[i] = 0;
-    for (i = 0; i < 288; i++)
+    for (i = 0; i < 193; i++)
         ctx->lfsr_state[i] = 0;
     ctx->out = 0;
     ctx->bool_out = 0;
@@ -60,44 +62,79 @@ void ECRYPT_Decim::ECRYPT_ivsetup(const u8* iv) {
     ctx->stream_byte = 0;
 
     /* key injection */
-    for (i = 0; i < 16; i++)
+    for (i = 0; i < 10; i++)
         for (j = 0; j < 8; j++)
             ctx->lfsr_state[i * 8 + j] = (ctx->key[i] >> j) & 0x01;
 
-    for (i = 0; i < 16; i++)
+    for (i = 0; i < 8; i++)
         for (j = 0; j < 8; j++) {
-            ctx->lfsr_state[i * 8 + j + 128] = (ctx->key[i] >> j) & 0x01;
+            ctx->lfsr_state[i * 8 + j + 80] = (ctx->key[i] >> j) & 0x01;
         }
 
-    /* iv injection*/
-    for (i = 0; i < 16; i++)
-        for (j = 0; j < 8; j++) {
-            ctx->lfsr_state[i * 8 + j + 128] ^= (iv[i] >> j) & 0x01;
+    for (i=0;i<2;i++)
+        for (j=0;j<8;j++)
+        {
+            ctx->lfsr_state[i*8+j+144 ] = (ctx->key[i+8]>>j) & 0x01;
         }
+
+    /* we first copy what we've got                (memcpy)
+    * then, we extend the iv with '0's to 80 bits (memset) */
+    switch(ctx->iv_size) {
+    case 32:
+      memcpy(piv, iv, 4);
+      memset(piv + 4, 0, 6);
+      break;
+    case 64:
+      memcpy(piv, iv, 8);
+      memset(piv + 8, 0, 2);
+      break;
+    default:
+      fprintf(stderr, "Invalid IV length!\n");
+      exit(EXIT_FAILURE);
+    }
+
+    /* IV expansion */
+    for (i = 0; i < 8; i++)
+        for (j = 0; j < 8; j++) {
+            ctx->lfsr_state[i * 8 + j + 80] ^= (piv[i] >> j) & 0x01;
+        }
+
     /*finishing to complete the initial state*/
     for (i = 256; i < 288; i++) {
         if (i % 2)
             ctx->lfsr_state[i] = 1;
     }
 
-    for (j = 0; j < 1152; j++)
+    for (i = 0; i < 2; i++)
+        for (j = 0; j < 8; j++) {
+            ctx->lfsr_state[i * 8 + j + 144] ^=  ((piv[i] >> j) & 0x1) ^ ((piv[i + 2] >> j) & 0x01) ^ ((piv[i + 4] >> j) & 0x01) ^ ((piv[i + 6] >> j) & 0x01);
+        }
+
+    for (i = 0; i < 4; i++)
+        for (j = 0; j < 8; j++) {
+            ctx->lfsr_state[i * 8 + j + 160] ^= ((piv[i] >> j) & 0x1) ^ ((piv[i + 4] >> j) & 0x01) ^ 1;
+        }
+
+    for (j = 0; j < 768; j++)
         decim_lfsr_init(ctx);
 
     /* reset ABSG state */
-    ctx->immediate_finding = 0;
-    ctx->bit_searched = 0;
-    ctx->searching = 0;
+    ctx->immediate_finding=0;
+    ctx->bit_searched=0;
+    ctx->searching=0;
 
-    ctx->buffer_end = 0;
-    for (i = 0; i < 64; i++)
-        ctx->buffer[i] = 0;
+    ctx->buffer_end=0;
+    for(i = 0; i < 32; i++)
+        ctx->buffer[i]=0;
+
     ctx->out = 0;
     ctx->bool_out = 0;
     ctx->bits_in_byte = 0;
     ctx->stream_byte = 0;
 
+
     /* fill the buffer */
-    while (ctx->buffer_end < 64) {
+    while(ctx->buffer_end<32) {
         decim_step(ctx);
         decim_step(ctx);
         decim_step(ctx);
@@ -105,7 +142,7 @@ void ECRYPT_Decim::ECRYPT_ivsetup(const u8* iv) {
     }
 
     ctx->bits_in_byte = 0;
-    ctx->stream_byte = 0;
+    ctx->stream_byte  = 0;
 }
 
 /*
@@ -248,63 +285,57 @@ void decim_lfsr_clock(DECIM_ctx* ctx) {
     memcpy(ctx->lfsr_state + 144, ctx->lfsr_state + 145, 16);
     memcpy(ctx->lfsr_state + 160, ctx->lfsr_state + 161, 16);
     memcpy(ctx->lfsr_state + 176, ctx->lfsr_state + 177, 16);
-    memcpy(ctx->lfsr_state + 192, ctx->lfsr_state + 193, 16);
-    memcpy(ctx->lfsr_state + 208, ctx->lfsr_state + 209, 16);
-    memcpy(ctx->lfsr_state + 224, ctx->lfsr_state + 225, 16);
-    memcpy(ctx->lfsr_state + 240, ctx->lfsr_state + 241, 16);
-    memcpy(ctx->lfsr_state + 256, ctx->lfsr_state + 257, 16);
-    memcpy(ctx->lfsr_state + 272, ctx->lfsr_state + 273, 16);
 }
 
 void decim_lfsr_filter(DECIM_ctx* ctx) {
     u8 b, c;
 
     /* compute the boolean function */
-    c = ctx->lfsr_state[1];
-    b = ctx->lfsr_state[21];
-    c ^= ctx->lfsr_state[21];
-    b += ctx->lfsr_state[39];
-    c ^= ctx->lfsr_state[39];
-    b += ctx->lfsr_state[51];
-    c ^= ctx->lfsr_state[51];
-    b += ctx->lfsr_state[73];
-    c ^= ctx->lfsr_state[73];
-    b += ctx->lfsr_state[120];
-    c ^= ctx->lfsr_state[120];
-    b += ctx->lfsr_state[159];
-    c ^= ctx->lfsr_state[159];
-    b += ctx->lfsr_state[187];
-    c ^= ctx->lfsr_state[187];
-    b += ctx->lfsr_state[203];
-    c ^= ctx->lfsr_state[203];
-    b += ctx->lfsr_state[236];
-    c ^= ctx->lfsr_state[236];
-    b += ctx->lfsr_state[244];
-    c ^= ctx->lfsr_state[244];
-    b += ctx->lfsr_state[263];
-    c ^= ctx->lfsr_state[263];
-    b += ctx->lfsr_state[276];
-    c ^= ctx->lfsr_state[276];
-    b += ctx->lfsr_state[287];
-    c ^= ctx->lfsr_state[287];
+     c = ctx->lfsr_state[1];
+  b = ctx->lfsr_state[13];
+  c ^= ctx->lfsr_state[13];
+  b += ctx->lfsr_state[28];
+  c ^= ctx->lfsr_state[28];
+  b += ctx->lfsr_state[45];
+  c ^= ctx->lfsr_state[45];
+  b += ctx->lfsr_state[54];
+  c ^= ctx->lfsr_state[54];
+  b += ctx->lfsr_state[65];
+  c ^= ctx->lfsr_state[65];
+  b += ctx->lfsr_state[104];
+  c ^= ctx->lfsr_state[104];
+  b += ctx->lfsr_state[111];
+  c ^= ctx->lfsr_state[111];
+  b += ctx->lfsr_state[144];
+  c ^= ctx->lfsr_state[144];
+  b += ctx->lfsr_state[162];
+  c ^= ctx->lfsr_state[162];
+  b += ctx->lfsr_state[172];
+  c ^= ctx->lfsr_state[172];
+  b += ctx->lfsr_state[178];
+  c ^= ctx->lfsr_state[178];
+  b += ctx->lfsr_state[186];
+  c ^= ctx->lfsr_state[186];
+  b += ctx->lfsr_state[191];
+  c ^= ctx->lfsr_state[191];
     ctx->bool_out = ((b >> 1) & 0x01) ^ c;
 
     /* compute the next bit for the LFSR*/
-    b = ctx->lfsr_state[0];
-    b ^= ctx->lfsr_state[3];
-    b ^= ctx->lfsr_state[4];
-    b ^= ctx->lfsr_state[41];
-    b ^= ctx->lfsr_state[84];
-    b ^= ctx->lfsr_state[103];
-    b ^= ctx->lfsr_state[134];
-    b ^= ctx->lfsr_state[163];
-    b ^= ctx->lfsr_state[164];
-    b ^= ctx->lfsr_state[165];
-    b ^= ctx->lfsr_state[206];
-    b ^= ctx->lfsr_state[253];
-    b ^= ctx->lfsr_state[270];
-    b ^= ctx->lfsr_state[283];
-    ctx->lfsr_state[288] = b; /* next bit */
+     b  = ctx->lfsr_state[0];
+  b ^= ctx->lfsr_state[3];
+  b ^= ctx->lfsr_state[4];
+  b ^= ctx->lfsr_state[23];
+  b ^= ctx->lfsr_state[36];
+  b ^= ctx->lfsr_state[37];
+  b ^= ctx->lfsr_state[60];
+  b ^= ctx->lfsr_state[61];
+  b ^= ctx->lfsr_state[98];
+  b ^= ctx->lfsr_state[115];
+  b ^= ctx->lfsr_state[146];
+  b ^= ctx->lfsr_state[175];
+  b ^= ctx->lfsr_state[176];
+  b ^= ctx->lfsr_state[187];
+  ctx->lfsr_state[192] = b;   /* next bit */
 }
 
 void decim_absg(DECIM_ctx* ctx, u8 bit) {
@@ -316,7 +347,7 @@ void decim_absg(DECIM_ctx* ctx, u8 bit) {
 
 void decim_lfsr_init(DECIM_ctx* ctx) {
     decim_lfsr_filter(ctx);
-    ctx->lfsr_state[288] ^= ctx->bool_out ^ ctx->lfsr_state[1];
+    ctx->lfsr_state[192] ^= ctx->bool_out ^ ctx->lfsr_state[1];
     decim_lfsr_clock(ctx);
 }
 
@@ -324,7 +355,7 @@ void decim_step(DECIM_ctx* ctx) {
     decim_lfsr_filter(ctx);
     decim_lfsr_clock(ctx);
     decim_absg(ctx, ctx->bool_out);
-    if (!ctx->searching && (ctx->buffer_end < 64)) {
+    if (!ctx->searching && (ctx->buffer_end < 32)) {
         ctx->buffer[ctx->buffer_end] = ctx->out;
         ctx->buffer_end++;
     }
@@ -339,7 +370,7 @@ void decim_process_buffer(DECIM_ctx* ctx, int* is_stream_byte, u8* stream_byte) 
     }
     ctx->stream_byte |= (ctx->buffer[0]) << ctx->bits_in_byte;
     ctx->bits_in_byte++;
-    for (i = 0; i < 63; i++)
+    for (i = 0; i < 31; i++)
         ctx->buffer[i] = ctx->buffer[i + 1];
     ctx->buffer_end--;
 }

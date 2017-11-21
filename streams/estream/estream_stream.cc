@@ -12,18 +12,46 @@ static estream_init_frequency create_init_frequency(const std::string& frequency
 }
 
 static std::size_t compute_vector_size(const std::size_t block_size, const std::size_t osize) {
-    if (block_size > osize)
-        return block_size;
-    if (block_size % osize)
-        return ((osize / block_size) + 1) * block_size;
-    return osize;
+  if (block_size > osize)
+    return block_size;
+  if (block_size % osize)
+    return ((osize / block_size) + 1) * block_size;
+  return osize;
+}
+
+
+
+static std::unique_ptr<stream> create_iv_stream(const json& iv_config, default_seed_source& seeder, std::size_t osize, const std::string& generator) {
+    // clang-format off
+    const unsigned int i = 1;
+    if (iv_config.is_object())     return make_stream(iv_config, seeder, osize);
+    if (iv_config == "zeros")      return std::make_unique<false_stream>(osize);
+    if (iv_config == "ones")       return std::make_unique<true_stream >(osize); // Should be stream of 0x01u not 0xFF
+    if (iv_config == "random")     return make_stream(json::parse("{ \"type\": " + generator + "-stream}"), seeder, osize);
+    if (iv_config == "biasrandom") throw std::logic_error("feature not yet implemented");
+    // clang-format on
+
+    throw std::runtime_error("requested eSTREAM IV type named \"" + iv_config.dump() + "\" does not exist");
+}
+
+static std::unique_ptr<stream> create_key_stream(const json& key_config, default_seed_source& seeder, std::size_t osize, const std::string& generator) {
+    // clang-format off
+    if (key_config.is_object())     return make_stream(key_config, seeder, osize);
+    if (key_config == "zeros")      return std::make_unique<false_stream>(osize);
+    if (key_config == "ones")       return std::make_unique<true_stream>(osize); // Should be stream of 0x01u not 0xFF
+    if (key_config == "random")     return make_stream(json::parse("{ \"type\": " + generator + "-stream}"), seeder, osize);
+    if (key_config == "biasrandom") throw std::logic_error("feature not yet implemented");
+    // clang-format on
+
+    throw std::runtime_error("requested eSTREAM IV type named \"" + key_config.dump() + "\" does not exist");
 }
 
 estream_stream::estream_stream(const json& config, default_seed_source& seeder, std::size_t osize)
     : stream(osize)
     , _initfreq(create_init_frequency(config.at("init-frequency")))
     , _block_size(config.at("block-size"))
-    , _rng(config.at("generator").get<std::string>(), seeder)
+    , _iv_stream(create_iv_stream(config.at("iv-type"), seeder, default_iv_size, config.at("generator")))
+    , _key_stream(create_key_stream(config.at("key-type"), seeder, default_key_size, config.at("generator")))
     , _source(make_stream(config.at("plaintext-type"), seeder, _block_size))
     , _plaintext(compute_vector_size(_block_size, osize))
     , _encrypted(compute_vector_size(_block_size, osize))
@@ -31,17 +59,19 @@ estream_stream::estream_stream(const json& config, default_seed_source& seeder, 
                  config.at("round").is_null()
                      ? core::optional<unsigned>{core::nullopt_t{}}
                      : core::optional<unsigned>{unsigned(config.at("round"))},
-                 config.at("iv-type"), config.at("key-type")) {
-  if (_initfreq == estream_init_frequency::ONLY_ONCE) {
-    _algorithm.setup_key(_rng);
-    _algorithm.setup_iv(_rng);
+                 _iv_stream->osize(), _key_stream->osize()) {
+
+    logger::info() << "stream source is estream cipher: " << config.at("algorithm") << std::endl;
+    if (_initfreq == estream_init_frequency::ONLY_ONCE) {
+    _algorithm.setup_key(_key_stream, _iv_stream->osize());
+    _algorithm.setup_iv(_iv_stream);
   }
 }
 
 vec_view estream_stream::next() {
   if (_initfreq == estream_init_frequency::EVERY_VECTOR) {
-    _algorithm.setup_key(_rng);
-    _algorithm.setup_iv(_rng);
+      _algorithm.setup_key(_key_stream, _iv_stream->osize());
+      _algorithm.setup_iv(_iv_stream);
   }
   for (auto beg = _plaintext.begin(); beg != _plaintext.end(); beg += _block_size) {
     vec_view view = _source->next();
