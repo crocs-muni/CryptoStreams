@@ -46,6 +46,7 @@ add_subdirectory(eacirc-core)
 add_subdirectory(streams/stream_ciphers)
 add_subdirectory(streams/hash)
 add_subdirectory(streams/block)
+add_subdirectory(streams/prngs)
 
 ## Executables
 
@@ -63,6 +64,7 @@ target_link_libraries(crypto-streams eacirc-core crypto-streams-lib)
 build_stream(crypto-streams stream_ciphers)
 build_stream(crypto-streams hash)
 build_stream(crypto-streams block)
+build_stream(crypto-streams prngs)
 
 ##############
 # Building of testsuite
@@ -80,6 +82,7 @@ if (BUILD_testsuite)
             testsuite/hash_streams_tests.cc
             testsuite/stream_ciphers_streams_tests.cc
             testsuite/block_streams_tests.cc
+            testsuite/testu01_prng_tests.cc
             testsuite/test_utils/test_streams
             testsuite/test_utils/hash_test_case
             testsuite/test_utils/stream_ciphers_test_case
@@ -100,6 +103,7 @@ if (BUILD_testsuite)
     build_stream(testsuite stream_ciphers)
     build_stream(testsuite hash)
     build_stream(testsuite block)
+    build_stream(testsuite prngs)
     add_definitions(-DBUILD_testsuite)
 
 endif()

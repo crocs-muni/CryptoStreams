@@ -64,16 +64,16 @@ std::unique_ptr<stream> block_test_case::prepare_stream() {
     std::size_t block_size = _ciphertext.size();
     _stream_config["algorithm"] = _algorithm;
     _stream_config["round"] = _round;
-    _stream_config["key"]["outputs"] = _key;
-    _stream_config["plaintext"]["outputs"] = _plaintext;
+    _stream_config["key"]["outputs"] = {_key};
+    _stream_config["plaintext"]["outputs"] = {_plaintext};
     _stream_config["block_size"] = block_size;
     _stream_config["key_size"] = _key.size();
     if (_load_iv) {
         _stream_config["mode"] = ""; // TODO: write mode here
-        _stream_config["iv"]["outputs"] = _iv;
+        _stream_config["iv"]["outputs"] = {_iv};
         _stream_config["iv_size"] = _iv.size();
     } else {
-        _stream_config["iv"]["outputs"] = _iv;
+        _stream_config["iv"]["outputs"] = {_iv};
     }
 
     seed_seq_from<pcg32> seeder(seed1);

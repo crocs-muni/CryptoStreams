@@ -19,6 +19,10 @@
 #include <streams/block/block_stream.h>
 #endif
 
+#ifdef BUILD_prngs
+#include <streams/prngs/prng_stream.h>
+#endif
+
 #ifdef BUILD_hash
 #include <streams/hash/hash_stream.h>
 #endif
@@ -262,6 +266,26 @@ struct hw_counter : stream {
         } else {
             std::fill_n(_origin_data.begin(), osize, 0);
         }
+
+        combination_init();
+    }
+
+    hw_counter(const std::size_t osize)
+            : stream(osize)
+            , _rng()
+            , _origin_data(osize)
+            , _increase_hw(true)
+            , _randomize_overflow(false)
+            , _cur_hw(1) {
+        if (_cur_hw == 0 || _cur_hw > osize * 8) {
+            throw std::runtime_error("Invalid Hamming weight for the given output size");
+        }
+        if (_randomize_overflow && _increase_hw) {
+            throw std::runtime_error(
+                    "Randomize overflow and increase counter are mutually exclusive");
+        }
+
+        std::fill_n(_origin_data.begin(), osize, 0);
 
         combination_init();
     }

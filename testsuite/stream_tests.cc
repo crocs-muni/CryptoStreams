@@ -507,7 +507,7 @@ TEST(rho_streams, aes_vector) {
     std::vector<value_type> prev(16);
 
     for (unsigned i = 0; i < testing_size; ++i) {
-        aes_json_config["plaintext"]["outputs"] = prev;
+        aes_json_config["plaintext"]["outputs"] = {prev};
         std::unique_ptr<stream> reference_stream = make_stream(aes_json_config, seeder, map, 16);
 
         vec_cview tested_view = tested_stream->next();

@@ -60,7 +60,7 @@ std::unique_ptr<stream> hash_test_case::prepare_stream() {
     config_instance["algorithm"] = _algorithm;
     config_instance["round"] = _round;
     config_instance["input_size"] = _plaintext.size();
-    config_instance["source"]["outputs"] = _plaintext;
+    config_instance["source"]["outputs"] = {_plaintext};
     config_instance["hash_size"] = hash_size;
 
     seed_seq_from<pcg32> seeder(seed1);
