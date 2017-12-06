@@ -9,6 +9,7 @@
 
 using value_type = std::uint8_t;
 using vec_cview = view<std::vector<value_type>::const_iterator>;
+using vec_view = view<std::vector<value_type>::iterator>;
 
 struct stream {
     virtual ~stream() = default;
