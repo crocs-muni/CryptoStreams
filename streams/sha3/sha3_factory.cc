@@ -3,13 +3,15 @@
 #include "sha3_interface.h"
 #include <eacirc-core/memory.h>
 
-static void _check_rounds(const std::string& algorithm, unsigned rounds) {
+namespace sha3 {
+
+void _check_rounds(const std::string& algorithm, const unsigned rounds) {
     if (rounds > 0)
         throw std::runtime_error{"requested SHA-3 algorithm named \"" + algorithm +
                                  "\" cannot be limited in rounds"};
 }
 
-std::unique_ptr<sha3_interface> sha3_factory::create(const std::string& name, unsigned rounds) {
+std::unique_ptr<sha3_interface> sha3_factory::create(const std::string& name, const unsigned rounds) {
     // clang-format off
     if (name == "Abacus")         return std::make_unique<Abacus>(rounds);
     if (name == "ARIRANG")        return std::make_unique<Arirang>(rounds);
@@ -82,3 +84,5 @@ std::unique_ptr<sha3_interface> sha3_factory::create(const std::string& name, un
     throw std::runtime_error("requested SHA-3 algorithm named \"" + name +
                              "\" is either broken or does not exists");
 }
+
+} // namespace sha3

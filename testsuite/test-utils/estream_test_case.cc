@@ -18,9 +18,9 @@ namespace testsuite {
         size_t size = _plaintext.size();
         std::vector<value_type> cipher(size);
 
-        encryptor->ECRYPT_keysetup(_key.data(), _key.size() * 8, _iv.size() * 8);
+        encryptor->ECRYPT_keysetup(_key.data(), unsigned(_key.size() * 8), unsigned(_iv.size() * 8));
         encryptor->ECRYPT_ivsetup(_iv.data());
-        encryptor->ECRYPT_encrypt_bytes(_plaintext.data(), cipher.data(), _plaintext.size());
+        encryptor->ECRYPT_encrypt_bytes(_plaintext.data(), cipher.data(), unsigned(_plaintext.size()));
 
         std::stringstream ss;
 
@@ -79,12 +79,6 @@ namespace testsuite {
         }
 
         std::cout << "Number of test vectors tested for function: \"" << _algorithm << "\"[" << _round << "] is: " << _test_vectors_tested << std::endl;
-    }
-
-    void estream_test_case::update_test_vector(std::vector<value_type> &&plaintext, std::vector<value_type> &&key, std::vector<value_type> &&iv) {
-        _plaintext = plaintext;
-        _key = key;
-        _iv = iv;
     }
 
     void estream_test_case::load_ciphertext(std::istream& stream) {

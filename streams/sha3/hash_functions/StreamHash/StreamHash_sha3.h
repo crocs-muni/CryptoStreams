@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class StreamHash : public sha3_interface {
 
 typedef enum { SUCCESS=0, FAIL=1, BAD_HASHLEN=2 } HashReturn;
@@ -25,5 +27,7 @@ int Hash(int hashbitlen, const BitSequence *data,
         DataLength databitlen, BitSequence *hashval);
 
 };
+
+} // namespace sha3
 
 #endif

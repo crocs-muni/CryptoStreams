@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Blender : public sha3_interface {
 
 typedef enum { SUCCESS = 0, FAIL = 1, BAD_HASHBITLEN = 2 } HashReturn;		// needs 64-bit variables to operate properly
@@ -105,5 +107,7 @@ void doFinal64 (BitSequence *hashval);
 void doFinalGen (BitSequence *hashval);
 
 };
+
+} // namespace sha3
 
 #endif

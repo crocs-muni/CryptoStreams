@@ -1,5 +1,7 @@
 #include "Cheetah_sha3.h"
 
+namespace sha3 {
+
 /*	8to32 S-Boxes for the compression functions of 
 	Cheetah-224 and Cheetah-256. 
  */
@@ -1171,3 +1173,5 @@ Cheetah::Cheetah(const int numRounds) {
 		cheetahNumRounds64 = numRounds;
 	}
 }
+
+} // namespace sha3

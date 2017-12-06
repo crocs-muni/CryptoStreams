@@ -4,6 +4,8 @@
 #include "../../sha3_interface.h"
 #include "fugue_t.h"
 
+namespace sha3 {
+
 class Fugue : public sha3_interface {
 
 #define FUGUE_ROUNDS_PARAM_R_224_256	5
@@ -29,5 +31,7 @@ int Final (BitSequence *hashval);
 int Hash (int hashbitlen, const BitSequence *data, DataLength databitlen, BitSequence *hashval);
 
 };
+
+} // namespace sha3
 
 #endif

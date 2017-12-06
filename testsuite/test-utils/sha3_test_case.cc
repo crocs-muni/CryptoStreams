@@ -14,7 +14,8 @@ namespace testsuite {
             {"source", {{"type", "test-stream"}}}
     };
 
-    void sha3_test_case::test(std::unique_ptr<sha3_interface> &hasher) const {
+    void sha3_test_case::test() const {
+        std::unique_ptr<sha3::sha3_interface> hasher = sha3::sha3_factory::create(_algorithm, unsigned(_round));
         std::size_t hash_size = _ciphertext.size();
 
         std::vector<value_type> hash(hash_size);
@@ -37,13 +38,11 @@ namespace testsuite {
     }
 
     void sha3_test_case::operator()() {
-        std::unique_ptr<sha3_interface> hasher = sha3_factory::create(_algorithm, _round);
-
         _test_vectors_tested = 0;
 
         while (_test_vectors >> *this) {
             _test_vectors_tested++;
-            test(hasher);
+            test();
             if (length() != 0 && length() % 8 == 0) { // unfortunately our sha3 streams are built so that it fits only multiple of 8
                 auto stream = prepare_stream();
                 test_case::test(stream);
@@ -66,11 +65,6 @@ namespace testsuite {
 
         seed_seq_from<pcg32> seeder(seed1);
         return make_stream(_stream_config, seeder, hash_size);
-    }
-
-    void sha3_test_case::update_test_vector(std::vector<value_type> &&plaintext, std::vector<value_type> &&ciphertext) {
-        _plaintext = plaintext;
-        _ciphertext = ciphertext;
     }
 
     std::istream &operator>>(std::istream &input, sha3_test_case &test_case) {

@@ -4,7 +4,7 @@ namespace block {
 
 struct block_cipher;
 
-std::unique_ptr<block_cipher> make_block_cipher(const std::string& name, unsigned round, unsigned block_size, bool encrypt) {
+std::unique_ptr<block_cipher> make_block_cipher(const std::string& name, const std::size_t round, const std::size_t block_size, const bool encrypt) {
     // clang-format off
     if (name == "TEA")  return std::make_unique<tea>(round);
     if (name == "AES")  return std::make_unique<aes>(round);

@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+namespace sha3 {
+
 #define TANGLE_ROTL(x, n)		((x << n) | (x >> (32 - n)))
 
 #define TANGLE_F1(x, y, z)		((x&(y|z)) | (y&z))
@@ -609,3 +611,5 @@ Tangle::Tangle(const int numRounds) {
 		tangleNumRounds1024 = numRounds;
 	}
 }
+
+} // namespace sha3

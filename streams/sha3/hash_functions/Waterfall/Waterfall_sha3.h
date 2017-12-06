@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Waterfall : public sha3_interface {
 
 /*typedef unsigned char BitSequence;		// Data type of input data
@@ -65,5 +67,7 @@ void UpdateStep ( unsigned int input );
 void FinalStep ( unsigned int *pworkin, unsigned int *ppool, unsigned int *pworkout );
 
 };
+
+} // namespace sha3
 
 #endif

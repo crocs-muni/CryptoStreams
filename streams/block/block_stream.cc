@@ -13,7 +13,7 @@ namespace block {
         return osize;
     }
 
-    block_stream::block_stream(const json& config, default_seed_source& seeder, std::size_t osize)
+    block_stream::block_stream(const json& config, default_seed_source& seeder, const std::size_t osize)
         : stream(osize)
         , _round(config.at("round"))
         , _block_size(config.at("block-size"))

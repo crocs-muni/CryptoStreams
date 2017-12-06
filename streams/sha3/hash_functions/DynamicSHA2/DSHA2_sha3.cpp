@@ -1,5 +1,7 @@
 #include "DSHA2_sha3.h"
 
+namespace sha3 {
+
 const unsigned long dsha2_i224[8] =
 {
     0xc1059ed8ul, 0x367cd507ul, 0x3070dd17ul, 0xf70e5939ul,
@@ -1460,3 +1462,5 @@ DSHA2::DSHA2(const int numRounds) {
 		dsha2NumRounds = numRounds;
 	}
 }
+
+} // namespace sha3

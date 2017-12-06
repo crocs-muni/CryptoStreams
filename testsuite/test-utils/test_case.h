@@ -57,14 +57,14 @@ namespace testsuite {
          * @param competition
          * @return filepath
          */
-        static std::string get_test_vectors_filename(std::string& algorithm, std::size_t round, std::string& competition) {
+        static std::string get_test_vectors_filename(const std::string& algorithm, const std::size_t round, const std::string& competition) {
             return "resources/test-resources/" + competition + "/" + algorithm +
                    "/test-vectors-" + std::to_string(round) + ".txt";
         }
 
     public:
 
-        test_case(std::string& algorithm, std::size_t round, std::string&& competition)
+        test_case(const std::string& algorithm, const std::size_t round, const std::string&& competition)
                 : _algorithm(algorithm)
                 , _round(round)
                 , _suite_name(competition)
@@ -79,7 +79,7 @@ namespace testsuite {
          * Generates next output from stream and compare it with expected output
          * @param s stream
          */
-        virtual void test(std::unique_ptr<stream>& s) const {
+        void test(std::unique_ptr<stream>& s) const {
             vec_cview actual = s->next();
             ASSERT_EQ(make_cview(_ciphertext), actual);
         }

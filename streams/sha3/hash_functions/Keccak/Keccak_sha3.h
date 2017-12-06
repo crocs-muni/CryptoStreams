@@ -8,6 +8,8 @@ extern "C" {
 #include "KeccakSponge.h"
 }
 
+namespace sha3 {
+
 class Keccak : public sha3_interface {
 
 /*typedef unsigned char BitSequence;
@@ -28,5 +30,7 @@ int Final(BitSequence *hashval);
 int Hash(int hashbitlen, const BitSequence *data, DataLength databitlen, BitSequence *hashval);
 
 };
+
+} // namespace sha3
 
 #endif

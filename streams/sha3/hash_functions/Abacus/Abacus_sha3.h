@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Abacus : public sha3_interface {
 
 /*typedef unsigned long DataLength;
@@ -60,5 +62,7 @@ int Final(BitSequence *hashval);
 int Hash(int hashbitlen, const BitSequence *data, DataLength databitlen, BitSequence *hashval);
 
 };
+
+} // namespace sha3
 
 #endif

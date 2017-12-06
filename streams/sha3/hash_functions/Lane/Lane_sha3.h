@@ -4,6 +4,8 @@
 #include <string.h>
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Lane : public sha3_interface {
 
 #define LANE_224_P_DEFAULT	6
@@ -39,5 +41,7 @@ void lane256_compress(const unsigned char m[64], unsigned int h[8], const unsign
 void lane512_compress(const unsigned char m[128], unsigned int h[16], const unsigned int ctrh, const unsigned int ctrl);
 
 };
+
+} // namespace sha3
 
 #endif

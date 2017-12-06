@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Hamsi : public sha3_interface {
 
 #define HAMSI_ROUNDS_256		3 /* 224 AND 256 VERSION */
@@ -40,5 +42,7 @@ int  Final(BitSequence* hashval);
 int   Hash(int hashbitlen, const BitSequence *data, DataLength databitlen, BitSequence *hashval);
 
 };
+
+} // namespace sha3
 
 #endif

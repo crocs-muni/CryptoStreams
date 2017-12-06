@@ -6,6 +6,8 @@ extern "C" {
 #include "tables.h"
 }
 
+namespace sha3 {
+
 class Simd : public sha3_interface {
 
 #define SIMD_DEFAULT_ROUNDS	4
@@ -33,5 +35,7 @@ void IncreaseCounter(simdHashState *state, SimdDataLength databitlen);
 int InitIV(simdHashState *state, int hashbitlen, const uint32_t *IV);
 
 };
+
+} // namespace sha3
 
 #endif

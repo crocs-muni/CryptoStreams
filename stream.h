@@ -19,7 +19,7 @@ struct stream {
     std::size_t osize() const { return _osize; }
 
 protected:
-    stream(std::size_t osize)
+    stream(const std::size_t osize)
         : _osize(osize) {}
 
 private:

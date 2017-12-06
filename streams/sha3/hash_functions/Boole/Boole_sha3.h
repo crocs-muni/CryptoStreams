@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Boole : public sha3_interface {
 
 private:
@@ -196,5 +198,7 @@ static int ble_update(hashState *c, const unsigned char *buf, DataLength nbits, 
 
 #endif
 };
+
+} // namespace sha3
 
 #endif

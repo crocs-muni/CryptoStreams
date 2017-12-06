@@ -6,6 +6,8 @@ extern "C" {
 }
 #include "Khichidi_sha3.h"
 
+namespace sha3 {
+
 int Khichidi::Init(int hashbitlen)
 {
 	int ret = KHICHIDI_FAIL;
@@ -396,3 +398,5 @@ int Khichidi::bitcpy(BitSequence *dest, int destoffset, const BitSequence *sourc
 	
 	return retval;
 }
+
+} // namespace sha3

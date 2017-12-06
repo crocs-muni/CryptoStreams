@@ -12,6 +12,8 @@ typedef unsigned __int8 uint8_t;
 #endif
 
 
+namespace sha3 {
+
 class Twister : public sha3_interface {
 
 #define TWISTER_DEFAULT_MINI_ROUNDS_256	9
@@ -112,5 +114,7 @@ void twister_mini_round();
 void twister_output(uint64_t *hashval);
 
 };
+
+} // namespace sha3
 
 #endif

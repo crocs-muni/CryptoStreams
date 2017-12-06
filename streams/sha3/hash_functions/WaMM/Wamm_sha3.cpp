@@ -4,6 +4,8 @@ extern "C" {
 #include "BitArray.h"
 }
 
+namespace sha3 {
+
 const long gc_WaMM_SIZE_MessageMemoryBlock_Bytes = 0x100000;	/* process data in 1 megabyte chunks whenever possible */
       long gc_WaMM_SIZE_MessageMemoryBlock_Bits  = 0x800000;	/* (gc_WaMM_SIZE_MessageMemoryBlock_Bytes * WaMM_BitsPerBitSequence) */
 
@@ -360,3 +362,5 @@ WaMM::WaMM(const int numRounds) {
 		wammNumRounds = numRounds;
 	}
 }
+
+} // namespace sha3

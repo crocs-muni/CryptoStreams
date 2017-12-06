@@ -6,6 +6,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Cheetah : public sha3_interface {
 
 //typedef unsigned char u8;
@@ -48,5 +50,7 @@ void compressCheetah32(const BitSequence *data, unsigned long long blockCounter)
 void lastBlockPermutation();
 
 };
+
+} // namespace sha3
 
 #endif

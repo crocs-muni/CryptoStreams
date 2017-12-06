@@ -6,6 +6,8 @@ extern "C" {
 #include "md6.h"
 }
 
+namespace sha3 {
+
 class MD6 : public sha3_interface {
 
 #define MD6_DEFAULT_ROUNDS	104
@@ -28,5 +30,7 @@ int Final( BitSequence *hashval );
 int Hash( int hashbitlen, const BitSequence *data, DataLength databitlen, BitSequence *hashval );
 
 };
+
+} // namespace sha3
 
 #endif

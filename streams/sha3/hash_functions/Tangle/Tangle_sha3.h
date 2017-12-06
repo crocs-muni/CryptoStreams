@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Tangle : public sha3_interface {
 
 #define TANGLE_DEFAULT_ROUNDS_224	72
@@ -44,5 +46,7 @@ private:
 void FuncTangle(hashState *state,const BitSequence *message); /* Tangle transform function */
 
 };
+
+} // namespace sha3
 
 #endif

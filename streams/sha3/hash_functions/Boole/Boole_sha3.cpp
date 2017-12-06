@@ -2,6 +2,8 @@
 #include <string.h>
 #include "Boole_sha3.h"
 
+namespace sha3 {
+
 #define BOOLE_INITSUM 0x6996c53a	/* initial value of sums */
 
 /* some useful macros -- machine independent little-endian */
@@ -538,3 +540,5 @@ Boole::Boole(const int numRounds) {
 		booleNumRounds = numRounds;
 	}
 }
+
+} // namespace sha3

@@ -4,7 +4,9 @@
 #include "sha3_interface.h"
 #include <algorithm>
 
-static std::size_t compute_hash_size(const std::size_t hash_size, const std::size_t osize) {
+namespace sha3 {
+
+std::size_t compute_hash_size(const std::size_t hash_size, const std::size_t osize) {
     if (hash_size > osize)
         return hash_size;
     if (hash_size % osize)
@@ -13,8 +15,7 @@ static std::size_t compute_hash_size(const std::size_t hash_size, const std::siz
 }
 
 template <typename I>
-static void
-hash_data(sha3_interface& hasher, const I& data, std::uint8_t* hash, const std::size_t hash_size) {
+void hash_data(sha3_interface& hasher, const I& data, std::uint8_t* hash, const std::size_t hash_size) {
     using std::to_string;
 
     int status = hasher.Init(int(hash_size * 8));
@@ -30,7 +31,7 @@ hash_data(sha3_interface& hasher, const I& data, std::uint8_t* hash, const std::
         throw std::runtime_error("cannot finalize the hash (code: " + to_string(status) + ")");
 }
 
-sha3_stream::sha3_stream(const json& config, default_seed_source &seeder, std::size_t osize)
+sha3_stream::sha3_stream(const json& config, default_seed_source &seeder, const std::size_t osize)
     : stream(osize)
     , _round(config.at("round"))
     , _hash_input_size(std::size_t(config.at("hash-bitsize")) / 8)
@@ -59,3 +60,5 @@ vec_cview sha3_stream::next() {
 
     return make_view(_data.cbegin(), osize());
 }
+
+} // namespace sha3

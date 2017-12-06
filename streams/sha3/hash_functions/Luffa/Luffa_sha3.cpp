@@ -1,5 +1,7 @@
 #include "Luffa_sha3.h"
 
+namespace sha3 {
+
 #ifdef HASH_BIG_ENDIAN
 # define LUFFA_BYTES_SWAP32(x) x
 # define LUFFA_BYTES_SWAP64(x) x
@@ -885,3 +887,5 @@ Luffa::Luffa(const int numRounds) {
 		luffaNumRounds = numRounds;
 	}
 }
+
+} // namespace sha3

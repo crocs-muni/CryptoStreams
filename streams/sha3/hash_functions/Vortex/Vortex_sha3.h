@@ -4,6 +4,8 @@
 #include "../../sha3_interface.h"
 #include "int_types.h"
 
+namespace sha3 {
+
 class Vortex : public sha3_interface {
 
 #if 0
@@ -54,5 +56,7 @@ compute_hamming_weight(BitSequence *data, int length);
 #endif
 
 };
+
+} // namespace sha3
 
 #endif

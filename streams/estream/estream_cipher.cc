@@ -33,7 +33,7 @@
 #include "ciphers/zk-crypt/ecrypt-sync.h"
 
 std::unique_ptr<estream_interface> create_estream_cipher(const std::string& name,
-                                                         core::optional<unsigned> round) {
+                                                         const core::optional<unsigned> round) {
   // clang-format off
     if (name == "ABC")              return std::make_unique<ECRYPT_ABC>();
     if (name == "Achterbahn")       return std::make_unique<ECRYPT_Achterbahn>();
@@ -88,7 +88,7 @@ void estream_cipher::setup_iv(std::unique_ptr<stream>& source) {
   _decryptor->ECRYPT_ivsetup(_iv.data());
 }
 
-void estream_cipher::setup_key(std::unique_ptr<stream>& source, std::size_t iv_size) {
+void estream_cipher::setup_key(std::unique_ptr<stream>& source, const std::size_t iv_size) {
   vec_cview data = source->next();
   _key.assign(data.begin(), data.end());
 

@@ -9,6 +9,8 @@
 #include "Twister_sha3.h"
 #include "twister_tables.h"
 
+namespace sha3 {
+
 #define TWISTER_DATA_BLOCKSIZE       512 
 #define TWISTER_DATA_BLOCKSIZE_BYTES  64 
 
@@ -862,3 +864,5 @@ Twister::Twister(const int numRounds) {
 		twisterNumRounds384 = numRounds;
 	}
 }
+
+} // namespace sha3

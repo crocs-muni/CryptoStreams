@@ -4,6 +4,8 @@
 #include <string.h>
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class JH : public sha3_interface {
 
 #define JH_DEFAULT_NUM_ROUNDS	42
@@ -51,5 +53,7 @@ void E8();   /*The bijective function E8, in bitslice form */
 void F8();   /*The compression function F8 */
 
 };
+
+} // namespace sha3
 
 #endif

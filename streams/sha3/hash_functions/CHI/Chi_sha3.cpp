@@ -3,6 +3,8 @@
 
 #include "Chi_sha3.h"
 
+namespace sha3 {
+
 /*
  * Byte i of 64 bit x.  i==0 returns top byte.
  */
@@ -391,3 +393,5 @@ Chi::Chi(const int numRounds) {
 		chiNumRounds512 = numRounds;
 	}
 }
+
+} // namespace sha3

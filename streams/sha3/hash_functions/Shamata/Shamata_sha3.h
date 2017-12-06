@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Shamata : public sha3_interface {
 
 /* The followings are for multiplication over GF(2^8) with the primitive polynomial (x^8 + x^7 + x^5 + x + 1) for AES block */
@@ -52,5 +54,7 @@ int FinalUpdate384_512(hashState *state, const BitSequence *data);
 int ProduceOutput(hashState *state, BitSequence *hashval);
 
 };
+
+} // namespace sha3
 
 #endif

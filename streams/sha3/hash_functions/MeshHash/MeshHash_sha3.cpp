@@ -3,6 +3,8 @@
 
 #include "MeshHash_sha3.h"
 
+namespace sha3 {
+
 #define MESHHASH_ROT(w,b) ((((w) & 0xffffffffffffffffULL) >> (b) ^ (w) << (64 - (b))) & 0xffffffffffffffffULL)
 
 unsigned long long MeshHash::meshhash_sbox(unsigned long long w)
@@ -380,3 +382,5 @@ MeshHash::MeshHash(const int numRounds) {
 		meshHashNumRounds = numRounds * 8;
 	}
 }
+
+} // namespace sha3

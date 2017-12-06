@@ -21,6 +21,8 @@
 #include <string.h> 
 #include "BMW_sha3.h"
 
+namespace sha3 {
+
 #define rotl32(x,n)   (((x) << n) | ((x) >> (32 - n)))
 #define rotr32(x,n)   (((x) >> n) | ((x) << (32 - n)))
 //#define rotl32 _lrotl
@@ -1539,3 +1541,5 @@ BMW::BMW(const int numRounds) {
 		bmwNumRounds = numRounds;
 	}
 }
+
+} // namespace sha3

@@ -1,6 +1,8 @@
 #include "Grostl_sha3.h"
 #include "tables.h"
 
+namespace sha3 {
+
 /* compute one new state column */
 #define GROSTL_COLUMN(x,y,i,c0,c1,c2,c3,c4,c5,c6,c7)				\
   y[i] =								\
@@ -551,3 +553,5 @@ Grostl::Grostl(const int numRounds) {
 		grostlNumRounds1024 = numRounds;
 	}
 }
+
+} // namespace sha3

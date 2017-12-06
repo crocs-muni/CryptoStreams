@@ -5,10 +5,17 @@
 #include <eacirc-core/json.h>
 #include <eacirc-core/random.h>
 
+namespace sha3 {
+
 struct sha3_interface;
 
+std::size_t compute_hash_size(const std::size_t hash_size, const std::size_t osize);
+
+template <typename I> void hash_data(sha3_interface& hasher, const I& data, std::uint8_t* hash, const std::size_t hash_size);
+
+
 struct sha3_stream : stream {
-    sha3_stream(const json& config, default_seed_source& seeder, std::size_t osize);
+    sha3_stream(const json& config, default_seed_source& seeder, const std::size_t osize);
     sha3_stream(sha3_stream&&);
     ~sha3_stream();
 
@@ -24,3 +31,5 @@ private:
 
     std::vector<value_type> _data;
 };
+
+} // namespace sha3

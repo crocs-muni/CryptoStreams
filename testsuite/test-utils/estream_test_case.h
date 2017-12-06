@@ -51,7 +51,7 @@ namespace testsuite {
          */
         const static json base_config;
 
-        estream_test_case(std::string&& algorithm, std::size_t round)
+        estream_test_case(const std::string&& algorithm, const std::size_t round)
                 : test_case(algorithm, round, "estream")
                 , _stream_config(base_config)
                 , _cipher(create_estream_cipher(_algorithm,
@@ -59,9 +59,13 @@ namespace testsuite {
         {}
 
         /** Setter for single test vector **/
-        void update_test_vector(std::vector<value_type> &&plaintext,
-                                std::vector<value_type> &&key,
-                                std::vector<value_type> &&iv);
+        void update_test_vector(const std::vector<value_type> &&plaintext,
+                                const std::vector<value_type> &&key,
+                                const std::vector<value_type> &&iv) {
+            _plaintext = plaintext;
+            _key = key;
+            _iv = iv;
+        }
 
         /**
          * Loads ciphertext from stream, stream must be in separate line and

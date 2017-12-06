@@ -19,7 +19,7 @@ namespace testsuite {
 
         encryptor->keysetup(_key.data(), _key.size());
         if (_load_iv)
-            encryptor->keysetup(_iv.data(), _iv.size());
+            encryptor->ivsetup(_iv.data(), _iv.size());
 
         std::vector<value_type> output_ciphertext(_ciphertext.size());
         encryptor->encrypt(_plaintext.data(), output_ciphertext.data());
@@ -33,7 +33,7 @@ namespace testsuite {
 
         decryptor->keysetup(_key.data(), _key.size());
         if (_load_iv)
-            decryptor->keysetup(_iv.data(), _iv.size());
+            decryptor->ivsetup(_iv.data(), _iv.size());
 
         std::vector<value_type> plain(_plaintext.size());
         decryptor->decrypt(ciphertext.data(), plain.data());

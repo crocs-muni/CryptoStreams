@@ -94,7 +94,7 @@ vec_cview column_fixed_position_stream::next() {
 }
 
 std::unique_ptr<stream>
-make_stream(const json& config, default_seed_source& seeder, std::size_t osize = 0) {
+make_stream(const json& config, default_seed_source& seeder, const std::size_t osize = 0) {
     const std::string type = config.at("type");
 
     if (osize == 0)
@@ -137,7 +137,7 @@ make_stream(const json& config, default_seed_source& seeder, std::size_t osize =
 #endif
 #ifdef BUILD_sha3
     else if (type == "sha3")
-        return std::make_unique<sha3_stream>(config, seeder, osize);
+        return std::make_unique<sha3::sha3_stream>(config, seeder, osize);
 #endif
 #ifdef BUILD_block
     else if (type == "block")

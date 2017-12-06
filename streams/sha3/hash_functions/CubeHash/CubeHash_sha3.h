@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Cubehash : public sha3_interface {
 
 //NASTAVENIE RUND:
@@ -38,5 +40,7 @@ private:
 void transform();
 
 };
+
+} // namespace sha3
 
 #endif

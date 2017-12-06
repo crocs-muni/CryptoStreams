@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Edon : public sha3_interface {
 
 // General SHA-3 definitions
@@ -58,5 +60,7 @@ int Final(BitSequence *hashval);
 int Hash(int hashbitlen, const BitSequence *data, DataLength databitlen, BitSequence *hashval);
 
 };
+
+} // namespace sha3
 
 #endif

@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+namespace sha3 {
+
 using BitSequence = unsigned char;
 using DataLength = unsigned long long;
 
@@ -15,3 +17,5 @@ struct sha3_interface {
     virtual int
     Hash(int hash_bitsize, const BitSequence* data, DataLength data_bitsize, BitSequence* hash) = 0;
 };
+
+} // namespace sha3

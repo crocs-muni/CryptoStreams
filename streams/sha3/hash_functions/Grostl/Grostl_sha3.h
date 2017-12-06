@@ -7,6 +7,8 @@
 #include "brg_endian.h"
 #include "brg_types.h"
 
+namespace sha3 {
+
 class Grostl : public sha3_interface {
 
 /* some sizes (number of bytes) */
@@ -74,5 +76,7 @@ void Transform(hashState *ctx, const grostl_u8 *input, int msglen, const int rou
 void OutputTransformation(hashState *ctx, const int rounds512, const int rounds1024);
 
 };
+
+} // namespace sha3
 
 #endif

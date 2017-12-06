@@ -6,6 +6,8 @@ extern "C" {
 #include "KeccakF-1600-opt32-settings.h"
 }
 
+namespace sha3 {
+
 Keccak::Keccak(const int numRounds) {
     if (numRounds <= 0 || numRounds > KECCAK_FULL_ROUNDS){
         throw std::out_of_range("Valid numRounds range for Keccak is <1-24>");
@@ -84,3 +86,5 @@ int Keccak::Hash(int hashbitlen, const BitSequence *data, DataLength databitlen,
     result = Keccak::Final(hashval);
     return result;
 }
+
+} // namespace sha3

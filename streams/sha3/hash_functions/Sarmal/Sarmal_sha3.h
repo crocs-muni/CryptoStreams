@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Sarmal : public sha3_interface {
 
 #define SARMAL_DEFAULT_ROUNDS_256	16
@@ -47,5 +49,7 @@ void HashBlock(hashState *state);
 void HashPad(hashState *state);
 
 };
+
+} // namespace sha3
 
 #endif

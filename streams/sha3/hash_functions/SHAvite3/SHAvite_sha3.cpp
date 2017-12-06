@@ -5,6 +5,8 @@ extern "C" {
 #include "SHAvite3-512.h"
 }
 
+namespace sha3 {
+
 u32 SHAVITE_IV_224[8] =  {0xC4C67795, 0xC0B1817F, 0xEAD88924, 0x1ABB1BB0,
 		  0xE0C29152, 0xBDE046BA, 0xAEEECF99, 0x58D509D8};
 
@@ -406,3 +408,5 @@ SHAvite::SHAvite(const int numRounds) {
 		shaViteNumRounds512 = numRounds;
 	}
 }
+
+} // namespace sha3

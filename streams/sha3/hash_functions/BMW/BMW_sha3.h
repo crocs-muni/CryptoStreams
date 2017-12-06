@@ -18,6 +18,8 @@ typedef u_int32_t bmw_u_int32_t;
 typedef u_int64_t bmw_u_int64_t;
 #endif
 
+namespace sha3 {
+
 class BMW : public sha3_interface {
 
 // General SHA-3 definitions
@@ -96,5 +98,7 @@ int Final(BitSequence *hashval);
 int Hash(int hashbitlen, const BitSequence *data, DataLength databitlen, BitSequence *hashval);
 
 };
+
+} // namespace sha3
 
 #endif
