@@ -8,12 +8,12 @@
 #include <vector>
 
 using value_type = std::uint8_t;
-using vec_view = view<std::vector<value_type>::const_iterator>;
+using vec_cview = view<std::vector<value_type>::const_iterator>;
 
 struct stream {
     virtual ~stream() = default;
 
-    virtual vec_view next() = 0;
+    virtual vec_cview next() = 0;
 
     std::size_t osize() const { return _osize; }
 

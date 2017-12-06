@@ -9,7 +9,7 @@
 
 struct estream_interface;
 
-static std::unique_ptr<estream_interface> create_cipher(const std::string& name, core::optional<unsigned> round);
+std::unique_ptr<estream_interface> create_estream_cipher(const std::string& name, core::optional<unsigned> round);
 
 struct estream_cipher {
   estream_cipher(const std::string& name, core::optional<unsigned> round, std::size_t iv_size, std::size_t key_size);

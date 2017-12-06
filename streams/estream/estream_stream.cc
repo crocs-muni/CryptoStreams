@@ -23,7 +23,6 @@ static std::size_t compute_vector_size(const std::size_t block_size, const std::
 
 static std::unique_ptr<stream> create_iv_stream(const json& iv_config, default_seed_source& seeder, std::size_t osize, const std::string& generator) {
     // clang-format off
-    const unsigned int i = 1;
     if (iv_config.is_object())     return make_stream(iv_config, seeder, osize);
     if (iv_config == "zeros")      return std::make_unique<false_stream>(osize);
     if (iv_config == "ones")       return std::make_unique<true_stream >(osize); // Should be stream of 0x01u not 0xFF
@@ -68,13 +67,13 @@ estream_stream::estream_stream(const json& config, default_seed_source& seeder, 
   }
 }
 
-vec_view estream_stream::next() {
+vec_cview estream_stream::next() {
   if (_initfreq == estream_init_frequency::EVERY_VECTOR) {
       _algorithm.setup_key(_key_stream, _iv_stream->osize());
       _algorithm.setup_iv(_iv_stream);
   }
   for (auto beg = _plaintext.begin(); beg != _plaintext.end(); beg += _block_size) {
-    vec_view view = _source->next();
+    vec_cview view = _source->next();
 
     std::move(view.begin(), view.end(), beg);
   }

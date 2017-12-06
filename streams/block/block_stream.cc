@@ -37,14 +37,14 @@ namespace block {
         _encryptor->ivsetup(iv_view.data(), iv_view.size());
         */
 
-        vec_view key_view = _key->next();
+        vec_cview key_view = _key->next();
         _encryptor->keysetup(key_view.data(), std::uint32_t(key_view.size()));
     }
 
     block_stream::block_stream(block_stream&&) = default;
     block_stream::~block_stream() = default;
 
-    vec_view block_stream::next() {
+    vec_cview block_stream::next() {
 
         // TODO: reinit key for every vector: does it make sense?
         // if (_b_reinit_every_tv) {
@@ -53,7 +53,7 @@ namespace block {
         // }
 
         for (auto beg = _data.begin(); beg != _data.end(); beg += _block_size) {
-            vec_view view = _source->next();
+            vec_cview view = _source->next();
 
             _encryptor->encrypt(view.data(), &(*beg));
         }

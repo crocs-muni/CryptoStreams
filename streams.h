@@ -32,7 +32,7 @@ namespace _impl {
             std::fill_n(_data.begin(), osize, value);
         }
 
-        vec_view next() override {
+        vec_cview next() override {
             return make_cview(_data);
         }
 
@@ -48,7 +48,7 @@ namespace _impl {
                 , _rng(std::forward<Seeder>(seeder))
                 , _data(osize) {}
 
-        vec_view next() override {
+        vec_cview next() override {
             std::generate_n(_data.data(), osize(), [this]() {
                 return std::uniform_int_distribution<std::uint8_t>()(_rng);
             });
@@ -68,7 +68,7 @@ namespace _impl {
 struct file_stream : stream {
     file_stream(const json& config, const std::size_t osize);
 
-    vec_view next() override;
+    vec_cview next() override;
 
 private:
     const std::string _path;
@@ -82,7 +82,7 @@ private:
 struct counter : stream {
     counter(const std::size_t osize);
 
-    vec_view next() override;
+    vec_cview next() override;
 
 private:
     std::vector<value_type> _data;
@@ -105,7 +105,7 @@ struct sac_stream : stream {
                     "Stream's osize has to be even (so it contains 2 vectors of same legth).");
     }
 
-    vec_view next() override {
+    vec_cview next() override {
         std::generate_n(_data.data(), osize() / 2, [this]() {
             return std::uniform_int_distribution<std::uint8_t>()(_rng);
         });
@@ -140,7 +140,7 @@ struct sac_fixed_pos_stream : stream {
 
     }
 
-    vec_view next() override {
+    vec_cview next() override {
         std::generate_n(_data.data(), osize() / 2, [this]() {
             return std::uniform_int_distribution<std::uint8_t>()(_rng);
         });
@@ -167,7 +167,7 @@ struct sac_2d_all_pos : stream {
             , _flip_bit_position(0)
     {}
 
-    vec_view next() override {
+    vec_cview next() override {
         if (_flip_bit_position == 0) {
             std::generate_n(_data.data(), osize(), [this]() {
                 return std::uniform_int_distribution<std::uint8_t>()(_rng);
@@ -195,7 +195,7 @@ private:
 struct column_stream : stream {
     column_stream(const json& config, default_seed_source& seeder, const std::size_t osize);
 
-    vec_view next() override;
+    vec_cview next() override;
 
 private:
     std::size_t _internal_bit_size;
@@ -207,7 +207,7 @@ private:
 struct column_fixed_position_stream : stream {
     column_fixed_position_stream(const json& config, default_seed_source& seeder, const std::size_t osize, const std::size_t position);
 
-    vec_view next() override;
+    vec_cview next() override;
 
 private:
     std::vector<value_type> _data; // change to array (maxe osize() constexpression), or init it to given size

@@ -12,7 +12,7 @@ struct sha3_stream : stream {
     sha3_stream(sha3_stream&&);
     ~sha3_stream();
 
-    vec_view next() override;
+    vec_cview next() override;
 
 private:
     const std::size_t _round;

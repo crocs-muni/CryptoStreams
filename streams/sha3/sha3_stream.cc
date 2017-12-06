@@ -49,10 +49,10 @@ sha3_stream::sha3_stream(const json& config, default_seed_source &seeder, std::s
 sha3_stream::sha3_stream(sha3_stream&&) = default;
 sha3_stream::~sha3_stream() = default;
 
-vec_view sha3_stream::next() {
+vec_cview sha3_stream::next() {
     auto data = _data.data();
     for (std::size_t i = 0; i < _data.size(); i += _hash_input_size) {
-        vec_view view = _source->next();
+        vec_cview view = _source->next();
 
         hash_data(*_hasher, view, &data[i], _hash_input_size);
     }

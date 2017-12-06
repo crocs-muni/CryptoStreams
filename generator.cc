@@ -45,7 +45,7 @@ void generator::generate() {
     std::ofstream o_file(_o_file_name, std::ios::binary);
 
     for (std::size_t i = 0; i < _tv_count; ++i) {
-        vec_view n = _stream_a->next();
+        vec_cview n = _stream_a->next();
         for (auto o : n)
             o_file << o;
     }
