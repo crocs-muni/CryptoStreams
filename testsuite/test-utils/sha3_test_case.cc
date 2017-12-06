@@ -15,18 +15,25 @@ namespace testsuite {
     };
 
     void sha3_test_case::test(std::unique_ptr<sha3_interface> &hasher) const {
-        std::size_t hash_size = std::get<1>(_ciphertext[0]).size();
+        std::size_t hash_size = _ciphertext.size();
 
-        unsigned char hash[hash_size/2];
-        hasher->Hash(hash_size * 4, (unsigned char*) _plaintext.data(), _length, hash);
+        std::vector<value_type> hash(hash_size);
 
-        std::stringstream ss;
+        using std::to_string;
 
-        for (auto byte : hash) {
-            ss << std::setfill('0') << std::setw(2) << std::hex << (int) byte;
-        }
+        int status = hasher->Init(int(hash_size * 8));
+        if (status != 0)
+            throw std::runtime_error("cannot initialize hash (code: " + to_string(status) + ")");
 
-        compare_ciphertext(ss.str());
+        status = hasher->Update(_plaintext.data(), _length);
+        if (status != 0)
+            throw std::runtime_error("cannot update the hash (code: " + to_string(status) + ")");
+
+        status = hasher->Final(hash.data());
+        if (status != 0)
+            throw std::runtime_error("cannot finalize the hash (code: " + to_string(status) + ")");
+
+        ASSERT_EQ(hash, _ciphertext);
     }
 
     void sha3_test_case::operator()() {
@@ -38,11 +45,10 @@ namespace testsuite {
             _test_vectors_tested++;
             test(hasher);
             if (length() != 0 && length() % 8 == 0) { // unfortunately our sha3 streams are built so that it fits only multiple of 8
-                test_case::test(prepare_stream());
+                auto stream = prepare_stream();
+                test_case::test(stream);
             }
         }
-
-
 
         std::cout << "Number of test vectors tested for function: \"" << _algorithm << "\"[" << _round << "] is: " << _test_vectors_tested << std::endl;
     }
@@ -51,31 +57,32 @@ namespace testsuite {
         return _length;
     }
 
-    const std::string& sha3_test_case::input() const {
-        return _plaintext;
-    }
-
     std::unique_ptr<stream> sha3_test_case::prepare_stream() {
-        std::size_t hash_size =  std::get<1>(_ciphertext[0]).size();
+        std::size_t hash_size =  _ciphertext.size();
         _stream_config["algorithm"] = _algorithm;
         _stream_config["round"] = _round;
-        _stream_config["source"]["outputs"] = {input()};
-        _stream_config["hash-bitsize"] = hash_size * 4;
+        _stream_config["source"]["outputs"] = _plaintext;
+        _stream_config["hash-bitsize"] = hash_size * 8;
 
         seed_seq_from<pcg32> seeder(seed1);
-        return make_stream(_stream_config, seeder, hash_size / 2);
+        return make_stream(_stream_config, seeder, hash_size);
+    }
+
+    void sha3_test_case::update_test_vector(std::vector<value_type> &&plaintext, std::vector<value_type> &&ciphertext) {
+        _plaintext = plaintext;
+        _ciphertext = ciphertext;
     }
 
     std::istream &operator>>(std::istream &input, sha3_test_case &test_case) {
-        test_case._length = 0;
-        test_case._plaintext.clear();
+        std::string str_plaintext;
+        std::string str_hash;
 
         input >> test_case._length;
-        input >> test_case._plaintext;
-        input.get();
-        test_case.load_ciphertext(input);
+        input >> str_plaintext;
+        input >> str_hash;
 
-        hex_string2string(test_case._plaintext); //
+        test_case.update_test_vector(hex_string_to_binary(str_plaintext),
+                                     hex_string_to_binary(str_hash));
 
         return input;
     }
