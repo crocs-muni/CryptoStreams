@@ -75,10 +75,11 @@ else()
             testsuite/stream_tests.cc
             testsuite/sha3_streams_tests.cc
             testsuite/estream_streams_tests.cc
+            testsuite/block_streams_tests.cc
             testsuite/test-utils/test_streams
             testsuite/test-utils/sha3_test_case
             testsuite/test-utils/estream_test_case
-            testsuite/test-utils/estream_test_case
+            testsuite/test-utils/block_test_case
             testsuite/test-utils/common_functions.h
             testsuite/test-utils/test_case.h)
 

@@ -2,7 +2,6 @@
 #define EACIRC_STREAMS_SHA3_TEST_CASE_H
 
 #include <streams/sha3/sha3_interface.h>
-#include <eacirc-core/seed.h>
 #include <streams/sha3/sha3_factory.h>
 #include "test_case.h"
 
@@ -26,7 +25,6 @@ namespace testsuite {
         const static json base_config;
 
         const size_t& length() const;
-        const std::string& input() const;
 
         sha3_test_case(std::string&& algorithm, std::size_t round)
                 : test_case(algorithm, round, "sha3")
@@ -78,6 +76,8 @@ namespace testsuite {
          */
         friend std::istream &operator>>(std::istream &input, sha3_test_case &test_case);
 
+        /** Setter for single test vector **/
+        void update_test_vector(std::vector<value_type> &&plaintext, std::vector<value_type> &&ciphertext);
     };
 }
 
