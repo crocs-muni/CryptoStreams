@@ -9,7 +9,7 @@
 #include <sstream>
 #include <iomanip>
 
-static std::ifstream open_config_file(std::string path) {
+static std::ifstream open_config_file(const std::string path) {
     std::ifstream file(path);
     if (!file.is_open())
         throw std::runtime_error("can't open config file " + path);
@@ -26,7 +26,7 @@ static std::string out_name(json const& config) {
     return ss.str();
 }
 
-generator::generator(std::string config)
+generator::generator(const std::string config)
     : generator(open_config_file(config)) {}
 
 generator::generator(json const& config)
