@@ -20,15 +20,16 @@ namespace block {
         , _source(make_stream(config.at("plaintext"), seeder, _block_size))
         , _iv(make_stream(config.at("iv"), seeder, _block_size))
         , _key(make_stream(config.at("key"), seeder, unsigned(config.at("key-size"))))
-        , _encryptor(make_block_cipher(config.at("algorithm"), unsigned(_round), unsigned(_block_size), true))
+        , _encryptor(make_block_cipher(config.at("algorithm"), unsigned(_round),
+                                       unsigned(_block_size), unsigned(config.at("key-size")), true))
         , _data(compute_vector_size(_block_size, osize))
     {
         logger::info() << "stream source is block cipher: " << config.at("algorithm") << std::endl;
 
         if (int(config.at("round")) < 0)
             throw std::runtime_error("The least number of rounds is 0.");
-        if (int(config.at("block-size")) < 8)
-            throw std::runtime_error("The block size is at least 8 bytes");
+        if (int(config.at("block-size")) < 4)
+            throw std::runtime_error("The block size is at least 4 bytes");
         if (osize == 0)
             throw std::runtime_error("The output size has to be at least 1 byte");
 

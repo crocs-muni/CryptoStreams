@@ -9,6 +9,18 @@ TEST(blowfish, test_vectors) {
     testsuite::block_test_case("BLOWFISH", 16)();
 }
 
+TEST(simon, test_vectors) {
+    testsuite::block_test_case("SIMON", 32)();
+    testsuite::block_test_case("SIMON", 36)();
+    testsuite::block_test_case("SIMON", 42)();
+    testsuite::block_test_case("SIMON", 44)();
+    testsuite::block_test_case("SIMON", 52)();
+    testsuite::block_test_case("SIMON", 54)();
+    testsuite::block_test_case("SIMON", 68)();
+    testsuite::block_test_case("SIMON", 69)();
+    testsuite::block_test_case("SIMON", 72)();
+}
+
 TEST(single_des, test_vectors) {
     testsuite::block_test_case("SINGLE-DES", 16)();
 }
