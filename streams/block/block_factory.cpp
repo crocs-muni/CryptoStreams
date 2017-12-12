@@ -14,6 +14,7 @@ std::unique_ptr<block_cipher> make_block_cipher(const std::string& name,
     if (name == "AES")  return std::make_unique<aes>(round);
     if (name == "RC4")  return std::make_unique<rc4>(round, block_size);
     if (name == "SIMON")  return std::make_unique<simon>(round, block_size, key_size);
+    if (name == "SPECK")  return std::make_unique<speck>(round, block_size, key_size);
     if (name == "SINGLE-DES")  return std::make_unique<single_des>(round, encrypt);
     if (name == "TRIPLE-DES")  return std::make_unique<triple_des>(round, encrypt);
     if (name == "BLOWFISH") return std::make_unique<blowfish_factory>(round);
