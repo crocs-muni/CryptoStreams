@@ -96,6 +96,11 @@ void simon::decryptRounds(uint64_t* left, uint64_t* right, int rounds){
     return 0;
 }*/
 
+/**
+ * @brief simon::test_vectors is not used in EAC implementation (but can be used in future
+ *      and it was the source of our test vectors implementation)
+ * @return
+ */
 int simon::test_vectors(){
     uint64_t R, L, ENC_R, ENC_L;
 

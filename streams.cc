@@ -29,7 +29,7 @@ vec_cview counter::next() {
     for (value_type& value : _data) {
         if (value != std::numeric_limits<value_type>::max()) {
             ++value;
-            continue;
+            break;
         }
         value = std::numeric_limits<value_type>::min();
     }
