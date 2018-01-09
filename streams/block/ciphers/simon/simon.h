@@ -27,7 +27,6 @@
 #include <vector>
 
 #include "../../block_cipher.h"
-#include "simon.h"
 
 namespace block {
 
