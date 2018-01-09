@@ -4,6 +4,8 @@
 #include <string.h>
 #include <time.h>
 
+namespace sha3 {
+
 //S-box transform.
 //This is inv(x) xor 3
 
@@ -456,3 +458,5 @@ void DCH::doTransform(BitSequence *data){
   memcpy(data, transformed, DCH_BLOCK_LENGTH_BYTES);
   free(transformed);
 }
+
+} // namespace sha3

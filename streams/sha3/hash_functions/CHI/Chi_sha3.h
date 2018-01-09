@@ -6,6 +6,8 @@ extern "C" {
 #include "chi.h"
 }
 
+namespace sha3 {
+
 class Chi : public sha3_interface {
 
 private:
@@ -27,5 +29,7 @@ void hash(int final);
 INLINE int inc_total_len();
 
 };
+
+} // namespace sha3
 
 #endif

@@ -19,6 +19,8 @@ typedef unsigned long shabal_word32;
 #endif
 #endif
 
+namespace sha3 {
+
 class Shabal : public sha3_interface {
 
 #define SHABAL_BLOCK_SIZE   16
@@ -67,7 +69,7 @@ typedef enum {
  */
 typedef struct {
 	BitSequence buffer[SHABAL_BLOCK_SIZE * 4];
-	size_t buffer_ptr;
+    std::size_t buffer_ptr;
 	unsigned last_byte_significant_bits;
 	int hashbitlen;
 	shabal_word32 A[SHABAL_PARAM_R];
@@ -87,5 +89,7 @@ int Hash(int hashbitlen, const BitSequence *data,
 	DataLength databitlen, BitSequence *hashval);
 
 };
+
+} // namespace sha3
 
 #endif

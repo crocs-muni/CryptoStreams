@@ -5,6 +5,8 @@
 #include "../../sha3_interface.h"
 #include "brg_types.h"
 
+namespace sha3 {
+
 class Nasha : public sha3_interface {
 
 #define Nasha_64BIT
@@ -107,5 +109,7 @@ int Nasha512_Hash(int hashbitlen, const BitSequence *data, DataLength databitlen
 #endif
 
 };
+
+} // namespace sha3
 
 #endif

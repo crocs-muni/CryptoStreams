@@ -10,6 +10,8 @@ extern "C" {
 #include "Crunch_sha3.h"
 }
 
+namespace sha3 {
+
 Crunch::Crunch(const int numRounds) {
 	if (numRounds == -1) {
 		crunchNumRounds224 = CRUNCH224_NBROUND;
@@ -92,3 +94,5 @@ int Crunch::Hash(int hashbitlen,const BitSequence *data,DataLength databitlen,Bi
 			return CRUNCH_BAD_HASHBITLEN;
 	}
 }
+
+} // namespace sha3

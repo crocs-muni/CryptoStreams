@@ -8,9 +8,9 @@
 enum class estream_init_frequency { ONLY_ONCE, EVERY_VECTOR };
 
 struct estream_stream : stream {
-    estream_stream(const json& config, default_seed_source& seeder, std::size_t osize);
+    estream_stream(const json& config, default_seed_source& seeder, const std::size_t osize);
 
-    vec_view next() override;
+    vec_cview next() override;
 
 private:
     const estream_init_frequency _initfreq;

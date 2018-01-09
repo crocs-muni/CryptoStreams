@@ -4,6 +4,8 @@ extern "C" {
 }
 #include "Skein_sha3.h"/* get the  AHS  API definitions   */
 
+namespace sha3 {
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* select the context size and init the context */
 int Skein::Init(int hashbitlen)
@@ -101,3 +103,6 @@ int Skein::Hash(int hashbitlen, const BitSequence *data, /* all-in-one call */
         }
     return r;
     }
+
+
+} // namespace sha3

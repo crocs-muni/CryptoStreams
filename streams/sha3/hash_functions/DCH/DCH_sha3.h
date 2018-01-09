@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class DCH : public sha3_interface {
 
 //Primitive polynomial over GF(2^8) to use
@@ -55,5 +57,7 @@ void doSBox(BitSequence *data);
 void doTransform(BitSequence *data);
 
 };
+
+} // namespace sha3
 
 #endif

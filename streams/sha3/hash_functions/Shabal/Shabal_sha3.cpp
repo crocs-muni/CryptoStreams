@@ -2,6 +2,8 @@
 #include <string.h>
 #include "Shabal_sha3.h"
 
+namespace sha3 {
+
 /*
  * Part of this code was automatically generated (the part between
  * the "BEGIN" and "END" markers). See optgen.c for details.
@@ -740,3 +742,5 @@ Shabal::Hash(int hashbitlen, const BitSequence *data,
 		return r;
 	return Shabal::Final(hashval);
 }
+
+} // namespace sha3

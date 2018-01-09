@@ -1,5 +1,7 @@
 #include "Lane_sha3.h"
 
+namespace sha3 {
+
 #define LANE_T8(x) ((x) & 0xff)
 #define LANE_B0(x) (LANE_T8((x)      ))
 #define LANE_B1(x) (LANE_T8((x) >>  8))
@@ -2204,3 +2206,5 @@ Lane::Lane(const int numRounds) {
 		numRoundsLane384Q = numRounds;
 	}*/
 }
+
+} // namespace sha3

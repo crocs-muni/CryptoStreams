@@ -32,8 +32,8 @@
 // #include "ciphers/yamb/ecrypt-sync.h"        // stopped working after IDE update
 #include "ciphers/zk-crypt/ecrypt-sync.h"
 
-static std::unique_ptr<estream_interface> create_cipher(const std::string& name,
-                                                        core::optional<unsigned> round) {
+std::unique_ptr<estream_interface> create_estream_cipher(const std::string& name,
+                                                         const core::optional<unsigned> round) {
   // clang-format off
     if (name == "ABC")              return std::make_unique<ECRYPT_ABC>();
     if (name == "Achterbahn")       return std::make_unique<ECRYPT_Achterbahn>();
@@ -71,8 +71,8 @@ static std::unique_ptr<estream_interface> create_cipher(const std::string& name,
 estream_cipher::estream_cipher(const std::string& name, core::optional<unsigned> round, std::size_t iv_size, std::size_t key_size)
     : _iv(iv_size)
     , _key(key_size)
-    , _encryptor(create_cipher(name, round))
-    , _decryptor(create_cipher(name, round)) {
+    , _encryptor(create_estream_cipher(name, round))
+    , _decryptor(create_estream_cipher(name, round)) {
     _encryptor->ECRYPT_init();
     _decryptor->ECRYPT_init();
 }
@@ -81,15 +81,15 @@ estream_cipher::estream_cipher(estream_cipher&&) = default;
 estream_cipher::~estream_cipher() = default;
 
 void estream_cipher::setup_iv(std::unique_ptr<stream>& source) {
-  vec_view  data = source->next();
+  vec_cview  data = source->next();
   _iv.assign(data.begin(), data.end());
 
   _encryptor->ECRYPT_ivsetup(_iv.data());
   _decryptor->ECRYPT_ivsetup(_iv.data());
 }
 
-void estream_cipher::setup_key(std::unique_ptr<stream>& source, std::size_t iv_size) {
-  vec_view data = source->next();
+void estream_cipher::setup_key(std::unique_ptr<stream>& source, const std::size_t iv_size) {
+  vec_cview data = source->next();
   _key.assign(data.begin(), data.end());
 
   _encryptor->ECRYPT_keysetup(_key.data(), 8 * source->osize(), 8 * iv_size);

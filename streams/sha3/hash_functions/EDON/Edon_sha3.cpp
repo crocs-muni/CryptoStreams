@@ -1,6 +1,8 @@
 #include <string.h> 
 #include "Edon_sha3.h"
 
+namespace sha3 {
+
 #define edon_rotl32(x,n)   (((x) << n) | ((x) >> (32 - n)))
 #define edon_rotr32(x,n)   (((x) >> n) | ((x) << (32 - n)))
 
@@ -649,3 +651,5 @@ int Edon::Hash(int hashbitlen, const BitSequence *data, DataLength databitlen, B
 	qq = Edon::Final(hashval);
 	return(qq);
 }
+
+} // namespace sha3

@@ -6,6 +6,8 @@ extern "C" {
 }
 #include "Hamsi_sha3.h"
 
+namespace sha3 {
+
 Hamsi::Hamsi(const int numRounds) {
 	if (numRounds == -1) {
 		hamsiNumRounds256 = HAMSI_ROUNDS_256;
@@ -150,3 +152,5 @@ int Hamsi::Hash(int hashbitlen, const BitSequence* data, DataLength databitlen, 
     if (ret) return ret;
     else return Hamsi::Final(hashval);
 }
+
+} // namespace sha3

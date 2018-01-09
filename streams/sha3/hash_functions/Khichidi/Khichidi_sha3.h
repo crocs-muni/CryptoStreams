@@ -4,6 +4,8 @@
 #include "../../sha3_interface.h"
 #include "common.h"
 
+namespace sha3 {
+
 class Khichidi : public sha3_interface {
 
 	typedef struct
@@ -47,5 +49,7 @@ private:
 	void convertLength(KHICHIDI_WORD *in, BitSequence *khichidi_out);
 
 };
+
+} // namespace sha3
 
 #endif

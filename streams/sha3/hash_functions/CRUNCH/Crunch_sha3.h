@@ -4,6 +4,8 @@
 #include "../../sha3_interface.h"
 #include "crunch_type.h"
 
+namespace sha3 {
+
 class Crunch : public sha3_interface {
 
 private:
@@ -21,5 +23,7 @@ int Update(const BitSequence *data, DataLength databitlen);
 int Hash(int hashbitlen, const BitSequence *data, DataLength databitlen, BitSequence *hashval);
 
 };
+
+} // namespace sha3
 
 #endif

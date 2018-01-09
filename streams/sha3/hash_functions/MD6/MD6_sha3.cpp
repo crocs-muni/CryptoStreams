@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "MD6_sha3.h"
 
+namespace sha3 {
+
 int MD6::Init( int hashbitlen )
 { int err;
   if ((err = md6_init( (md6_state *) &mdsixState, 
@@ -41,3 +43,5 @@ MD6::MD6(const int numRounds) {
 		mdsixNumRounds = numRounds;
 	}
 }
+
+} // namespace sha3

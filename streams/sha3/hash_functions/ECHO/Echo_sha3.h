@@ -4,6 +4,8 @@
 #include <string.h>
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Echo : public sha3_interface {
 
 #define ECHO_NUM_ROUNDS_LOWER 8
@@ -74,5 +76,7 @@ T4[x] = S [x].[01, 01, 01, 01];
 */
 
 };
+
+} // namespace sha3
 
 #endif

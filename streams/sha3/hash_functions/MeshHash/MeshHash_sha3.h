@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class MeshHash : public sha3_interface {
 
 #define MESHHASH_DEFAULT_ROUNDS	256 /* real number of rounds is 256/8 */
@@ -71,5 +73,7 @@ static void final_block_round(hashState *state);
 static void final_rounds(hashState *state);
 
 };
+
+} // namespace sha3
 
 #endif

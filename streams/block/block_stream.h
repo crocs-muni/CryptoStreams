@@ -12,11 +12,11 @@ namespace block {
     struct block_stream : public stream
     {
     public:
-        block_stream(const json& config, default_seed_source &seeder, std::size_t osize);
+        block_stream(const json& config, default_seed_source &seeder, const std::size_t osize);
         block_stream(block_stream&&);
         ~block_stream();
 
-        vec_view next() override;
+        vec_cview next() override;
 
     private:
         const std::size_t _round;

@@ -1,6 +1,8 @@
 #include "StreamHash_sha3.h"
 #include "sbox32.h"
 
+namespace sha3 {
+
 int StreamHash::Init(int hashbitlen) {
     int i;
 
@@ -251,3 +253,5 @@ int StreamHash::Hash(int hashbitlen, const BitSequence *data,
         (int)StreamHash::Update(data, databitlen) ||
         (int)StreamHash::Final(hashval));
 }
+
+} // namespace sha3

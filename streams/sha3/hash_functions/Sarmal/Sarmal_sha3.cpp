@@ -16,6 +16,8 @@
 	(x) = ((x)>>32)|((x)<<32)
 #endif /* SARMAL_BSWAP */
 
+namespace sha3 {
+
 /* get byte macro */
 #define SARMAL_GET_BYTE(x,y) (unsigned char)((x)>>(8*(y)))
 
@@ -1034,3 +1036,5 @@ Sarmal::Sarmal(const int numRounds) {
 		sarmalNumRounds384 = numRounds;
 	}
 }
+
+} // namespace sha3

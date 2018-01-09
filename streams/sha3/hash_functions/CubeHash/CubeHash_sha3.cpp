@@ -1,5 +1,7 @@
 #include "CubeHash_sha3.h"
 
+namespace sha3 {
+
 #define CUBEHASH_ROTATE(a,b) (((a) << (b)) | ((a) >> (32 - b)))
 
 Cubehash::Cubehash(const int numRounds) {
@@ -102,3 +104,5 @@ int Cubehash::Hash(int hashbitlen, const BitSequence *data,
   Cubehash::Update(data,databitlen);
   return Cubehash::Final(hashval);
 }
+
+} // namespace sha3

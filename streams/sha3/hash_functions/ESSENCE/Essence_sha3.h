@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Essence : public sha3_interface {
 
 //NASTAVENIE RUND:
@@ -77,5 +79,7 @@ int Final_512(BitSequence *hashval);
 int Final_256(BitSequence *hashval);
 
 };
+
+} // namespace sha3
 
 #endif

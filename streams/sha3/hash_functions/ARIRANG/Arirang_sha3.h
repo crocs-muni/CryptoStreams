@@ -2,9 +2,12 @@
 #define ARIRANG_SHA3_H
 
 extern "C" {
+
 #include "Arirang_OP32.h"
 }
 #include "../../sha3_interface.h"
+
+namespace sha3 {
 
 class Arirang : public sha3_interface {
 
@@ -59,5 +62,7 @@ int Final(unsigned char *hashval);
 int Hash(int hashbitlen, const BitSequence *data, DataLength databitlen, BitSequence *hashval);
 
 };
+
+} // namespace sha3
 
 #endif

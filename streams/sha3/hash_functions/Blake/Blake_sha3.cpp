@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include "Blake_sha3.h"
 
+namespace sha3 {
+
 /*
   the 10 permutations of {0,...15}
 */
@@ -812,3 +814,5 @@ int Blake::Hash( int hashbitlen, const BitSequence * data, DataLength databitlen
  return ret;
 
 }
+
+} // namespace sha3

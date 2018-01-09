@@ -54,13 +54,13 @@ static void arcfour_generate_stream(std::uint8_t state[], std::uint8_t out[], co
     }
 }
 
-void rc4::keysetup(const std::uint8_t* key, const std::uint32_t keysize) {
+void rc4::keysetup(const std::uint8_t* key, const std::uint64_t keysize) {
     _ctx.key = std::make_unique<std::uint8_t[]>(keysize);
     std::copy_n(key, keysize, _ctx.key.get());
     arcfour_key_setup(_ctx.state, _ctx.key.get(), int(keysize));
 }
 
-void rc4::ivsetup(const std::uint8_t* iv, const std::uint32_t ivsize) {
+void rc4::ivsetup(const std::uint8_t* iv, const std::uint64_t ivsize) {
     throw std::runtime_error("not implemented yet");
 }
 

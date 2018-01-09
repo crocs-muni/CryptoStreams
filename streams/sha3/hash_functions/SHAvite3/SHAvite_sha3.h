@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class SHAvite : public sha3_interface {
 
 #define SHAVITE_NUM_ROUNDS_256	12
@@ -41,5 +43,7 @@ int Final (BitSequence *hashval);
 int Hash (int hashbitlen, const BitSequence *data, DataLength databitlen, BitSequence *hashval);
 
 };
+
+} // namespace sha3
 
 #endif

@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Blake : public sha3_interface {
 
 //NASTAVENIE RUND:
@@ -88,5 +90,7 @@ int Final32( BitSequence * hashval );
 int Final64( BitSequence * hashval );
 
 };
+
+} // namespace sha3
 
 #endif

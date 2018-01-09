@@ -1,6 +1,8 @@
 #include <stddef.h>		// For NULL
 #include "Waterfall_sha3.h"
 
+namespace sha3 {
+
 #define WATERFALL_FINALUPDATES 16	// Number of Update Steps in Final with fixed input
 #define WATERFALL_FINALSTEPS 4	// Number of Final Steps in Final after combining with Pools
 
@@ -538,3 +540,5 @@ Waterfall::Waterfall(const int numRounds) {
 		waterfallFinalSteps = numRounds;
 	}
 }
+
+} // namespace sha3

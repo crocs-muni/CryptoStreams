@@ -2,7 +2,6 @@
 #define EACIRC_STREAMS_SHA3_TEST_CASE_H
 
 #include <streams/sha3/sha3_interface.h>
-#include <eacirc-core/seed.h>
 #include <streams/sha3/sha3_factory.h>
 #include "test_case.h"
 
@@ -26,9 +25,8 @@ namespace testsuite {
         const static json base_config;
 
         const size_t& length() const;
-        const std::string& input() const;
 
-        sha3_test_case(std::string&& algorithm, std::size_t round)
+        sha3_test_case(const std::string&& algorithm, const std::size_t round)
                 : test_case(algorithm, round, "sha3")
                 , _length(0)
                 , _stream_config(base_config)
@@ -46,7 +44,7 @@ namespace testsuite {
          * Test raw function with current test vector
          * @param encryptor
          */
-        void test(std::unique_ptr<sha3_interface> &hasher) const;
+        void test() const;
 
         /**
          * test case is actually a functor which can done whole testing
@@ -55,6 +53,13 @@ namespace testsuite {
          * function and stream
          */
         void operator()();
+
+        /** Setter for single test vector **/
+        void update_test_vector(const std::vector<value_type> &&plaintext,
+                                const std::vector<value_type> &&hash) {
+            _plaintext = plaintext;
+            _ciphertext = hash;
+        }
 
         /**
          * Reads test vector from input stream
@@ -77,7 +82,6 @@ namespace testsuite {
          * @return input stream
          */
         friend std::istream &operator>>(std::istream &input, sha3_test_case &test_case);
-
     };
 }
 

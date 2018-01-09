@@ -24,13 +24,13 @@ namespace block {
         } _ctx;
 
     public:
-        triple_des(unsigned rounds, bool encrypt)
+        triple_des(std::size_t rounds, bool encrypt)
             : block_cipher(rounds)
             , _ctx(encrypt) {}
 
-        void keysetup(const std::uint8_t* key, const std::uint32_t keysize) override;
+        void keysetup(const std::uint8_t* key, const std::uint64_t keysize) override;
 
-        void ivsetup(const std::uint8_t* iv, const std::uint32_t ivsize) override;
+        void ivsetup(const std::uint8_t* iv, const std::uint64_t ivsize) override;
 
         void encrypt(const std::uint8_t* plaintext,
                      std::uint8_t* ciphertext) override;

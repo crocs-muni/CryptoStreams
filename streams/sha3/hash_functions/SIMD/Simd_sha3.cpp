@@ -7,6 +7,8 @@ extern "C" {
 #include "tables.h"
 }
 
+namespace sha3 {
+
 // #define NO_PRECOMPUTED_IV
 
 
@@ -274,3 +276,5 @@ Simd::Simd(const int numRounds) {
 		simdNumRounds = numRounds;
 	}
 }
+
+} // namespace sha3

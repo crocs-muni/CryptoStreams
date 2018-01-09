@@ -9,6 +9,7 @@ typedef unsigned long AURORA_UINT32;
 typedef unsigned int AURORA_UINT32;
 #endif /* ?__x86_64__ */
 
+namespace sha3 {
 
 class Aurora : public sha3_interface {
 
@@ -75,5 +76,7 @@ static void Aurora512Final(BitSequence *digest, AURORA_CTX *hctx, const int roun
 static void Aurora384Final(BitSequence *digest, AURORA_CTX *hctx, const int rounds);
 
 };
+
+} // namespace sha3
 
 #endif

@@ -1,6 +1,8 @@
 #include <string.h>  /* for memset(), memcopy() */
 #include "Lesamnta_sha3.h"
 
+namespace sha3 {
+
 # define LESAMNTA_BYTES_SWAP32(x)\
 	((x << 24) | ((x & 0x0000ff00) << 8) | ((x & 0x00ff0000) >> 8) | (x >> 24))
 
@@ -1782,3 +1784,5 @@ Lesamnta::Lesamnta(const int numRounds) {
 		lesamntaNumRounds = numRounds;
 	}
 }
+
+} // namespace sha3

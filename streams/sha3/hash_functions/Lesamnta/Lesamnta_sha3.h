@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Lesamnta : public sha3_interface {
 
 #define LESAMNTA_DEFAULT_ROUNDS	32
@@ -81,5 +83,7 @@ static void Output512(unsigned int *H, const unsigned int *M, const int rounds);
 static void Compression512(unsigned int *H, const unsigned int *M, const int rounds);
 
 };
+
+} // namespace sha3
 
 #endif

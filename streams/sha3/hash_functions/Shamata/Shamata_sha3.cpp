@@ -3,6 +3,8 @@
 #include <stdio.h> 
 #include "Shamata_sha3.h"
 
+namespace sha3 {
+
 #pragma warning(disable:4715)
 #pragma warning(disable:4244)
 
@@ -2329,3 +2331,5 @@ int Shamata::ProduceOutput(hashState *state, BitSequence *hashval)
 
 	return SUCCESS;
 }
+
+} // namespace sha3

@@ -1,7 +1,7 @@
 add_library(block STATIC EXCLUDE_FROM_ALL
     block_stream
     block_cipher
-    block_factory.h
+    block_factory
     ciphers/common_fun.h
     # === eSTREAM cipher files ===
     ciphers/tea/tea

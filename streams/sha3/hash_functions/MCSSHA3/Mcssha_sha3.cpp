@@ -1,6 +1,8 @@
 #include <string.h>
 #include "Mcssha_sha3.h"
 
+namespace sha3 {
+
 //# Logarithm Substitution for ro = 1, teta = 3, r = 0
 
 static unsigned char MSCSHA_S[256]={
@@ -471,3 +473,5 @@ int Mscsha::Hash(int hashbitlen, const BitSequence *data, DataLength databitlen,
 	  if(ret != SUCCESS)return(ret);
 	  return(Mscsha::Final(hashval));
 }
+
+} // namespace sha3

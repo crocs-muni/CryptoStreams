@@ -21,9 +21,8 @@ static std::size_t compute_vector_size(const std::size_t block_size, const std::
 
 
 
-static std::unique_ptr<stream> create_iv_stream(const json& iv_config, default_seed_source& seeder, std::size_t osize, const std::string& generator) {
+static std::unique_ptr<stream> create_iv_stream(const json& iv_config, default_seed_source& seeder, const std::size_t osize, const std::string& generator) {
     // clang-format off
-    const unsigned int i = 1;
     if (iv_config.is_object())     return make_stream(iv_config, seeder, osize);
     if (iv_config == "zeros")      return std::make_unique<false_stream>(osize);
     if (iv_config == "ones")       return std::make_unique<true_stream >(osize); // Should be stream of 0x01u not 0xFF
@@ -34,7 +33,7 @@ static std::unique_ptr<stream> create_iv_stream(const json& iv_config, default_s
     throw std::runtime_error("requested eSTREAM IV type named \"" + iv_config.dump() + "\" does not exist");
 }
 
-static std::unique_ptr<stream> create_key_stream(const json& key_config, default_seed_source& seeder, std::size_t osize, const std::string& generator) {
+static std::unique_ptr<stream> create_key_stream(const json& key_config, default_seed_source& seeder, const std::size_t osize, const std::string& generator) {
     // clang-format off
     if (key_config.is_object())     return make_stream(key_config, seeder, osize);
     if (key_config == "zeros")      return std::make_unique<false_stream>(osize);
@@ -46,7 +45,7 @@ static std::unique_ptr<stream> create_key_stream(const json& key_config, default
     throw std::runtime_error("requested eSTREAM IV type named \"" + key_config.dump() + "\" does not exist");
 }
 
-estream_stream::estream_stream(const json& config, default_seed_source& seeder, std::size_t osize)
+estream_stream::estream_stream(const json& config, default_seed_source& seeder, const std::size_t osize)
     : stream(osize)
     , _initfreq(create_init_frequency(config.at("init-frequency")))
     , _block_size(config.at("block-size"))
@@ -68,13 +67,13 @@ estream_stream::estream_stream(const json& config, default_seed_source& seeder, 
   }
 }
 
-vec_view estream_stream::next() {
+vec_cview estream_stream::next() {
   if (_initfreq == estream_init_frequency::EVERY_VECTOR) {
       _algorithm.setup_key(_key_stream, _iv_stream->osize());
       _algorithm.setup_iv(_iv_stream);
   }
   for (auto beg = _plaintext.begin(); beg != _plaintext.end(); beg += _block_size) {
-    vec_view view = _source->next();
+    vec_cview view = _source->next();
 
     std::move(view.begin(), view.end(), beg);
   }

@@ -8,8 +8,10 @@
 #include <string>
 #include <algorithm>
 #include <stream.h>
+#include <fstream>
 #include "common_functions.h"
 #include "gtest/gtest.h"
+#include <eacirc-core/seed.h>
 
 
 namespace testsuite {
@@ -43,55 +45,10 @@ namespace testsuite {
         std::ifstream _test_vectors;
 
         /** Plaintext, should be already converted from pure string to bytes representation **/
-        std::string _plaintext;
+        std::vector<value_type> _plaintext;
 
-        /**
-         * cipher text in form of tuples <index where begins ciphertext, ciphertext>
-         * for long ciphertext testvectors contains more tuples, if whole ciphertext is given
-         * this structure contains only one tuple <0, ciphertext>
-         * **/
-        std::vector<std::tuple<std::int32_t , std::string>> _ciphertext;
-
-        /**
-         * Load ciphertext from stream, stream must be in separate line and
-         * should be in format ciphertext, or index1 ciphertext_which_begins_in_index1 index2 ..... etc.
-         * @param stream to read from
-         */
-        void load_ciphertext(std::istream& stream) {
-            _ciphertext.clear();
-            std::string cipher_line;
-            std::getline(stream, cipher_line);
-            // Hexadecimal to lower case, in order to be compatible with std::hex
-            std::transform(cipher_line.begin(), cipher_line.end(), cipher_line.begin(), ::tolower);
-
-            for(char c : cipher_line) {
-                if (isspace(c)) {
-                    std::stringstream cipher_stream(cipher_line);
-                    std::size_t position;
-                    std::string ciphertext;
-
-                    while (cipher_stream >> position) {
-                        cipher_stream >> ciphertext;
-                        _ciphertext.push_back(std::make_tuple(position, ciphertext));
-                    }
-
-                    return;
-                }
-            }
-            _ciphertext.push_back(std::make_tuple(0, cipher_line));
-        }
-
-        /**
-         * Compare ciphertext stored in _ciphertext with parameter actual
-         * for comparing it uses google test function
-         * @param actual
-         */
-        void compare_ciphertext(std::string&& actual) const {
-            for (auto tuple : _ciphertext) {
-                ASSERT_EQ(actual.substr(std::get<0>(tuple) * 2, std::get<1>(tuple).size()), std::get<1>(
-                        tuple)); // *2 because sequence starts at std::get<0>(tuple) byte, but we are storing each byte on two bytes f. e. FF
-            }
-        }
+        /** cipher text in form of byte vector **/
+        std::vector<value_type> _ciphertext;
 
         /**
          * Auxiliary function which generates filepath to testvectors for arguments
@@ -100,18 +57,18 @@ namespace testsuite {
          * @param competition
          * @return filepath
          */
-        static std::string get_test_vectors_filename(std::string& algorithm, std::size_t round, std::string& competition) {
+        static std::string get_test_vectors_filename(const std::string& algorithm, const std::size_t round, const std::string& competition) {
             return "resources/test-resources/" + competition + "/" + algorithm +
                    "/test-vectors-" + std::to_string(round) + ".txt";
         }
 
     public:
 
-        test_case(std::string& algorithm, std::size_t round, std::string&& competition)
+        test_case(const std::string& algorithm, const std::size_t round, const std::string&& competition)
                 : _algorithm(algorithm)
                 , _round(round)
                 , _suite_name(competition)
-                , _test_vectors(get_test_vectors_filename(algorithm, round, competition),  std::ifstream::in)
+                , _test_vectors(get_test_vectors_filename(algorithm, round, competition), std::ifstream::in)
         {
             if (!_test_vectors.is_open()) {
                 throw std::runtime_error("Not able to open file: \"" + get_test_vectors_filename(algorithm, round, competition) + "\"");
@@ -122,14 +79,9 @@ namespace testsuite {
          * Generates next output from stream and compare it with expected output
          * @param s stream
          */
-        void test(std::unique_ptr<stream>&& s) const {
-            std::stringstream ss;
-
-            for (auto byte : s->next()) {
-                ss << std::setfill('0') << std::setw(2) << std::hex << (int) byte;
-            }
-
-            compare_ciphertext(ss.str());
+        void test(std::unique_ptr<stream>& s) const {
+            vec_cview actual = s->next();
+            ASSERT_EQ(make_cview(_ciphertext), actual);
         }
 
         /**
@@ -150,7 +102,7 @@ namespace testsuite {
 
         virtual ~test_case() {
             _test_vectors.close();
-        };
+        }
     };
 
 }

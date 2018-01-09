@@ -5,6 +5,8 @@
 
 #include "spectral_structs.h"
 
+namespace sha3 {
+
 class SpectralHash : public sha3_interface {
 
 typedef enum {SUCCESS = 0, FAIL = 1, BAD_HASHBITLEN = 2} HashReturn;
@@ -60,5 +62,7 @@ spectral_digest* extract_bits(spectral_h_prism *hPrism, spectral_s_prism *markin
 void make_digest(spectral_digest *hashDigest, spectral_p_prism *pPrism, spectral_h_prism *hPrism);
 
 };
+
+} // namespace sha3
 
 #endif

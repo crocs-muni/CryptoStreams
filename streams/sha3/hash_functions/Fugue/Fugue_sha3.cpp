@@ -3,6 +3,8 @@ extern "C" {
 #include "fugue.h"
 }
 
+namespace sha3 {
+
 Fugue::Fugue(const int numRounds) {
 	if (numRounds == -1) {
 		fugueNumRoundsParam1 = FUGUE_ROUNDS_PARAM_R_224_256;
@@ -94,3 +96,5 @@ Fugue::Hash (int hashbitlen, const BitSequence *data, DataLength databitlen, Bit
             return Fugue::Final (hashval);
     return FAIL;
 }
+
+} // namespace sha3

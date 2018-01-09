@@ -24,16 +24,16 @@ namespace block {
             std::uint32_t key_size;
         } _ctx;
 
-        unsigned _block_size;
+        std::size_t _block_size;
 
     public:
-        rc4(unsigned rounds, unsigned block_size)
+        rc4(std::size_t rounds, std::size_t block_size)
             : block_cipher(rounds)
             , _block_size(block_size) {}
 
-        void keysetup(const std::uint8_t* key, const std::uint32_t keysize) override;
+        void keysetup(const std::uint8_t* key, const std::uint64_t keysize) override;
 
-        void ivsetup(const std::uint8_t* iv, const std::uint32_t ivsize) override;
+        void ivsetup(const std::uint8_t* iv, const std::uint64_t ivsize) override;
 
         void encrypt(const std::uint8_t* plaintext,
                      std::uint8_t* ciphertext) override;

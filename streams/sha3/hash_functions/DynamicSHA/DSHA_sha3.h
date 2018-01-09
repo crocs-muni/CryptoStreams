@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class DSHA : public sha3_interface {
 
 #define DSHA_DEFAULT_ROUNDS 16 /* from 0 to 15 */
@@ -37,5 +39,7 @@ int sha32_compile();
 int sha64_compile();
 
 };
+
+} // namespace sha3
 
 #endif

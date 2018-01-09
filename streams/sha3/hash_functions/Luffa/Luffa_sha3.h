@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Luffa : public sha3_interface {
 
 #define LUFFA_DEFAULT_ROUNDS 8
@@ -72,5 +74,7 @@ void process_last_msgs384();
 void process_last_msgs512();
 
 };
+
+} // namespace sha3
 
 #endif

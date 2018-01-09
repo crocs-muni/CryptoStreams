@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include "SpectralHash_sha3.h"
 
+namespace sha3 {
+
 /*A lookup table for computing the inverse in GF 2^4*/
 const unsigned char spectral_xInverseTable[16] = {0,1,15,10,8,6,5,9,4,7,3,14,13,12,11,2};
 
@@ -727,3 +729,5 @@ int SpectralHash::Hash(int hashbitlen, const BitSequence *data, DataLength datab
 	SpectralHash::Final(hashval); /* handles leftover bits and calculates hash value */
 	return SUCCESS;
 }
+
+} // namespace sha3

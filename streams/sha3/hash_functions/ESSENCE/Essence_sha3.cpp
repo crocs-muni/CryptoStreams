@@ -4,6 +4,8 @@ extern "C" {
 }
 #include "Essence_sha3.h"
 
+namespace sha3 {
+
 
 unsigned long long essence_expansion_of_pi_64[8] = {
   0x243f6a8885a308d3LL,
@@ -2145,3 +2147,5 @@ Essence::Essence(const int numRounds) {
 }
 
 #endif /* ESSENCE_DEBUG_LEVEL > 0 */
+
+} // namespace sha3

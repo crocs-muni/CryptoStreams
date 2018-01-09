@@ -6,6 +6,8 @@
 #endif
 #include <stdio.h>
 #include "Vortex_sha3.h"
+
+namespace sha3 {
 extern "C" {
 #include "vortex_core.h"
 #include "vortex_misc.h"
@@ -314,3 +316,5 @@ Vortex::Vortex(const int numRounds) {
 		vortexNumRounds = numRounds;
 	}
 }
+
+} // namespace sha3

@@ -3,6 +3,8 @@
 
 #include "../../sha3_interface.h"
 
+namespace sha3 {
+
 class Mscsha : public sha3_interface {
 
 // This is maximum hash length in bytes for 512 hash length in bits
@@ -29,5 +31,7 @@ int Final(BitSequence *md);
 int Hash(int hashbitlen, const BitSequence *data, DataLength databitlen, BitSequence *hashval);
 
 };
+
+} // namespace sha3
 
 #endif

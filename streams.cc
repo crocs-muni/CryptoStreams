@@ -6,7 +6,7 @@ file_stream::file_stream(const json &config, const std::size_t osize)
     , _istream(_path, std::ios::binary)
     , _data(osize) {}
 
-vec_view file_stream::next() {
+vec_cview file_stream::next() {
     _istream.read(reinterpret_cast<char*>(_data.data()), osize());
 
     if (_istream.fail()) {
@@ -25,7 +25,7 @@ counter::counter(const std::size_t osize)
     std::fill(_data.begin(), _data.end(), std::numeric_limits<value_type>::min());
 }
 
-vec_view counter::next() {
+vec_cview counter::next() {
     for (value_type& value : _data) {
         if (value != std::numeric_limits<value_type>::max()) {
             ++value;
@@ -46,7 +46,7 @@ column_stream::column_stream(const json& config, default_seed_source& seeder, co
         v.resize(osize);
 }
 
-vec_view column_stream::next() {
+vec_cview column_stream::next() {
     // regenerate the buffer
     if ((_position % _internal_bit_size) == 0) {
         _position = 0;
@@ -76,7 +76,7 @@ column_fixed_position_stream::column_fixed_position_stream(const json& config, d
     , _position(position)
     , _source(make_stream(config.at("stream"), seeder, std::size_t(config.at("size")))) { }
 
-vec_view column_fixed_position_stream::next() {
+vec_cview column_fixed_position_stream::next() {
     for (auto &val : _data)
         val = 0;
 
@@ -94,7 +94,7 @@ vec_view column_fixed_position_stream::next() {
 }
 
 std::unique_ptr<stream>
-make_stream(const json& config, default_seed_source& seeder, std::size_t osize = 0) {
+make_stream(const json& config, default_seed_source& seeder, const std::size_t osize = 0) {
     const std::string type = config.at("type");
 
     if (osize == 0)
@@ -137,7 +137,7 @@ make_stream(const json& config, default_seed_source& seeder, std::size_t osize =
 #endif
 #ifdef BUILD_sha3
     else if (type == "sha3")
-        return std::make_unique<sha3_stream>(config, seeder, osize);
+        return std::make_unique<sha3::sha3_stream>(config, seeder, osize);
 #endif
 #ifdef BUILD_block
     else if (type == "block")
@@ -152,7 +152,7 @@ void stream_to_dataset(dataset& set, std::unique_ptr<stream>& source) {
     auto end = set.rawdata() + set.rawsize();
 
     for (; beg != end;) {
-        vec_view n = source->next();
+        vec_cview n = source->next();
         beg = std::copy(n.begin(), n.end(), beg);
     }
 }

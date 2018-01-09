@@ -4,6 +4,8 @@
 #include "Nasha_sha3.h"
 #include "brg_endian.h"
 
+namespace sha3 {
+
 #pragma warning(disable:4715)
 
 #if defined( _MSC_VER ) && ( _MSC_VER > 800 )
@@ -591,3 +593,5 @@ int Nasha::Hash(int hashbitlen, const BitSequence *data, DataLength databitlen, 
 }
 
 #endif
+
+} // namespace sha3
