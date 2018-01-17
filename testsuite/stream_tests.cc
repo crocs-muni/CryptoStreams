@@ -102,7 +102,7 @@ TEST(sac_streams, fixed_position) {
 TEST(column_streams, basic_test_with_counter) {
     json json_config = {
             {"size", 5},
-            {"stream", {
+            {"source", {
                 {"type", "counter"}
                        }}
     };
