@@ -21,6 +21,8 @@ namespace block {
     private:
         const std::size_t _round;
         const std::size_t _block_size;
+        const int _reinit_freq;
+        std::size_t _i;
 
         std::unique_ptr<stream> _source;
         std::unique_ptr<stream> _iv;

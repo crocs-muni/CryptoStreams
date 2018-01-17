@@ -77,6 +77,18 @@ private:
 };
 
 /**
+ * @brief Stream outputing a constant value
+ */
+struct single_value_stream : stream {
+    single_value_stream(const json& config, default_seed_source &seeder, const std::size_t osize);
+
+    vec_cview next() override;
+
+private:
+    std::vector<value_type> _data;
+};
+
+/**
  * @brief Stream of counter
  */
 struct counter : stream {
@@ -86,6 +98,29 @@ struct counter : stream {
 
 private:
     std::vector<value_type> _data;
+};
+
+/**
+ * @brief Stream of counter starting from random number
+ */
+struct random_start_counter : counter {
+    random_start_counter(default_seed_source &seeder, const std::size_t osize);
+
+private:
+    std::vector<value_type> _data;
+};
+
+/**
+ * @brief Stream XORing two parts of internal stream
+ */
+struct xor_stream : stream {
+    template <typename Seeder>
+    xor_stream(const json& config, Seeder&& seeder, const std::size_t osize);
+
+    vec_cview next() override;
+private:
+    std::vector<value_type> _data;
+    std::unique_ptr<stream> _source;
 };
 
 /**

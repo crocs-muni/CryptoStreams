@@ -2,6 +2,7 @@
 #include "streams.h"
 #include "block_factory.h"
 #include "block_cipher.h"
+#include <eacirc-core/json.h>
 
 namespace block {
 
@@ -13,10 +14,30 @@ namespace block {
         return osize;
     }
 
+    static int reinit_freq(const json& config) {
+        try {
+            std::string init_freq = config.at("init-frequency");
+            if (init_freq == "only-once") {
+                return -1;
+            } else {
+                int init_freq_int = std::stoi(init_freq);
+                if (init_freq_int < 1) {
+                    throw std::runtime_error("Reinitialization frequency has to be higher or equal to 1.");
+                }
+                return init_freq_int;
+            }
+        } catch (std::out_of_range& e) {
+            // this field is voluntary, we return presumed value "only-once"
+            return -1;
+        }
+    }
+
     block_stream::block_stream(const json& config, default_seed_source& seeder, const std::size_t osize)
         : stream(osize)
         , _round(config.at("round"))
         , _block_size(config.at("block-size"))
+        , _reinit_freq(reinit_freq(config))
+        , _i(0)
         , _source(make_stream(config.at("plaintext"), seeder, _block_size))
         , _iv(make_stream(config.at("iv"), seeder, _block_size))
         , _key(make_stream(config.at("key"), seeder, unsigned(config.at("key-size"))))
@@ -46,12 +67,11 @@ namespace block {
     block_stream::~block_stream() = default;
 
     vec_cview block_stream::next() {
-
-        // TODO: reinit key for every vector: does it make sense?
-        // if (_b_reinit_every_tv) {
-        //    vec_view key_view = _key->next();
-        //    _encryptor->ECRYPT_keysetup(key_view.data(), 8 * _block_size, 8 * _block_size);
-        // }
+        ++_i;
+        if (_reinit_freq != -1 && _i % std::size_t(_reinit_freq) == 0) {
+            vec_cview key_view = _key->next();
+            _encryptor->keysetup(key_view.data(), std::uint32_t(key_view.size()));
+        }
 
         for (auto beg = _data.begin(); beg != _data.end(); beg += _block_size) {
             vec_cview view = _source->next();

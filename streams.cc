@@ -19,6 +19,19 @@ vec_cview file_stream::next() {
     return make_cview(_data);
 }
 
+single_value_stream::single_value_stream(const json &config, default_seed_source& seeder, const std::size_t osize)
+    : stream(osize)
+    , _data(osize) {
+    auto stream = make_stream(config, seeder, osize);
+    vec_cview single_vector = stream->next();
+    std::copy(single_vector.begin(), single_vector.end(), _data.begin());
+}
+
+vec_cview single_value_stream::next()
+{
+    return make_cview(_data);
+}
+
 counter::counter(const std::size_t osize)
     : stream(osize)
     , _data(osize) {
@@ -36,12 +49,43 @@ vec_cview counter::next() {
     return make_cview(_data);
 }
 
+random_start_counter::random_start_counter(default_seed_source &seeder, const std::size_t osize)
+    : counter(osize)
+{
+    auto stream = std::make_unique<pcg32_stream>(seeder, osize);
+    vec_cview single_vector = stream->next();
+    _data = std::vector<value_type>(osize);
+    std::copy(single_vector.begin(), single_vector.end(), _data.begin());
+}
+
+template<typename Seeder>
+xor_stream::xor_stream(const nlohmann::json &config, Seeder &&seeder, const std::size_t osize)
+    : stream(osize)
+    , _data(osize)
+    , _source(make_stream(config.at("source"), seeder, osize * 2)) { }
+
+
+vec_cview xor_stream::next()
+{
+    vec_cview in = _source->next();
+    auto first1 = in.begin();
+    const auto last = in.begin() + _data.size();
+    auto first2 = in.begin() + _data.size();
+    auto o_first = _data.begin();
+
+    while (first1 != last) {
+        *o_first++ = (*first1++ xor *first2++);
+    }
+
+    return make_cview(_data);
+}
+
 column_stream::column_stream(const json& config, default_seed_source& seeder, const std::size_t osize)
     : stream(osize)
     , _internal_bit_size(std::size_t(config.at("size")) * 8)
     , _buf(_internal_bit_size)
     , _position(0)
-    , _source(make_stream(config.at("stream"), seeder, _internal_bit_size/8)) {
+    , _source(make_stream(config.at("source"), seeder, _internal_bit_size/8)) {
     for (auto &v : _buf)
         v.resize(osize);
 }
@@ -74,7 +118,7 @@ column_fixed_position_stream::column_fixed_position_stream(const json& config, d
     : stream(osize)
     , _data(osize)
     , _position(position)
-    , _source(make_stream(config.at("stream"), seeder, std::size_t(config.at("size")))) { }
+    , _source(make_stream(config.at("source"), seeder, std::size_t(config.at("size")))) { }
 
 vec_cview column_fixed_position_stream::next() {
     for (auto &val : _data)
@@ -110,8 +154,14 @@ make_stream(const json& config, default_seed_source& seeder, const std::size_t o
         return std::make_unique<mt19937_stream>(seeder, osize);
     else if (type == "pcg32-stream")
         return std::make_unique<pcg32_stream>(seeder, osize);
+    else if (type == "single-value-stream")
+        return std::make_unique<single_value_stream>(config.at("source"), seeder, osize);
     else if (type == "counter")
         return std::make_unique<counter>(osize);
+    else if (type == "random-start-counter")
+        return std::make_unique<random_start_counter>(seeder, osize);
+    else if (type == "xor-stream")
+        return std::make_unique<xor_stream>(config, seeder, osize);
     else if (type == "sac")
         return std::make_unique<sac_stream>(seeder, osize*2);
     else if (type == "sac-fixed-position") {
