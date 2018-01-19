@@ -15,7 +15,7 @@ include(build_stream)
 
 # === Set CXX flags ===
 if(CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
-    add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-std=c++11> -Wall -Wextra)
+    add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-std=c++14> -Wall -Wextra)
     add_compile_options(-fdiagnostics-color)
 elseif (MSVC AND (MSVC_VERSION GREATER 1700))
     # nothing special yet

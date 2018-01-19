@@ -37,21 +37,14 @@ TEST(false_streams, basic_test) {
 TEST(counter_stream, basic_test) {
     std::unique_ptr<counter> cstream = std::make_unique<counter>(testing_size/256);
 
-    int i = 0;
-    for(int j = 1; j <= 255; j++) {
-        for (auto it : cstream->next()) {
-            ASSERT_EQ(it, j);
-            i++;
-        }
+    for(int j = 1; j <= 65536 + 2; j++) { // 2^16 + 2
+        auto data = cstream->next();
+        std::vector<value_type> non_const(data.begin(), data.end());
+        auto t = reinterpret_cast<uint32_t*>(non_const.data());
+
+        ASSERT_EQ(j, *t);
     }
 
-    // counter "overflow" so we will obtain all zeroes
-    for (auto it : cstream->next()) {
-        ASSERT_EQ(it, std::numeric_limits<std::uint8_t>::min());
-        i++;
-    }
-
-    ASSERT_EQ(i, testing_size);
 }
 
 TEST(sac_streams, basic_test) {
@@ -109,7 +102,7 @@ TEST(sac_streams, fixed_position) {
 TEST(column_streams, basic_test_with_counter) {
     json json_config = {
             {"size", 5},
-            {"stream", {
+            {"source", {
                 {"type", "counter"}
                        }}
     };

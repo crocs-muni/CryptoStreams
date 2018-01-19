@@ -1,7 +1,6 @@
 #include "estream_cipher.h"
 #include "estream_interface.h"
 #include <algorithm>
-#include <eacirc-core/memory.h>
 #include <streams.h>
 
 #include "ciphers/abc/ecrypt-sync.h"

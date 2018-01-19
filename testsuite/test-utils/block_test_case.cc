@@ -15,7 +15,8 @@ namespace testsuite {
     };
 
     void block_test_case::test() const {
-        std::unique_ptr<block::block_cipher> encryptor = block::make_block_cipher(_algorithm, _round, _plaintext.size(), true);
+        std::unique_ptr<block::block_cipher> encryptor = block::make_block_cipher(_algorithm, _round,
+                                                                                  _plaintext.size(), _key.size(), true);
 
         encryptor->keysetup(_key.data(), _key.size());
         if (_load_iv)
@@ -28,7 +29,8 @@ namespace testsuite {
     }
 
     void block_test_case::test(std::unique_ptr<stream>&& block_stream) const {
-        std::unique_ptr<block::block_cipher> decryptor = block::make_block_cipher(_algorithm, _round, _plaintext.size(), false);
+        std::unique_ptr<block::block_cipher> decryptor = block::make_block_cipher(_algorithm, _round,
+                                                                                  _plaintext.size(), _key.size(), false);
         vec_cview ciphertext = block_stream->next();
 
         decryptor->keysetup(_key.data(), _key.size());
@@ -66,8 +68,9 @@ namespace testsuite {
         std::size_t block_size =  _ciphertext.size();
         _stream_config["algorithm"] = _algorithm;
         _stream_config["round"] = _round;
-        _stream_config["plaintext"]["outputs"] = _plaintext;
         _stream_config["key"]["outputs"] = _key;
+        _stream_config["plaintext"]["outputs"] = _plaintext;
+        _stream_config["block-size"] = block_size;
         _stream_config["key-size"] = _key.size();
         if (_load_iv) {
             _stream_config["mode"] = ""; // TODO: write mode here
@@ -76,7 +79,6 @@ namespace testsuite {
         } else {
             _stream_config["iv"]["outputs"] = _iv;
         }
-        _stream_config["block-size"] = block_size;
 
         seed_seq_from<pcg32> seeder(seed1);
         return make_stream(_stream_config, seeder, block_size);
