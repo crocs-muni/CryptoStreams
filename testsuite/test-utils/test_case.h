@@ -35,9 +35,6 @@ namespace testsuite {
         /** Number of round of function for current test vectors **/
         const std::size_t _round;
 
-        /** Name of suite e.g. sha3 or estream etc. **/
-        const std::string _suite_name;
-
         /** This counts number of test vectors tested in operator() **/
         std::uint64_t _test_vectors_tested = 0;
 
@@ -64,10 +61,9 @@ namespace testsuite {
 
     public:
 
-        test_case(const std::string& algorithm, const std::size_t round, const std::string&& competition)
+        test_case(const std::string& algorithm, const std::size_t round, const std::string& competition)
                 : _algorithm(algorithm)
                 , _round(round)
-                , _suite_name(competition)
                 , _test_vectors(get_test_vectors_filename(algorithm, round, competition), std::ifstream::in)
         {
             if (!_test_vectors.is_open()) {
