@@ -1,2 +1,0 @@
-/usr/bin/ar qc libothers.a  CMakeFiles/others.dir/others_stream.cc.o CMakeFiles/others.dir/others_factory.cc.o CMakeFiles/others.dir/hash_functions/sha1/sha1.cpp.o CMakeFiles/others.dir/hash_functions/sha1/sha1_factory.cpp.o
-/usr/bin/ranlib libothers.a

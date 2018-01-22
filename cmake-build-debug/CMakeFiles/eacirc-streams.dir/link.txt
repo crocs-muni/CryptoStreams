@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/eacirc-streams.dir/main.cc.o CMakeFiles/eacirc-streams.dir/generator.cc.o  -o eacirc-streams eacirc-core/libeacirc-core.a libeacirc-streams-lib.a streams/estream/libestream.a streams/hash/libhash.a streams/block/libblock.a eacirc-core/libeacirc-core.a 
