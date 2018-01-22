@@ -1,0 +1,1670 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="eacirc-streams"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\eacirc-core\;CMake Files\eacirc-core\cmake\;CMake Files\eacirc-core\external\;CMake Files\eacirc-core\external\json\;CMake Files\eacirc-core\external\pcg-cpp-0.98\;CMake Files\eacirc-core\external\googletest\;CMake Files\eacirc-core\external\googletest\googlemock\;CMake Files\eacirc-core\external\googletest\googletest\;CMake Files\eacirc-core\external\googletest\googletest\cmake\;CMake Files\streams\;CMake Files\streams\estream\;CMake Files\streams\hash\;CMake Files\streams\hash\others\;CMake Files\streams\hash\sha3\;CMake Files\streams\block\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/strip">
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/strip"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/local">
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/local"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install">
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 install"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="list_install_components">
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 list_install_components"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="eacirc-streams">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-streams" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DBUILD_estream"/>
+					<Add option="-DBUILD_hash"/>
+					<Add option="-DBUILD_block"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/.."/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 eacirc-streams"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="eacirc-streams/fast">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-streams" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DBUILD_estream"/>
+					<Add option="-DBUILD_hash"/>
+					<Add option="-DBUILD_block"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/.."/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 eacirc-streams/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="eacirc-streams-lib">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/libeacirc-streams-lib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DBUILD_estream"/>
+					<Add option="-DBUILD_hash"/>
+					<Add option="-DBUILD_block"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/.."/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 eacirc-streams-lib"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="eacirc-streams-lib/fast">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/libeacirc-streams-lib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DBUILD_estream"/>
+					<Add option="-DBUILD_hash"/>
+					<Add option="-DBUILD_block"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/.."/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 eacirc-streams-lib/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="eacirc-core">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/libeacirc-core.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/Makefile&quot;  VERBOSE=1 eacirc-core"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="eacirc-core/fast">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/libeacirc-core.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/Makefile&quot;  VERBOSE=1 eacirc-core/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock_main">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/libgmock_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googlemock/include"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googlemock"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/include"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 gmock_main"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock_main/fast">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/libgmock_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googlemock/include"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googlemock"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/include"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 gmock_main/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/libgmock.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googlemock/include"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googlemock"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/include"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 gmock"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock/fast">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/libgmock.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googlemock/include"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googlemock"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/include"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 gmock/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/libgtest_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/include"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 gtest_main"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main/fast">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/libgtest_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/include"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 gtest_main/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/include"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 gtest"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest/fast">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/include"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 gtest/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="estream">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/estream/libestream.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/estream"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/.."/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/estream/Makefile&quot;  VERBOSE=1 estream"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/estream/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/estream/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/estream/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="estream/fast">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/estream/libestream.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/estream"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/.."/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/estream/Makefile&quot;  VERBOSE=1 estream/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/estream/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/estream/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/estream/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="hash">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/libhash.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/.."/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/Makefile&quot;  VERBOSE=1 hash"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="hash/fast">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/libhash.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/.."/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/Makefile&quot;  VERBOSE=1 hash/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="others">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/others/libothers.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/others"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/.."/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/others/Makefile&quot;  VERBOSE=1 others"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/others/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/others/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/others/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="others/fast">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/others/libothers.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/others"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/.."/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/others/Makefile&quot;  VERBOSE=1 others/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/others/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/others/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/others/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="sha3">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/sha3/libsha3.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/sha3"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/.."/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/sha3/Makefile&quot;  VERBOSE=1 sha3"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/sha3/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/sha3/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/sha3/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="sha3/fast">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/sha3/libsha3.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/sha3"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/.."/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/sha3/Makefile&quot;  VERBOSE=1 sha3/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/sha3/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/sha3/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/hash/sha3/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="block">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/block/libblock.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/block"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/.."/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/block/Makefile&quot;  VERBOSE=1 block"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/block/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/block/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/block/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="block/fast">
+				<Option output="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/block/libblock.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/block"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/.."/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json"/>
+					<Add directory="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/block/Makefile&quot;  VERBOSE=1 block/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/block/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/block/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc-streams/cmake-build-debug/streams/block/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/builtins.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/cmd.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/dataset.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/debug.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googlemock/src/gmock-all.cc">
+			<Option target="gmock_main"/>
+			<Option target="gmock"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googlemock/src/gmock_main.cc">
+			<Option target="gmock_main"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/src/gtest-all.cc">
+			<Option target="gmock_main"/>
+			<Option target="gmock"/>
+			<Option target="gtest"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/src/gtest_main.cc">
+			<Option target="gtest_main"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/iterators.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/json.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/logger.cc">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/logger.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/memory.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/optional.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/random.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/seed.cc">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/seed.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/statistics.cc">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/statistics.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/traits.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/variant.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/vec.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/view.h">
+			<Option target="eacirc-core"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/generator.cc">
+			<Option target="eacirc-streams"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/generator.h">
+			<Option target="eacirc-streams"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/main.cc">
+			<Option target="eacirc-streams"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/stream.h">
+			<Option target="eacirc-streams-lib"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams.cc">
+			<Option target="eacirc-streams-lib"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams.h">
+			<Option target="eacirc-streams-lib"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/block_cipher.h">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/block_factory.cpp">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/block_factory.h">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/block_stream.cc">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/block_stream.h">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/aes/aes.cpp">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/aes/aes.h">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/blowfish/blowfish.cpp">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/blowfish/blowfish.h">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/blowfish/blowfish_factory.cpp">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/blowfish/blowfish_factory.h">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/common_fun.h">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/des/des.cpp">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/des/des.h">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/des/single_des.cpp">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/des/single_des.h">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/des/triple_des.cpp">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/des/triple_des.h">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/rc4/rc4.cpp">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/rc4/rc4.h">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/tea/tea.cpp">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/ciphers/tea/tea.h">
+			<Option target="block"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/abc/abc-tables.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/abc/abc-v3.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/abc/abc.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/abc/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/achterbahn/achterbahn-128-80.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/achterbahn/achterbahn.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/achterbahn/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/cryptmt/cryptmt-v3.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/cryptmt/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/cryptmt/params.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/decim/decim-v2.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/decim/decimv2.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/decim/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/dicing/dicing-v2.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/dicing/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/dragon/dragon-sboxes.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/dragon/dragon.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/dragon/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/ecrypt-config.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/ecrypt-machine.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/ecrypt-portable.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/edon80/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/edon80/edon80.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/ffcsr/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/ffcsr/f-fcsr-h.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/ffcsr/ffcsrh-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/fubuki/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/fubuki/fubuki.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/grain/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/grain/grain-128.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/grain/grain-128.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/hc-128/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/hc-128/hc-128.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/hermes/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/hermes/hermes.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/lex/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/lex/lex.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/mag/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/mag/mag.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/mag/unrolliv.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/mag/unrollmain.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/mickey/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/mickey/mickey-128-v2.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/mir-1/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/mir-1/mir-1.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/mir-1/mir1.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/pomaranch/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/pomaranch/pomaranch.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/pomaranch/pomaranch.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/py/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/py/py6.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/rabbit/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/rabbit/rabbit.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/salsa20/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/salsa20/salsa20.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/sfinks/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/sfinks/sfinks.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/sosemanuk/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/sosemanuk/sosemanuk.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/sosemanuk/sosemanuk.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/trivium/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/tsc-4/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/tsc-4/tsc-4.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/wg/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/wg/wg.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/yamb/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/zk-crypt/ZKdef.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/zk-crypt/ZKengine.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/zk-crypt/ecrypt-sync.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/ciphers/zk-crypt/zk-crypt-v3.cpp">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/estream_cipher.cc">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/estream_cipher.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/estream_interface.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/estream_stream.cc">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/estream_stream.h">
+			<Option target="estream"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/hash_factory.h">
+			<Option target="hash"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/hash_interface.h">
+			<Option target="hash"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/hash_stream.cc">
+			<Option target="hash"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/hash_stream.h">
+			<Option target="hash"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/others/hash_functions/sha1/sha1.cpp">
+			<Option target="others"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/others/hash_functions/sha1/sha1.h">
+			<Option target="others"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/others/hash_functions/sha1/sha1_factory.cpp">
+			<Option target="others"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/others/hash_functions/sha1/sha1_factory.h">
+			<Option target="others"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/others/others_factory.cc">
+			<Option target="others"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/others/others_factory.h">
+			<Option target="others"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/others/others_interface.h">
+			<Option target="others"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/others/others_stream.cc">
+			<Option target="others"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/others/others_stream.h">
+			<Option target="others"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/ARIRANG/Arirang_OP32.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/ARIRANG/Arirang_OP32.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/ARIRANG/Arirang_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/ARIRANG/Arirang_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Abacus/Abacus_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Abacus/Abacus_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Aurora/Aurora_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Aurora/Aurora_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/BMW/BMW_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/BMW/BMW_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Blake/Blake_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Blake/Blake_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Blender/Blender_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Blender/Blender_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Boole/Boole_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Boole/Boole_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CHI/Chi_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CHI/Chi_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CHI/chi-fast32.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CRUNCH/Crunch_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CRUNCH/Crunch_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CRUNCH/const_32.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CRUNCH/crunch_224.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CRUNCH/crunch_224.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CRUNCH/crunch_256.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CRUNCH/crunch_256.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CRUNCH/crunch_384.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CRUNCH/crunch_384.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CRUNCH/crunch_512.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CRUNCH/crunch_512.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Cheetah/Cheetah_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Cheetah/Cheetah_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CubeHash/CubeHash_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/CubeHash/CubeHash_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/DCH/DCH_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/DCH/DCH_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/DynamicSHA/DSHA_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/DynamicSHA/DSHA_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/DynamicSHA2/DSHA2_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/DynamicSHA2/DSHA2_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/ECHO/Echo_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/ECHO/Echo_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/EDON/Edon_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/EDON/Edon_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/ESSENCE/Essence_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/ESSENCE/Essence_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/ESSENCE/essence_L_tables.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/ESSENCE/essence_compress_256.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/ESSENCE/essence_compress_512.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Fugue/Fugue_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Fugue/Fugue_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Fugue/fugue.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Fugue/fugue.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Fugue/fugue_256.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Fugue/fugue_256.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Fugue/fugue_384.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Fugue/fugue_384.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Fugue/fugue_512.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Fugue/fugue_512.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Grostl/Grostl_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Grostl/Grostl_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Hamsi/Hamsi_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Hamsi/Hamsi_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Hamsi/hamsi-exp.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Hamsi/hamsi-tables.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Hamsi/hamsi-tables.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Hamsi/i.hamsi-ref.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/JH/JH_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/JH/JH_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Keccak/KeccakDuplex.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Keccak/KeccakDuplex.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Keccak/KeccakF-1600-opt32.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Keccak/KeccakSponge.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Keccak/KeccakSponge.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Keccak/Keccak_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Keccak/Keccak_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Khichidi/Khichidi_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Khichidi/Khichidi_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Khichidi/khichidi_core.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Khichidi/khichidi_core.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Lane/Lane_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Lane/Lane_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Lesamnta/Lesamnta_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Lesamnta/Lesamnta_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Luffa/Luffa_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Luffa/Luffa_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/MCSSHA3/Mcssha_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/MCSSHA3/Mcssha_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/MD6/MD6_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/MD6/MD6_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/MD6/md6_compress.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/MD6/md6_mode.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/MeshHash/MeshHash_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/MeshHash/MeshHash_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/NaSHA/Nasha_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/NaSHA/Nasha_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/SHAvite3/SHAvite_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/SHAvite3/SHAvite_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/SIMD/Simd_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/SIMD/Simd_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/SIMD/optimized.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Sarmal/Sarmal_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Sarmal/Sarmal_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Shabal/Shabal_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Shabal/Shabal_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Shamata/Shamata_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Shamata/Shamata_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Skein/Skein_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Skein/Skein_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Skein/skein.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Skein/skein.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Skein/skein_block.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Skein/skein_debug.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Skein/skein_debug.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/SpectralHash/SpectralHash_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/SpectralHash/SpectralHash_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/StreamHash/StreamHash_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/StreamHash/StreamHash_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Tangle/Tangle_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Tangle/Tangle_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Tangle2/Tangle2_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Tangle2/Tangle2_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Twister/Twister_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Twister/Twister_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Vortex/Vortex_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Vortex/Vortex_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Vortex/vortex_core.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Vortex/vortex_core.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Vortex/vortex_misc.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Vortex/vortex_misc.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Vortex/vortex_tables.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/WaMM/BitArray.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/WaMM/BitArray.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/WaMM/ReverseBits.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/WaMM/ReverseBits.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/WaMM/WaMM.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/WaMM/WaMM.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/WaMM/WaMMErrorMessage.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/WaMM/WaMMErrorMessage.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/WaMM/WaMMOperator.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/WaMM/WaMMOperator.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/WaMM/WaMMTappingPrimes.c">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/WaMM/WaMMTappingPrimes.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/WaMM/Wamm_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/WaMM/Wamm_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Waterfall/Waterfall_sha3.cpp">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/Waterfall/Waterfall_sha3.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/hash_functions/hash_functions.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/sha3_factory.cc">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/sha3_factory.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/sha3_interface.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/sha3_stream.cc">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/sha3_stream.h">
+			<Option target="sha3"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/version.h.in">
+			<Option virtualFolder="CMake Files\eacirc-core\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/cmake/build_stream.cmake">
+			<Option virtualFolder="CMake Files\eacirc-core\cmake\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/cmake/detect_version.cmake">
+			<Option virtualFolder="CMake Files\eacirc-core\cmake\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/json/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\json\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/pcg-cpp-0.98/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\pcg-cpp-0.98\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googlemock/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googlemock\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googlemock/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googlemock\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googlemock/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googlemock\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/eacirc-core/external/googletest/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/estream/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\streams\estream\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\streams\hash\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/others/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\streams\hash\others\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/hash/sha3/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\streams\hash\sha3\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc-streams/streams/block/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\streams\block\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
