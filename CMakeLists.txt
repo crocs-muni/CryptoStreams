@@ -15,7 +15,7 @@ include(build_stream)
 
 # === Set CXX flags ===
 if(CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
-    add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-std=c++14> -Wall -Wextra)
+    add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-std=c++11> -Wall -Wextra)
     add_compile_options(-fdiagnostics-color)
 elseif (MSVC AND (MSVC_VERSION GREATER 1700))
     # nothing special yet
@@ -40,7 +40,7 @@ target_link_libraries(eacirc-streams-lib eacirc-core)
 add_subdirectory(eacirc-core)
 
 add_subdirectory(streams/estream)
-add_subdirectory(streams/sha3)
+add_subdirectory(streams/hash)
 add_subdirectory(streams/block)
 
 ## Executables
@@ -62,7 +62,7 @@ if (NOT BUILD_testsuite)
     target_link_libraries(eacirc-streams eacirc-core eacirc-streams-lib)
 
     build_stream(eacirc-streams estream)
-    build_stream(eacirc-streams sha3)
+    build_stream(eacirc-streams hash)
     build_stream(eacirc-streams block)
 
 else()

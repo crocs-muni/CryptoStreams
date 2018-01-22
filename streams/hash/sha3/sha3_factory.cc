@@ -1,6 +1,7 @@
 #include "sha3_factory.h"
 #include "hash_functions/hash_functions.h"
 #include "sha3_interface.h"
+#include <eacirc-core/memory.h>
 
 namespace sha3 {
 
