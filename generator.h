@@ -8,7 +8,7 @@
 #include <eacirc-core/seed.h>
 
 struct generator {
-    generator(std::string cofig);
+    generator(const std::string cofig);
 
     generator(std::istream& config)
         : generator(json::parse(config)) {}
@@ -31,5 +31,5 @@ private:
 
     std::unique_ptr<stream> _stream_a;
 
-    std::ofstream _o_file;
+    std::string _o_file_name;
 };

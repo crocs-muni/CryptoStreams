@@ -2,6 +2,7 @@
 #include "estream_interface.h"
 #include <algorithm>
 #include <eacirc-core/memory.h>
+#include <streams.h>
 
 #include "ciphers/abc/ecrypt-sync.h"
 #include "ciphers/achterbahn/ecrypt-sync.h"
@@ -31,30 +32,8 @@
 // #include "ciphers/yamb/ecrypt-sync.h"        // stopped working after IDE update
 #include "ciphers/zk-crypt/ecrypt-sync.h"
 
-static estream_ivtype create_ivtype(const std::string& ivtype) {
-  // clang-format off
-    if (ivtype == "zeros")      return estream_ivtype::ZEROS;
-    if (ivtype == "ones")       return estream_ivtype::ONES;
-    if (ivtype == "random")     return estream_ivtype::RANDOM;
-    if (ivtype == "biasrandom") return estream_ivtype::BIASRANDOM;
-  // clang-format on
-
-  throw std::runtime_error("requested eSTREAM IV type named \"" + ivtype + "\" does not exist");
-}
-
-static estream_keytype create_keytype(const std::string& ivtype) {
-  // clang-format off
-    if (ivtype == "zeros")      return estream_keytype::ZEROS;
-    if (ivtype == "ones")       return estream_keytype::ONES;
-    if (ivtype == "random")     return estream_keytype::RANDOM;
-    if (ivtype == "biasrandom") return estream_keytype::BIASRANDOM;
-  // clang-format on
-
-  throw std::runtime_error("requested eSTREAM key type named \"" + ivtype + "\" does not exist");
-}
-
-static std::unique_ptr<estream_interface> create_cipher(const std::string& name,
-                                                        core::optional<unsigned> round) {
+std::unique_ptr<estream_interface> create_estream_cipher(const std::string& name,
+                                                         const core::optional<unsigned> round) {
   // clang-format off
     if (name == "ABC")              return std::make_unique<ECRYPT_ABC>();
     if (name == "Achterbahn")       return std::make_unique<ECRYPT_Achterbahn>();
@@ -89,12 +68,11 @@ static std::unique_ptr<estream_interface> create_cipher(const std::string& name,
                            "\" is either broken or does not exists");
 }
 
-estream_cipher::estream_cipher(const std::string& name, core::optional<unsigned> round,
-                               const std::string& ivtype, const std::string& keytype)
-    : _ivtype(create_ivtype(ivtype))
-    , _keytype(create_keytype(keytype))
-    , _encryptor(create_cipher(name, round))
-    , _decryptor(create_cipher(name, round)) {
+estream_cipher::estream_cipher(const std::string& name, core::optional<unsigned> round, std::size_t iv_size, std::size_t key_size)
+    : _iv(iv_size)
+    , _key(key_size)
+    , _encryptor(create_estream_cipher(name, round))
+    , _decryptor(create_estream_cipher(name, round)) {
     _encryptor->ECRYPT_init();
     _decryptor->ECRYPT_init();
 }
@@ -102,42 +80,20 @@ estream_cipher::estream_cipher(const std::string& name, core::optional<unsigned>
 estream_cipher::estream_cipher(estream_cipher&&) = default;
 estream_cipher::~estream_cipher() = default;
 
-void estream_cipher::setup_iv(polymorphic_generator& rng) {
-  switch (_ivtype) {
-  case estream_ivtype::ZEROS:
-    std::fill(_iv.begin(), _iv.end(), 0x00u);
-    break;
-  case estream_ivtype::ONES:
-    std::fill(_iv.begin(), _iv.end(), 0x01u);
-    break;
-  case estream_ivtype::RANDOM:
-    std::generate(_iv.begin(), _iv.end(), rng);
-    break;
-  case estream_ivtype::BIASRANDOM:
-    throw std::logic_error("feature not yet implemented");
-  }
+void estream_cipher::setup_iv(std::unique_ptr<stream>& source) {
+  vec_cview  data = source->next();
+  _iv.assign(data.begin(), data.end());
 
   _encryptor->ECRYPT_ivsetup(_iv.data());
   _decryptor->ECRYPT_ivsetup(_iv.data());
 }
 
-void estream_cipher::setup_key(polymorphic_generator& rng) {
-  switch (_keytype) {
-  case estream_keytype::ZEROS:
-    std::fill(_key.begin(), _key.end(), 0x00u);
-    break;
-  case estream_keytype::ONES:
-    std::fill(_key.begin(), _key.end(), 0x01u);
-    break;
-  case estream_keytype::RANDOM:
-    std::generate(_key.begin(), _key.end(), rng);
-    break;
-  case estream_keytype::BIASRANDOM:
-    throw std::logic_error("feature not yet implemented");
-  }
+void estream_cipher::setup_key(std::unique_ptr<stream>& source, const std::size_t iv_size) {
+  vec_cview data = source->next();
+  _key.assign(data.begin(), data.end());
 
-  _encryptor->ECRYPT_keysetup(_key.data(), 8 * block_size, 8 * block_size);
-  _decryptor->ECRYPT_keysetup(_key.data(), 8 * block_size, 8 * block_size);
+  _encryptor->ECRYPT_keysetup(_key.data(), 8 * source->osize(), 8 * iv_size);
+  _decryptor->ECRYPT_keysetup(_key.data(), 8 * source->osize(), 8 * iv_size);
 }
 
 void estream_cipher::encrypt(const u8* plaintext, u8* ciphertext, std::size_t size) {

@@ -26,7 +26,7 @@ endif()
 
 # === Provide sources as library
 add_library(eacirc-streams-lib STATIC
-        stream
+        stream.h
         streams.h
         streams.cc
         )
@@ -37,23 +37,63 @@ set_target_properties(eacirc-streams-lib PROPERTIES
 
 target_link_libraries(eacirc-streams-lib eacirc-core)
 
-
-# === eacirc generator executable
-add_executable(eacirc-streams main.cc generator)
-
-set_target_properties(eacirc-streams PROPERTIES
-        LINKER_LANGUAGE CXX
-        )
-
-
 add_subdirectory(eacirc-core)
 
 add_subdirectory(streams/estream)
-add_subdirectory(streams/sha3)
+add_subdirectory(streams/hash)
 add_subdirectory(streams/block)
 
-target_link_libraries(eacirc-streams eacirc-core eacirc-streams-lib)
+## Executables
 
-build_stream(eacirc-streams estream)
-build_stream(eacirc-streams sha3)
-build_stream(eacirc-streams block)
+option(BUILD_testsuite "Build all tests." OFF)
+
+##############
+# Building of testsuite
+##############
+if (NOT BUILD_testsuite)
+
+    # === eacirc generator executable
+    add_executable(eacirc-streams main.cc generator)
+
+    set_target_properties(eacirc-streams PROPERTIES
+            LINKER_LANGUAGE CXX
+            )
+
+    target_link_libraries(eacirc-streams eacirc-core eacirc-streams-lib)
+
+    build_stream(eacirc-streams estream)
+    build_stream(eacirc-streams hash)
+    build_stream(eacirc-streams block)
+
+else()
+    enable_testing()
+    include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+
+    # === testsuite executable
+    add_executable(testsuite
+            testsuite/test_main.cc
+            testsuite/stream_tests.cc
+            testsuite/sha3_streams_tests.cc
+            testsuite/estream_streams_tests.cc
+            testsuite/block_streams_tests.cc
+            testsuite/test-utils/test_streams
+            testsuite/test-utils/sha3_test_case
+            testsuite/test-utils/estream_test_case
+            testsuite/test-utils/block_test_case
+            testsuite/test-utils/common_functions
+            testsuite/test-utils/test_case.h)
+
+    file(COPY testsuite/test-resources DESTINATION resources)
+
+    # Standard linking to gtest stuff.
+    target_link_libraries(testsuite gtest gtest_main)
+
+    # Extra linking for the project.
+    target_link_libraries(testsuite eacirc-core eacirc-streams-lib)
+
+    build_stream(testsuite estream)
+    build_stream(testsuite sha3)
+    build_stream(testsuite block)
+    add_definitions(-DBUILD_testsuite)
+
+endif()
