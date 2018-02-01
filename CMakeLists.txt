@@ -62,7 +62,7 @@ if (NOT BUILD_testsuite)
     target_link_libraries(eacirc-streams eacirc-core eacirc-streams-lib)
 
     build_stream(eacirc-streams estream)
-    build_stream(eacirc-streams sha3)
+    build_stream(eacirc-streams hash)
     build_stream(eacirc-streams block)
 
 else()
@@ -92,7 +92,7 @@ else()
     target_link_libraries(testsuite eacirc-core eacirc-streams-lib)
 
     build_stream(testsuite estream)
-    build_stream(testsuite sha3)
+    build_stream(testsuite hash)
     build_stream(testsuite block)
     add_definitions(-DBUILD_testsuite)
 
