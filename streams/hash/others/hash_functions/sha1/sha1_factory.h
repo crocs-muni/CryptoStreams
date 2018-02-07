@@ -13,8 +13,8 @@ namespace others {
                 :_rounds(rounds) {}
 
         int Init(int others_bitsize) override;
-        int Update(const BitSequence* data, DataLength data_bitsize) override;
-        int Final(BitSequence* others) override;
+        int Update(const hash::BitSequence* data, hash::DataLength data_bitsize) override;
+        int Final(hash::BitSequence* others) override;
 
     private:
         unsigned int _rounds;

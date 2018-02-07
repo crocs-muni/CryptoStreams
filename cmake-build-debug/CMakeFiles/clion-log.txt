@@ -1,0 +1,10 @@
+/opt/clion-2017.2.3/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/tom/Desktop/eacirc/eacirc-streams
+fatal: Needed a single revision
+Unable to find current revision in submodule path 'eacirc-core/external/googletest'
+Failed to recurse into submodule path 'eacirc-core'
+fatal: Needed a single revision
+Unable to find current revision in submodule path 'eacirc-core/external/googletest'
+Failed to recurse into submodule path 'eacirc-core'
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug

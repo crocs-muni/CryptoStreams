@@ -1,24 +1,16 @@
-#include "../hash_factory.h"
-#include "../hash_interface.h"
-#include <memory>
-#include "hash_functions/hash_functions.h"
+#include <streams/hash/others/hash_functions/sha1/sha1_factory.h>
+#include <streams/hash/others/hash_functions/sha2/sha256_factory.h>
+#include <streams/hash/others/hash_functions/md5/md5_factory.h>
+#include "others_factory.h"
 
 namespace others {
 
-void _check_rounds(const std::string& algorithm, const unsigned rounds) {
-    if (rounds > 0)
-        throw std::runtime_error{"requested hash algorithm named \"" + algorithm +
-                                 "\" cannot be limited in rounds"};
-}
-
-std::unique_ptr<hash::hash_interface> hash::hash_factory::create(const std::string& name, const unsigned rounds) {
+std::unique_ptr<hash::hash_interface> create(const std::string& algorithm, const unsigned rounds){
     // clang-format off
+    if (algorithm == "SHA1")         return std::make_unique<others::sha1_factory>(rounds);
+    if (algorithm == "SHA2")        return std::make_unique<others::sha256_factory>(rounds);
+    if (algorithm == "MD5")         return std::make_unique<others::md5_factory>(rounds);
     // clang-format on
-
-    if (name == "SHA") return std::make_unique<sha1_factory>(rounds);
-
-    throw std::runtime_error("requested hash algorithm named \"" + name +
-                             "\" is either broken or does not exists");
 }
 
 } // namespace others
