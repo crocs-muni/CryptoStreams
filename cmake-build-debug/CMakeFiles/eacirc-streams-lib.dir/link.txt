@@ -1,2 +1,0 @@
-/usr/bin/ar qc libeacirc-streams-lib.a  CMakeFiles/eacirc-streams-lib.dir/streams.cc.o
-/usr/bin/ranlib libeacirc-streams-lib.a
