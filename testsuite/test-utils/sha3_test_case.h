@@ -1,8 +1,8 @@
 #ifndef EACIRC_STREAMS_SHA3_TEST_CASE_H
 #define EACIRC_STREAMS_SHA3_TEST_CASE_H
 
-#include <streams/sha3/sha3_interface.h>
-#include <streams/sha3/sha3_factory.h>
+#include <streams/hash/sha3/sha3_interface.h>
+#include <streams/hash/sha3/sha3_factory.h>
 #include "test_case.h"
 
 namespace testsuite {
