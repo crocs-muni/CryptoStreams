@@ -81,7 +81,7 @@ std::unique_ptr<hash_interface> hash_factory::create(const std::string& name, co
     if (name == "Waterfall")      return std::make_unique<sha3::Waterfall>(rounds);
     if (name == "Tangle2")        return std::make_unique<sha3::Tangle2>(rounds);
 
-    if (name == "sha1")           return std::make_unique<others::sha1_factory>(rounds);
+    if (name == "SHA1")           return std::make_unique<others::sha1_factory>(rounds);
     if (name == "SHA2")           return std::make_unique<others::sha256_factory>(rounds);
     if (name == "MD5")            return std::make_unique<others::md5_factory>(rounds);
     // clang-format on
