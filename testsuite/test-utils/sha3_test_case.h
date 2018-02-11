@@ -2,7 +2,7 @@
 #define EACIRC_STREAMS_SHA3_TEST_CASE_H
 
 #include <streams/hash/sha3/sha3_interface.h>
-#include <streams/hash/sha3/sha3_factory.h>
+#include <streams/hash/sha3/hash_factory.h>
 #include "test_case.h"
 
 namespace testsuite {

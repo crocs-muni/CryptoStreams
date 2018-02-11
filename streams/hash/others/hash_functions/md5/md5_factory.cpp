@@ -9,13 +9,21 @@ int md5_factory::Init(int others_bitsize) {
     return 0;
 }
 
-int md5_factory::Update(const BitSequence *data, DataLength data_bitsize) {
+int md5_factory::Update(const hash::BitSequence *data, hash::DataLength data_bitsize) {
     md5_update(&_ctx, data, data_bitsize, _rounds);
     return 0;
 }
 
-int md5_factory::Final(BitSequence *others) {
+int md5_factory::Final(hash::BitSequence *others) {
     md5_final(&_ctx, others, _rounds);
-    return hash::hash_interface::Final(others);
+    return 0;
+}
+
+int md5_factory::Hash(int hash_bitsize, const hash::BitSequence *data, hash::DataLength data_bitsize,
+                      hash::BitSequence *hash) {
+    Init(hash_bitsize);
+    Update(data,data_bitsize);
+    Final(hash);
+    return 0;
 }
 } // namespace others

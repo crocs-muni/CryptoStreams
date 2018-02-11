@@ -58,8 +58,8 @@ vec_cview hash_stream::next() {
 
         hash_data(*_hasher, view, &data[i], _hash_input_size);
     }
-
-    return make_view(_data.cbegin(), osize());
+    
+        return make_view(_data.cbegin(), osize());
 }
 
 } // namespace hash

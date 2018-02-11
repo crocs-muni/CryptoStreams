@@ -1,8 +1,6 @@
 #pragma once
 
-
 #include <streams/hash/hash_interface.h>
-#include <streams/hash/sha3/hash_functions/CHI/chi.h>
 #include "md5.h"
 
 namespace others {
@@ -15,9 +13,11 @@ namespace others {
 
         int Init(int others_bitsize) override;
 
-        int Update(const BitSequence *data, DataLength data_bitsize) override;
+        int Update(const hash::BitSequence *data, hash::DataLength data_bitsize) override;
 
-        int Final(BitSequence *others) override;
+        int Final(hash::BitSequence *others) override;
+
+        int Hash(int hash_bitsize, const hash::BitSequence* data, hash::DataLength data_bitsize, hash::BitSequence* hash) override;
 
     private:
         unsigned int _rounds;

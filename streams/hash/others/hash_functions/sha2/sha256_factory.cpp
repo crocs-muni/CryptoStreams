@@ -9,14 +9,22 @@ namespace others{
         return 0;
     }
 
-    int sha256_factory::Update(const BitSequence *data, DataLength data_bitsize) {
+    int sha256_factory::Update(const hash::BitSequence *data, hash::DataLength data_bitsize) {
         sha256_update(& _ctx, data, data_bitsize,_rounds);
         return 0;
     }
 
-    int sha256_factory::Final(BitSequence *others) {
+    int sha256_factory::Final(hash::BitSequence *others) {
         sha256_final(& _ctx, others, _rounds);
-        return hash::hash_interface::Final(others);
+        return 0;
+    }
+
+    int sha256_factory::Hash(int hash_bitsize, const hash::BitSequence *data, hash::DataLength data_bitsize,
+                             hash::BitSequence *hash) {
+        Init(hash_bitsize);
+        Update(data,data_bitsize);
+        Final(hash);
+        return 0;
     }
 
 } // namespace others

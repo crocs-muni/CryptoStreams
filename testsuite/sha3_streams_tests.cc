@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <eacirc-core/json.h>
-#include <streams/hash/sha3/sha3_factory.h>
+#include <streams/hash/sha3/hash_factory.h>
 #include <streams/hash/sha3/sha3_interface.h>
 #include <fstream>
 #include "stream.h"

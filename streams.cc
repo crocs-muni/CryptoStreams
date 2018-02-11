@@ -186,9 +186,9 @@ make_stream(const json& config, default_seed_source& seeder, const std::size_t o
         return std::make_unique<estream_stream>(config, seeder, osize);
 #endif
 #ifdef BUILD_hash
-    else if (type == "sha3")
-        return std::make_unique<sha3::sha3_stream>(config, seeder, osize);
-    else if (type == "other-hash")
+    /*else if (type == "sha3")
+        return std::make_unique<sha3::sha3_stream>(config, seeder, osize);*/
+    else if (type == "other_hash" || type == "sha3")
         return std::make_unique<hash::hash_stream>(config, seeder, osize);
 #endif
 #ifdef BUILD_block

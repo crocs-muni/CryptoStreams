@@ -20,7 +20,6 @@
 
 #ifdef BUILD_hash
 #include <streams/hash/hash_stream.h>
-#include <streams/hash/sha3/sha3_stream.h>
 #endif
 
 namespace _impl {
