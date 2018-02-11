@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <eacirc-core/json.h>
-#include <streams/sha3/sha3_factory.h>
-#include <streams/sha3/sha3_interface.h>
+#include <streams/hash/sha3/sha3_factory.h>
+#include <streams/hash/sha3/sha3_interface.h>
 #include <fstream>
 #include "stream.h"
 #include "streams.h"
