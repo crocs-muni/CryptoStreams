@@ -3,8 +3,7 @@
 file_stream::file_stream(const json &config, const std::size_t osize)
     : stream(osize)
     , _path(config.at("path").get<std::string>())
-    , _istream(_path, std::ios::binary)
-    , _data(osize) {}
+    , _istream(_path, std::ios::binary) {}
 
 vec_cview file_stream::next() {
     _istream.read(reinterpret_cast<char*>(_data.data()), osize());
@@ -20,8 +19,7 @@ vec_cview file_stream::next() {
 }
 
 single_value_stream::single_value_stream(const json &config, default_seed_source& seeder, const std::size_t osize)
-    : stream(osize)
-    , _data(osize) {
+    : stream(osize) {
     auto stream = make_stream(config, seeder, osize);
     vec_cview single_vector = stream->next();
     std::copy(single_vector.begin(), single_vector.end(), _data.begin());
@@ -33,8 +31,7 @@ vec_cview single_value_stream::next()
 }
 
 counter::counter(const std::size_t osize)
-    : stream(osize)
-    , _data(osize) {
+    : stream(osize) {
     std::fill(_data.begin(), _data.end(), std::numeric_limits<value_type>::min());
 }
 
@@ -54,14 +51,12 @@ random_start_counter::random_start_counter(default_seed_source &seeder, const st
 {
     auto stream = std::make_unique<pcg32_stream>(seeder, osize);
     vec_cview single_vector = stream->next();
-    _data = std::vector<value_type>(osize);
     std::copy(single_vector.begin(), single_vector.end(), _data.begin());
 }
 
 template<typename Seeder>
 xor_stream::xor_stream(const nlohmann::json &config, Seeder &&seeder, const std::size_t osize)
     : stream(osize)
-    , _data(osize)
     , _source(make_stream(config.at("source"), seeder, osize * 2)) { }
 
 
@@ -79,6 +74,25 @@ vec_cview xor_stream::next()
 
     return make_cview(_data);
 }
+
+template<typename Seeder>
+rnd_plt_ctx_stream::rnd_plt_ctx_stream(const nlohmann::json &config, Seeder &&seeder, const std::size_t osize)
+    : stream(osize)
+    , _rng(std::make_unique<pcg32_stream>(seeder, osize/2))
+    , _source(make_stream(config, seeder, osize/2, core::optional<stream *>{_rng.get()})) { }
+
+
+vec_cview rnd_plt_ctx_stream::next()
+{
+    vec_cview ctx = _source->next();
+    vec_cview ptx = _rng->get_data();
+
+    std::copy_n(ptx.begin(), osize() / 2, _data.begin());
+    std::copy_n(ctx.begin(), osize() / 2, _data.begin() + osize() / 2);
+
+    return make_cview(_data);
+}
+
 
 column_stream::column_stream(const json& config, default_seed_source& seeder, const std::size_t osize)
     : stream(osize)
@@ -116,7 +130,6 @@ vec_cview column_stream::next() {
 
 column_fixed_position_stream::column_fixed_position_stream(const json& config, default_seed_source& seeder, const std::size_t osize, const std::size_t position)
     : stream(osize)
-    , _data(osize)
     , _position(position)
     , _source(make_stream(config.at("source"), seeder, std::size_t(config.at("size")))) { }
 
@@ -138,11 +151,12 @@ vec_cview column_fixed_position_stream::next() {
 }
 
 std::unique_ptr<stream>
-make_stream(const json& config, default_seed_source& seeder, const std::size_t osize = 0) {
+make_stream(const json& config, default_seed_source& seeder, const std::size_t osize,
+            core::optional<stream *> stream) {
     const std::string type = config.at("type");
 
     if (osize == 0)
-        throw std::runtime_error("Stream's osize " + type + " is not set in parent stream.");
+        throw std::runtime_error("Stream " + type + " cannot have osize 0.");
 
     if (type == "file-stream")
         return std::make_unique<file_stream>(config, osize);
@@ -152,10 +166,12 @@ make_stream(const json& config, default_seed_source& seeder, const std::size_t o
         return std::make_unique<false_stream>(osize);
     else if (type == "mt19937-stream")
         return std::make_unique<mt19937_stream>(seeder, osize);
-    else if (type == "pcg32-stream")
+    else if (type == "pcg32-stream" or type == "random-stream")
         return std::make_unique<pcg32_stream>(seeder, osize);
     else if (type == "single-value-stream")
         return std::make_unique<single_value_stream>(config.at("source"), seeder, osize);
+    else if (type == "rnd-plt-ctx-stream")
+        return std::make_unique<rnd_plt_ctx_stream>(config.at("source"), seeder, osize);
     else if (type == "counter")
         return std::make_unique<counter>(osize);
     else if (type == "random-start-counter")
@@ -183,15 +199,15 @@ make_stream(const json& config, default_seed_source& seeder, const std::size_t o
 
 #ifdef BUILD_estream
     else if (type == "estream")
-        return std::make_unique<estream_stream>(config, seeder, osize);
+        return std::make_unique<estream_stream>(config, seeder, osize, stream);
 #endif
 #ifdef BUILD_sha3
     else if (type == "sha3")
-        return std::make_unique<sha3::sha3_stream>(config, seeder, osize);
+        return std::make_unique<sha3::sha3_stream>(config, seeder, osize, stream);
 #endif
 #ifdef BUILD_block
     else if (type == "block")
-        return std::make_unique<block::block_stream>(config, seeder, osize);
+        return std::make_unique<block::block_stream>(config, seeder, osize, stream);
 #endif
     throw std::runtime_error("requested stream named \"" + type + "\" does not exist");
 }

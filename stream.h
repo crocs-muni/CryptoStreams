@@ -15,11 +15,18 @@ struct stream {
 
     virtual vec_cview next() = 0;
 
+    vec_cview get_data() const {
+        return make_cview(_data);
+    }
+
     std::size_t osize() const { return _osize; }
 
 protected:
     stream(const std::size_t osize)
-        : _osize(osize) {}
+        : _data(osize)
+        , _osize(osize) {}
+
+    std::vector<value_type> _data;
 
 private:
     const std::size_t _osize;

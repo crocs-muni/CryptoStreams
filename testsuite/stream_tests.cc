@@ -117,6 +117,37 @@ TEST(column_streams, basic_test_with_counter) {
 //    }
 }
 
+TEST(rnd_plt_ctx_streams, aes_single_vector) {
+    const json json_config = {
+        {"type", "rnd-plt-ctx-stream"},
+        {"source", {
+             {"type", "block"},
+             {"init-frequency", "only-once"},
+             {"algorithm", "AES"},
+             {"round", 10},
+             {"block-size", 16},
+             {"plaintext", {{"type", "pcg32-stream"}}},
+             {"key-size", 16},
+             {"key", {{"type", "pcg32-stream"}}},
+             {"iv", {{"type", "pcg32-stream"}}}
+         }
+        }
+    };
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    std::unique_ptr<stream> stream = make_stream(json_config, seeder, 32);
+
+    vec_cview view = stream->next();
+
+    // fixed for AES 10 rounds, with PTX choosen by PCG32 with fixed seed testsuite::seed1
+    std::vector<value_type> expected_data = {
+        0xc5, 0x1e, 0xf0, 0xd7, 0x40, 0x1c, 0xa5, 0xea, 0x6f, 0x85, 0x11, 0x1e, 0x55, 0x74, 0x64, 0xcc,  // ptx
+        0x54, 0x30, 0x76, 0x5f, 0xbf, 0xa7, 0x0d, 0xcb, 0xf0, 0x9b, 0xb3, 0xc0, 0xbe, 0x2b, 0xba, 0xaf   // ctx
+    };
+
+    ASSERT_EQ(make_cview(expected_data), view);
+}
+
 
 
 
