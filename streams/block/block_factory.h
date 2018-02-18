@@ -13,6 +13,7 @@
 #include "ciphers/des/single_des.h"
 #include "ciphers/des/triple_des.h"
 #include "ciphers/blowfish/blowfish_factory.h"
+#include "ciphers/twofish/twofish_factory.h"
 
 
 namespace block {

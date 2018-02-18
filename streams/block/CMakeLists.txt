@@ -14,6 +14,8 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/des/triple_des    
     ciphers/blowfish/blowfish
     ciphers/blowfish/blowfish_factory
+    ciphers/twofish/twofish
+    ciphers/twofish/twofish_factory
     )
 
 target_link_libraries(block eacirc-core)
