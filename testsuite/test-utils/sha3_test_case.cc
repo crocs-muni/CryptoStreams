@@ -15,7 +15,7 @@ namespace testsuite {
     };
 
     void sha3_test_case::test() const {
-        std::unique_ptr<sha3::sha3_interface> hasher = sha3::sha3_factory::create(_algorithm, unsigned(_round));
+        std::unique_ptr<hash::hash_interface> hasher = hash::hash_factory::create(_algorithm, unsigned(_round));
         std::size_t hash_size = _ciphertext.size();
 
         std::vector<value_type> hash(hash_size);
