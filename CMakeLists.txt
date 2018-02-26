@@ -45,7 +45,7 @@ add_subdirectory(streams/block)
 
 ## Executables
 
-option(BUILD_testsuite "Build all tests." ON)
+option(BUILD_testsuite "Build all tests." OFF)
 
 ##############
 # Building of testsuite
@@ -73,11 +73,11 @@ else()
     add_executable(testsuite
             testsuite/test_main.cc
             testsuite/stream_tests.cc
-            testsuite/sha3_streams_tests.cc
+            testsuite/hash_streams_tests.cc
             testsuite/estream_streams_tests.cc
             testsuite/block_streams_tests.cc
             testsuite/test-utils/test_streams
-            testsuite/test-utils/sha3_test_case
+            testsuite/test-utils/hash_test_case
             testsuite/test-utils/estream_test_case
             testsuite/test-utils/block_test_case
             testsuite/test-utils/common_functions

@@ -5,10 +5,10 @@
 
 namespace sha3 {
 
-using BitSequence = unsigned char;
-using DataLength = unsigned long long;
+using BitSequence = hash::BitSequence;
+using DataLength = hash::DataLength;
 
-struct sha3_interface : hash::hash_interface{
+struct sha3_interface : hash::hash_interface {
 };
 
 } // namespace sha3

@@ -6,7 +6,7 @@
 #include "stream.h"
 #include "streams.h"
 
-#include "testsuite/test-utils/sha3_test_case.h"
+#include "testsuite/test-utils/hash_test_case.h"
 
 /** Source of test vectors http://csrc.nist.gov/groups/ST/hash/sha-3/index.html */
 
@@ -97,5 +97,4 @@ TEST(tangle, test_vectors) {
 TEST(twister, test_vectors) {
     testsuite::sha3_test_case("Twister", 9)();
     testsuite::sha3_test_case("Twister", 10)();
-
 }
