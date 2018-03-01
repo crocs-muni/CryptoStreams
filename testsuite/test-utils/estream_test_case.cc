@@ -120,6 +120,11 @@ namespace testsuite {
         input >> key;
         input >> iv;
 
+        // fixes empty IV
+        if (iv == "empty") {
+            iv = "";
+        }
+
         input.get(); // read the newline
         test_case.load_ciphertext(input);
         test_case.update_test_vector(hex_string_to_binary(plaintext),
