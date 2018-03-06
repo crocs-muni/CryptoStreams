@@ -92,7 +92,7 @@ add_library(estream STATIC EXCLUDE_FROM_ALL
     ciphers/cryptmt/cryptmt-v3.cpp
     ciphers/achterbahn/achterbahn-128-80.cpp
     ciphers/abc/abc-v3.cpp
-    #    ciphers/trivium/trivium.cpp       # stopped working after IDE update
+    ciphers/trivium/trivium.cpp
     #    ciphers/yamb/yamb.cpp             # stopped working after IDE update
     #    ciphers/polarbear/polar-bear.cpp  # not implemented in EncryptorDecryptor
     #    ciphers/polarbear/aescrypt.cpp    # do not include!

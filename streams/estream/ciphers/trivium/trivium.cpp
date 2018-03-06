@@ -251,7 +251,7 @@ void ECRYPT_Trivium::ECRYPT_ivsetup(const u8* iv) {
     LOAD(ctx->state);
 
     // default 9
-    for (i = 0; i < numRounds; ++i) {
+    for (i = 0; i < _rounds; ++i) {
         m64 t1, t2, t3;
 
         UPDATE();

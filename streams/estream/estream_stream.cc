@@ -45,18 +45,18 @@ static std::unique_ptr<stream> create_key_stream(const json& key_config, default
     throw std::runtime_error("requested eSTREAM IV type named \"" + key_config.dump() + "\" does not exist");
 }
 
-estream_stream::estream_stream(const json& config, default_seed_source& seeder, const std::size_t osize)
+estream_stream::estream_stream(const json& config, default_seed_source& seeder, const std::size_t osize, core::optional<stream *> plt_stream)
     : stream(osize)
     , _initfreq(create_init_frequency(config.at("init-frequency")))
     , _block_size(config.at("block-size"))
     , _iv_stream(create_iv_stream(config.at("iv-type"), seeder, default_iv_size, config.at("generator")))
     , _key_stream(create_key_stream(config.at("key-type"), seeder, default_key_size, config.at("generator")))
     , _source(make_stream(config.at("plaintext-type"), seeder, _block_size))
+    , _prepared_stream_source(!plt_stream ? nullptr : *plt_stream)
     , _plaintext(compute_vector_size(_block_size, osize))
-    , _encrypted(compute_vector_size(_block_size, osize))
     , _algorithm(config.at("algorithm"),
                  config.at("round").is_null()
-                     ? core::optional<unsigned>{core::nullopt_t{}}
+                     ? core::nullopt_t{}
                      : core::optional<unsigned>{unsigned(config.at("round"))},
                  _iv_stream->osize(), _key_stream->osize()) {
 
@@ -73,12 +73,21 @@ vec_cview estream_stream::next() {
       _algorithm.setup_iv(_iv_stream);
   }
   for (auto beg = _plaintext.begin(); beg != _plaintext.end(); beg += _block_size) {
-    vec_cview view = _source->next();
+    vec_cview view = get_next_ptx();
 
     std::move(view.begin(), view.end(), beg);
   }
 
-  _algorithm.encrypt(_plaintext.data(), _encrypted.data(), _plaintext.size());
+  _algorithm.encrypt(_plaintext.data(), _data.data(), _plaintext.size());
 
-  return make_cview(_encrypted);
+  return make_cview(_data);
+}
+
+vec_cview estream_stream::get_next_ptx()
+{
+    if (_prepared_stream_source) {
+        return _prepared_stream_source->next();
+    } else {
+        return _source->next();
+    }
 }

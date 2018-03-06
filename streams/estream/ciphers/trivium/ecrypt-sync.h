@@ -64,6 +64,8 @@ class ECRYPT_Trivium : public estream_interface {
     TRIVIUM_ctx _ctx;
 
 public:
+    ECRYPT_Trivium(int rounds)
+        : estream_interface(rounds) {}
     /* Mandatory functions */
 
     /*
