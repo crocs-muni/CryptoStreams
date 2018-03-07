@@ -218,6 +218,73 @@ private:
     std::size_t _flip_bit_position;
 };
 
+template<typename value_type>
+void combination_init(std::vector<value_type> &com, value_type k){
+    com.clear();
+    for (value_type i = 0; i < k; ++i) {
+        com.push_back(i);
+    }
+}
+
+template<typename value_type>
+bool combination_next(std::vector<value_type> &com, value_type max){
+    const auto size = static_cast<int64_t>(com.size());
+    auto idx = size - 1;
+
+    if (com[idx] == max - 1) {
+        do {
+            idx -= 1;
+        } while (idx >= 0 && com[idx] + 1 == com[idx + 1]);
+
+        if (idx < 0) {
+            return false;
+        }
+
+        for (auto j = idx + 1; j < size; ++j) {
+            com[j] = com[idx] + j - idx + 1;
+        }
+    }
+    com[idx]++;
+    return true;
+}
+
+struct hw_counter : stream {
+    template<typename Seeder>
+    hw_counter(const json& config, Seeder &&seeder, const std::size_t osize)
+        : stream(osize), _rng(std::forward<Seeder>(seeder)), _origin_data(osize)
+    {
+        _randomize_start = config.value("randomize_start", false);
+        _increase_hw = config.value("increase_hw", true);
+        _cur_hw = static_cast<uint64_t>(config.value("hw", 1));
+
+        if (_cur_hw == 0 || _cur_hw > osize * 8){
+            throw std::runtime_error("Invalid Hamming weight for the given output size");
+        }
+
+        if (_randomize_start) {
+            std::generate_n(_data.data(), osize, [this]() {
+                return std::uniform_int_distribution<std::uint8_t>()(_rng);
+            });
+            std::copy_n(_data.begin(), osize, _origin_data.begin());
+
+        } else {
+            std::fill_n(_origin_data.begin(), osize, 0);
+        }
+
+        combination_init(_cur_positions, _cur_hw);
+    }
+
+    vec_cview next() override;
+
+protected:
+    pcg32 _rng;
+    std::vector<value_type> _origin_data;
+    bool _randomize_start;
+    bool _increase_hw;
+    uint64_t _cur_hw;
+    std::vector<uint64_t> _cur_positions;
+};
+
 struct column_stream : stream {
     column_stream(const json& config, default_seed_source& seeder, const std::size_t osize);
 
