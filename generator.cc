@@ -19,7 +19,7 @@ static std::ifstream open_config_file(const std::string path) {
 static std::string out_name(json const& config) {
     auto fname_it = config.find("file-name");
     if (fname_it != config.end()){
-        return fname_it;
+        return *fname_it;
     }
 
     std::stringstream ss;
@@ -52,11 +52,20 @@ generator::generator(json const& config)
 
 void generator::generate() {
 
-    std::ofstream o_file(_o_file_name, std::ios::binary);
+    auto stdout_it = _config.find("stdout");
+    std::unique_ptr<std::ostream> ofstream_ptr;
+    std::ostream * o_file = nullptr;
+
+    if (stdout_it == _config.end() || stdout_it->get<bool>() == false){
+        ofstream_ptr = std::make_unique<std::ofstream>(_o_file_name, std::ios::binary);
+        o_file = ofstream_ptr.get();
+    } else {
+        o_file = &(std::cout);
+    }
 
     for (std::size_t i = 0; i < _tv_count; ++i) {
         vec_cview n = _stream_a->next();
         for (auto o : n)
-            o_file << o;
+            *o_file << o;
     }
 }
