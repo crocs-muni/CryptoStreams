@@ -25,11 +25,11 @@ int main(const int argc, const char** argv) try {
     auto cfg = options.parse(make_view(argv, argc));
 
     if (cfg.help) {
-        std::cout << "Usage: eacirc-streams [options]" << std::endl;
+        std::cerr << "Usage: eacirc-streams [options]" << std::endl;
 
-        options.print(std::cout);
+        options.print(std::cerr);
     } else if (cfg.version) {
-        std::cout << "Generator version " VERSION_TAG << std::endl;
+        std::cerr << "Generator version " VERSION_TAG << std::endl;
     } else {
         test_environment();
 
