@@ -17,8 +17,13 @@ static std::ifstream open_config_file(const std::string path) {
 }
 
 static std::string out_name(json const& config) {
+    auto fname_it = config.find("file-name");
+    if (fname_it != config.end()){
+        return fname_it;
+    }
+
     std::stringstream ss;
-    json config_ref = config;
+    json config_ref = config.at("stream");
     // this allows finding name hidden in postprocessing streams
     while (config_ref.find("algorithm") == config_ref.end()) {
         config_ref = config_ref.at("source");
@@ -38,7 +43,7 @@ generator::generator(json const& config)
     : _config(config)
     , _seed(seed::create(config.at("seed")))
     , _tv_count(config.at("tv-count"))
-    , _o_file_name(out_name(config.at("stream"))) {
+    , _o_file_name(out_name(config)) {
 
     seed_seq_from<pcg32> main_seeder(_seed);
 
