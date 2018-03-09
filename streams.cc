@@ -99,7 +99,7 @@ vec_cview hw_counter::next() {
         _data[pos / 8] ^= (1 << (pos % 8));
     }
 
-    if (!combination_next(_cur_positions, osize() * 8)){
+    if (!combination_next(_cur_positions, static_cast<uint64_t>(osize() * 8))){
         if (_increase_hw){
             _cur_hw += 1;
         }
