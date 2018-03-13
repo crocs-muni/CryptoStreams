@@ -99,7 +99,7 @@ vec_cview hw_counter::next() {
         _data[pos / 8] ^= (1 << (pos % 8));
     }
 
-    if (!combination_next(_cur_positions, static_cast<uint64_t>(osize() * 8))){
+    if (!combination_next()){
         if (_increase_hw){
             _cur_hw += 1;
         }
@@ -107,7 +107,7 @@ vec_cview hw_counter::next() {
             _cur_hw = 1; // reset
         }
 
-        combination_init(_cur_positions, _cur_hw);
+        combination_init();
     }
 
     return make_cview(_data);
@@ -205,7 +205,7 @@ make_stream(const json& config, default_seed_source& seeder, const std::size_t o
     }
     else if (type == "sac-2d-all-positions")
         return std::make_unique<sac_2d_all_pos>(seeder, osize);
-    else if (type == "hw_counter" || type == "hw-counter")
+    else if (type == "hw-counter")
         return std::make_unique<hw_counter>(config, seeder, osize);
     else if (type == "column")
         return std::make_unique<column_stream>(config, seeder, osize);
