@@ -49,8 +49,14 @@ estream_stream::estream_stream(const json& config, default_seed_source& seeder, 
     : stream(osize)
     , _initfreq(create_init_frequency(config.at("init-frequency")))
     , _block_size(config.at("block-size"))
-    , _iv_stream(create_iv_stream(config.at("iv-type"), seeder, default_iv_size, config.at("generator")))
-    , _key_stream(create_key_stream(config.at("key-type"), seeder, default_key_size, config.at("generator")))
+    , _iv_stream(create_iv_stream(config.at("iv-type"),
+                                  seeder,
+                                  config.value("iv-size", default_iv_size),
+                                  config.at("generator")))
+    , _key_stream(create_key_stream(config.at("key-type"),
+                                    seeder,
+                                    config.value("iv-size", default_key_size),
+                                    config.at("generator")))
     , _source(make_stream(config.at("plaintext-type"), seeder, _block_size))
     , _prepared_stream_source(!plt_stream ? nullptr : *plt_stream)
     , _plaintext(compute_vector_size(_block_size, osize))
