@@ -59,6 +59,8 @@ void sha256_transform(SHA256_CTX *ctx, const BYTE data[], unsigned int rounds)
 	g = ctx->state[6];
 	h = ctx->state[7];
 
+	rounds = (rounds > 64 ? 64 : rounds);
+
 	for (i = 0; i < rounds; ++i) {
 		t1 = h + EP1(e) + CH(e,f,g) + k[i] + m[i];
 		t2 = EP0(a) + MAJ(a,b,c);

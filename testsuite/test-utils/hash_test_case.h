@@ -100,7 +100,7 @@ namespace testsuite {
         {}
     };
 
-    class other_test_case : hash_test_case {
+    class other_test_case : public hash_test_case {
 
     private:
 

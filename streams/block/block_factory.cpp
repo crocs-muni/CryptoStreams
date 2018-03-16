@@ -19,6 +19,8 @@ std::unique_ptr<block_cipher> make_block_cipher(const std::string& name,
     if (name == "TRIPLE-DES")  return std::make_unique<triple_des>(round, encrypt);
     if (name == "BLOWFISH") return std::make_unique<blowfish_factory>(round);
     if (name == "TWOFISH") return std::make_unique<twofish_factory>(round);
+    //if (name == "RC6") return std::make_unique<rc6_factory>(round);
+    //if (name == "SERPENT") return std::make_unique<serpent_factory>(round);
     // clang-format on
 
     throw std::runtime_error("requested block cipher named \"" + name +

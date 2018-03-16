@@ -10,7 +10,7 @@ int sha1_factory::Init(int others_bitsize) {
 }
 
 int sha1_factory::Update(const hash::BitSequence *data, hash::DataLength data_bitsize) {
-    sha1_update(& _ctx, data, data_bitsize, _rounds);
+    sha1_update(& _ctx, data, data_bitsize/8, _rounds);
     return 0;
 }
 
@@ -21,7 +21,7 @@ int sha1_factory::Final(hash::BitSequence *others) {
 
 int sha1_factory::Hash(int hash_bitsize, const hash::BitSequence *data, hash::DataLength data_bitsize, hash::BitSequence *hash) {
     Init(hash_bitsize);
-    Update(data,data_bitsize);
+    Update(data,data_bitsize/8);
     Final(hash);
 }
 

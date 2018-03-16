@@ -40,20 +40,16 @@ void sha1_transform(SHA1_CTX *ctx, const BYTE data[], unsigned int rounds)
 		rounds = 80;
 	}
 
-	for (i = rounds; i > 0; --i){
-		if (rounds - i < 20){
+	for (i = 0; i < rounds; ++i) {
+		if (i < 20)
 			t = ROTLEFT(a, 5) + ((b & c) ^ (~b & d)) + e + ctx->k[0] + m[i];
-		}
-		if (rounds - i > 20 && rounds - i < 40){
+		if (i >= 20 && i < 40)
 			t = ROTLEFT(a, 5) + (b ^ c ^ d) + e + ctx->k[1] + m[i];
-		}
-		if (rounds - i > 40 && rounds - i < 60){
+		if (i >= 40 && i < 60)
 			t = ROTLEFT(a, 5) + ((b & c) ^ (b & d) ^ (c & d))  + e + ctx->k[2] + m[i];
-
-		}
-		if (rounds - i > 60 && rounds - i < 80){
+		if (i >= 60)
 			t = ROTLEFT(a, 5) + (b ^ c ^ d) + e + ctx->k[3] + m[i];
-		}
+
 		e = d;
 		d = c;
 		c = ROTLEFT(b, 30);

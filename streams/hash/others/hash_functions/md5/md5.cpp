@@ -72,13 +72,13 @@ void md5_transform(MD5_CTX *ctx, const BYTE data[], unsigned int rounds)
 		if (i < 16){
 			FF(a,b,c,d,m[index[i]],padding[i],table[i]);
 		}
-		if (i > 16 && i < 32){
+		if (i >= 16 && i < 32){
 			GG(a,b,c,d,m[index[i]],padding[i],table[i]);
 		}
-		if (i > 32 && i < 48){
+		if (i >= 32 && i < 48){
 			HH(a,b,c,d,m[index[i]],padding[i],table[i]);
 		}
-		if (i > 48 && i < 64){
+		if (i >= 48 && i < 64){
 			II(a,b,c,d,m[index[i]],padding[i],table[i]);
 		}
 
@@ -86,7 +86,7 @@ void md5_transform(MD5_CTX *ctx, const BYTE data[], unsigned int rounds)
 		std::swap(b,d);
 		std::swap(c,d);
 	}
-
+/*
 	FF(a,b,c,d,m[0],  7,0xd76aa478);
 	FF(d,a,b,c,m[1], 12,0xe8c7b756);
 	FF(c,d,a,b,m[2], 17,0x242070db);
@@ -154,7 +154,7 @@ void md5_transform(MD5_CTX *ctx, const BYTE data[], unsigned int rounds)
 	II(d,a,b,c,m[11],10,0xbd3af235);
 	II(c,d,a,b,m[2], 15,0x2ad7d2bb);
 	II(b,c,d,a,m[9], 21,0xeb86d391);
-
+*/
 	ctx->state[0] += a;
 	ctx->state[1] += b;
 	ctx->state[2] += c;

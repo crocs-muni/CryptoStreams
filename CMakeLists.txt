@@ -38,7 +38,6 @@ set_target_properties(eacirc-streams-lib PROPERTIES
 target_link_libraries(eacirc-streams-lib eacirc-core)
 
 add_subdirectory(eacirc-core)
-
 add_subdirectory(streams/estream)
 add_subdirectory(streams/hash)
 add_subdirectory(streams/block)

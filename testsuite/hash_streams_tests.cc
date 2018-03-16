@@ -98,3 +98,15 @@ TEST(twister, test_vectors) {
     testsuite::sha3_test_case("Twister", 9)();
     testsuite::sha3_test_case("Twister", 10)();
 }
+
+TEST(sha1, test_vectors) {
+    testsuite::other_test_case("SHA1", 80)();
+}
+
+TEST(sha2, test_vectors) {
+    testsuite::other_test_case("SHA2", 64)();
+}
+
+TEST(md5, test_vectors) {
+    testsuite::other_test_case("MD5", 64)();
+}
