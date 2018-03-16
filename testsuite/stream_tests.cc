@@ -99,6 +99,90 @@ TEST(sac_streams, fixed_position) {
     ASSERT_EQ(position_in_byte, 2); // Position x of changed bit, where position_in_byte = 2^x
 }
 
+TEST(hw_counter, invalid_params) {
+    const json json_config = {
+        {"randomize_start", false},
+        {"increase_hw", false},
+        {"hw", 4*8+1},
+    };
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    std::make_unique<hw_counter>(json_config, seeder, 5);
+    EXPECT_THROW(std::make_unique<hw_counter>(json_config, seeder, 4), std::runtime_error);
+}
+
+TEST(hw_counter, basic_test) {
+    const int hw = 3;
+    const size_t size = 4;
+    const int c_32_over_3 = 4960;
+
+    const json json_config = {
+        {"randomize_start", false},
+        {"increase_hw", false},
+        {"hw", hw},
+    };
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    auto stream = std::make_unique<hw_counter>(json_config, seeder, size);
+
+    // Test difference to previous vector
+    uint8_t buff1[size], buff2[size];
+    uint8_t *buff_o=buff1, *buff_n=buff2;
+
+    for(int i=0; i < c_32_over_3 + 4; ++i){
+        uint32_t cur_hw = 0;
+        uint32_t idx = 0;
+
+        for(auto it : stream->next()) {
+            for(int j=0; j<8; ++j){
+                cur_hw += (uint8_t)it & (1 << j) ? 1 : 0;
+            }
+            buff_n[idx] = (uint8_t)it;
+            idx += 1;
+        }
+
+        ASSERT_EQ(cur_hw, hw);
+        ASSERT_TRUE(i == 0 || memcmp(buff_o, buff_n, size) != 0);
+        std::swap(buff_o, buff_n);
+    }
+}
+
+TEST(hw_counter, period_test) {
+    const int hw = 3;
+    const size_t size = 4;
+    const int c_32_over_3 = 4960;
+
+    const json json_config = {
+        {"randomize_start", false},
+        {"increase_hw", false},
+        {"hw", hw},
+    };
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    auto stream1 = std::make_unique<hw_counter>(json_config, seeder, size);
+    auto stream2 = std::make_unique<hw_counter>(json_config, seeder, size);
+
+    // Rewind one stream beyond the period
+    for(int i=0; i < c_32_over_3; ++i){
+        stream1->next();
+    }
+
+    // Compare rewinded & fresh generator over period.
+    for(int i=0; i < c_32_over_3 + 4; ++i){
+        auto it1 = stream1->next();
+        auto it2 = stream2->next();
+        ASSERT_TRUE(it1 == it2);
+    }
+
+    // desync test
+    stream1->next();
+    for(int i=0; i < c_32_over_3 + 4; ++i){
+        auto it1 = stream1->next();
+        auto it2 = stream2->next();
+        ASSERT_FALSE(it1 == it2);
+    }
+}
+
 TEST(column_streams, basic_test_with_counter) {
     json json_config = {
             {"size", 5},
