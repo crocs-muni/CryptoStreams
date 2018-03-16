@@ -14,13 +14,13 @@ namespace block {
         return osize;
     }
 
-    static int reinit_freq(const json& config) {
+    static int64_t reinit_freq(const json& config) {
         try {
             std::string init_freq = config.at("init-frequency");
             if (init_freq == "only-once") {
                 return -1;
             } else {
-                int init_freq_int = std::stoi(init_freq);
+                int64_t init_freq_int = std::stoll(init_freq);
                 if (init_freq_int < 1) {
                     throw std::runtime_error("Reinitialization frequency has to be higher or equal to 1.");
                 }
