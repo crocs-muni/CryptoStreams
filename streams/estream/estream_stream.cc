@@ -55,7 +55,7 @@ estream_stream::estream_stream(const json& config, default_seed_source& seeder, 
                                   config.at("generator")))
     , _key_stream(create_key_stream(config.at("key-type"),
                                     seeder,
-                                    config.value("iv-size", default_key_size),
+                                    config.value("key-size", default_key_size),
                                     config.at("generator")))
     , _source(make_stream(config.at("plaintext-type"), seeder, _block_size))
     , _prepared_stream_source(!plt_stream ? nullptr : *plt_stream)
