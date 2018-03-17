@@ -14,13 +14,13 @@ namespace block {
         return osize;
     }
 
-    static int reinit_freq(const json& config) {
+    static int64_t reinit_freq(const json& config) {
         try {
             std::string init_freq = config.at("init-frequency");
             if (init_freq == "only-once") {
                 return -1;
             } else {
-                int init_freq_int = std::stoi(init_freq);
+                int64_t init_freq_int = std::stoll(init_freq);
                 if (init_freq_int < 1) {
                     throw std::runtime_error("Reinitialization frequency has to be higher or equal to 1.");
                 }
@@ -32,8 +32,8 @@ namespace block {
         }
     }
 
-    block_stream::block_stream(const json& config, default_seed_source& seeder, const std::size_t osize)
-        : stream(osize)
+    block_stream::block_stream(const json& config, default_seed_source& seeder, const std::size_t osize, core::optional<stream *> plt_stream)
+        : stream(compute_vector_size(config.at("block-size"), osize))
         , _round(config.at("round"))
         , _block_size(config.at("block-size"))
         , _reinit_freq(reinit_freq(config))
@@ -43,7 +43,7 @@ namespace block {
         , _key(make_stream(config.at("key"), seeder, unsigned(config.at("key-size"))))
         , _encryptor(make_block_cipher(config.at("algorithm"), unsigned(_round),
                                        unsigned(_block_size), unsigned(config.at("key-size")), true))
-        , _data(compute_vector_size(_block_size, osize))
+        , _prepared_stream_source(!plt_stream ? nullptr : *plt_stream)
     {
         logger::info() << "stream source is block cipher: " << config.at("algorithm") << std::endl;
 
@@ -74,12 +74,21 @@ namespace block {
         }
 
         for (auto beg = _data.begin(); beg != _data.end(); beg += _block_size) {
-            vec_cview view = _source->next();
+            vec_cview view = get_next_ptx();
 
             _encryptor->encrypt(view.data(), &(*beg));
         }
 
         return make_view(_data.cbegin(), osize());
+    }
+
+    vec_cview block_stream::get_next_ptx()
+    {
+        if (_prepared_stream_source) {
+            return _prepared_stream_source->next();
+        } else {
+            return _source->next();
+        }
     }
 
 }

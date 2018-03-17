@@ -317,7 +317,7 @@ void Speck_Decrypt_128(const uint8_t round_limit, const uint8_t *key_schedule, c
 void speck::keysetup(const std::uint8_t* key, const uint64_t keysize) {
     std::uint8_t rev_key[keysize];
     endianity_flip(key, rev_key, keysize);
-    Speck_Init(_ctx.cipher_object.get(), _ctx.cipher_config, mode_t(ECB), rev_key, NULL, NULL);
+    Speck_Init(_ctx.cipher_object.get(), _ctx.cipher_config, mode_t(ECB), rev_key, nullptr, nullptr);
     _ctx.cipher_object->round_limit = uint8_t(_rounds);
 }
 

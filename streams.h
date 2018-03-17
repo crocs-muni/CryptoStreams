@@ -4,6 +4,7 @@
 #include <fstream>
 #include <eacirc-core/json.h>
 #include <eacirc-core/random.h>
+#include <eacirc-core/optional.h>
 #include <random>
 
 #ifdef BUILD_testsuite
@@ -27,17 +28,13 @@ namespace _impl {
     template <std::uint8_t value>
     struct const_stream : stream {
         const_stream(const std::size_t osize)
-                : stream(osize)
-                , _data(osize) {
+                : stream(osize) {
             std::fill_n(_data.begin(), osize, value);
         }
 
         vec_cview next() override {
             return make_cview(_data);
         }
-
-    private:
-        std::vector<value_type> _data;
     };
 
     template <typename Generator>
@@ -45,8 +42,7 @@ namespace _impl {
         template <typename Seeder>
         rng_stream(Seeder&& seeder, const std::size_t osize)
                 : stream(osize)
-                , _rng(std::forward<Seeder>(seeder))
-                , _data(osize) {}
+                , _rng(std::forward<Seeder>(seeder)) {}
 
         vec_cview next() override {
             std::generate_n(_data.data(), osize(), [this]() {
@@ -57,7 +53,6 @@ namespace _impl {
 
     private:
         Generator _rng;
-        std::vector<value_type> _data;
     };
 
 } // namespace _impl
@@ -73,7 +68,6 @@ struct file_stream : stream {
 private:
     const std::string _path;
     std::ifstream _istream;
-    std::vector<value_type> _data;
 };
 
 /**
@@ -83,9 +77,6 @@ struct single_value_stream : stream {
     single_value_stream(const json& config, default_seed_source &seeder, const std::size_t osize);
 
     vec_cview next() override;
-
-private:
-    std::vector<value_type> _data;
 };
 
 /**
@@ -95,9 +86,6 @@ struct counter : stream {
     counter(const std::size_t osize);
 
     vec_cview next() override;
-
-private:
-    std::vector<value_type> _data;
 };
 
 /**
@@ -105,9 +93,6 @@ private:
  */
 struct random_start_counter : counter {
     random_start_counter(default_seed_source &seeder, const std::size_t osize);
-
-private:
-    std::vector<value_type> _data;
 };
 
 /**
@@ -119,7 +104,19 @@ struct xor_stream : stream {
 
     vec_cview next() override;
 private:
-    std::vector<value_type> _data;
+    std::unique_ptr<stream> _source;
+};
+
+/**
+ * @brief Stream XORing two parts of internal stream
+ */
+struct rnd_plt_ctx_stream : stream {
+    template <typename Seeder>
+    rnd_plt_ctx_stream(const json& config, Seeder&& seeder, const std::size_t osize);
+
+    vec_cview next() override;
+private:
+    std::unique_ptr<stream> _rng;
     std::unique_ptr<stream> _source;
 };
 
@@ -133,8 +130,7 @@ struct sac_stream : stream {
     template <typename Seeder>
     sac_stream(Seeder&& seeder, const std::size_t osize)
             : stream(osize)
-            , _rng(std::forward<Seeder>(seeder))
-            , _data(osize) {
+            , _rng(std::forward<Seeder>(seeder)) {
         if (osize % 2 == 1)
             throw std::runtime_error(
                     "Stream's osize has to be even (so it contains 2 vectors of same legth).");
@@ -156,7 +152,6 @@ struct sac_stream : stream {
 
 private:
     pcg32 _rng;
-    std::vector<value_type> _data;
 };
 
 struct sac_fixed_pos_stream : stream {
@@ -164,7 +159,6 @@ struct sac_fixed_pos_stream : stream {
     sac_fixed_pos_stream(Seeder&& seeder, const std::size_t osize, const std::size_t flip_bit_position)
             : stream(osize)
             , _rng(std::forward<Seeder>(seeder))
-            , _data(osize)
             , _flip_bit_position(flip_bit_position) {
         if (osize % 2 == 1)
             throw std::runtime_error(
@@ -188,7 +182,6 @@ struct sac_fixed_pos_stream : stream {
 
 private:
     pcg32 _rng;
-    std::vector<value_type> _data;
     const std::size_t _flip_bit_position;
 };
 
@@ -197,7 +190,6 @@ struct sac_2d_all_pos : stream {
     sac_2d_all_pos(Seeder&& seeder, const std::size_t osize)
             : stream(osize)
             , _rng(std::forward<Seeder>(seeder))
-            , _data(osize)
             , _origin_data(osize)
             , _flip_bit_position(0)
     {}
@@ -221,10 +213,76 @@ struct sac_2d_all_pos : stream {
 
 private:
     pcg32 _rng;
-    std::vector<value_type> _data;
     // storing copy is not optimal, can be done faster with more conditions
     std::vector<value_type> _origin_data;
     std::size_t _flip_bit_position;
+};
+
+struct hw_counter : stream {
+    template<typename Seeder>
+    hw_counter(const json& config, Seeder &&seeder, const std::size_t osize)
+        : stream(osize)
+        , _rng(std::forward<Seeder>(seeder))
+        , _origin_data(osize)
+        , _increase_hw(config.value("increase_hw", true))
+        , _cur_hw(static_cast<uint64_t>(config.value("hw", 1)))
+    {
+        bool randomize_start = config.value("randomize_start", false);
+
+        if (_cur_hw == 0 || _cur_hw > osize * 8){
+            throw std::runtime_error("Invalid Hamming weight for the given output size");
+        }
+
+        if (randomize_start) {
+            std::generate_n(_data.data(), osize, [this]() {
+                return std::uniform_int_distribution<std::uint8_t>()(_rng);
+            });
+            std::copy_n(_data.begin(), osize, _origin_data.begin());
+
+        } else {
+            std::fill_n(_origin_data.begin(), osize, 0);
+        }
+
+        combination_init();
+    }
+
+    vec_cview next() override;
+
+
+private:
+    void combination_init() {
+        _cur_positions.clear();
+        for (std::size_t i = 0; i < _cur_hw; ++i) {
+            _cur_positions.push_back(i);
+        }
+    }
+
+    bool combination_next() {
+        const auto size = static_cast<int64_t>(_cur_positions.size());
+        auto idx = size - 1;
+
+        if (_cur_positions[idx] == osize()*8 - 1) {
+            do {
+                idx -= 1;
+            } while (idx >= 0 && _cur_positions[idx] + 1 == _cur_positions[idx + 1]);
+
+            if (idx < 0) {
+                return false;
+            }
+
+            for (auto j = idx + 1; j < size; ++j) {
+                _cur_positions[j] = _cur_positions[idx] + j - idx + 1;
+            }
+        }
+        _cur_positions[idx]++;
+        return true;
+    }
+
+    pcg32 _rng;
+    std::vector<value_type> _origin_data;
+    const bool _increase_hw;
+    std::size_t _cur_hw;
+    std::vector<std::size_t> _cur_positions;
 };
 
 struct column_stream : stream {
@@ -245,7 +303,6 @@ struct column_fixed_position_stream : stream {
     vec_cview next() override;
 
 private:
-    std::vector<value_type> _data; // change to array (maxe osize() constexpression), or init it to given size
     const std::size_t _position;
     std::unique_ptr<stream> _source;
 };
@@ -271,5 +328,6 @@ using mt19937_stream = _impl::rng_stream<std::mt19937>;
  */
 using pcg32_stream = _impl::rng_stream<pcg32>;
 
-std::unique_ptr<stream> make_stream(const json& config, default_seed_source& seeder, std::size_t osize);
+std::unique_ptr<stream> make_stream(const json& config, default_seed_source& seeder, std::size_t osize,
+                                    core::optional<stream *> stream = core::nullopt_t{});
 void stream_to_dataset(dataset &set, std::unique_ptr<stream>& source);

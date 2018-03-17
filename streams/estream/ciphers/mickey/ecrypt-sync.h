@@ -84,6 +84,8 @@ class ECRYPT_Mickey : public estream_interface {
     MICKEY_ctx _ctx;
 
 public:
+    ECRYPT_Mickey(int rounds)
+        : estream_interface(rounds) {}
     /* Mandatory functions */
 
     /*

@@ -4,6 +4,7 @@
 #include <memory>
 #include <eacirc-core/json.h>
 #include <eacirc-core/random.h>
+#include <eacirc-core/optional.h>
 
 namespace hash {
 
@@ -15,21 +16,25 @@ template <typename I> void hash_data(hash_interface& hasher, const I& data, std:
 
 
 struct hash_stream : stream {
-    hash_stream(const json& config, default_seed_source& seeder, const std::size_t osize);
+    hash_stream(const json& config, default_seed_source& seeder, const std::size_t osize, core::optional<stream *> plt_stream);
     hash_stream(hash_stream&&);
-    ~hash_stream();
-
+    ~hash_stream() override;
     vec_cview next() override;
 
 private:
+    vec_cview get_next_ptx();
+
     const std::size_t _round;
     const std::size_t _hash_input_size;
     const std::size_t _source_size;
 
     std::unique_ptr<stream> _source;
+
+    stream *_prepared_stream_source;
     std::unique_ptr<hash_interface> _hasher;
 
     std::vector<value_type> _data;
+
 };
 
 } // namespace hash

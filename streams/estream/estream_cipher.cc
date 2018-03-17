@@ -25,7 +25,7 @@
 #include "ciphers/salsa20/ecrypt-sync.h"
 #include "ciphers/sfinks/ecrypt-sync.h"
 #include "ciphers/sosemanuk/ecrypt-sync.h"
-// #include "ciphers/trivium/ecrypt-sync.h"     // stopped working after IDE update
+#include "ciphers/trivium/ecrypt-sync.h"     // stopped working after IDE update
 #include "ciphers/tsc-4/ecrypt-sync.h"
 #include "ciphers/wg/ecrypt-sync.h"
 // #include "ciphers/yamb/ecrypt-sync.h"        // stopped working after IDE update
@@ -48,7 +48,7 @@ std::unique_ptr<estream_interface> create_estream_cipher(const std::string& name
     if (name == "Hermes")           return std::make_unique<ECRYPT_Hermes>(!round ? 10 : *round);
     if (name == "LEX")              return std::make_unique<ECRYPT_Lex>(!round ? 10 : *round);
     if (name == "MAG")              return std::make_unique<ECRYPT_Mag>();
-    if (name == "MICKEY")           return std::make_unique<ECRYPT_Mickey>();
+    if (name == "MICKEY")           return std::make_unique<ECRYPT_Mickey>(!round ? 8 : *round);
     if (name == "Mir-1")            return std::make_unique<ECRYPT_Mir>();
     if (name == "Pomaranch")        return std::make_unique<ECRYPT_Pomaranch>();
     if (name == "Py")               return std::make_unique<ECRYPT_Py>();
@@ -56,7 +56,7 @@ std::unique_ptr<estream_interface> create_estream_cipher(const std::string& name
     if (name == "Salsa20")          return std::make_unique<ECRYPT_Salsa>(!round ? 20 : *round);
     if (name == "SFINKS")           return std::make_unique<ECRYPT_Sfinks>();
     if (name == "SOSEMANUK")        return std::make_unique<ECRYPT_Sosemanuk>(!round ? 25 : *round);
-    // if (name == "Trivium")          return std::make_unique<ECRYPT_Trivium>();
+    if (name == "Trivium")          return std::make_unique<ECRYPT_Trivium>(!round ? 9 : *round);
     if (name == "TSC-4")            return std::make_unique<ECRYPT_Tsc4>(!round ? 32 : *round);
     if (name == "WG")               return std::make_unique<ECRYPT_Wg>();
     // if (name == "Yamb")             return std::make_unique<ECRYPT_Yamb>();

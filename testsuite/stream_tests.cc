@@ -99,6 +99,90 @@ TEST(sac_streams, fixed_position) {
     ASSERT_EQ(position_in_byte, 2); // Position x of changed bit, where position_in_byte = 2^x
 }
 
+TEST(hw_counter, invalid_params) {
+    const json json_config = {
+        {"randomize_start", false},
+        {"increase_hw", false},
+        {"hw", 4*8+1},
+    };
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    std::make_unique<hw_counter>(json_config, seeder, 5);
+    EXPECT_THROW(std::make_unique<hw_counter>(json_config, seeder, 4), std::runtime_error);
+}
+
+TEST(hw_counter, basic_test) {
+    const int hw = 3;
+    const size_t size = 4;
+    const int c_32_over_3 = 4960;
+
+    const json json_config = {
+        {"randomize_start", false},
+        {"increase_hw", false},
+        {"hw", hw},
+    };
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    auto stream = std::make_unique<hw_counter>(json_config, seeder, size);
+
+    // Test difference to previous vector
+    uint8_t buff1[size], buff2[size];
+    uint8_t *buff_o=buff1, *buff_n=buff2;
+
+    for(int i=0; i < c_32_over_3 + 4; ++i){
+        uint32_t cur_hw = 0;
+        uint32_t idx = 0;
+
+        for(auto it : stream->next()) {
+            for(int j=0; j<8; ++j){
+                cur_hw += (uint8_t)it & (1 << j) ? 1 : 0;
+            }
+            buff_n[idx] = (uint8_t)it;
+            idx += 1;
+        }
+
+        ASSERT_EQ(cur_hw, hw);
+        ASSERT_TRUE(i == 0 || memcmp(buff_o, buff_n, size) != 0);
+        std::swap(buff_o, buff_n);
+    }
+}
+
+TEST(hw_counter, period_test) {
+    const int hw = 3;
+    const size_t size = 4;
+    const int c_32_over_3 = 4960;
+
+    const json json_config = {
+        {"randomize_start", false},
+        {"increase_hw", false},
+        {"hw", hw},
+    };
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    auto stream1 = std::make_unique<hw_counter>(json_config, seeder, size);
+    auto stream2 = std::make_unique<hw_counter>(json_config, seeder, size);
+
+    // Rewind one stream beyond the period
+    for(int i=0; i < c_32_over_3; ++i){
+        stream1->next();
+    }
+
+    // Compare rewinded & fresh generator over period.
+    for(int i=0; i < c_32_over_3 + 4; ++i){
+        auto it1 = stream1->next();
+        auto it2 = stream2->next();
+        ASSERT_TRUE(it1 == it2);
+    }
+
+    // desync test
+    stream1->next();
+    for(int i=0; i < c_32_over_3 + 4; ++i){
+        auto it1 = stream1->next();
+        auto it2 = stream2->next();
+        ASSERT_FALSE(it1 == it2);
+    }
+}
+
 TEST(column_streams, basic_test_with_counter) {
     json json_config = {
             {"size", 5},
@@ -115,6 +199,48 @@ TEST(column_streams, basic_test_with_counter) {
 //    for(auto it : stream->next()) {
 //        std::cout << it << std::endl;
 //    }
+}
+
+TEST(rnd_plt_ctx_streams, aes_single_vector) {
+    const json json_config = {
+        {"type", "rnd-plt-ctx-stream"},
+        {"source", {
+             {"type", "block"},
+             {"init-frequency", "only-once"},
+             {"algorithm", "AES"},
+             {"round", 10},
+             {"block-size", 16},
+             {"plaintext", {{"type", "pcg32-stream"}}},
+             {"key-size", 16},
+             {"key", {{"type", "pcg32-stream"}}},
+             {"iv", {{"type", "pcg32-stream"}}}
+         }
+        }
+    };
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    std::unique_ptr<stream> stream = make_stream(json_config, seeder, 32);
+
+    vec_cview view = stream->next();
+
+    // fixed expected data AES 10 rounds, with PTX choosen by PCG32 with fixed seed testsuite::seed1
+#if defined(__clang__) // if compiler is clang, data are different from gcc :(
+    std::vector<value_type> expected_data = {
+        0x02, 0x6c, 0xc7, 0x6f, 0xaf, 0x91, 0x91, 0xb4, 0x82, 0x4c, 0x67, 0x8c, 0x22, 0x66, 0x39, 0x90,  // ptx
+        0xd5, 0x36, 0xd3, 0x30, 0xf5, 0xe5, 0xde, 0x87, 0x75, 0x54, 0x82, 0x19, 0xf2, 0xb9, 0xa6, 0xcc   // ctx
+    };
+#elif defined(__GNUC__) || defined(__GNUG__)
+    std::vector<value_type> expected_data = {
+        0xc5, 0x1e, 0xf0, 0xd7, 0x40, 0x1c, 0xa5, 0xea, 0x6f, 0x85, 0x11, 0x1e, 0x55, 0x74, 0x64, 0xcc,  // ptx
+        0x54, 0x30, 0x76, 0x5f, 0xbf, 0xa7, 0x0d, 0xcb, 0xf0, 0x9b, 0xb3, 0xc0, 0xbe, 0x2b, 0xba, 0xaf   // ctx
+    };
+#elif defined(_MSC_VER) // MS data unknown
+    std::vector<value_type> expected_data = {
+        // TODO
+    };
+#endif
+
+    ASSERT_EQ(make_cview(expected_data), view);
 }
 
 
