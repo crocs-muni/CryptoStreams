@@ -14,9 +14,6 @@ value_type hex_to_bin(const char input) {
 }
 
 std::vector<value_type> hex_string_to_binary(const std::string& str) {
-    if (str.length() % 2 != 0){
-        std::cout << "valami";
-    }
     assert(str.length() % 2 == 0);
     std::vector<value_type> output(str.length() / 2);
 
