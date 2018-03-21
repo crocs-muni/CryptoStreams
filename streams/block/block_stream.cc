@@ -6,14 +6,6 @@
 
 namespace block {
 
-    static std::size_t compute_vector_size(const std::size_t block_size, const std::size_t osize) {
-        if (block_size > osize)
-            return block_size;
-        if (block_size % osize)
-            return ((osize / block_size) + 1) * block_size;
-        return osize;
-    }
-
     static int64_t reinit_freq(const json& config) {
         try {
             std::string init_freq = config.at("init-frequency");
@@ -33,7 +25,7 @@ namespace block {
     }
 
     block_stream::block_stream(const json& config, default_seed_source& seeder, const std::size_t osize, core::optional<stream *> plt_stream)
-        : stream(compute_vector_size(config.at("block-size"), osize))
+        : stream(osize)
         , _round(config.at("round"))
         , _block_size(config.at("block-size"))
         , _reinit_freq(reinit_freq(config))
@@ -49,10 +41,12 @@ namespace block {
 
         if (int(config.at("round")) < 0)
             throw std::runtime_error("The least number of rounds is 0.");
-        if (int(config.at("block-size")) < 4)
+        if (_block_size < 4)
             throw std::runtime_error("The block size is at least 4 bytes");
         if (osize == 0)
             throw std::runtime_error("The output size has to be at least 1 byte");
+        if (osize % _block_size != 0) // not necessary wrong, but we never needed this, we always did this by mistake. Change to warning if needed
+            throw std::runtime_error("Output size is not multiple of block size");
 
         /* others modes than ECB are not implemented yet
         vec_view iv_view = _iv->next();

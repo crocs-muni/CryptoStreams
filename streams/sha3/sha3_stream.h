@@ -10,8 +10,6 @@ namespace sha3 {
 
 struct sha3_interface;
 
-std::size_t compute_hash_size(const std::size_t hash_size, const std::size_t osize);
-
 template <typename I> void hash_data(sha3_interface& hasher, const I& data, std::uint8_t* hash, const std::size_t hash_size);
 
 
@@ -26,8 +24,7 @@ private:
     vec_cview get_next_ptx();
 
     const std::size_t _round;
-    const std::size_t _hash_input_size;
-    const std::size_t _source_size;
+    const std::size_t _hash_size;
 
     std::unique_ptr<stream> _source;
     stream *_prepared_stream_source;
