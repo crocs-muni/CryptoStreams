@@ -67,9 +67,8 @@ namespace block {
             _encryptor->keysetup(key_view.data(), std::uint32_t(key_view.size()));
         }
 
+        vec_cview view = get_next_ptx();
         for (auto beg = _data.begin(); beg != _data.end(); beg += _block_size) {
-            vec_cview view = get_next_ptx();
-
             _encryptor->encrypt(view.data(), &(*beg));
         }
 
