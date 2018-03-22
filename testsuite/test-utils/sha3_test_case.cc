@@ -60,8 +60,9 @@ namespace testsuite {
         std::size_t hash_size =  _ciphertext.size();
         _stream_config["algorithm"] = _algorithm;
         _stream_config["round"] = _round;
+        _stream_config["input-size"] = _plaintext.size();
         _stream_config["source"]["outputs"] = _plaintext;
-        _stream_config["hash-bitsize"] = hash_size * 8;
+        _stream_config["hash-size"] = hash_size;
 
         seed_seq_from<pcg32> seeder(seed1);
         return make_stream(_stream_config, seeder, hash_size);
