@@ -51,20 +51,20 @@ typedef struct {
  * Other modes may be added easily enough.
  */
 /* Encrypt several full blocks in ECB mode */
-void gost_enc(gost_ctx *ctx, const byte *clear, byte *cipher, int blocks);
+void gost_enc(gost_ctx *ctx, const byte *clear, byte *cipher, int blocks, unsigned nr);
 /* Decrypt several full blocks in ECB mode */
-void gost_dec(gost_ctx *ctx, const byte *cipher, byte *clear, int blocks);
+void gost_dec(gost_ctx *ctx, const byte *cipher, byte *clear, int blocks, unsigned nr);
 /* Encrypts several full blocks in CFB mode using 8byte IV */
 void gost_enc_cfb(gost_ctx *ctx, const byte *iv, const byte *clear,
-                  byte *cipher, int blocks);
+                  byte *cipher, int blocks, unsigned nr);
 /* Decrypts several full blocks in CFB mode using 8byte IV */
 void gost_dec_cfb(gost_ctx *ctx, const byte *iv, const byte *cipher,
-                  byte *clear, int blocks);
+                  byte *clear, int blocks, unsigned nr);
 
 /* Encrypt one  block */
-void gostcrypt(gost_ctx *c, const byte *in, byte *out);
+void gostcrypt(gost_ctx *c, const byte *in, byte *out, unsigned nr);
 /* Decrypt one  block */
-void gostdecrypt(gost_ctx *c, const byte *in, byte *out);
+void gostdecrypt(gost_ctx *c, const byte *in, byte *out, unsigned nr);
 /* Set key into context */
 void gost_key(gost_ctx *ctx, const byte *key);
 /* Get key from context */
@@ -75,7 +75,7 @@ void gost_init(gost_ctx *ctx, const gost_subst_block *subst_block);
 void gost_destroy(gost_ctx *ctx);
 /* Intermediate function used for calculate hash */
 void gost_enc_with_key(gost_ctx *, byte *key, byte *inblock,
-                       byte *outblock);
+                       byte *outblock, unsigned nr);
 /* Compute MAC of given length in bits from data */
 int gost_mac(gost_ctx *ctx, int hmac_len, const unsigned char *data,
              unsigned int data_len, unsigned char *hmac);
@@ -91,7 +91,7 @@ void mac_block(gost_ctx *c, byte *buffer, const byte *block);
 /* Extracts MAC value from mac state buffer */
 void get_mac(byte *buffer, int nbits, byte *out);
 /* Implements cryptopro key meshing algorithm. Expect IV to be 8-byte size*/
-void cryptopro_key_meshing(gost_ctx *ctx, unsigned char *iv);
+void cryptopro_key_meshing(gost_ctx *ctx, unsigned char *iv, unsigned nr);
 /* Parameter sets specified in RFC 4357 */
 extern gost_subst_block GostR3411_94_TestParamSet;
 extern gost_subst_block GostR3411_94_CryptoProParamSet;

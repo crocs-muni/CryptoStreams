@@ -267,49 +267,51 @@ static word32 f(gost_ctx * c, word32 x)
 }
 
 /* Low-level encryption routine - encrypts one 64 bit block*/
-void gostcrypt(gost_ctx * c, const byte * in, byte * out)
+void gostcrypt(gost_ctx * c, const byte * in, byte * out, unsigned nr)
 {
-    register word32 n1, n2;     /* As named in the GOST */
+    word32 n1, n2;     /* As named in the GOST */
     n1 = in[0] | (in[1] << 8) | (in[2] << 16) | ((word32) in[3] << 24);
     n2 = in[4] | (in[5] << 8) | (in[6] << 16) | ((word32) in[7] << 24);
     /* Instead of swapping halves, swap names each round */
 
-    n2 ^= f(c, n1 + c->k[0]);
-    n1 ^= f(c, n2 + c->k[1]);
-    n2 ^= f(c, n1 + c->k[2]);
-    n1 ^= f(c, n2 + c->k[3]);
-    n2 ^= f(c, n1 + c->k[4]);
-    n1 ^= f(c, n2 + c->k[5]);
-    n2 ^= f(c, n1 + c->k[6]);
-    n1 ^= f(c, n2 + c->k[7]);
+    if (nr == 0) goto finish_block;
+    n2 ^= f(c, n1 + c->k[0]); if (nr ==  1) goto finish_block;
+    n1 ^= f(c, n2 + c->k[1]); if (nr ==  2) goto finish_block;
+    n2 ^= f(c, n1 + c->k[2]); if (nr ==  3) goto finish_block;
+    n1 ^= f(c, n2 + c->k[3]); if (nr ==  4) goto finish_block;
+    n2 ^= f(c, n1 + c->k[4]); if (nr ==  5) goto finish_block;
+    n1 ^= f(c, n2 + c->k[5]); if (nr ==  6) goto finish_block;
+    n2 ^= f(c, n1 + c->k[6]); if (nr ==  7) goto finish_block;
+    n1 ^= f(c, n2 + c->k[7]); if (nr ==  8) goto finish_block;
 
-    n2 ^= f(c, n1 + c->k[0]);
-    n1 ^= f(c, n2 + c->k[1]);
-    n2 ^= f(c, n1 + c->k[2]);
-    n1 ^= f(c, n2 + c->k[3]);
-    n2 ^= f(c, n1 + c->k[4]);
-    n1 ^= f(c, n2 + c->k[5]);
-    n2 ^= f(c, n1 + c->k[6]);
-    n1 ^= f(c, n2 + c->k[7]);
+    n2 ^= f(c, n1 + c->k[0]); if (nr ==  9) goto finish_block;
+    n1 ^= f(c, n2 + c->k[1]); if (nr == 10) goto finish_block;
+    n2 ^= f(c, n1 + c->k[2]); if (nr == 11) goto finish_block;
+    n1 ^= f(c, n2 + c->k[3]); if (nr == 12) goto finish_block;
+    n2 ^= f(c, n1 + c->k[4]); if (nr == 13) goto finish_block;
+    n1 ^= f(c, n2 + c->k[5]); if (nr == 14) goto finish_block;
+    n2 ^= f(c, n1 + c->k[6]); if (nr == 15) goto finish_block;
+    n1 ^= f(c, n2 + c->k[7]); if (nr == 16) goto finish_block;
 
-    n2 ^= f(c, n1 + c->k[0]);
-    n1 ^= f(c, n2 + c->k[1]);
-    n2 ^= f(c, n1 + c->k[2]);
-    n1 ^= f(c, n2 + c->k[3]);
-    n2 ^= f(c, n1 + c->k[4]);
-    n1 ^= f(c, n2 + c->k[5]);
-    n2 ^= f(c, n1 + c->k[6]);
-    n1 ^= f(c, n2 + c->k[7]);
+    n2 ^= f(c, n1 + c->k[0]); if (nr == 17) goto finish_block;
+    n1 ^= f(c, n2 + c->k[1]); if (nr == 18) goto finish_block;
+    n2 ^= f(c, n1 + c->k[2]); if (nr == 19) goto finish_block;
+    n1 ^= f(c, n2 + c->k[3]); if (nr == 20) goto finish_block;
+    n2 ^= f(c, n1 + c->k[4]); if (nr == 21) goto finish_block;
+    n1 ^= f(c, n2 + c->k[5]); if (nr == 22) goto finish_block;
+    n2 ^= f(c, n1 + c->k[6]); if (nr == 23) goto finish_block;
+    n1 ^= f(c, n2 + c->k[7]); if (nr == 24) goto finish_block;
 
-    n2 ^= f(c, n1 + c->k[7]);
-    n1 ^= f(c, n2 + c->k[6]);
-    n2 ^= f(c, n1 + c->k[5]);
-    n1 ^= f(c, n2 + c->k[4]);
-    n2 ^= f(c, n1 + c->k[3]);
-    n1 ^= f(c, n2 + c->k[2]);
-    n2 ^= f(c, n1 + c->k[1]);
+    n2 ^= f(c, n1 + c->k[7]); if (nr == 25) goto finish_block;
+    n1 ^= f(c, n2 + c->k[6]); if (nr == 26) goto finish_block;
+    n2 ^= f(c, n1 + c->k[5]); if (nr == 27) goto finish_block;
+    n1 ^= f(c, n2 + c->k[4]); if (nr == 28) goto finish_block;
+    n2 ^= f(c, n1 + c->k[3]); if (nr == 29) goto finish_block;
+    n1 ^= f(c, n2 + c->k[2]); if (nr == 30) goto finish_block;
+    n2 ^= f(c, n1 + c->k[1]); if (nr == 31) goto finish_block;
     n1 ^= f(c, n2 + c->k[0]);
 
+finish_block:
     out[0] = (byte) (n2 & 0xff);
     out[1] = (byte) ((n2 >> 8) & 0xff);
     out[2] = (byte) ((n2 >> 16) & 0xff);
@@ -321,48 +323,50 @@ void gostcrypt(gost_ctx * c, const byte * in, byte * out)
 }
 
 /* Low-level decryption routine. Decrypts one 64-bit block */
-void gostdecrypt(gost_ctx * c, const byte * in, byte * out)
+void gostdecrypt(gost_ctx * c, const byte * in, byte * out, unsigned nr)
 {
-    register word32 n1, n2;     /* As named in the GOST */
+    word32 n1, n2;     /* As named in the GOST */
     n1 = in[0] | (in[1] << 8) | (in[2] << 16) | ((word32) in[3] << 24);
     n2 = in[4] | (in[5] << 8) | (in[6] << 16) | ((word32) in[7] << 24);
 
-    n2 ^= f(c, n1 + c->k[0]);
-    n1 ^= f(c, n2 + c->k[1]);
-    n2 ^= f(c, n1 + c->k[2]);
-    n1 ^= f(c, n2 + c->k[3]);
-    n2 ^= f(c, n1 + c->k[4]);
-    n1 ^= f(c, n2 + c->k[5]);
-    n2 ^= f(c, n1 + c->k[6]);
-    n1 ^= f(c, n2 + c->k[7]);
+    if (nr == 0) goto finish_block_dec;
+    n2 ^= f(c, n1 + c->k[0]); if (nr ==  1) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[1]); if (nr ==  2) goto finish_block_dec;
+    n2 ^= f(c, n1 + c->k[2]); if (nr ==  3) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[3]); if (nr ==  4) goto finish_block_dec;
+    n2 ^= f(c, n1 + c->k[4]); if (nr ==  5) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[5]); if (nr ==  6) goto finish_block_dec;
+    n2 ^= f(c, n1 + c->k[6]); if (nr ==  7) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[7]); if (nr ==  8) goto finish_block_dec;
 
-    n2 ^= f(c, n1 + c->k[7]);
-    n1 ^= f(c, n2 + c->k[6]);
-    n2 ^= f(c, n1 + c->k[5]);
-    n1 ^= f(c, n2 + c->k[4]);
-    n2 ^= f(c, n1 + c->k[3]);
-    n1 ^= f(c, n2 + c->k[2]);
-    n2 ^= f(c, n1 + c->k[1]);
-    n1 ^= f(c, n2 + c->k[0]);
+    n2 ^= f(c, n1 + c->k[7]); if (nr ==  9) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[6]); if (nr == 10) goto finish_block_dec;
+    n2 ^= f(c, n1 + c->k[5]); if (nr == 11) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[4]); if (nr == 12) goto finish_block_dec;
+    n2 ^= f(c, n1 + c->k[3]); if (nr == 13) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[2]); if (nr == 14) goto finish_block_dec;
+    n2 ^= f(c, n1 + c->k[1]); if (nr == 15) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[0]); if (nr == 16) goto finish_block_dec;
 
-    n2 ^= f(c, n1 + c->k[7]);
-    n1 ^= f(c, n2 + c->k[6]);
-    n2 ^= f(c, n1 + c->k[5]);
-    n1 ^= f(c, n2 + c->k[4]);
-    n2 ^= f(c, n1 + c->k[3]);
-    n1 ^= f(c, n2 + c->k[2]);
-    n2 ^= f(c, n1 + c->k[1]);
-    n1 ^= f(c, n2 + c->k[0]);
+    n2 ^= f(c, n1 + c->k[7]); if (nr == 17) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[6]); if (nr == 18) goto finish_block_dec;
+    n2 ^= f(c, n1 + c->k[5]); if (nr == 19) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[4]); if (nr == 20) goto finish_block_dec;
+    n2 ^= f(c, n1 + c->k[3]); if (nr == 21) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[2]); if (nr == 22) goto finish_block_dec;
+    n2 ^= f(c, n1 + c->k[1]); if (nr == 23) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[0]); if (nr == 24) goto finish_block_dec;
 
-    n2 ^= f(c, n1 + c->k[7]);
-    n1 ^= f(c, n2 + c->k[6]);
-    n2 ^= f(c, n1 + c->k[5]);
-    n1 ^= f(c, n2 + c->k[4]);
-    n2 ^= f(c, n1 + c->k[3]);
-    n1 ^= f(c, n2 + c->k[2]);
-    n2 ^= f(c, n1 + c->k[1]);
-    n1 ^= f(c, n2 + c->k[0]);
+    n2 ^= f(c, n1 + c->k[7]); if (nr == 25) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[6]); if (nr == 26) goto finish_block_dec;
+    n2 ^= f(c, n1 + c->k[5]); if (nr == 27) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[4]); if (nr == 28) goto finish_block_dec;
+    n2 ^= f(c, n1 + c->k[3]); if (nr == 29) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[2]); if (nr == 30) goto finish_block_dec;
+    n2 ^= f(c, n1 + c->k[1]); if (nr == 31) goto finish_block_dec;
+    n1 ^= f(c, n2 + c->k[0]); if (nr == 32) goto finish_block_dec;
 
+finish_block_dec:
     out[0] = (byte) (n2 & 0xff);
     out[1] = (byte) ((n2 >> 8) & 0xff);
     out[2] = (byte) ((n2 >> 16) & 0xff);
@@ -374,22 +378,22 @@ void gostdecrypt(gost_ctx * c, const byte * in, byte * out)
 }
 
 /* Encrypts several blocks in ECB mode */
-void gost_enc(gost_ctx * c, const byte * clear, byte * cipher, int blocks)
+void gost_enc(gost_ctx * c, const byte * clear, byte * cipher, int blocks, unsigned nr)
 {
     int i;
     for (i = 0; i < blocks; i++) {
-        gostcrypt(c, clear, cipher);
+        gostcrypt(c, clear, cipher, nr);
         clear += 8;
         cipher += 8;
     }
 }
 
 /* Decrypts several blocks in ECB mode */
-void gost_dec(gost_ctx * c, const byte * cipher, byte * clear, int blocks)
+void gost_dec(gost_ctx * c, const byte * cipher, byte * clear, int blocks, unsigned nr)
 {
     int i;
     for (i = 0; i < blocks; i++) {
-        gostdecrypt(c, cipher, clear);
+        gostdecrypt(c, cipher, clear, nr);
         clear += 8;
         cipher += 8;
     }
@@ -397,7 +401,7 @@ void gost_dec(gost_ctx * c, const byte * cipher, byte * clear, int blocks)
 
 /* Encrypts several full blocks in CFB mode using 8byte IV */
 void gost_enc_cfb(gost_ctx * ctx, const byte * iv, const byte * clear,
-                  byte * cipher, int blocks)
+                  byte * cipher, int blocks, unsigned nr)
 {
     byte cur_iv[8];
     byte gamma[8];
@@ -406,7 +410,7 @@ void gost_enc_cfb(gost_ctx * ctx, const byte * iv, const byte * clear,
     byte *out;
     memcpy(cur_iv, iv, 8);
     for (i = 0, in = clear, out = cipher; i < blocks; i++, in += 8, out += 8) {
-        gostcrypt(ctx, cur_iv, gamma);
+        gostcrypt(ctx, cur_iv, gamma, nr);
         for (j = 0; j < 8; j++) {
             cur_iv[j] = out[j] = in[j] ^ gamma[j];
         }
@@ -415,7 +419,7 @@ void gost_enc_cfb(gost_ctx * ctx, const byte * iv, const byte * clear,
 
 /* Decrypts several full blocks in CFB mode using 8byte IV */
 void gost_dec_cfb(gost_ctx * ctx, const byte * iv, const byte * cipher,
-                  byte * clear, int blocks)
+                  byte * clear, int blocks, unsigned nr)
 {
     byte cur_iv[8];
     byte gamma[8];
@@ -424,7 +428,7 @@ void gost_dec_cfb(gost_ctx * ctx, const byte * iv, const byte * cipher,
     byte *out;
     memcpy(cur_iv, iv, 8);
     for (i = 0, in = cipher, out = clear; i < blocks; i++, in += 8, out += 8) {
-        gostcrypt(ctx, cur_iv, gamma);
+        gostcrypt(ctx, cur_iv, gamma, nr);
         for (j = 0; j < 8; j++) {
             out[j] = (cur_iv[j] = in[j]) ^ gamma[j];
         }
@@ -433,10 +437,10 @@ void gost_dec_cfb(gost_ctx * ctx, const byte * iv, const byte * cipher,
 
 /* Encrypts one block using specified key */
 void gost_enc_with_key(gost_ctx * c, byte * key, byte * inblock,
-                       byte * outblock)
+                       byte * outblock, unsigned nr)
 {
     gost_key(c, key);
-    gostcrypt(c, inblock, outblock);
+    gostcrypt(c, inblock, outblock, nr);
 }
 
 /* Set 256 bit  key into context */
@@ -486,7 +490,7 @@ void gost_destroy(gost_ctx * c)
  */
 void mac_block(gost_ctx * c, byte * buffer, const byte * block)
 {
-    register word32 n1, n2;     /* As named in the GOST */
+    word32 n1, n2;     /* As named in the GOST */
     int i;
     for (i = 0; i < 8; i++) {
         buffer[i] ^= block[i];
@@ -590,15 +594,15 @@ int gost_mac_iv(gost_ctx * ctx, int mac_len, const unsigned char *iv,
 }
 
 /* Implements key meshing algorithm by modifing ctx and IV in place */
-void cryptopro_key_meshing(gost_ctx * ctx, unsigned char *iv)
+void cryptopro_key_meshing(gost_ctx * ctx, unsigned char *iv, unsigned nr)
 {
     unsigned char newkey[32], newiv[8];
     /* Set static keymeshing key */
     /* "Decrypt" key with keymeshing key */
-    gost_dec(ctx, CryptoProKeyMeshingKey, newkey, 4);
+    gost_dec(ctx, CryptoProKeyMeshingKey, newkey, 4, nr);
     /* set new key */
     gost_key(ctx, newkey);
     /* Encrypt iv with new key */
-    gostcrypt(ctx, iv, newiv);
+    gostcrypt(ctx, iv, newiv, nr);
     memcpy(iv, newiv, 8);
 }
