@@ -26,38 +26,42 @@ Public domain.
   x[a] = PLUS(x[a],x[b]); x[d] = ROTATE(XOR(x[d],x[a]), 8); \
   x[c] = PLUS(x[c],x[d]); x[b] = ROTATE(XOR(x[b],x[c]), 7);
 
-static void salsa20_wordtobyte(u8 output[64],const u32 input[16])
+static void salsa20_wordtobyte(u8 output[64],const u32 input[16], unsigned nr)
 {
     u32 x[16];
     int i;
 
     for (i = 0;i < 16;++i) x[i] = input[i];
-    for (i = 8;i > 0;i -= 2) {
+    for (i = nr;i > 0;i -= 2) {
         QUARTERROUND( 0, 4, 8,12)
         QUARTERROUND( 1, 5, 9,13)
         QUARTERROUND( 2, 6,10,14)
         QUARTERROUND( 3, 7,11,15)
-        QUARTERROUND( 0, 5,10,15)
-        QUARTERROUND( 1, 6,11,12)
-        QUARTERROUND( 2, 7, 8,13)
-        QUARTERROUND( 3, 4, 9,14)
+
+        if (i - 1 > 0) {
+            QUARTERROUND(0, 5, 10, 15)
+            QUARTERROUND(1, 6, 11, 12)
+            QUARTERROUND(2, 7, 8, 13)
+            QUARTERROUND(3, 4, 9, 14)
+        }
     }
     for (i = 0;i < 16;++i) x[i] = PLUS(x[i],input[i]);
     for (i = 0;i < 16;++i) U32TO8_LITTLE(output + 4 * i,x[i]);
 }
 
-void ECRYPT_init(void)
+void ECRYPT_Chacha::ECRYPT_init(void)
 {
+
     return;
 }
 
 static const char sigma[] = "expand 32-byte k";
 static const char tau[] = "expand 16-byte k";
 
-void ECRYPT_keysetup(ECRYPT_ctx *x,const u8 *k,u32 kbits,u32 ivbits)
+void ECRYPT_Chacha::ECRYPT_keysetup(const u8 *k,u32 kbits,u32 ivbits)
 {
+    CHACHA_ctx * x = &_ctx;
     const char *constants;
-
     x->input[4] = U8TO32_LITTLE(k + 0);
     x->input[5] = U8TO32_LITTLE(k + 4);
     x->input[6] = U8TO32_LITTLE(k + 8);
@@ -78,22 +82,24 @@ void ECRYPT_keysetup(ECRYPT_ctx *x,const u8 *k,u32 kbits,u32 ivbits)
     x->input[3] = U8TO32_LITTLE(constants + 12);
 }
 
-void ECRYPT_ivsetup(ECRYPT_ctx *x,const u8 *iv)
+void ECRYPT_Chacha::ECRYPT_ivsetup(const u8 *iv)
 {
+    CHACHA_ctx * x = &_ctx;
     x->input[12] = 0;
     x->input[13] = 0;
     x->input[14] = U8TO32_LITTLE(iv + 0);
     x->input[15] = U8TO32_LITTLE(iv + 4);
 }
 
-void ECRYPT_encrypt_bytes(ECRYPT_ctx *x,const u8 *m,u8 *c,u32 bytes)
+void ECRYPT_Chacha::ECRYPT_encrypt_bytes(const u8 *m,u8 *c,u32 bytes)
 {
     u8 output[64];
     int i;
+    CHACHA_ctx * x = &_ctx;
 
     if (!bytes) return;
     for (;;) {
-        salsa20_wordtobyte(output,x->input);
+        salsa20_wordtobyte(output, x->input, (unsigned int) _rounds);
         x->input[12] = PLUSONE(x->input[12]);
         if (!x->input[12]) {
             x->input[13] = PLUSONE(x->input[13]);
@@ -110,14 +116,14 @@ void ECRYPT_encrypt_bytes(ECRYPT_ctx *x,const u8 *m,u8 *c,u32 bytes)
     }
 }
 
-void ECRYPT_decrypt_bytes(ECRYPT_ctx *x,const u8 *c,u8 *m,u32 bytes)
+void ECRYPT_Chacha::ECRYPT_decrypt_bytes(const u8 *c,u8 *m,u32 bytes)
 {
-    ECRYPT_encrypt_bytes(x,c,m,bytes);
+    this->ECRYPT_encrypt_bytes(c,m,bytes);
 }
 
-void ECRYPT_keystream_bytes(ECRYPT_ctx *x,u8 *stream,u32 bytes)
+void ECRYPT_Chacha::ECRYPT_keystream_bytes(u8 *stream,u32 bytes)
 {
     u32 i;
     for (i = 0;i < bytes;++i) stream[i] = 0;
-    ECRYPT_encrypt_bytes(x,stream,stream,bytes);
+    this->ECRYPT_encrypt_bytes(stream,stream,bytes);
 }

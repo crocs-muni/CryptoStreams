@@ -5,6 +5,7 @@
 
 #include "ciphers/abc/ecrypt-sync.h"
 #include "ciphers/achterbahn/ecrypt-sync.h"
+#include "ciphers/chacha/ecrypt-sync.h"
 #include "ciphers/cryptmt/ecrypt-sync.h"
 #include "ciphers/decim/ecrypt-sync.h"
 #include "ciphers/dicing/ecrypt-sync.h"
@@ -36,6 +37,7 @@ std::unique_ptr<estream_interface> create_estream_cipher(const std::string& name
   // clang-format off
     if (name == "ABC")              return std::make_unique<ECRYPT_ABC>();
     if (name == "Achterbahn")       return std::make_unique<ECRYPT_Achterbahn>();
+    if (name == "Chacha")           return std::make_unique<ECRYPT_Chacha>(!round ? CHACHA_FULL_ROUNDS : *round);
     if (name == "CryptMT")          return std::make_unique<ECRYPT_Cryptmt>();
     if (name == "DECIM")            return std::make_unique<ECRYPT_Decim>(!round ? 8 : *round);
     if (name == "DICING")           return std::make_unique<ECRYPT_Dicing>();
