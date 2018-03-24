@@ -123,35 +123,36 @@ private:
 /**
  * @brief Stream for testing strict avalanche criterion
  *
- * The vector consists 2 parts of same length. The first part is random,
- * the second is copy of the first with one flipped bit
+ * Stateful generator
+ * Two consecussive vectors have following property:
+ * The first vector is random and the second is a copy
+ * of the first with one flipped bit.
  */
 struct sac_stream : stream {
     template <typename Seeder>
     sac_stream(Seeder&& seeder, const std::size_t osize)
             : stream(osize)
-            , _rng(std::forward<Seeder>(seeder)) {
-        if (osize % 2 == 1)
-            throw std::runtime_error(
-                    "Stream's osize has to be even (so it contains 2 vectors of same legth).");
-    }
+            , _rng(std::forward<Seeder>(seeder))
+            , _first(true) { }
 
     vec_cview next() override {
-        std::generate_n(_data.data(), osize() / 2, [this]() {
-            return std::uniform_int_distribution<std::uint8_t>()(_rng);
-        });
+        if (_first) {
+            std::generate_n(_data.data(), osize(), [this]() {
+                return std::uniform_int_distribution<std::uint8_t>()(_rng);
+            });
+        } else {
+            std::uniform_int_distribution<std::size_t> dist{0, (osize() * 8) - 1};
+            std::size_t pos = dist(_rng);
 
-        std::copy_n(_data.begin(), osize() / 2, _data.begin() + osize() / 2);
-
-        std::uniform_int_distribution<std::size_t> dist{0, osize() / 2 * 8};
-        std::size_t pos = dist(_rng) + osize() / 2 * 8;
-
-        _data[pos / 8] ^= (1 << (pos % 8)); // TODO: valgrind invalid read and write, [pos / 8] is out of range
+            _data[pos / 8] ^= (1 << (pos % 8));
+        }
+        _first ^= true;
         return make_cview(_data);
     }
 
 private:
     pcg32 _rng;
+    bool _first;
 };
 
 struct sac_fixed_pos_stream : stream {
@@ -159,10 +160,8 @@ struct sac_fixed_pos_stream : stream {
     sac_fixed_pos_stream(Seeder&& seeder, const std::size_t osize, const std::size_t flip_bit_position)
             : stream(osize)
             , _rng(std::forward<Seeder>(seeder))
-            , _flip_bit_position(flip_bit_position) {
-        if (osize % 2 == 1)
-            throw std::runtime_error(
-                    "Stream's osize has to be even (so it contains 2 vectors of same legth).");
+            , _flip_bit_position(flip_bit_position)
+            , _first(true) {
         if (_flip_bit_position >= osize*8)
             throw std::runtime_error(
                     "Position of the flipped bit has to be in range of vector size.");
@@ -170,19 +169,21 @@ struct sac_fixed_pos_stream : stream {
     }
 
     vec_cview next() override {
-        std::generate_n(_data.data(), osize() / 2, [this]() {
-            return std::uniform_int_distribution<std::uint8_t>()(_rng);
-        });
-
-        std::copy_n(_data.begin(), osize() / 2, _data.begin() + osize() / 2);
-
-        _data[_flip_bit_position / 8] ^= (1 << (_flip_bit_position % 8));
+        if (_first) {
+            std::generate_n(_data.data(), osize(), [this]() {
+                return std::uniform_int_distribution<std::uint8_t>()(_rng);
+            });
+        } else {
+            _data[_flip_bit_position / 8] ^= (1 << (_flip_bit_position % 8));
+        }
+        _first ^= true;
         return make_cview(_data);
     }
 
 private:
     pcg32 _rng;
     const std::size_t _flip_bit_position;
+    bool _first;
 };
 
 struct sac_2d_all_pos : stream {
