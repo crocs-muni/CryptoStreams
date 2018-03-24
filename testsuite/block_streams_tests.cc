@@ -44,6 +44,14 @@ TEST(rc4, test_vectors) {
     testsuite::block_test_case("RC4", 1)();
 }
 
+TEST(rc6, test_vectors) {
+    testsuite::block_test_case("RC6", 20)();
+}
+
 TEST(tea, test_vectors) {
     testsuite::block_test_case("TEA", 32)();
+}
+
+TEST(twofish, test_vectors) {
+    testsuite::block_test_case("TWOFISH", 16)();
 }

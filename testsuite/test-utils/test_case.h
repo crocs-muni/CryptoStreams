@@ -64,7 +64,7 @@ namespace testsuite {
 
     public:
 
-        test_case(const std::string& algorithm, const std::size_t round, const std::string&& competition)
+        test_case(const std::string& algorithm, const std::size_t round, const std::string& competition)
                 : _algorithm(algorithm)
                 , _round(round)
                 , _suite_name(competition)
