@@ -38,9 +38,8 @@ set_target_properties(eacirc-streams-lib PROPERTIES
 target_link_libraries(eacirc-streams-lib eacirc-core)
 
 add_subdirectory(eacirc-core)
-
 add_subdirectory(streams/estream)
-add_subdirectory(streams/sha3)
+add_subdirectory(streams/hash)
 add_subdirectory(streams/block)
 
 ## Executables
@@ -62,7 +61,7 @@ if (NOT BUILD_testsuite)
     target_link_libraries(eacirc-streams eacirc-core eacirc-streams-lib)
 
     build_stream(eacirc-streams estream)
-    build_stream(eacirc-streams sha3)
+    build_stream(eacirc-streams hash)
     build_stream(eacirc-streams block)
 
 else()
@@ -73,11 +72,11 @@ else()
     add_executable(testsuite
             testsuite/test_main.cc
             testsuite/stream_tests.cc
-            testsuite/sha3_streams_tests.cc
+            testsuite/hash_streams_tests.cc
             testsuite/estream_streams_tests.cc
             testsuite/block_streams_tests.cc
             testsuite/test-utils/test_streams
-            testsuite/test-utils/sha3_test_case
+            testsuite/test-utils/hash_test_case
             testsuite/test-utils/estream_test_case
             testsuite/test-utils/block_test_case
             testsuite/test-utils/common_functions
@@ -92,7 +91,7 @@ else()
     target_link_libraries(testsuite eacirc-core eacirc-streams-lib)
 
     build_stream(testsuite estream)
-    build_stream(testsuite sha3)
+    build_stream(testsuite hash)
     build_stream(testsuite block)
     add_definitions(-DBUILD_testsuite)
 
