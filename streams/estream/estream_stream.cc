@@ -11,16 +11,6 @@ static estream_init_frequency create_init_frequency(const std::string& frequency
                            "\" does not exist");
 }
 
-static std::size_t compute_vector_size(const std::size_t block_size, const std::size_t osize) {
-  if (block_size > osize)
-    return block_size;
-  if (block_size % osize)
-    return ((osize / block_size) + 1) * block_size;
-  return osize;
-}
-
-
-
 static std::unique_ptr<stream> create_iv_stream(const json& iv_config, default_seed_source& seeder, const std::size_t osize, const std::string& generator) {
     // clang-format off
     if (iv_config.is_object())     return make_stream(iv_config, seeder, osize);
@@ -59,12 +49,14 @@ estream_stream::estream_stream(const json& config, default_seed_source& seeder, 
                                     config.at("generator")))
     , _source(make_stream(config.at("plaintext-type"), seeder, _block_size))
     , _prepared_stream_source(!plt_stream ? nullptr : *plt_stream)
-    , _plaintext(compute_vector_size(_block_size, osize))
+    , _plaintext(osize)
     , _algorithm(config.at("algorithm"),
                  config.at("round").is_null()
                      ? core::nullopt_t{}
                      : core::optional<unsigned>{unsigned(config.at("round"))},
                  _iv_stream->osize(), _key_stream->osize()) {
+    if (osize % _block_size != 0) // not necessary wrong, but we never needed this, we always did this by mistake. Change to warning if needed
+        throw std::runtime_error("Output size is not multiple of block size");
 
     logger::info() << "stream source is estream cipher: " << config.at("algorithm") << std::endl;
     if (_initfreq == estream_init_frequency::ONLY_ONCE) {

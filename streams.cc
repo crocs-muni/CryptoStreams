@@ -198,10 +198,10 @@ make_stream(const json& config, default_seed_source& seeder, const std::size_t o
     else if (type == "xor-stream")
         return std::make_unique<xor_stream>(config, seeder, osize);
     else if (type == "sac")
-        return std::make_unique<sac_stream>(seeder, osize*2);
+        return std::make_unique<sac_stream>(seeder, osize);
     else if (type == "sac-fixed-position") {
         const std::size_t pos = std::size_t(config.at("position"));
-        return std::make_unique<sac_fixed_pos_stream>(seeder, osize*2, pos);
+        return std::make_unique<sac_fixed_pos_stream>(seeder, osize, pos);
     }
     else if (type == "sac-2d-all-positions")
         return std::make_unique<sac_2d_all_pos>(seeder, osize);

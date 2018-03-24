@@ -7,14 +7,6 @@
 namespace hash {
 
 
-std::size_t compute_hash_size(const std::size_t hash_size, const std::size_t osize) {
-    if (hash_size > osize)
-        return hash_size;
-    if (hash_size % osize)
-        return ((osize / hash_size) + 1) * hash_size;
-    return osize;
-}
-
 template <typename I>
 void hash_data(hash_interface& hasher, const I& data, std::uint8_t* hash, const std::size_t hash_size) {
     using std::to_string;
@@ -58,7 +50,7 @@ vec_cview hash_stream::next() {
     for (std::size_t i = 0; i < _data.size(); i += _hash_input_size) {
         vec_cview view = get_next_ptx();
 
-        hash_data(*_hasher, view, &data[i], _hash_input_size);
+        hash_data(*_hasher, view, &hash[i], _hash_size);
     }
     
         return make_view(_data.cbegin(), osize());

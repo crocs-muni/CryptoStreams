@@ -14,7 +14,6 @@ std::size_t compute_hash_size(const std::size_t hash_size, const std::size_t osi
 
 template <typename I> void hash_data(hash_interface& hasher, const I& data, std::uint8_t* hash, const std::size_t hash_size);
 
-
 struct hash_stream : stream {
     hash_stream(const json& config, default_seed_source& seeder, const std::size_t osize, core::optional<stream *> plt_stream);
     hash_stream(hash_stream&&);
@@ -25,8 +24,7 @@ private:
     vec_cview get_next_ptx();
 
     const std::size_t _round;
-    const std::size_t _hash_input_size;
-    const std::size_t _source_size;
+    const std::size_t _hash_size;
 
     std::unique_ptr<stream> _source;
 
