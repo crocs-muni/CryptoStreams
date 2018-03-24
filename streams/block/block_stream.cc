@@ -30,7 +30,7 @@ namespace block {
         , _block_size(config.at("block-size"))
         , _reinit_freq(reinit_freq(config))
         , _i(0)
-        , _source(make_stream(config.at("plaintext"), seeder, _block_size))
+        , _source(make_stream(config.at("plaintext"), seeder, osize))
         , _iv(make_stream(config.at("iv"), seeder, _block_size))
         , _key(make_stream(config.at("key"), seeder, unsigned(config.at("key-size"))))
         , _encryptor(make_block_cipher(config.at("algorithm"), unsigned(_round),
@@ -67,10 +67,13 @@ namespace block {
             _encryptor->keysetup(key_view.data(), std::uint32_t(key_view.size()));
         }
 
-        for (auto beg = _data.begin(); beg != _data.end(); beg += _block_size) {
+        for (auto ctx_beg = _data.begin(); ctx_beg != _data.end(); ) { // ctx_beg += _source->osize() from inside
             vec_cview view = get_next_ptx();
-
-            _encryptor->encrypt(view.data(), &(*beg));
+            for (auto ptx_beg = view.begin();
+                 ptx_beg != view.end() and ctx_beg != _data.end();
+                 ptx_beg += _block_size, ctx_beg += _block_size) {
+                _encryptor->encrypt(&(*ptx_beg), &(*ctx_beg));
+            }
         }
 
         return make_view(_data.cbegin(), osize());
