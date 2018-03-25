@@ -4,6 +4,7 @@
  * Sources:
  *
  * https://info.isl.ntt.co.jp/crypt/eng/camellia/source.html
+ * https://info.isl.ntt.co.jp/crypt/eng/camellia/dl/cryptrec/t_camellia.txt
  * https://tls.mbed.org/camellia-source-code
  * https://en.wikipedia.org/wiki/Camellia_(cipher)
  */

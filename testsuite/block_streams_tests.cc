@@ -9,6 +9,11 @@ TEST(blowfish, test_vectors) {
     testsuite::block_test_case("BLOWFISH", 16)();
 }
 
+TEST(camellia, test_vectors) {
+    testsuite::block_test_case("CAMELLIA", 18)();
+    testsuite::block_test_case("CAMELLIA", 24)();
+}
+
 TEST(simon, test_vectors) {
     testsuite::block_test_case("SIMON", 32)();
     testsuite::block_test_case("SIMON", 36)();
