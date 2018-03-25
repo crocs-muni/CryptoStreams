@@ -2,7 +2,6 @@
 // Created by Dusan Klinec on 25/03/2018.
 //
 
-#include <streams/block/ciphers/gost/gost89.h>
 #include "camellia_block.h"
 
 namespace block {
