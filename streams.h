@@ -226,6 +226,7 @@ struct hw_counter : stream {
         , _rng(std::forward<Seeder>(seeder))
         , _origin_data(osize)
         , _increase_hw(config.value("increase_hw", true))
+        , _randomize_overflow(config.value("randomize_overflow", false))
         , _cur_hw(static_cast<uint64_t>(config.value("hw", 1)))
     {
         bool randomize_start = config.value("randomize_start", false);
@@ -233,13 +234,12 @@ struct hw_counter : stream {
         if (_cur_hw == 0 || _cur_hw > osize * 8){
             throw std::runtime_error("Invalid Hamming weight for the given output size");
         }
+        if (_randomize_overflow && _increase_hw){
+            throw std::runtime_error("Randomize overflow and increase counter are mutually exclusive");
+        }
 
         if (randomize_start) {
-            std::generate_n(_data.data(), osize, [this]() {
-                return std::uniform_int_distribution<std::uint8_t>()(_rng);
-            });
-            std::copy_n(_data.begin(), osize, _origin_data.begin());
-
+            randomize();
         } else {
             std::fill_n(_origin_data.begin(), osize, 0);
         }
@@ -251,6 +251,12 @@ struct hw_counter : stream {
 
 
 private:
+    void randomize(){
+        std::generate_n(_origin_data.data(), osize(), [this]() {
+            return std::uniform_int_distribution<std::uint8_t>()(_rng);
+        });
+    }
+
     void combination_init() {
         _cur_positions.clear();
         for (std::size_t i = 0; i < _cur_hw; ++i) {
@@ -282,6 +288,7 @@ private:
     pcg32 _rng;
     std::vector<value_type> _origin_data;
     const bool _increase_hw;
+    const bool _randomize_overflow;
     std::size_t _cur_hw;
     std::vector<std::size_t> _cur_positions;
 };
