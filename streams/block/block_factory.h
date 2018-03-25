@@ -8,6 +8,7 @@
 
 #include "ciphers/tea/tea.h"
 #include "ciphers/aes/aes.h"
+#include "ciphers/camellia/camellia_block.h"
 #include "ciphers/rc4/rc4.h"
 #include "ciphers/simon/simon.h"
 #include "ciphers/speck/speck.h"

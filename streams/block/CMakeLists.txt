@@ -7,6 +7,7 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/tea/tea
     ciphers/aes/aes
     ciphers/camellia/camellia
+    ciphers/camellia/camellia_block
     ciphers/gost/gost89
     ciphers/gost/gost_block
     ciphers/simon/simon

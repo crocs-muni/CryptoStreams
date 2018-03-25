@@ -504,27 +504,27 @@ int mbedtls_camellia_crypt_ecb( mbedtls_camellia_context *ctx,
         --NR;
         ++c_rnd;
 
-        if ((int)rounds >= c_rnd*6 + 0) {
+        if ((int)rounds >= c_rnd*6 + 1) {
             camellia_feistel(X, RK, X + 2);
         }
         RK += 2;  // round key offsets preserved
-        if ((int)rounds >= c_rnd*6 + 1) {
-            camellia_feistel(X + 2, RK, X);
-        }
-        RK += 2;
         if ((int)rounds >= c_rnd*6 + 2) {
-            camellia_feistel(X, RK, X + 2);
+            camellia_feistel(X + 2, RK, X);
         }
         RK += 2;
         if ((int)rounds >= c_rnd*6 + 3) {
-            camellia_feistel(X + 2, RK, X);
-        }
-        RK += 2;
-        if ((int)rounds >= c_rnd*6 + 4) {
             camellia_feistel(X, RK, X + 2);
         }
         RK += 2;
+        if ((int)rounds >= c_rnd*6 + 4) {
+            camellia_feistel(X + 2, RK, X);
+        }
+        RK += 2;
         if ((int)rounds >= c_rnd*6 + 5) {
+            camellia_feistel(X, RK, X + 2);
+        }
+        RK += 2;
+        if ((int)rounds >= c_rnd*6 + 6) {
             camellia_feistel(X + 2, RK, X);
         }
         RK += 2;
