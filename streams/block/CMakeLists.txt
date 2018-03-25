@@ -6,6 +6,7 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     # === eSTREAM cipher files ===
     ciphers/tea/tea
     ciphers/aes/aes
+    ciphers/aria/aria
     ciphers/simon/simon
     ciphers/speck/speck
     ciphers/rc4/rc4
