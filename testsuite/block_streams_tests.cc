@@ -5,6 +5,15 @@ TEST(aes, test_vectors) {
     testsuite::block_test_case("AES", 10)();
 }
 
+TEST(aria, test_vectors) {
+    testsuite::block_test_case("ARIA", 1)();
+    testsuite::block_test_case("ARIA", 2)();
+    testsuite::block_test_case("ARIA", 6)();
+    testsuite::block_test_case("ARIA", 7)();
+    testsuite::block_test_case("ARIA", 11)();
+    testsuite::block_test_case("ARIA", 12)();
+}
+
 TEST(blowfish, test_vectors) {
     testsuite::block_test_case("BLOWFISH", 16)();
 }
