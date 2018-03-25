@@ -12,6 +12,8 @@
 #include "../ecrypt-portable.h"
 #include "ecrypt-sync.h"
 
+#include <stdexcept>
+
 /* ------------------------------------------------------------------------- */
 
 /*
@@ -204,6 +206,10 @@ void ECRYPT_Trivium::ECRYPT_init(void) {}
 /* ------------------------------------------------------------------------- */
 
 void ECRYPT_Trivium::ECRYPT_keysetup(const u8* key, u32 keysize, u32 ivsize) {
+    if (keysize != 80)
+        throw std::runtime_error("Trivium key has to be 80 bits.");
+    if (ivsize != 32 and ivsize != 64 and ivsize != 80)
+        throw std::runtime_error("Trivium IV has to be in {32, 64, 80} bits.");
     TRIVIUM_ctx* ctx = &_ctx;
     const u32 keylen = (keysize + 7) / 8;
 
