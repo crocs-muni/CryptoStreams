@@ -460,8 +460,9 @@ do {                                            \
 } while(0)
 
 void aria_encrypt(const unsigned char *in, unsigned char *out,
-                  const ARIA_KEY *key) {
-    register uint32_t reg0, reg1, reg2, reg3;
+                  const ARIA_KEY *key,
+                  unsigned nr) {
+    uint32_t reg0, reg1, reg2, reg3;
     int Nr;
     const ARIA_u128 *rk;
 
@@ -472,30 +473,43 @@ void aria_encrypt(const unsigned char *in, unsigned char *out,
     rk = key->rd_key;
     Nr = key->rounds;
 
-    if (Nr != 12 && Nr != 14 && Nr != 16) {
-        return;
-    }
+//    if (Nr != 12 && Nr != 14 && Nr != 16) {
+//        return;
+//    }
 
     reg0 = GET_U32_BE(in, 0);
     reg1 = GET_U32_BE(in, 1);
     reg2 = GET_U32_BE(in, 2);
     reg3 = GET_U32_BE(in, 3);
 
-    ARIA_ADD_ROUND_KEY(rk, reg0, reg1, reg2, reg3);
+    unsigned c_rnd = 0;
+    if (nr >= c_rnd + 1) {
+        ARIA_ADD_ROUND_KEY(rk, reg0, reg1, reg2, reg3);
+    }
+    ++c_rnd;
     rk++;
 
-    ARIA_SUBST_DIFF_ODD(reg0, reg1, reg2, reg3);
-    ARIA_ADD_ROUND_KEY(rk, reg0, reg1, reg2, reg3);
+    if (nr >= c_rnd + 1) {
+        ARIA_SUBST_DIFF_ODD(reg0, reg1, reg2, reg3);
+        ARIA_ADD_ROUND_KEY(rk, reg0, reg1, reg2, reg3);
+    }
+    ++c_rnd;
     rk++;
 
     while (Nr -= 2) {
-        ARIA_SUBST_DIFF_EVEN(reg0, reg1, reg2, reg3);
-        ARIA_ADD_ROUND_KEY(rk, reg0, reg1, reg2, reg3);
+        if (nr >= c_rnd + 1) {
+            ARIA_SUBST_DIFF_EVEN(reg0, reg1, reg2, reg3);
+            ARIA_ADD_ROUND_KEY(rk, reg0, reg1, reg2, reg3);
+        }
         rk++;
+        ++c_rnd;
 
-        ARIA_SUBST_DIFF_ODD(reg0, reg1, reg2, reg3);
-        ARIA_ADD_ROUND_KEY(rk, reg0, reg1, reg2, reg3);
+        if (nr >= c_rnd + 1) {
+            ARIA_SUBST_DIFF_ODD(reg0, reg1, reg2, reg3);
+            ARIA_ADD_ROUND_KEY(rk, reg0, reg1, reg2, reg3);
+        }
         rk++;
+        ++c_rnd;
     }
 
     reg0 = rk->u[0] ^ MAKE_U32(
@@ -527,7 +541,7 @@ void aria_encrypt(const unsigned char *in, unsigned char *out,
 
 int aria_set_encrypt_key(const unsigned char *userKey, const int bits,
                          ARIA_KEY *key) {
-    register uint32_t reg0, reg1, reg2, reg3;
+    uint32_t reg0, reg1, reg2, reg3;
     uint32_t w0[4], w1[4], w2[4], w3[4];
     const uint32_t *ck;
 
@@ -658,8 +672,8 @@ int aria_set_decrypt_key(const unsigned char *userKey, const int bits,
                          ARIA_KEY *key) {
     ARIA_u128 *rk_head;
     ARIA_u128 *rk_tail;
-    register uint32_t w1, w2;
-    register uint32_t reg0, reg1, reg2, reg3;
+    uint32_t w1, w2;
+    uint32_t reg0, reg1, reg2, reg3;
     uint32_t s0, s1, s2, s3;
 
     const int r = aria_set_encrypt_key(userKey, bits, key);
