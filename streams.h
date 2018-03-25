@@ -123,35 +123,36 @@ private:
 /**
  * @brief Stream for testing strict avalanche criterion
  *
- * The vector consists 2 parts of same length. The first part is random,
- * the second is copy of the first with one flipped bit
+ * Stateful generator
+ * Two consecussive vectors have following property:
+ * The first vector is random and the second is a copy
+ * of the first with one flipped bit.
  */
 struct sac_stream : stream {
     template <typename Seeder>
     sac_stream(Seeder&& seeder, const std::size_t osize)
             : stream(osize)
-            , _rng(std::forward<Seeder>(seeder)) {
-        if (osize % 2 == 1)
-            throw std::runtime_error(
-                    "Stream's osize has to be even (so it contains 2 vectors of same legth).");
-    }
+            , _rng(std::forward<Seeder>(seeder))
+            , _first(true) { }
 
     vec_cview next() override {
-        std::generate_n(_data.data(), osize() / 2, [this]() {
-            return std::uniform_int_distribution<std::uint8_t>()(_rng);
-        });
+        if (_first) {
+            std::generate_n(_data.data(), osize(), [this]() {
+                return std::uniform_int_distribution<std::uint8_t>()(_rng);
+            });
+        } else {
+            std::uniform_int_distribution<std::size_t> dist{0, (osize() * 8) - 1};
+            std::size_t pos = dist(_rng);
 
-        std::copy_n(_data.begin(), osize() / 2, _data.begin() + osize() / 2);
-
-        std::uniform_int_distribution<std::size_t> dist{0, osize() / 2 * 8};
-        std::size_t pos = dist(_rng) + osize() / 2 * 8;
-
-        _data[pos / 8] ^= (1 << (pos % 8)); // TODO: valgrind invalid read and write, [pos / 8] is out of range
+            _data[pos / 8] ^= (1 << (pos % 8));
+        }
+        _first ^= true;
         return make_cview(_data);
     }
 
 private:
     pcg32 _rng;
+    bool _first;
 };
 
 struct sac_fixed_pos_stream : stream {
@@ -159,10 +160,8 @@ struct sac_fixed_pos_stream : stream {
     sac_fixed_pos_stream(Seeder&& seeder, const std::size_t osize, const std::size_t flip_bit_position)
             : stream(osize)
             , _rng(std::forward<Seeder>(seeder))
-            , _flip_bit_position(flip_bit_position) {
-        if (osize % 2 == 1)
-            throw std::runtime_error(
-                    "Stream's osize has to be even (so it contains 2 vectors of same legth).");
+            , _flip_bit_position(flip_bit_position)
+            , _first(true) {
         if (_flip_bit_position >= osize*8)
             throw std::runtime_error(
                     "Position of the flipped bit has to be in range of vector size.");
@@ -170,19 +169,21 @@ struct sac_fixed_pos_stream : stream {
     }
 
     vec_cview next() override {
-        std::generate_n(_data.data(), osize() / 2, [this]() {
-            return std::uniform_int_distribution<std::uint8_t>()(_rng);
-        });
-
-        std::copy_n(_data.begin(), osize() / 2, _data.begin() + osize() / 2);
-
-        _data[_flip_bit_position / 8] ^= (1 << (_flip_bit_position % 8));
+        if (_first) {
+            std::generate_n(_data.data(), osize(), [this]() {
+                return std::uniform_int_distribution<std::uint8_t>()(_rng);
+            });
+        } else {
+            _data[_flip_bit_position / 8] ^= (1 << (_flip_bit_position % 8));
+        }
+        _first ^= true;
         return make_cview(_data);
     }
 
 private:
     pcg32 _rng;
     const std::size_t _flip_bit_position;
+    bool _first;
 };
 
 struct sac_2d_all_pos : stream {
@@ -216,6 +217,73 @@ private:
     // storing copy is not optimal, can be done faster with more conditions
     std::vector<value_type> _origin_data;
     std::size_t _flip_bit_position;
+};
+
+struct hw_counter : stream {
+    template<typename Seeder>
+    hw_counter(const json& config, Seeder &&seeder, const std::size_t osize)
+        : stream(osize)
+        , _rng(std::forward<Seeder>(seeder))
+        , _origin_data(osize)
+        , _increase_hw(config.value("increase_hw", true))
+        , _cur_hw(static_cast<uint64_t>(config.value("hw", 1)))
+    {
+        bool randomize_start = config.value("randomize_start", false);
+
+        if (_cur_hw == 0 || _cur_hw > osize * 8){
+            throw std::runtime_error("Invalid Hamming weight for the given output size");
+        }
+
+        if (randomize_start) {
+            std::generate_n(_data.data(), osize, [this]() {
+                return std::uniform_int_distribution<std::uint8_t>()(_rng);
+            });
+            std::copy_n(_data.begin(), osize, _origin_data.begin());
+
+        } else {
+            std::fill_n(_origin_data.begin(), osize, 0);
+        }
+
+        combination_init();
+    }
+
+    vec_cview next() override;
+
+
+private:
+    void combination_init() {
+        _cur_positions.clear();
+        for (std::size_t i = 0; i < _cur_hw; ++i) {
+            _cur_positions.push_back(i);
+        }
+    }
+
+    bool combination_next() {
+        const auto size = static_cast<int64_t>(_cur_positions.size());
+        auto idx = size - 1;
+
+        if (_cur_positions[idx] == osize()*8 - 1) {
+            do {
+                idx -= 1;
+            } while (idx >= 0 && _cur_positions[idx] + 1 == _cur_positions[idx + 1]);
+
+            if (idx < 0) {
+                return false;
+            }
+
+            for (auto j = idx + 1; j < size; ++j) {
+                _cur_positions[j] = _cur_positions[idx] + j - idx + 1;
+            }
+        }
+        _cur_positions[idx]++;
+        return true;
+    }
+
+    pcg32 _rng;
+    std::vector<value_type> _origin_data;
+    const bool _increase_hw;
+    std::size_t _cur_hw;
+    std::vector<std::size_t> _cur_positions;
 };
 
 struct column_stream : stream {

@@ -93,6 +93,25 @@ vec_cview rnd_plt_ctx_stream::next()
     return make_cview(_data);
 }
 
+vec_cview hw_counter::next() {
+    std::copy_n(_origin_data.begin(), osize(), _data.begin());
+    for (const auto& pos : _cur_positions) {
+        _data[pos / 8] ^= (1 << (pos % 8));
+    }
+
+    if (!combination_next()){
+        if (_increase_hw){
+            _cur_hw += 1;
+        }
+        if (_cur_hw > osize() * 8 && _increase_hw){
+            _cur_hw = 1; // reset
+        }
+
+        combination_init();
+    }
+
+    return make_cview(_data);
+}
 
 column_stream::column_stream(const json& config, default_seed_source& seeder, const std::size_t osize)
     : stream(osize)
@@ -179,13 +198,15 @@ make_stream(const json& config, default_seed_source& seeder, const std::size_t o
     else if (type == "xor-stream")
         return std::make_unique<xor_stream>(config, seeder, osize);
     else if (type == "sac")
-        return std::make_unique<sac_stream>(seeder, osize*2);
+        return std::make_unique<sac_stream>(seeder, osize);
     else if (type == "sac-fixed-position") {
         const std::size_t pos = std::size_t(config.at("position"));
-        return std::make_unique<sac_fixed_pos_stream>(seeder, osize*2, pos);
+        return std::make_unique<sac_fixed_pos_stream>(seeder, osize, pos);
     }
     else if (type == "sac-2d-all-positions")
         return std::make_unique<sac_2d_all_pos>(seeder, osize);
+    else if (type == "hw-counter")
+        return std::make_unique<hw_counter>(config, seeder, osize);
     else if (type == "column")
         return std::make_unique<column_stream>(config, seeder, osize);
     else if (type == "column-fixed-position") {

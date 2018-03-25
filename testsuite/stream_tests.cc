@@ -49,54 +49,150 @@ TEST(counter_stream, basic_test) {
 
 TEST(sac_streams, basic_test) {
     seed_seq_from<pcg32> seeder(testsuite::seed1);
-    std::unique_ptr<sac_stream> stream = std::make_unique<sac_stream>(seeder, testing_size*2);
+    std::unique_ptr<sac_stream> stream = std::make_unique<sac_stream>(seeder, 16);
 
-    int i = 0;
-    int difference = 0;
-    std::vector<value_type> first_half;
-    for (auto it : stream->next()) {
+    for (unsigned i = 0; i < 16; ++i) {
+        int difference = 0;
+        auto first = stream->next();
+        std::vector<value_type> first_half(first.begin(), first.end());
+        auto second = stream->next();
+        std::vector<value_type> second_half(second.begin(), second.end());
 
-        if (i < testing_size) {
-            first_half.push_back(it);
+        auto first_beg = first_half.begin();
+        auto second_beg = second_half.begin();
+        for ( ; first_beg != first_half.end();
+              ++first_beg, ++second_beg) {
+            if (*first_beg ^ *second_beg) {
+                value_type diff = *first_beg ^ *second_beg;
+                while (diff) {
+                    if (diff & 0x01) {
+                        ++difference;
+                    }
+                    diff >>= 1;
+                }
+            }
         }
-
-        if (i >= testing_size && first_half.at((unsigned long) (i - testing_size)) != it) {
-            difference++;
-        }
-
-        i++;
+        ASSERT_EQ(difference, 1); // The position of change is random, hence it is not necessary to check
     }
 
-    ASSERT_EQ(difference, 1); // The position of change is random, hence it is not necessary to check
 }
 
 TEST(sac_streams, fixed_position) {
     seed_seq_from<pcg32> seeder(testsuite::seed1);
-    std::unique_ptr<sac_fixed_pos_stream> stream = std::make_unique<sac_fixed_pos_stream>(seeder, testing_size*2, 9);
+    auto stream = std::make_unique<sac_fixed_pos_stream>(seeder, 16, 10); // position 10 = second byte, third bit
 
-    int i = 0;
-    int difference = 0;
-    int difference_position = 0;
-    int position_in_byte = 0;
-    std::vector<value_type> first_half;
-    for (auto it : stream->next()) {
+    for (unsigned i = 0; i < 16; ++i) {
+        int difference = 0;
+        auto first = stream->next();
+        std::vector<value_type> first_half(first.begin(), first.end());
+        auto second = stream->next();
+        std::vector<value_type> second_half(second.begin(), second.end());
 
-        if (i < testing_size) {
-            first_half.push_back(it);
+        auto first_beg = first_half.begin();
+        auto second_beg = second_half.begin();
+        for (unsigned j = 0; first_beg != first_half.end();
+              ++first_beg, ++second_beg, ++j) {
+            if (*first_beg ^ *second_beg) {
+                ASSERT_EQ(j, 1); // Difference should be in second byte for given stream
+                value_type diff = *first_beg ^ *second_beg;
+                unsigned k = 0;
+                while (diff) {
+                    if (diff & 0x01) {
+                        ASSERT_EQ(k, 2); // Difference should be in third bit for given stream
+                        ++difference;
+                    }
+                    diff >>= 1;
+                    ++k;
+                }
+            }
         }
-
-        if (i >= testing_size && first_half.at((unsigned long) (i - testing_size)) != it) {
-            difference++;
-            difference_position = i - testing_size;
-            position_in_byte = first_half.at((unsigned long) (i - testing_size)) ^ it;
-        }
-
-        i++;
+        ASSERT_EQ(difference, 1); // There should be exactly one different byte between first and second half
     }
 
-    ASSERT_EQ(difference, 1); // There should be exactly one different byte between first and second half
-    ASSERT_EQ(difference_position, 1); // Difference should be in second byte
-    ASSERT_EQ(position_in_byte, 2); // Position x of changed bit, where position_in_byte = 2^x
+}
+
+TEST(hw_counter, invalid_params) {
+    const json json_config = {
+        {"randomize_start", false},
+        {"increase_hw", false},
+        {"hw", 4*8+1},
+    };
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    std::make_unique<hw_counter>(json_config, seeder, 5);
+    EXPECT_THROW(std::make_unique<hw_counter>(json_config, seeder, 4), std::runtime_error);
+}
+
+TEST(hw_counter, basic_test) {
+    const int hw = 3;
+    const size_t size = 4;
+    const int c_32_over_3 = 4960;
+
+    const json json_config = {
+        {"randomize_start", false},
+        {"increase_hw", false},
+        {"hw", hw},
+    };
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    auto stream = std::make_unique<hw_counter>(json_config, seeder, size);
+
+    // Test difference to previous vector
+    uint8_t buff1[size], buff2[size];
+    uint8_t *buff_o=buff1, *buff_n=buff2;
+
+    for(int i=0; i < c_32_over_3 + 4; ++i){
+        uint32_t cur_hw = 0;
+        uint32_t idx = 0;
+
+        for(auto it : stream->next()) {
+            for(int j=0; j<8; ++j){
+                cur_hw += (uint8_t)it & (1 << j) ? 1 : 0;
+            }
+            buff_n[idx] = (uint8_t)it;
+            idx += 1;
+        }
+
+        ASSERT_EQ(cur_hw, hw);
+        ASSERT_TRUE(i == 0 || memcmp(buff_o, buff_n, size) != 0);
+        std::swap(buff_o, buff_n);
+    }
+}
+
+TEST(hw_counter, period_test) {
+    const int hw = 3;
+    const size_t size = 4;
+    const int c_32_over_3 = 4960;
+
+    const json json_config = {
+        {"randomize_start", false},
+        {"increase_hw", false},
+        {"hw", hw},
+    };
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    auto stream1 = std::make_unique<hw_counter>(json_config, seeder, size);
+    auto stream2 = std::make_unique<hw_counter>(json_config, seeder, size);
+
+    // Rewind one stream beyond the period
+    for(int i=0; i < c_32_over_3; ++i){
+        stream1->next();
+    }
+
+    // Compare rewinded & fresh generator over period.
+    for(int i=0; i < c_32_over_3 + 4; ++i){
+        auto it1 = stream1->next();
+        auto it2 = stream2->next();
+        ASSERT_TRUE(it1 == it2);
+    }
+
+    // desync test
+    stream1->next();
+    for(int i=0; i < c_32_over_3 + 4; ++i){
+        auto it1 = stream1->next();
+        auto it2 = stream2->next();
+        ASSERT_FALSE(it1 == it2);
+    }
 }
 
 TEST(column_streams, basic_test_with_counter) {
