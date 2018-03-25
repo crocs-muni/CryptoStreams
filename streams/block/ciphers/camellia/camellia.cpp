@@ -478,7 +478,8 @@ exit:
 int mbedtls_camellia_crypt_ecb( mbedtls_camellia_context *ctx,
                     int mode,
                     const unsigned char input[16],
-                    unsigned char output[16] )
+                    unsigned char output[16],
+                    unsigned rounds)
 {
     int NR;
     uint32_t *RK, X[4];
@@ -498,19 +499,34 @@ int mbedtls_camellia_crypt_ecb( mbedtls_camellia_context *ctx,
     X[2] ^= *RK++;
     X[3] ^= *RK++;
 
+    int c_rnd = -1;
     while( NR ) {
         --NR;
-        camellia_feistel( X, RK, X + 2 );
+        ++c_rnd;
+
+        if ((int)rounds >= c_rnd*6 + 0) {
+            camellia_feistel(X, RK, X + 2);
+        }
+        RK += 2;  // round key offsets preserved
+        if ((int)rounds >= c_rnd*6 + 1) {
+            camellia_feistel(X + 2, RK, X);
+        }
         RK += 2;
-        camellia_feistel( X + 2, RK, X );
+        if ((int)rounds >= c_rnd*6 + 2) {
+            camellia_feistel(X, RK, X + 2);
+        }
         RK += 2;
-        camellia_feistel( X, RK, X + 2 );
+        if ((int)rounds >= c_rnd*6 + 3) {
+            camellia_feistel(X + 2, RK, X);
+        }
         RK += 2;
-        camellia_feistel( X + 2, RK, X );
+        if ((int)rounds >= c_rnd*6 + 4) {
+            camellia_feistel(X, RK, X + 2);
+        }
         RK += 2;
-        camellia_feistel( X, RK, X + 2 );
-        RK += 2;
-        camellia_feistel( X + 2, RK, X );
+        if ((int)rounds >= c_rnd*6 + 5) {
+            camellia_feistel(X + 2, RK, X);
+        }
         RK += 2;
 
         if( NR ) {

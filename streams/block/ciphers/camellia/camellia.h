@@ -5,6 +5,7 @@
  *
  * https://info.isl.ntt.co.jp/crypt/eng/camellia/source.html
  * https://tls.mbed.org/camellia-source-code
+ * https://en.wikipedia.org/wiki/Camellia_(cipher)
  */
 
 #include <stdexcept>
@@ -80,7 +81,8 @@ int mbedtls_camellia_setkey_dec(mbedtls_camellia_context *ctx, const unsigned ch
 int mbedtls_camellia_crypt_ecb(mbedtls_camellia_context *ctx,
                                int mode,
                                const unsigned char input[16],
-                               unsigned char output[16]);
+                               unsigned char output[16],
+                               unsigned rounds);
 
 #ifdef __cplusplus
 }
