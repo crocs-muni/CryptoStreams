@@ -21,15 +21,15 @@ namespace cast {
 # include <stdlib.h>
 #endif
 
-#undef c2l
-#define c2l(c,l)        (l =((unsigned long)(*((c)++)))    , \
+#undef cast_c2l
+#define cast_c2l(c,l)        (l =((unsigned long)(*((c)++)))    , \
                  l|=((unsigned long)(*((c)++)))<< 8L, \
                  l|=((unsigned long)(*((c)++)))<<16L, \
                  l|=((unsigned long)(*((c)++)))<<24L)
 
-/* NOTE - c is not incremented as per c2l */
-#undef c2ln
-#define c2ln(c,l1,l2,n) { \
+/* NOTE - c is not incremented as per cast_c2l */
+#undef cast_c2ln
+#define cast_c2ln(c,l1,l2,n) { \
                 c+=n; \
                 l1=l2=0; \
                 switch (n) { \
@@ -44,15 +44,15 @@ namespace cast {
                         } \
                 }
 
-#undef l2c
-#define l2c(l,c)        (*((c)++)=(unsigned char)(((l)     )&0xff), \
+#undef cast_l2c
+#define cast_l2c(l,c)        (*((c)++)=(unsigned char)(((l)     )&0xff), \
                  *((c)++)=(unsigned char)(((l)>> 8L)&0xff), \
                  *((c)++)=(unsigned char)(((l)>>16L)&0xff), \
                  *((c)++)=(unsigned char)(((l)>>24L)&0xff))
 
-/* NOTE - c is not incremented as per l2c */
-#undef l2cn
-#define l2cn(l1,l2,c,n) { \
+/* NOTE - c is not incremented as per cast_l2c */
+#undef cast_l2cn
+#define cast_l2cn(l1,l2,c,n) { \
                 c+=n; \
                 switch (n) { \
                 case 8: *(--(c))=(unsigned char)(((l2)>>24L)&0xff); \
@@ -66,8 +66,8 @@ namespace cast {
                         } \
                 }
 
-/* NOTE - c is not incremented as per n2l */
-#define n2ln(c,l1,l2,n) { \
+/* NOTE - c is not incremented as per cast_n2l */
+#define cast_cast_n2ln(c,l1,l2,n) { \
                 c+=n; \
                 l1=l2=0; \
                 switch (n) { \
@@ -89,8 +89,8 @@ namespace cast {
                         } \
                 }
 
-/* NOTE - c is not incremented as per l2n */
-#define l2nn(l1,l2,c,n) { \
+/* NOTE - c is not incremented as per cast_l2n */
+#define cast_cast_l2nn(l1,l2,c,n) { \
                 c+=n; \
                 switch (n) { \
                 case 8: *(--(c))=(unsigned char)(((l2)    )&0xff); \
@@ -111,14 +111,14 @@ namespace cast {
                         } \
                 }
 
-#undef n2l
-#define n2l(c,l)        (l =((unsigned long)(*((c)++)))<<24L, \
+#undef cast_n2l
+#define cast_n2l(c,l)        (l =((unsigned long)(*((c)++)))<<24L, \
                  l|=((unsigned long)(*((c)++)))<<16L, \
                  l|=((unsigned long)(*((c)++)))<< 8L, \
                  l|=((unsigned long)(*((c)++))))
 
-#undef l2n
-#define l2n(l,c)        (*((c)++)=(unsigned char)(((l)>>24L)&0xff), \
+#undef cast_l2n
+#define cast_l2n(l,c)        (*((c)++)=(unsigned char)(((l)>>24L)&0xff), \
                  *((c)++)=(unsigned char)(((l)>>16L)&0xff), \
                  *((c)++)=(unsigned char)(((l)>> 8L)&0xff), \
                  *((c)++)=(unsigned char)(((l)     )&0xff))
@@ -851,7 +851,7 @@ void CAST_set_key(CAST_KEY *key, int len, const unsigned char *data)
 }
 
 // https://github.com/openssl/openssl/blob/master/crypto/cast/c_enc.c
-void CAST_encrypt(CAST_LONG *data, const CAST_KEY *key)
+void CAST_encrypt(CAST_LONG *data, const CAST_KEY *key, int nr)
 {
     CAST_LONG l, r, t;
     const CAST_LONG *k;
@@ -860,30 +860,31 @@ void CAST_encrypt(CAST_LONG *data, const CAST_KEY *key)
     l = data[0];
     r = data[1];
 
-    E_CAST(0, k, l, r, +, ^, -);
-    E_CAST(1, k, r, l, ^, -, +);
-    E_CAST(2, k, l, r, -, +, ^);
-    E_CAST(3, k, r, l, +, ^, -);
-    E_CAST(4, k, l, r, ^, -, +);
-    E_CAST(5, k, r, l, -, +, ^);
-    E_CAST(6, k, l, r, +, ^, -);
-    E_CAST(7, k, r, l, ^, -, +);
-    E_CAST(8, k, l, r, -, +, ^);
-    E_CAST(9, k, r, l, +, ^, -);
-    E_CAST(10, k, l, r, ^, -, +);
-    E_CAST(11, k, r, l, -, +, ^);
+    E_CAST(0, k, l, r, +, ^, -); if (nr == 1) goto finish_enc;
+    E_CAST(1, k, r, l, ^, -, +); if (nr == 2) goto finish_enc;
+    E_CAST(2, k, l, r, -, +, ^); if (nr == 3) goto finish_enc;
+    E_CAST(3, k, r, l, +, ^, -); if (nr == 4) goto finish_enc;
+    E_CAST(4, k, l, r, ^, -, +); if (nr == 5) goto finish_enc;
+    E_CAST(5, k, r, l, -, +, ^); if (nr == 6) goto finish_enc;
+    E_CAST(6, k, l, r, +, ^, -); if (nr == 7) goto finish_enc;
+    E_CAST(7, k, r, l, ^, -, +); if (nr == 8) goto finish_enc;
+    E_CAST(8, k, l, r, -, +, ^); if (nr == 9) goto finish_enc;
+    E_CAST(9, k, r, l, +, ^, -); if (nr == 10) goto finish_enc;
+    E_CAST(10, k, l, r, ^, -, +); if (nr == 11) goto finish_enc;
+    E_CAST(11, k, r, l, -, +, ^); if (nr == 12) goto finish_enc;
     if (!key->short_key) {
-        E_CAST(12, k, l, r, +, ^, -);
-        E_CAST(13, k, r, l, ^, -, +);
-        E_CAST(14, k, l, r, -, +, ^);
+        E_CAST(12, k, l, r, +, ^, -); if (nr == 13) goto finish_enc;
+        E_CAST(13, k, r, l, ^, -, +); if (nr == 14) goto finish_enc;
+        E_CAST(14, k, l, r, -, +, ^); if (nr == 15) goto finish_enc;
         E_CAST(15, k, r, l, +, ^, -);
     }
 
+finish_enc:
     data[1] = l & 0xffffffffL;
     data[0] = r & 0xffffffffL;
 }
 
-void CAST_decrypt(CAST_LONG *data, const CAST_KEY *key)
+void CAST_decrypt(CAST_LONG *data, const CAST_KEY *key, int nr)
 {
     CAST_LONG l, r, t;
     const CAST_LONG *k;
@@ -893,46 +894,47 @@ void CAST_decrypt(CAST_LONG *data, const CAST_KEY *key)
     r = data[1];
 
     if (!key->short_key) {
-        E_CAST(15, k, l, r, +, ^, -);
-        E_CAST(14, k, r, l, -, +, ^);
-        E_CAST(13, k, l, r, ^, -, +);
-        E_CAST(12, k, r, l, +, ^, -);
+        E_CAST(15, k, l, r, +, ^, -); if (nr == 1) goto finish_dec;
+        E_CAST(14, k, r, l, -, +, ^); if (nr == 2) goto finish_dec;
+        E_CAST(13, k, l, r, ^, -, +); if (nr == 3) goto finish_dec;
+        E_CAST(12, k, r, l, +, ^, -); if (nr == 4) goto finish_dec;
     }
-    E_CAST(11, k, l, r, -, +, ^);
-    E_CAST(10, k, r, l, ^, -, +);
-    E_CAST(9, k, l, r, +, ^, -);
-    E_CAST(8, k, r, l, -, +, ^);
-    E_CAST(7, k, l, r, ^, -, +);
-    E_CAST(6, k, r, l, +, ^, -);
-    E_CAST(5, k, l, r, -, +, ^);
-    E_CAST(4, k, r, l, ^, -, +);
-    E_CAST(3, k, l, r, +, ^, -);
-    E_CAST(2, k, r, l, -, +, ^);
-    E_CAST(1, k, l, r, ^, -, +);
+    E_CAST(11, k, l, r, -, +, ^); if (nr == 5) goto finish_dec;
+    E_CAST(10, k, r, l, ^, -, +); if (nr == 6) goto finish_dec;
+    E_CAST(9, k, l, r, +, ^, -); if (nr == 7) goto finish_dec;
+    E_CAST(8, k, r, l, -, +, ^); if (nr == 8) goto finish_dec;
+    E_CAST(7, k, l, r, ^, -, +); if (nr == 9) goto finish_dec;
+    E_CAST(6, k, r, l, +, ^, -); if (nr == 10) goto finish_dec;
+    E_CAST(5, k, l, r, -, +, ^); if (nr == 11) goto finish_dec;
+    E_CAST(4, k, r, l, ^, -, +); if (nr == 12) goto finish_dec;
+    E_CAST(3, k, l, r, +, ^, -); if (nr == 13) goto finish_dec;
+    E_CAST(2, k, r, l, -, +, ^); if (nr == 14) goto finish_dec;
+    E_CAST(1, k, l, r, ^, -, +); if (nr == 15) goto finish_dec;
     E_CAST(0, k, r, l, +, ^, -);
 
+finish_dec:
     data[1] = l & 0xffffffffL;
     data[0] = r & 0xffffffffL;
 }
 
 // https://github.com/openssl/openssl/blob/master/crypto/cast/c_ecb.c
 void CAST_ecb_encrypt(const unsigned char *in, unsigned char *out,
-                      const CAST_KEY *ks, int enc)
+                      const CAST_KEY *ks, int enc, int nr)
 {
     CAST_LONG l, d[2];
 
-    n2l(in, l);
+    cast_n2l(in, l);
     d[0] = l;
-    n2l(in, l);
+    cast_n2l(in, l);
     d[1] = l;
     if (enc)
-        CAST_encrypt(d, ks);
+        CAST_encrypt(d, ks, nr);
     else
-        CAST_decrypt(d, ks);
+        CAST_decrypt(d, ks, nr);
     l = d[0];
-    l2n(l, out);
+    cast_l2n(l, out);
     l = d[1];
-    l2n(l, out);
+    cast_l2n(l, out);
     l = d[0] = d[1] = 0;
 }
 }}
