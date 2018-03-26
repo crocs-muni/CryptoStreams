@@ -12,6 +12,7 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/camellia/camellia_block
     ciphers/gost/gost89
     ciphers/gost/gost_block
+    ciphers/seed/seed
     ciphers/simon/simon
     ciphers/speck/speck
     ciphers/rc4/rc4
