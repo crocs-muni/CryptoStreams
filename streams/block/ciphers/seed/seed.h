@@ -7,6 +7,7 @@
  * https://en.wikipedia.org/wiki/SEED
  * http://seed.kisa.or.kr/html/egovframework/iwt/ds/ko/ref/%5B2%5D_SEED+128_Specification_english_M.pdf
  * http://seed.kisa.or.kr/iwt/ko/sup/EgovSeedInfo.do
+ * https://tools.ietf.org/html/rfc4269
  */
 
 #include <stdexcept>
