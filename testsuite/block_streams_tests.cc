@@ -5,8 +5,26 @@ TEST(aes, test_vectors) {
     testsuite::block_test_case("AES", 10)();
 }
 
+TEST(aria, test_vectors) {
+    testsuite::block_test_case("ARIA", 1)();
+    testsuite::block_test_case("ARIA", 2)();
+    testsuite::block_test_case("ARIA", 6)();
+    testsuite::block_test_case("ARIA", 7)();
+    testsuite::block_test_case("ARIA", 11)();
+    testsuite::block_test_case("ARIA", 12)();
+}
+
 TEST(blowfish, test_vectors) {
     testsuite::block_test_case("BLOWFISH", 16)();
+}
+
+TEST(camellia, test_vectors) {
+    testsuite::block_test_case("CAMELLIA", 18)();
+    testsuite::block_test_case("CAMELLIA", 24)();
+}
+
+TEST(seed, test_vectors) {
+    testsuite::block_test_case("SEED", 16)();
 }
 
 TEST(simon, test_vectors) {
@@ -50,4 +68,12 @@ TEST(tea, test_vectors) {
 
 TEST(gost_block, test_vectors) {
     testsuite::block_test_case("GOST", 32)();
+}
+
+TEST(idea, test_vectors) {
+    testsuite::block_test_case("IDEA", 8)();
+}
+
+TEST(cast, test_vectors) {
+    testsuite::block_test_case("CAST", 16)();
 }
