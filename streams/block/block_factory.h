@@ -18,6 +18,7 @@
 #include "ciphers/blowfish/blowfish_factory.h"
 #include "ciphers/gost/gost_block.h"
 #include "ciphers/seed/seed_block.h"
+#include "ciphers/idea/idea_block.h"
 
 namespace block {
     std::unique_ptr<block_cipher> make_block_cipher(const std::string& name, const std::size_t round, const std::size_t block_size, const std::size_t key_size, const bool encrypt);

@@ -17,24 +17,24 @@ if (ul != 0) \
 else \
     r=(-(int)a-b+1);        /* assuming a or b is 0 and in range */
 
-#undef n2l
-#define n2l(c, l)        (l =((unsigned long)(*((c)++)))<<24L, \
+#undef IDEA_n2l
+#define IDEA_n2l(c, l)        (l =((unsigned long)(*((c)++)))<<24L, \
                      l|=((unsigned long)(*((c)++)))<<16L, \
                      l|=((unsigned long)(*((c)++)))<< 8L, \
                      l|=((unsigned long)(*((c)++))))
 
-#undef l2n
-#define l2n(l, c)        (*((c)++)=(unsigned char)(((l)>>24L)&0xff), \
+#undef IDEA_l2n
+#define IDEA_l2n(l, c)        (*((c)++)=(unsigned char)(((l)>>24L)&0xff), \
                      *((c)++)=(unsigned char)(((l)>>16L)&0xff), \
                      *((c)++)=(unsigned char)(((l)>> 8L)&0xff), \
                      *((c)++)=(unsigned char)(((l)     )&0xff))
 
-#undef s2n
-#define s2n(l, c)        (*((c)++)=(unsigned char)(((l)     )&0xff), \
+#undef IDEA_s2n
+#define IDEA_s2n(l, c)        (*((c)++)=(unsigned char)(((l)     )&0xff), \
                      *((c)++)=(unsigned char)(((l)>> 8L)&0xff))
 
-#undef n2s
-#define n2s(c, l)        (l =((IDEA_INT)(*((c)++)))<< 8L, \
+#undef IDEA_n2s
+#define IDEA_n2s(c, l)        (l =((IDEA_INT)(*((c)++)))<< 8L, \
                      l|=((IDEA_INT)(*((c)++)))      )
 
 
@@ -62,17 +62,17 @@ static IDEA_INT inverse(unsigned int xin);
 void IDEA_set_encrypt_key(const unsigned char *key, IDEA_KEY_SCHEDULE *ks)
 {
     int i;
-    register IDEA_INT *kt, *kf, r0, r1, r2;
+    IDEA_INT *kt, *kf, r0, r1, r2;
 
     kt = &(ks->data[0][0]);
-    n2s(key, kt[0]);
-    n2s(key, kt[1]);
-    n2s(key, kt[2]);
-    n2s(key, kt[3]);
-    n2s(key, kt[4]);
-    n2s(key, kt[5]);
-    n2s(key, kt[6]);
-    n2s(key, kt[7]);
+    IDEA_n2s(key, kt[0]);
+    IDEA_n2s(key, kt[1]);
+    IDEA_n2s(key, kt[2]);
+    IDEA_n2s(key, kt[3]);
+    IDEA_n2s(key, kt[4]);
+    IDEA_n2s(key, kt[5]);
+    IDEA_n2s(key, kt[6]);
+    IDEA_n2s(key, kt[7]);
 
     kf = kt;
     kt += 8;
@@ -102,7 +102,7 @@ void IDEA_set_encrypt_key(const unsigned char *key, IDEA_KEY_SCHEDULE *ks)
 void IDEA_set_decrypt_key(IDEA_KEY_SCHEDULE *ek, IDEA_KEY_SCHEDULE *dk)
 {
     int r;
-    register IDEA_INT *fp, *tp, t;
+    IDEA_INT *fp, *tp, t;
 
     tp = &(dk->data[0][0]);
     fp = &(ek->data[8][0]);
@@ -160,10 +160,10 @@ static IDEA_INT inverse(unsigned int xin)
 }
 
 // https://github.com/openssl/openssl/blob/master/crypto/idea/i_cbc.c
-void IDEA_encrypt(unsigned long *d, IDEA_KEY_SCHEDULE *key)
+void IDEA_encrypt(unsigned long *d, IDEA_KEY_SCHEDULE *key, int nr)
 {
-    register IDEA_INT *p;
-    register unsigned long x1, x2, x3, x4, t0, t1, ul;
+    IDEA_INT *p;
+    unsigned long x1, x2, x3, x4, t0, t1, ul;
 
     x2 = d[0];
     x1 = (x2 >> 16);
@@ -172,14 +172,10 @@ void IDEA_encrypt(unsigned long *d, IDEA_KEY_SCHEDULE *key)
 
     p = &(key->data[0][0]);
 
-    E_IDEA(0);
-    E_IDEA(1);
-    E_IDEA(2);
-    E_IDEA(3);
-    E_IDEA(4);
-    E_IDEA(5);
-    E_IDEA(6);
-    E_IDEA(7);
+
+    for(int i=0; i<nr; ++i){
+        E_IDEA(i);
+    }
 
     x1 &= 0xffff;
     idea_mul(x1, x1, *p, ul);
@@ -198,19 +194,19 @@ void IDEA_encrypt(unsigned long *d, IDEA_KEY_SCHEDULE *key)
 
 // https://github.com/openssl/openssl/blob/master/crypto/idea/i_ecb.c
 void IDEA_ecb_encrypt(const unsigned char *in, unsigned char *out,
-                      IDEA_KEY_SCHEDULE *ks)
+                      IDEA_KEY_SCHEDULE *ks, int nr)
 {
     unsigned long l0, l1, d[2];
 
-    n2l(in, l0);
+    IDEA_n2l(in, l0);
     d[0] = l0;
-    n2l(in, l1);
+    IDEA_n2l(in, l1);
     d[1] = l1;
-    IDEA_encrypt(d, ks);
+    IDEA_encrypt(d, ks, nr);
     l0 = d[0];
-    l2n(l0, out);
+    IDEA_l2n(l0, out);
     l1 = d[1];
-    l2n(l1, out);
+    IDEA_l2n(l1, out);
     l0 = l1 = d[0] = d[1] = 0;
 }
 
