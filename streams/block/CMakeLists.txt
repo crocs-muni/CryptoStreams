@@ -24,6 +24,7 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/blowfish/blowfish_factory
     ciphers/idea/idea
     ciphers/idea/idea_block
+    ciphers/cast/cast
     )
 
 target_link_libraries(block eacirc-core)
