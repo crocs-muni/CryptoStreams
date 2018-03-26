@@ -10,13 +10,19 @@
 
 #include "aria.h"
 #include <cassert>
+#include <memory>
 #include <cstring>
 
 namespace block {
 namespace aria {
 
-#ifndef OPENSSL_SMALL_FOOTPRINT
+#define ossl_inline inline
+#define ARIA_REFERENCE_KEY_SCHEDULE
 
+//
+// Optimized macros
+//
+#ifndef ARIA_REFERENCE_KEY_SCHEDULE
 /* Begin macro */
 
 /* rotation */
@@ -459,86 +465,6 @@ do {                                            \
 (Y) = (TMP2) ^ rotr32((TMP) ^ (TMP2), 16);  \
 } while(0)
 
-void aria_encrypt(const unsigned char *in, unsigned char *out,
-                  const ARIA_KEY *key,
-                  unsigned nr) {
-    uint32_t reg0, reg1, reg2, reg3;
-    int Nr;
-    const ARIA_u128 *rk;
-
-    if (in == NULL || out == NULL || key == NULL) {
-        return;
-    }
-
-    rk = key->rd_key;
-    Nr = key->rounds;
-
-//    if (Nr != 12 && Nr != 14 && Nr != 16) {
-//        return;
-//    }
-
-    reg0 = GET_U32_BE(in, 0);
-    reg1 = GET_U32_BE(in, 1);
-    reg2 = GET_U32_BE(in, 2);
-    reg3 = GET_U32_BE(in, 3);
-
-    unsigned c_rnd = 0;
-    if (nr >= c_rnd + 1) {
-        ARIA_ADD_ROUND_KEY(rk, reg0, reg1, reg2, reg3);
-    }
-    ++c_rnd;
-    rk++;
-
-    if (nr >= c_rnd + 1) {
-        ARIA_SUBST_DIFF_ODD(reg0, reg1, reg2, reg3);
-        ARIA_ADD_ROUND_KEY(rk, reg0, reg1, reg2, reg3);
-    }
-    ++c_rnd;
-    rk++;
-
-    while (Nr -= 2) {
-        if (nr >= c_rnd + 1) {
-            ARIA_SUBST_DIFF_EVEN(reg0, reg1, reg2, reg3);
-            ARIA_ADD_ROUND_KEY(rk, reg0, reg1, reg2, reg3);
-        }
-        rk++;
-        ++c_rnd;
-
-        if (nr >= c_rnd + 1) {
-            ARIA_SUBST_DIFF_ODD(reg0, reg1, reg2, reg3);
-            ARIA_ADD_ROUND_KEY(rk, reg0, reg1, reg2, reg3);
-        }
-        rk++;
-        ++c_rnd;
-    }
-
-    reg0 = rk->u[0] ^ MAKE_U32(
-        (uint8_t) (X1[GET_U8_BE(reg0, 0)]),
-        (uint8_t) (X2[GET_U8_BE(reg0, 1)] >> 8),
-        (uint8_t) (S1[GET_U8_BE(reg0, 2)]),
-        (uint8_t) (S2[GET_U8_BE(reg0, 3)]));
-    reg1 = rk->u[1] ^ MAKE_U32(
-        (uint8_t) (X1[GET_U8_BE(reg1, 0)]),
-        (uint8_t) (X2[GET_U8_BE(reg1, 1)] >> 8),
-        (uint8_t) (S1[GET_U8_BE(reg1, 2)]),
-        (uint8_t) (S2[GET_U8_BE(reg1, 3)]));
-    reg2 = rk->u[2] ^ MAKE_U32(
-        (uint8_t) (X1[GET_U8_BE(reg2, 0)]),
-        (uint8_t) (X2[GET_U8_BE(reg2, 1)] >> 8),
-        (uint8_t) (S1[GET_U8_BE(reg2, 2)]),
-        (uint8_t) (S2[GET_U8_BE(reg2, 3)]));
-    reg3 = rk->u[3] ^ MAKE_U32(
-        (uint8_t) (X1[GET_U8_BE(reg3, 0)]),
-        (uint8_t) (X2[GET_U8_BE(reg3, 1)] >> 8),
-        (uint8_t) (S1[GET_U8_BE(reg3, 2)]),
-        (uint8_t) (S2[GET_U8_BE(reg3, 3)]));
-
-    PUT_U32_BE(out, 0, reg0);
-    PUT_U32_BE(out, 1, reg1);
-    PUT_U32_BE(out, 2, reg2);
-    PUT_U32_BE(out, 3, reg3);
-}
-
 int aria_set_encrypt_key(const unsigned char *userKey, const int bits,
                          ARIA_KEY *key) {
     uint32_t reg0, reg1, reg2, reg3;
@@ -750,8 +676,12 @@ int aria_set_decrypt_key(const unsigned char *userKey, const int bits,
 
     return 0;
 }
+#endif // ARIA_REFERENCE_KEY_SCHEDULE
 
-#else
+//
+// end of optimized part
+// Small footprint
+//
 
 static const unsigned char sb1[256] = {
     0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
@@ -893,6 +823,7 @@ static const unsigned char sb4[256] = {
     0xf7, 0x4c, 0x11, 0x33, 0x03, 0xa2, 0xac, 0x60
 };
 
+#ifdef ARIA_REFERENCE_KEY_SCHEDULE
 static const ARIA_u128 c1 = {{
     0x51, 0x7c, 0xc1, 0xb7, 0x27, 0x22, 0x0a, 0x94,
     0xfe, 0x13, 0xab, 0xe8, 0xfa, 0x9a, 0x6e, 0xe0
@@ -907,6 +838,7 @@ static const ARIA_u128 c3 = {{
     0xdb, 0x92, 0x37, 0x1d, 0x21, 0x26, 0xe9, 0x70,
     0x03, 0x24, 0x97, 0x75, 0x04, 0xe8, 0xc9, 0x0e
 }};
+#endif
 
 /*
  * Exclusive or two 128 bit values into the result.
@@ -921,68 +853,82 @@ static void xor128(ARIA_c128 o, const ARIA_c128 x, const ARIA_u128 *y)
 }
 
 /*
+ * Exclusive or two 128 bit values into the result.
+ * It is safe for the result to be the same as the either input.
+ */
+static void xor128p(ARIA_u128 *o, const ARIA_u128 *x, const ARIA_u128 *y)
+{
+    int i;
+
+    for (i = 0; i < ARIA_BLOCK_SIZE; i++)
+        o->c[i] = x->c[i] ^ y->c[i];
+}
+
+#ifdef ARIA_REFERENCE_KEY_SCHEDULE
+/*
  * Generalised circular rotate right and exclusive or function.
  * It is safe for the output to overlap either input.
  */
 static ossl_inline void rotnr(unsigned int n, ARIA_u128 *o,
-                              const ARIA_u128 *xor, const ARIA_u128 *z)
+                              const ARIA_u128 *xxor, const ARIA_u128 *z)
 {
     const unsigned int bytes = n / 8, bits = n % 8;
     unsigned int i;
-    ARIA_u128 t;
+    ARIA_u128 t{};
 
     for (i = 0; i < ARIA_BLOCK_SIZE; i++)
         t.c[(i + bytes) % ARIA_BLOCK_SIZE] = z->c[i];
     for (i = 0; i < ARIA_BLOCK_SIZE; i++)
         o->c[i] = ((t.c[i] >> bits) |
                 (t.c[i ? i - 1 : ARIA_BLOCK_SIZE - 1] << (8 - bits))) ^
-                xor->c[i];
+                xxor->c[i];
 }
 
 /*
  * Circular rotate 19 bits right and xor.
  * It is safe for the output to overlap either input.
  */
-static void rot19r(ARIA_u128 *o, const ARIA_u128 *xor, const ARIA_u128 *z)
+static void rot19r(ARIA_u128 *o, const ARIA_u128 *xxor, const ARIA_u128 *z)
 {
-    rotnr(19, o, xor, z);
+    rotnr(19, o, xxor, z);
 }
 
 /*
  * Circular rotate 31 bits right and xor.
  * It is safe for the output to overlap either input.
  */
-static void rot31r(ARIA_u128 *o, const ARIA_u128 *xor, const ARIA_u128 *z)
+static void rot31r(ARIA_u128 *o, const ARIA_u128 *xxor, const ARIA_u128 *z)
 {
-    rotnr(31, o, xor, z);
+    rotnr(31, o, xxor, z);
 }
 
 /*
  * Circular rotate 61 bits left and xor.
  * It is safe for the output to overlap either input.
  */
-static void rot61l(ARIA_u128 *o, const ARIA_u128 *xor, const ARIA_u128 *z)
+static void rot61l(ARIA_u128 *o, const ARIA_u128 *xxor, const ARIA_u128 *z)
 {
-    rotnr(8 * ARIA_BLOCK_SIZE - 61, o, xor, z);
+    rotnr(8 * ARIA_BLOCK_SIZE - 61, o, xxor, z);
 }
 
 /*
  * Circular rotate 31 bits left and xor.
  * It is safe for the output to overlap either input.
  */
-static void rot31l(ARIA_u128 *o, const ARIA_u128 *xor, const ARIA_u128 *z)
+static void rot31l(ARIA_u128 *o, const ARIA_u128 *xxor, const ARIA_u128 *z)
 {
-    rotnr(8 * ARIA_BLOCK_SIZE - 31, o, xor, z);
+    rotnr(8 * ARIA_BLOCK_SIZE - 31, o, xxor, z);
 }
 
 /*
  * Circular rotate 19 bits left and xor.
  * It is safe for the output to overlap either input.
  */
-static void rot19l(ARIA_u128 *o, const ARIA_u128 *xor, const ARIA_u128 *z)
+static void rot19l(ARIA_u128 *o, const ARIA_u128 *xxor, const ARIA_u128 *z)
 {
-    rotnr(8 * ARIA_BLOCK_SIZE - 19, o, xor, z);
+    rotnr(8 * ARIA_BLOCK_SIZE - 19, o, xxor, z);
 }
+#endif
 
 /*
  * First substitution and xor layer, used for odd steps.
@@ -1062,7 +1008,7 @@ static void a(ARIA_u128 *y, const ARIA_u128 *x)
 static ossl_inline void FO(ARIA_u128 *o, const ARIA_u128 *d,
                            const ARIA_u128 *rk)
 {
-    ARIA_u128 y;
+    ARIA_u128 y{};
 
     sl1(&y, d, rk);
     a(o, &y);
@@ -1076,7 +1022,7 @@ static ossl_inline void FO(ARIA_u128 *o, const ARIA_u128 *d,
 static ossl_inline void FE(ARIA_u128 *o, const ARIA_u128 *d,
                            const ARIA_u128 *rk)
 {
-    ARIA_u128 y;
+    ARIA_u128 y{};
 
     sl2(y.c, d, rk);
     a(o, &y);
@@ -1087,19 +1033,48 @@ static ossl_inline void FE(ARIA_u128 *o, const ARIA_u128 *d,
  * in and out can overlap
  */
 static void do_encrypt(unsigned char *o, const unsigned char *pin,
-                       unsigned int rounds, const ARIA_u128 *keys)
+                       unsigned int rounds, const ARIA_u128 *keys,
+                       unsigned nr, bool enc)
 {
-    ARIA_u128 p;
+    ARIA_u128 p{};
+    ARIA_u128 y{};
+    const bool is_full = nr == rounds;
     unsigned int i;
 
     memcpy(&p, pin, sizeof(p));
-    for (i = 0; i < rounds - 2; i += 2) {
-        FO(&p, &p, &keys[i]);
-        FE(&p, &p, &keys[i + 1]);
+
+    // Extra zero key for decryption purposes, inverting transformation
+    memset((char *) (keys) + sizeof(ARIA_u128) * (rounds+1), 0, sizeof(ARIA_u128));
+
+    for (i = 0; i < nr; i += 1) {
+        if ((enc && i > 0) || (!enc && (!is_full || i > 0))) {
+            a(&y, &p);
+            memcpy(&p, &y, sizeof(ARIA_u128));
+        }
+
+        // sl1 for encryption on first round, sl2 for dec if odd num of rounds
+        if ((enc && (i&1) == 0) || (!enc && ((i&1) == (nr&1)))) {
+            sl1(&p, &p, &keys[enc || is_full ? i : ((i == 0 ? rounds+1 : rounds-nr+i))]);
+        } else {
+            sl2(p.c, &p, &keys[enc || is_full ? i : ((i == 0 ? rounds+1 : rounds-nr+i))]);
+        }
     }
-    FO(&p, &p, &keys[rounds - 2]);
-    sl2(o, &p, &keys[rounds - 1]);
-    xor128(o, o, &keys[rounds]);
+
+    // ciphertext output for partial ARIA
+    if (enc && !is_full){
+        a(&y, &p);
+        memcpy(&p, &y, sizeof(ARIA_u128));
+    }
+    if (!enc && !is_full){
+        xor128(p.c, p.c, &keys[rounds]);
+    }
+
+    if (is_full) {
+        memcpy(o, &p, sizeof(ARIA_u128));
+        xor128(o, o, &keys[rounds]);
+    } else {
+        memcpy(o, &(p.c), ARIA_BLOCK_SIZE);
+    }
 }
 
 /*
@@ -1107,13 +1082,14 @@ static void do_encrypt(unsigned char *o, const unsigned char *pin,
  * in and out can overlap
  */
 void aria_encrypt(const unsigned char *in, unsigned char *out,
-                  const ARIA_KEY *key)
+                  const ARIA_KEY *key,
+                  unsigned nr, bool enc)
 {
     assert(in != NULL && out != NULL && key != NULL);
-    do_encrypt(out, in, key->rounds, key->rd_key);
+    do_encrypt(out, in, key->rounds, key->rd_key, nr, enc);
 }
 
-
+#ifdef ARIA_REFERENCE_KEY_SCHEDULE
 /*
  * Expand the cipher key into the encryption key schedule.
  * We short circuit execution of the last two
@@ -1123,7 +1099,7 @@ int aria_set_encrypt_key(const unsigned char *userKey, const int bits,
                          ARIA_KEY *key)
 {
     const ARIA_u128 *ck1, *ck2, *ck3;
-    ARIA_u128 kr, w0, w1, w2, w3;
+    ARIA_u128 kr{}, w0{}, w1{}, w2{}, w3{};
 
     if (!userKey || !key)
         return -1;
@@ -1195,7 +1171,7 @@ int aria_set_encrypt_key(const unsigned char *userKey, const int bits,
 int aria_set_decrypt_key(const unsigned char *userKey, const int bits,
                          ARIA_KEY *key)
 {
-    ARIA_KEY ek;
+    ARIA_KEY ek{};
     const int r = aria_set_encrypt_key(userKey, bits, &ek);
     unsigned int i, rounds = ek.rounds;
 
@@ -1208,8 +1184,9 @@ int aria_set_decrypt_key(const unsigned char *userKey, const int bits,
     }
     return r;
 }
-
 #endif
+
+// end of small footprint
 
 }
 }

@@ -7,6 +7,7 @@
  * https://en.wikipedia.org/wiki/ARIA_(cipher)
  * http://210.104.33.10/ARIA/index-e.html
  * http://210.104.33.10/ARIA/doc/ARIA-testvector-e.pdf
+ * http://210.104.33.10/ARIA/doc/ARIA-specification-e.pdf
  */
 
 #include <stdexcept>
@@ -19,7 +20,7 @@
 # define ARIA_DECRYPT     0
 
 # define ARIA_BLOCK_SIZE    16  /* Size of each encryption/decryption block */
-# define ARIA_MAX_KEYS      17  /* Number of keys needed in the worst case  */
+# define ARIA_MAX_KEYS      18  /* Number of keys needed in the worst case + 1 */
 
 
 namespace block {
@@ -50,7 +51,7 @@ extern "C" {
 
         void aria_encrypt(const unsigned char *in, unsigned char *out,
                           const ARIA_KEY *key,
-                          unsigned nr);
+                          unsigned nr, bool enc);
 
 # ifdef  __cplusplus
 }
