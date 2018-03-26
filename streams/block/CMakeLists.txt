@@ -25,6 +25,7 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/idea/idea
     ciphers/idea/idea_block
     ciphers/cast/cast
+    ciphers/cast/cast_block
     )
 
 target_link_libraries(block eacirc-core)
