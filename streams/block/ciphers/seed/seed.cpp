@@ -578,7 +578,8 @@ void SEED_set_key(const unsigned char rawkey[SEED_KEY_LENGTH],
 
 void SEED_encrypt(const unsigned char s[SEED_BLOCK_SIZE],
                   unsigned char d[SEED_BLOCK_SIZE],
-                  const SEED_KEY_SCHEDULE *ks) {
+                  const SEED_KEY_SCHEDULE *ks,
+                  unsigned nr) {
     seed_word x1, x2, x3, x4;
     seed_word t0, t1;
 
@@ -587,32 +588,17 @@ void SEED_encrypt(const unsigned char s[SEED_BLOCK_SIZE],
     char2word(s + 8, x3);
     char2word(s + 12, x4);
 
-# if !defined(OPENSSL_SMALL_FOOTPRINT)
-    E_SEED(t0, t1, x1, x2, x3, x4, 0);
-    E_SEED(t0, t1, x3, x4, x1, x2, 2);
-    E_SEED(t0, t1, x1, x2, x3, x4, 4);
-    E_SEED(t0, t1, x3, x4, x1, x2, 6);
-    E_SEED(t0, t1, x1, x2, x3, x4, 8);
-    E_SEED(t0, t1, x3, x4, x1, x2, 10);
-    E_SEED(t0, t1, x1, x2, x3, x4, 12);
-    E_SEED(t0, t1, x3, x4, x1, x2, 14);
-    E_SEED(t0, t1, x1, x2, x3, x4, 16);
-    E_SEED(t0, t1, x3, x4, x1, x2, 18);
-    E_SEED(t0, t1, x1, x2, x3, x4, 20);
-    E_SEED(t0, t1, x3, x4, x1, x2, 22);
-    E_SEED(t0, t1, x1, x2, x3, x4, 24);
-    E_SEED(t0, t1, x3, x4, x1, x2, 26);
-    E_SEED(t0, t1, x1, x2, x3, x4, 28);
-    E_SEED(t0, t1, x3, x4, x1, x2, 30);
-# else
     {
         int i;
         for (i = 0; i < 30; i += 4) {
-            E_SEED(t0, t1, x1, x2, x3, x4, i);
-            E_SEED(t0, t1, x3, x4, x1, x2, i + 2);
+            if (nr >= (i>>1)+1) {
+                E_SEED(t0, t1, x1, x2, x3, x4, i);
+            }
+            if (nr >= (i>>1)+2) {
+                E_SEED(t0, t1, x3, x4, x1, x2, i + 2);
+            }
         }
     }
-# endif
 
     word2char(x3, d);
     word2char(x4, d + 4);
@@ -622,7 +608,8 @@ void SEED_encrypt(const unsigned char s[SEED_BLOCK_SIZE],
 
 void SEED_decrypt(const unsigned char s[SEED_BLOCK_SIZE],
                   unsigned char d[SEED_BLOCK_SIZE],
-                  const SEED_KEY_SCHEDULE *ks) {
+                  const SEED_KEY_SCHEDULE *ks,
+                  unsigned nr) {
     seed_word x1, x2, x3, x4;
     seed_word t0, t1;
 
@@ -631,33 +618,17 @@ void SEED_decrypt(const unsigned char s[SEED_BLOCK_SIZE],
     char2word(s + 8, x3);
     char2word(s + 12, x4);
 
-# if !defined(OPENSSL_SMALL_FOOTPRINT)
-    E_SEED(t0, t1, x1, x2, x3, x4, 30);
-    E_SEED(t0, t1, x3, x4, x1, x2, 28);
-    E_SEED(t0, t1, x1, x2, x3, x4, 26);
-    E_SEED(t0, t1, x3, x4, x1, x2, 24);
-    E_SEED(t0, t1, x1, x2, x3, x4, 22);
-    E_SEED(t0, t1, x3, x4, x1, x2, 20);
-    E_SEED(t0, t1, x1, x2, x3, x4, 18);
-    E_SEED(t0, t1, x3, x4, x1, x2, 16);
-    E_SEED(t0, t1, x1, x2, x3, x4, 14);
-    E_SEED(t0, t1, x3, x4, x1, x2, 12);
-    E_SEED(t0, t1, x1, x2, x3, x4, 10);
-    E_SEED(t0, t1, x3, x4, x1, x2, 8);
-    E_SEED(t0, t1, x1, x2, x3, x4, 6);
-    E_SEED(t0, t1, x3, x4, x1, x2, 4);
-    E_SEED(t0, t1, x1, x2, x3, x4, 2);
-    E_SEED(t0, t1, x3, x4, x1, x2, 0);
-# else
     {
-        int i;
-        for (i = 30; i > 0; i -= 4) {
-            E_SEED(t0, t1, x1, x2, x3, x4, i);
-            E_SEED(t0, t1, x3, x4, x1, x2, i - 2);
-
+        int i, j;
+        for (i = 30, j=0; i > 0; i -= 4, j += 2) {
+            if (nr >= j + 1) {
+                E_SEED(t0, t1, x1, x2, x3, x4, i);
+            }
+            if (nr >= j + 2) {
+                E_SEED(t0, t1, x3, x4, x1, x2, i - 2);
+            }
         }
     }
-# endif
 
     word2char(x3, d);
     word2char(x4, d + 4);

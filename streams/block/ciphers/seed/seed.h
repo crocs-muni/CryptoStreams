@@ -45,10 +45,12 @@ extern "C" {
 
     void SEED_encrypt(const unsigned char s[SEED_BLOCK_SIZE],
                       unsigned char d[SEED_BLOCK_SIZE],
-                      const SEED_KEY_SCHEDULE *ks);
+                      const SEED_KEY_SCHEDULE *ks,
+                      unsigned nr);
     void SEED_decrypt(const unsigned char s[SEED_BLOCK_SIZE],
                       unsigned char d[SEED_BLOCK_SIZE],
-                      const SEED_KEY_SCHEDULE *ks);
+                      const SEED_KEY_SCHEDULE *ks,
+                      unsigned nr);
 
 # ifdef  __cplusplus
 }
