@@ -579,7 +579,7 @@ void SEED_set_key(const unsigned char rawkey[SEED_KEY_LENGTH],
 void SEED_encrypt(const unsigned char s[SEED_BLOCK_SIZE],
                   unsigned char d[SEED_BLOCK_SIZE],
                   const SEED_KEY_SCHEDULE *ks,
-                  unsigned nr) {
+                  int nr) {
     seed_word x1, x2, x3, x4;
     seed_word t0, t1;
 
@@ -609,7 +609,7 @@ void SEED_encrypt(const unsigned char s[SEED_BLOCK_SIZE],
 void SEED_decrypt(const unsigned char s[SEED_BLOCK_SIZE],
                   unsigned char d[SEED_BLOCK_SIZE],
                   const SEED_KEY_SCHEDULE *ks,
-                  unsigned nr) {
+                  int nr) {
     seed_word x1, x2, x3, x4;
     seed_word t0, t1;
 

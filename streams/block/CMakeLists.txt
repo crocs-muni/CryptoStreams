@@ -13,6 +13,7 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/gost/gost89
     ciphers/gost/gost_block
     ciphers/seed/seed
+    ciphers/seed/seed_block
     ciphers/simon/simon
     ciphers/speck/speck
     ciphers/rc4/rc4

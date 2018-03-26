@@ -23,6 +23,10 @@ TEST(camellia, test_vectors) {
     testsuite::block_test_case("CAMELLIA", 24)();
 }
 
+TEST(seed, test_vectors) {
+    testsuite::block_test_case("SEED", 16)();
+}
+
 TEST(simon, test_vectors) {
     testsuite::block_test_case("SIMON", 32)();
     testsuite::block_test_case("SIMON", 36)();
