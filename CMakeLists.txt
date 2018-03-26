@@ -25,10 +25,14 @@ endif()
 
 
 # === Provide sources as library
-add_library(eacirc-streams-lib STATIC
+set(eacirc-streams-sources
         stream.h
         streams.h
         streams.cc
+        )
+
+add_library(eacirc-streams-lib STATIC
+        ${eacirc-streams-sources}
         )
 
 set_target_properties(eacirc-streams-lib PROPERTIES
@@ -47,30 +51,30 @@ add_subdirectory(streams/block)
 
 option(BUILD_testsuite "Build all tests." OFF)
 
+# === eacirc generator executable
+add_executable(eacirc-streams main.cc generator)
+
+set_target_properties(eacirc-streams PROPERTIES
+        LINKER_LANGUAGE CXX
+        )
+
+target_link_libraries(eacirc-streams eacirc-core eacirc-streams-lib)
+
+build_stream(eacirc-streams estream)
+build_stream(eacirc-streams sha3)
+build_stream(eacirc-streams block)
+
 ##############
 # Building of testsuite
 ##############
-if (NOT BUILD_testsuite)
 
-    # === eacirc generator executable
-    add_executable(eacirc-streams main.cc generator)
-
-    set_target_properties(eacirc-streams PROPERTIES
-            LINKER_LANGUAGE CXX
-            )
-
-    target_link_libraries(eacirc-streams eacirc-core eacirc-streams-lib)
-
-    build_stream(eacirc-streams estream)
-    build_stream(eacirc-streams sha3)
-    build_stream(eacirc-streams block)
-
-else()
+if (BUILD_testsuite)
     enable_testing()
     include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
     # === testsuite executable
     add_executable(testsuite
+            ${eacirc-streams-sources}
             testsuite/test_main.cc
             testsuite/stream_tests.cc
             testsuite/sha3_streams_tests.cc
@@ -83,13 +87,15 @@ else()
             testsuite/test-utils/common_functions
             testsuite/test-utils/test_case.h)
 
+    target_compile_definitions(testsuite PUBLIC "TEST_STREAM=1")
+
     file(COPY testsuite/test-resources DESTINATION resources)
 
     # Standard linking to gtest stuff.
     target_link_libraries(testsuite gtest gtest_main)
 
     # Extra linking for the project.
-    target_link_libraries(testsuite eacirc-core eacirc-streams-lib)
+    target_link_libraries(testsuite eacirc-core)
 
     build_stream(testsuite estream)
     build_stream(testsuite sha3)
