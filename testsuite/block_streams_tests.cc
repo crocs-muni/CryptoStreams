@@ -47,3 +47,7 @@ TEST(rc4, test_vectors) {
 TEST(tea, test_vectors) {
     testsuite::block_test_case("TEA", 32)();
 }
+
+TEST(gost_block, test_vectors) {
+    testsuite::block_test_case("GOST", 32)();
+}
