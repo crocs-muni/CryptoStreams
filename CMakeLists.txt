@@ -44,7 +44,7 @@ add_subdirectory(streams/block)
 
 ## Executables
 
-option(BUILD_testsuite "Build all tests." OFF)
+option(BUILD_testsuite "Build all tests." ON)
 
 ##############
 # Building of testsuite

@@ -68,7 +68,7 @@ namespace testsuite {
         _stream_config["round"] = _round;
         _stream_config["input-size"] = _plaintext.size();
         _stream_config["source"]["outputs"] = _plaintext;
-        _stream_config["hash-size"] = hash_size;
+        _stream_config["hash-bitsize"] = hash_size*8;
 
         seed_seq_from<pcg32> seeder(seed1);
         return make_stream(_stream_config, seeder, hash_size);
