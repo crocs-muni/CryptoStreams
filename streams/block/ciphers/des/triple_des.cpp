@@ -7,6 +7,13 @@
 namespace block {
 void triple_des::keysetup(const std::uint8_t* key, const std::uint64_t keysize) {
     std::copy_n(key, keysize, _ctx.key);
+    for (unsigned j = 0; j < 3; ++j) {
+        // spread each last bit of 7 bytes into 8 bytes (ignore parity bits)
+        _ctx.key[8*j + 7] = 0;
+        for (unsigned i = 0; i < 7; ++i) {
+            _ctx.key[8*j + 7] |= (_ctx.key[8*j + i] & 0x1) << i;
+        }
+    }
     if (_ctx.en) {
         three_des_key_setup(_ctx.key, _ctx.schedule, DES_ENCRYPT);
     } else {

@@ -7,6 +7,11 @@
 namespace block {
 void single_des::keysetup(const std::uint8_t* key, const std::uint64_t keysize) {
     std::copy_n(key, keysize, _ctx.key);
+    // spread each last bit of 7 bytes into 8 bytes (ignore parity bits)
+    _ctx.key[7] = 0;
+    for (unsigned i = 0; i < 7; ++i) {
+        _ctx.key[7] |= (_ctx.key[i] & 0x1) << i;
+    }
     if (_ctx.en) {
         des_key_setup(_ctx.key, _ctx.schedule, DES_ENCRYPT);
     } else {
