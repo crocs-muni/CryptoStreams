@@ -1,14 +1,14 @@
 #pragma once
 
 #include "../../block_cipher.h"
-#include "rc6.h"
+#include "idea.h"
 
 namespace block {
 
-    class rc6_factory : public block_cipher {
+    class idea_factory : public block_cipher {
 
     public:
-        rc6_factory(unsigned int rounds)
+        idea_factory(unsigned int rounds)
                 : block_cipher(rounds)
         {}
 
@@ -22,6 +22,6 @@ namespace block {
         void decrypt(const std::uint8_t* ciphertext,
                      std::uint8_t* plaintext) override;
     private:
-        Rc6Context _ctx;
+        IdeaContext _ctx;
     };
 }

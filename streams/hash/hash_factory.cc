@@ -1,4 +1,3 @@
-#include <streams/hash/others/hash_functions/sha1/sha1_factory.h>
 #include "hash_factory.h"
 #include "others/hash_functions/hash_functions.h"
 #include "sha3/hash_functions/hash_functions.h"

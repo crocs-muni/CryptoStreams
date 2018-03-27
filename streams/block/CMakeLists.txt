@@ -18,6 +18,12 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/twofish/twofish_factory
     ciphers/rc6/rc6
     ciphers/rc6/rc6_factory
+    ciphers/idea/idea
+    ciphers/idea/idea_factory
+    ciphers/kasumi/kasumi
+    ciphers/kasumi/kasumi_factory
+    ciphers/kuznyechik/kuznyechik
+    ciphers/kuznyechik/kuznyechik_factory
     )
 
 target_link_libraries(block eacirc-core)

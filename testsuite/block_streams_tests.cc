@@ -55,3 +55,15 @@ TEST(tea, test_vectors) {
 TEST(twofish, test_vectors) {
     testsuite::block_test_case("TWOFISH", 16)();
 }
+
+TEST(idea, test_vectors) {
+    testsuite::block_test_case("IDEA", 8)();
+}
+
+TEST(kasumi, test_vectors) {
+    testsuite::block_test_case("KASUMI", 8)();
+}
+
+TEST(kuznyechik, test_vectors){
+    testsuite::block_test_case("KUZNYECHIK", 10)();
+}

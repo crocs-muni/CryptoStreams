@@ -1,16 +1,20 @@
 #pragma once
 
+
 #include "../../block_cipher.h"
-#include "rc6.h"
+#include <linux/types.h>
+#include "kuznyechik.h"
 
 namespace block {
 
-    class rc6_factory : public block_cipher {
+    class kuznyechik_factory : public block_cipher {
 
     public:
-        rc6_factory(unsigned int rounds)
+        kuznyechik_factory(unsigned int rounds)
                 : block_cipher(rounds)
-        {}
+        {
+            kuzn_context_init(&_ctx);
+        }
 
         void keysetup(const std::uint8_t* key, const std::uint64_t keysize) override;
 
@@ -22,6 +26,6 @@ namespace block {
         void decrypt(const std::uint8_t* ciphertext,
                      std::uint8_t* plaintext) override;
     private:
-        Rc6Context _ctx;
+        kuzn_ctx _ctx;
     };
 }

@@ -16,7 +16,9 @@
 #include "ciphers/blowfish/blowfish_factory.h"
 #include "ciphers/twofish/twofish_factory.h"
 #include "ciphers/rc6/rc6_factory.h"
-
+#include <streams/block/ciphers/idea/idea_factory.h>
+#include <streams/block/ciphers/kasumi/kasumi_factory.h>
+#include <streams/block/ciphers/kuznyechik/kuznyechik_factory.h>
 
 namespace block {
     std::unique_ptr<block_cipher> make_block_cipher(const std::string& name, const std::size_t round, const std::size_t block_size, const std::size_t key_size, const bool encrypt);
