@@ -265,41 +265,47 @@ kuzn_context_init(struct kuzn_ctx *ctx)
 }
 
 void
-kuzn_encrypt(struct kuzn_ctx *ctx, const uint8_t *in, uint8_t *out)
+kuzn_encrypt(struct kuzn_ctx *ctx, const uint8_t *in, uint8_t *out, unsigned int rounds)
 {
 	uint8_t tmp[16];
 
 	assert(ctx != NULL && in != NULL && out != NULL);
-
-	LSX(tmp, in, ctx->keys, ctx);			//K1
-	LSX(tmp, tmp, ctx->keys + 16, ctx);		//K2
-	LSX(tmp, tmp, ctx->keys + 16 * 2, ctx);		//K3
-	LSX(tmp, tmp, ctx->keys + 16 * 3, ctx);		//K4
-	LSX(tmp, tmp, ctx->keys + 16 * 4, ctx);		//K5
-	LSX(tmp, tmp, ctx->keys + 16 * 5, ctx);		//K6
-	LSX(tmp, tmp, ctx->keys + 16 * 6, ctx);		//K7
-	LSX(tmp, tmp, ctx->keys + 16 * 7, ctx);		//K8
-	LSX(tmp, tmp, ctx->keys + 16 * 8, ctx);		//K9
-	X_func(out, tmp, ctx->keys + 16 * 9);		//K10
+	for (int i = 0; i < rounds; ++i){
+        int j = i;
+		if (i == 0)
+			LSX(tmp, in, ctx->keys, ctx);
+		else {
+			if (i == 9) {
+				X_func(out, tmp, ctx->keys + (16 * j));
+				break; // last round
+			}
+			LSX(tmp, tmp, ctx->keys + (16 * j) , ctx);
+		}
+	}
 }
 
 void
-kuzn_decrypt(struct kuzn_ctx *ctx, const uint8_t *in, uint8_t *out)
+kuzn_decrypt(struct kuzn_ctx *ctx, const uint8_t *in, uint8_t *out, unsigned int rounds)
 {
 	uint8_t tmp[16];
 
 	assert(ctx != NULL && in != NULL && out != NULL);
 
-	LSXinv(tmp, in, ctx->keys + 16 * 9, ctx);	//K10
-	LSXinv(tmp, tmp, ctx->keys + 16 * 8, ctx);	//K9
-	LSXinv(tmp, tmp, ctx->keys + 16 * 7, ctx);	//K8
-	LSXinv(tmp, tmp, ctx->keys + 16 * 6, ctx);	//K7
-	LSXinv(tmp, tmp, ctx->keys + 16 * 5, ctx);	//K6
-	LSXinv(tmp, tmp, ctx->keys + 16 * 4, ctx);	//K5
-	LSXinv(tmp, tmp, ctx->keys + 16 * 3, ctx);	//K4
-	LSXinv(tmp, tmp, ctx->keys + 16 * 2, ctx);	//K3
-	LSXinv(tmp, tmp, ctx->keys + 16, ctx);		//K2
-	X_func(out, tmp, ctx->keys);			//K1
+    if (rounds > 10)
+        rounds = 10; // max number of rounds
+
+    for (int i = rounds; i > 0; --i){
+        int j = i;
+        if (i == rounds)
+            LSXinv(tmp, in, ctx->keys + 16 * (j-1), ctx);	//K10
+        else{
+            if (i == 1){
+                X_func(out, tmp, ctx->keys);			//K1
+                break;
+            }
+            LSXinv(tmp, tmp, ctx->keys + 16 * (j-1), ctx);	//K9
+        }
+    }
 }
 
 void
@@ -478,7 +484,7 @@ test_keygen(struct kuzn_ctx *ctx)
 
 	return memcmp(vals, ctx->keys, sizeof(vals));
 }
-
+/*
 int
 test_encryption(struct kuzn_ctx *ctx)
 {
@@ -502,7 +508,7 @@ test_encryption(struct kuzn_ctx *ctx)
 		return 1;
 
 	return 0;
-}
+}*/
 
 int
 test_kuzn()
@@ -538,13 +544,13 @@ test_kuzn()
 	} else {
 		printf("[+] expand key test OK!\n");
 	}
-
+/*
 	if (test_encryption(&ctx) != 0) {
 		printf("[-] Encrypt/decrypt test failed\n");
 		return 1;
 	} else {
 		printf("[+] Encrypt/decrypt test OK!\n");
-	}
+	}*/
 
 	return 0;
 }

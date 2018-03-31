@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="gtest"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\eacirc-core\;CMake Files\eacirc-core\cmake\;CMake Files\eacirc-core\external\;CMake Files\eacirc-core\external\json\;CMake Files\eacirc-core\external\pcg-cpp-0.98\;CMake Files\eacirc-core\external\googletest\;CMake Files\eacirc-core\external\googletest\googlemock\;CMake Files\eacirc-core\external\googletest\googletest\;CMake Files\eacirc-core\external\googletest\googletest\cmake\;CMake Files\streams\;CMake Files\streams\estream\;CMake Files\streams\hash\;CMake Files\streams\hash\others\;CMake Files\streams\hash\sha3\;CMake Files\streams\block\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main">
+				<Option output="/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/libgtest_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest/include"/>
+					<Add directory="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 gtest_main"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main/fast">
+				<Option output="/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/libgtest_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest/include"/>
+					<Add directory="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 gtest_main/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest">
+				<Option output="/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest/include"/>
+					<Add directory="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 gtest"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest/fast">
+				<Option output="/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest/include"/>
+					<Add directory="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 gtest/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tom/Desktop/eacirc/eacirc-streams/cmake-build-debug/eacirc-core/external/googletest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest/src/gtest-all.cc">
+			<Option target="gtest"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest/src/gtest_main.cc">
+			<Option target="gtest_main"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/version.h.in">
+			<Option virtualFolder="CMake Files\eacirc-core\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/cmake/build_stream.cmake">
+			<Option virtualFolder="CMake Files\eacirc-core\cmake\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/cmake/detect_version.cmake">
+			<Option virtualFolder="CMake Files\eacirc-core\cmake\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/json/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\json\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/pcg-cpp-0.98/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\pcg-cpp-0.98\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googlemock/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googlemock\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googlemock/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googlemock\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googlemock/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googlemock\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/eacirc-core/external/googletest/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\eacirc-core\external\googletest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/streams/estream/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\streams\estream\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/streams/hash/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\streams\hash\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/streams/hash/others/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\streams\hash\others\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/streams/hash/sha3/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\streams\hash\sha3\"/>
+		</Unit>
+		<Unit filename="/home/tom/Desktop/eacirc/eacirc-streams/streams/block/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\streams\block\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

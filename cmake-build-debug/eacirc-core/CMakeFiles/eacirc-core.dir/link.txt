@@ -1,0 +1,2 @@
+/usr/bin/ar qc libeacirc-core.a  CMakeFiles/eacirc-core.dir/logger.cc.o CMakeFiles/eacirc-core.dir/seed.cc.o CMakeFiles/eacirc-core.dir/statistics.cc.o
+/usr/bin/ranlib libeacirc-core.a

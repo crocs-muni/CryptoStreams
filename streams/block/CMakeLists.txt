@@ -16,14 +16,16 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/blowfish/blowfish_factory
     ciphers/twofish/twofish
     ciphers/twofish/twofish_factory
-    ciphers/rc6/rc6
-    ciphers/rc6/rc6_factory
-    ciphers/idea/idea
-    ciphers/idea/idea_factory
     ciphers/kasumi/kasumi
     ciphers/kasumi/kasumi_factory
     ciphers/kuznyechik/kuznyechik
     ciphers/kuznyechik/kuznyechik_factory
+    ciphers/misty1/misty1
+    ciphers/misty1/misty1_factory
+    ciphers/noekeon/noekeon
+    ciphers/noekeon/noekeon_factory
+    ciphers/shacal2/shacal2
+    ciphers/shacal2/shacal2_factory
     )
 
 target_link_libraries(block eacirc-core)

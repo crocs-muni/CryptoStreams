@@ -19,10 +19,11 @@ std::unique_ptr<block_cipher> make_block_cipher(const std::string& name,
     if (name == "TRIPLE-DES")  return std::make_unique<triple_des>(round, encrypt);
     if (name == "BLOWFISH") return std::make_unique<blowfish_factory>(round);
     if (name == "TWOFISH") return std::make_unique<twofish_factory>(round);
-    if (name == "RC6") return std::make_unique<rc6_factory>(round);
-    if (name == "IDEA") return std::make_unique<idea_factory>(round);
     if (name == "KASUMI") return std::make_unique<kasumi_factory>(round);
     if (name == "KUZNYECHIK") return std::make_unique<kuznyechik_factory>(round);
+    if (name == "MISTY1") return std::make_unique<misty1_factory>(round);
+    if (name == "NOEKEON") return std::make_unique<noekeon_factory>(round);
+    if (name == "SHACAL2") return std::make_unique<shacal2_factory>(round);
     // clang-format on
 
     throw std::runtime_error("requested block cipher named \"" + name +

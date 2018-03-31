@@ -16,11 +16,11 @@ namespace block {
 
     void kuznyechik_factory::encrypt(const std::uint8_t* plaintext,
                                    std::uint8_t* ciphertext) {
-        kuzn_encrypt(&_ctx, plaintext, ciphertext/*, unsigned(_rounds)*/);
+        kuzn_encrypt(&_ctx, plaintext, ciphertext, _rounds);
     }
 
     void kuznyechik_factory::decrypt(const std::uint8_t* ciphertext,
                                    std::uint8_t* plaintext) {
-        kuzn_decrypt(&_ctx, ciphertext, plaintext/*, _rounds*/);
+        kuzn_decrypt(&_ctx, ciphertext, plaintext, _rounds);
     }
 }

@@ -44,10 +44,6 @@ TEST(rc4, test_vectors) {
     testsuite::block_test_case("RC4", 1)();
 }
 
-TEST(rc6, test_vectors) {
-    testsuite::block_test_case("RC6", 20)();
-}
-
 TEST(tea, test_vectors) {
     testsuite::block_test_case("TEA", 32)();
 }
@@ -56,14 +52,22 @@ TEST(twofish, test_vectors) {
     testsuite::block_test_case("TWOFISH", 16)();
 }
 
-TEST(idea, test_vectors) {
-    testsuite::block_test_case("IDEA", 8)();
-}
-
 TEST(kasumi, test_vectors) {
     testsuite::block_test_case("KASUMI", 8)();
 }
 
-TEST(kuznyechik, test_vectors){
+TEST(kuznyechik, test_vectors) {
     testsuite::block_test_case("KUZNYECHIK", 10)();
+}
+
+TEST(msity1, test_vectors) {
+    testsuite::block_test_case("MISTY1", 8)();
+}
+
+TEST(noekeon, test_vectors) {
+    testsuite::block_test_case("NOEKEON", 16)();
+}
+
+TEST(shacal2, test_vectors) {
+    testsuite::block_test_case("SHACAL2", 64)();
 }
