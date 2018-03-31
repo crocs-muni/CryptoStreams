@@ -1,17 +1,31 @@
 add_library(block STATIC EXCLUDE_FROM_ALL
     block_stream
     block_cipher
-    block_factory.h
+    block_factory
     ciphers/common_fun.h
     # === eSTREAM cipher files ===
     ciphers/tea/tea
     ciphers/aes/aes
+    ciphers/simon/simon
+    ciphers/speck/speck
     ciphers/rc4/rc4
     ciphers/des/des
     ciphers/des/single_des
     ciphers/des/triple_des    
     ciphers/blowfish/blowfish
     ciphers/blowfish/blowfish_factory
+    ciphers/twofish/twofish
+    ciphers/twofish/twofish_factory
+    ciphers/kasumi/kasumi
+    ciphers/kasumi/kasumi_factory
+    ciphers/kuznyechik/kuznyechik
+    ciphers/kuznyechik/kuznyechik_factory
+    ciphers/misty1/misty1
+    ciphers/misty1/misty1_factory
+    ciphers/noekeon/noekeon
+    ciphers/noekeon/noekeon_factory
+    ciphers/shacal2/shacal2
+    ciphers/shacal2/shacal2_factory
     )
 
 target_link_libraries(block eacirc-core)

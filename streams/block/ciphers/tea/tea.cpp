@@ -6,7 +6,7 @@ namespace block {
 
     static const std::uint32_t _delta = 0x9e3779b9;
 
-    void tea::keysetup(const std::uint8_t* key, const std::uint32_t keysize) {
+    void tea::keysetup(const std::uint8_t* key, const std::uint64_t keysize) {
         if (keysize != 16)
             throw std::runtime_error("tea keysize should be 16 B");
 
@@ -15,7 +15,7 @@ namespace block {
             _ctx.key[i] = u8_to_u32_copy(key + 4 * i);
     }
 
-    void tea::ivsetup(const std::uint8_t* iv, const std::uint32_t ivsize) {
+    void tea::ivsetup(const std::uint8_t* iv, const std::uint64_t ivsize) {
         throw std::runtime_error("not implemented yet");
     }
 

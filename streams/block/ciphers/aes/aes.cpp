@@ -415,7 +415,7 @@ static void AES128_ECB_decrypt(const uint8_t* input, const uint8_t* key, uint8_t
 {
   // Copy input to output, and work in-memory on output
   BlockCopy(output, input);
-  state = (state_t*)output;
+  state = reinterpret_cast<state_t *>(output);
 
   // The KeyExpansion routine must be called before encryption.
   Key = key;
@@ -424,23 +424,23 @@ static void AES128_ECB_decrypt(const uint8_t* input, const uint8_t* key, uint8_t
   InvCipher();
 }
 
-void aes::keysetup(const std::uint8_t* key, const std::uint32_t keysize) {
+void aes::keysetup(const std::uint8_t* key, const uint64_t keysize) {
     std::copy_n(key, keysize, _ctx.key);
 }
 
-void aes::ivsetup(const std::uint8_t* iv, const std::uint32_t ivsize) {
+void aes::ivsetup(const std::uint8_t* iv, const std::uint64_t ivsize) {
     throw std::runtime_error("not implemented yet");
 }
 
 void aes::encrypt(const std::uint8_t* plaintext,
              std::uint8_t* ciphertext) {
-    Nr = _rounds; // setting rounds here allows running aes vs aes experiment
+    Nr = unsigned(_rounds); // setting rounds here allows running aes vs aes experiment
     AES128_ECB_encrypt(plaintext, _ctx.key, ciphertext);
 }
 
 void aes::decrypt(const std::uint8_t* ciphertext,
              std::uint8_t* plaintext) {
-    Nr = _rounds; // setting rounds here allows running aes vs aes experiment
+    Nr = unsigned(_rounds); // setting rounds here allows running aes vs aes experiment
     AES128_ECB_decrypt(ciphertext, _ctx.key, plaintext);
 }
 

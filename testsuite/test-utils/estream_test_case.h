@@ -3,12 +3,12 @@
 
 #include <istream>
 #include <memory>
-#include <streams/estream/estream_interface.h>
 #include <algorithm>
 #include <vector>
 #include <sstream>
 #include <stream.h>
-#include <eacirc-core/seed.h>
+#include <streams/estream/estream_interface.h>
+#include <streams/estream/estream_cipher.h>
 #include "common_functions.h"
 #include "test_case.h"
 
@@ -21,11 +21,21 @@ namespace testsuite {
     class estream_test_case : test_case {
 
     private:
+
+        void compare_ciphertext(const std::string &actual) const;
+
+        /**
+         * cipher text in form of tuples <index where begins ciphertext, ciphertext>
+         * for long ciphertext testvectors contains more tuples, if whole ciphertext is given
+         * this structure contains only one tuple <0, ciphertext>
+         * **/
+        std::vector<std::tuple<std::int32_t , std::string>> _ciphertext;
+
         /** Private key for current test vector **/
-        std::string _key;
+        std::vector<value_type> _key;
 
         /** Initialization vector for current test vector **/
-        std::string _iv;
+        std::vector<value_type> _iv;
 
         /** JSON configuration for making stream using make_stream() **/
         json _stream_config;
@@ -41,21 +51,28 @@ namespace testsuite {
          */
         const static json base_config;
 
-        estream_test_case(std::string&& algorithm, std::size_t round)
+        estream_test_case(const std::string&& algorithm, const std::size_t round)
                 : test_case(algorithm, round, "estream")
                 , _stream_config(base_config)
-                , _cipher(create_cipher(_algorithm,
+                , _cipher(create_estream_cipher(_algorithm,
                                         core::optional<unsigned>{unsigned(_round)}))
         {}
 
-        /** Getter for plaintext **/
-        const std::string& plaintext() const;
+        /** Setter for single test vector **/
+        void update_test_vector(const std::vector<value_type> &&plaintext,
+                                const std::vector<value_type> &&key,
+                                const std::vector<value_type> &&iv) {
+            _plaintext = plaintext;
+            _key = key;
+            _iv = iv;
+        }
 
-        /** Getter for private key **/
-        const std::string& key() const;
-
-        /** Getter for initialisation vector **/
-        const std::string& iv() const;
+        /**
+         * Loads ciphertext from stream, stream must be in separate line and
+         * should be in format ciphertext, or index1 ciphertext_which_begins_in_index1 index2 ..... etc.
+         * @param stream to read from
+         */
+        void load_ciphertext(std::istream& stream);
 
         /** Getter for current function configuration **/
         const json& stream_config() const;

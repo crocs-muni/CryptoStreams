@@ -8,7 +8,7 @@
 #include <eacirc-core/seed.h>
 
 struct generator {
-    generator(std::string cofig);
+    generator(const std::string cofig);
 
     generator(std::istream& config)
         : generator(json::parse(config)) {}
