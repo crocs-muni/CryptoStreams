@@ -8,6 +8,11 @@
 #include <testsuite/test-utils/estream_test_case.h>
 #include <eacirc-core/seed.h>
 
+TEST(chacha, test_vectors) {
+    testsuite::estream_test_case("Chacha", 20)();
+    testsuite::estream_test_case("Chacha", 12)();
+}
+
 TEST(decim, test_vectors) {
     testsuite::estream_test_case("DECIM", 8)();
 }
