@@ -93,6 +93,23 @@ vec_cview rnd_plt_ctx_stream::next()
     return make_cview(_data);
 }
 
+template<typename Seeder>
+rho_stream::rho_stream(const nlohmann::json &config, Seeder &&seeder, const std::size_t osize)
+    : stream(osize)
+    , _ptx(std::make_unique<dummy_stream>(osize))
+    , _source(make_stream(config, seeder, osize, core::optional<stream *>{_ptx.get()})) { }
+
+
+vec_cview rho_stream::next()
+{
+    _ptx->set_data(make_cview(_data));
+    vec_cview ctx = _source->next();
+
+    std::copy(ctx.begin(), ctx.end(), _data.begin());
+    return make_cview(_data);
+}
+
+
 vec_cview hw_counter::next() {
     std::copy_n(_origin_data.begin(), osize(), _data.begin());
     for (const auto& pos : _cur_positions) {
@@ -180,7 +197,9 @@ make_stream(const json& config, default_seed_source& seeder, const std::size_t o
     if (osize == 0)
         throw std::runtime_error("Stream " + type + " cannot have osize 0.");
 
-    if (type == "file-stream")
+    if (type == "dummy-stream")
+        return std::make_unique<dummy_stream>(osize);
+    else if (type == "file-stream")
         return std::make_unique<file_stream>(config, osize);
     else if (type == "true-stream")
         return std::make_unique<true_stream>(osize);
@@ -194,6 +213,8 @@ make_stream(const json& config, default_seed_source& seeder, const std::size_t o
         return std::make_unique<single_value_stream>(config.at("source"), seeder, osize);
     else if (type == "rnd-plt-ctx-stream")
         return std::make_unique<rnd_plt_ctx_stream>(config.at("source"), seeder, osize);
+    else if (type == "rho-stream")
+        return std::make_unique<rho_stream>(config.at("source"), seeder, osize);
     else if (type == "counter")
         return std::make_unique<counter>(osize);
     else if (type == "random-start-counter")

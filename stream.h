@@ -19,6 +19,10 @@ struct stream {
         return make_cview(_data);
     }
 
+    void set_data(vec_cview data) {
+        std::copy(data.begin(), data.end(), _data.begin());
+    }
+
     std::size_t osize() const { return _osize; }
 
 protected:
