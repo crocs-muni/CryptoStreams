@@ -15,12 +15,12 @@
 #include <streams/estream/estream_stream.h>
 #endif
 
-#ifdef BUILD_sha3
-#include <streams/sha3/sha3_stream.h>
-#endif
-
 #ifdef BUILD_block
 #include <streams/block/block_stream.h>
+#endif
+
+#ifdef BUILD_hash
+#include <streams/hash/hash_stream.h>
 #endif
 
 namespace _impl {

@@ -1,15 +1,18 @@
 #ifndef EACIRC_STREAMS_SHA3_TEST_CASE_H
 #define EACIRC_STREAMS_SHA3_TEST_CASE_H
 
-#include <streams/sha3/sha3_interface.h>
-#include <streams/sha3/sha3_factory.h>
+#include <streams/hash/sha3/sha3_interface.h>
+#include <streams/hash/hash_interface.h>
+#include <streams/hash/hash_factory.h>
+
+#include <utility>
 #include "test_case.h"
 
 namespace testsuite {
-    /** test case for functions from sha3 competition **/
-    class sha3_test_case : test_case {
 
-    private:
+    class hash_test_case : test_case {
+
+    protected:
         /** size of plaintext **/
         size_t _length;
 
@@ -17,17 +20,11 @@ namespace testsuite {
         json _stream_config;
 
     public:
-        /**
-         * base JSON configuration which all estream functions has in common
-         * _stream_config is created based on this, but with addition of
-         * function specific properties e.g. name of function, number of rounds
-         */
-        const static json base_config;
 
         const size_t& length() const;
 
-        sha3_test_case(const std::string&& algorithm, const std::size_t round)
-                : test_case(algorithm, round, "sha3")
+        hash_test_case(const std::string& algorithm, const std::size_t round, const json& base_config, const std::string& competition)
+                : test_case(algorithm, round, competition)
                 , _length(0)
                 , _stream_config(base_config)
                 {}
@@ -81,7 +78,46 @@ namespace testsuite {
          * @param test_case test_case instance
          * @return input stream
          */
-        friend std::istream &operator>>(std::istream &input, sha3_test_case &test_case);
+        friend std::istream &operator>>(std::istream &input, hash_test_case &test_case);
+
+    };
+
+    /** test case for functions from sha3 competition **/
+    class sha3_test_case : public hash_test_case {
+
+    private:
+
+        /**
+         * base JSON configuration which all estream functions has in common
+         * _stream_config is created based on this, but with addition of
+         * function specific properties e.g. name of function, number of rounds
+         */
+        const static json base_config;
+
+    public:
+
+        sha3_test_case(const std::string&& algorithm, const std::size_t round)
+                : hash_test_case(algorithm, round, base_config, "sha3")
+        {}
+    };
+
+    class other_test_case : public hash_test_case {
+
+    private:
+
+        /**
+         * base JSON configuration which all estream functions has in common
+         * _stream_config is created based on this, but with addition of
+         * function specific properties e.g. name of function, number of rounds
+         */
+        const static json base_config;
+
+    public:
+
+        other_test_case(const std::string&& algorithm, const std::size_t round)
+                : hash_test_case(algorithm, round, base_config, "other_hash")
+        {}
+
     };
 }
 
