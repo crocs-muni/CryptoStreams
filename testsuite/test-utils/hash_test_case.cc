@@ -5,17 +5,23 @@
 #include <iomanip>
 #include <gtest/gtest.h>
 #include <streams.h>
-#include "sha3_test_case.h"
+#include "hash_test_case.h"
 
 namespace testsuite {
+
 
     const json sha3_test_case::base_config = {
             {"type", "sha3"},
             {"source", {{"type", "test-stream"}}}
     };
 
-    void sha3_test_case::test() const {
-        std::unique_ptr<sha3::sha3_interface> hasher = sha3::sha3_factory::create(_algorithm, unsigned(_round));
+    const json other_test_case::base_config = {
+            {"type", "other_hash"},
+            {"source", {{"type", "test-stream"}}}
+    };
+
+    void hash_test_case::test() const {
+        std::unique_ptr<hash::hash_interface> hasher = hash::hash_factory::create(_algorithm, unsigned(_round));
         std::size_t hash_size = _ciphertext.size();
 
         std::vector<value_type> hash(hash_size);
@@ -37,7 +43,7 @@ namespace testsuite {
         ASSERT_EQ(hash, _ciphertext);
     }
 
-    void sha3_test_case::operator()() {
+    void hash_test_case::operator()() {
         _test_vectors_tested = 0;
 
         while (_test_vectors >> *this) {
@@ -52,11 +58,11 @@ namespace testsuite {
         std::cout << "Number of test vectors tested for function: \"" << _algorithm << "\"[" << _round << "] is: " << _test_vectors_tested << std::endl;
     }
 
-    const size_t& sha3_test_case::length() const {
+    const size_t& hash_test_case::length() const {
         return _length;
     }
 
-    std::unique_ptr<stream> sha3_test_case::prepare_stream() {
+    std::unique_ptr<stream> hash_test_case::prepare_stream() {
         std::size_t hash_size =  _ciphertext.size();
         _stream_config["algorithm"] = _algorithm;
         _stream_config["round"] = _round;
@@ -68,7 +74,7 @@ namespace testsuite {
         return make_stream(_stream_config, seeder, hash_size);
     }
 
-    std::istream &operator>>(std::istream &input, sha3_test_case &test_case) {
+    std::istream &operator>>(std::istream &input, hash_test_case &test_case) {
         std::string str_plaintext;
         std::string str_hash;
 

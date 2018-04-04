@@ -1,8 +1,6 @@
 add_library(sha3 STATIC EXCLUDE_FROM_ALL
-    sha3_factory
-    sha3_stream
-    sha3_interface
     hash_functions/hash_functions
+    sha3_interface
 # === SHA-3 hash function files ===
     hash_functions/Abacus/Abacus_sha3
     hash_functions/ARIRANG/Arirang_OP32

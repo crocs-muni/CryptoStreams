@@ -6,8 +6,14 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     # === eSTREAM cipher files ===
     ciphers/tea/tea
     ciphers/aes/aes
+    ciphers/aria/aria
+    ciphers/aria/aria_block
+    ciphers/camellia/camellia
+    ciphers/camellia/camellia_block
     ciphers/gost/gost89
     ciphers/gost/gost_block
+    ciphers/seed/seed
+    ciphers/seed/seed_block
     ciphers/simon/simon
     ciphers/speck/speck
     ciphers/rc4/rc4
@@ -16,6 +22,10 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/des/triple_des    
     ciphers/blowfish/blowfish
     ciphers/blowfish/blowfish_factory
+    ciphers/idea/idea
+    ciphers/idea/idea_block
+    ciphers/cast/cast
+    ciphers/cast/cast_block
     )
 
 target_link_libraries(block eacirc-core)

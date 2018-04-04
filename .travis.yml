@@ -12,26 +12,12 @@ matrix:
           packages: ['g++-5']
       env: [CC_COMPILER=gcc-5, CXX_COMPILER=g++-5, BUILD_testsuite=ON, TEST_COMMAND=./testsuite]
     - os: linux
-      compiler: gcc-5
-      addons:
-        apt:
-          sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-5']
-      env: [CC_COMPILER=gcc-5, CXX_COMPILER=g++-5, BUILD_testsuite=OFF]
-    - os: linux
       compiler: clang-3.7
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
           packages: ['g++-5', 'clang-3.7']
       env: [CC_COMPILER=clang-3.7, CXX_COMPILER=clang++-3.7, BUILD_testsuite=ON, TEST_COMMAND=./testsuite]
-    - os: linux
-      compiler: clang-3.7
-      addons:
-        apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
-          packages: ['g++-5', 'clang-3.7']
-      env: [CC_COMPILER=clang-3.7, CXX_COMPILER=clang++-3.7, BUILD_testsuite=OFF]
 
 before_script:
   - wget --no-check-certificate https://cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.sh
