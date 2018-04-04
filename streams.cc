@@ -102,7 +102,10 @@ vec_cview hw_counter::next() {
     if (!combination_next()){
         if (_increase_hw){
             _cur_hw += 1;
+        } else if (_randomize_overflow){
+            randomize(); // combination space depleted && not increasing HW.
         }
+
         if (_cur_hw > osize() * 8 && _increase_hw){
             _cur_hw = 1; // reset
         }
