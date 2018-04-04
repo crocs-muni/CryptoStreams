@@ -47,6 +47,7 @@ add_library(estream STATIC EXCLUDE_FROM_ALL
     ciphers/abc/abc.h
     ciphers/abc/abc-tables.h
     ciphers/abc/ecrypt-sync.h
+    ciphers/chacha/ecrypt-sync.h
     #    ciphers/polarbear/aes.h           # not implemented in EncryptorDecryptor
     #    ciphers/polarbear/aesopt.h        # not implemented in EncryptorDecryptor
     #    ciphers/polarbear/ecrypt-sync.h   # not implemented in EncryptorDecryptor
@@ -93,6 +94,7 @@ add_library(estream STATIC EXCLUDE_FROM_ALL
     ciphers/achterbahn/achterbahn-128-80.cpp
     ciphers/abc/abc-v3.cpp
     ciphers/trivium/trivium.cpp
+    ciphers/chacha/chacha.cpp
     #    ciphers/yamb/yamb.cpp             # stopped working after IDE update
     #    ciphers/polarbear/polar-bear.cpp  # not implemented in EncryptorDecryptor
     #    ciphers/polarbear/aescrypt.cpp    # do not include!
