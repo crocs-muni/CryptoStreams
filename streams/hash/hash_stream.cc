@@ -1,13 +1,13 @@
-#include "sha3_stream.h"
+#include "hash_stream.h"
 #include "streams.h"
-#include "sha3_factory.h"
-#include "sha3_interface.h"
+#include "hash_interface.h"
+#include "hash_factory.h"
 #include <algorithm>
 
-namespace sha3 {
+namespace hash {
 
 template <typename I>
-void hash_data(sha3_interface& hasher, const I& data, std::uint8_t* hash, const std::size_t hash_size) {
+void hash_data(hash_interface& hasher, const I& data, std::uint8_t* hash, const std::size_t hash_size) {
     using std::to_string;
 
     int status = hasher.Init(int(hash_size * 8));
@@ -23,23 +23,23 @@ void hash_data(sha3_interface& hasher, const I& data, std::uint8_t* hash, const 
         throw std::runtime_error("cannot finalize the hash (code: " + to_string(status) + ")");
 }
 
-sha3_stream::sha3_stream(const json& config, default_seed_source &seeder, const std::size_t osize, core::optional<stream *> plt_stream)
+hash_stream::hash_stream(const json& config, default_seed_source &seeder, const std::size_t osize, core::optional<stream *> plt_stream)
     : stream(osize) // round osize to multiple of _hash_input_size
     , _round(config.at("round"))
     , _hash_size(std::size_t(config.at("hash-size")))
     , _source(make_stream(config.at("source"), seeder, config.value("input-size", _hash_size))) // if input size is not defined, use hash-size
     , _prepared_stream_source(!plt_stream ? nullptr : *plt_stream)
-    , _hasher(sha3_factory::create(config.at("algorithm"), unsigned(_round))) {
+    , _hasher(hash_factory::create(config.at("algorithm"), unsigned(_round))) {
     if (osize % _hash_size != 0) // not necessary wrong, but we never needed this, we always did this by mistake. Change to warning if needed
         throw std::runtime_error("Output size is not multiple of hash size");
-    logger::info() << "stream source is sha3 function: " << config.at("algorithm") << std::endl;
+    logger::info() << "stream source is hash function: " << config.at("algorithm") << std::endl;
 
 }
 
-sha3_stream::sha3_stream(sha3_stream&&) = default;
-sha3_stream::~sha3_stream() = default;
+hash_stream::hash_stream(hash_stream&&) = default;
+hash_stream::~hash_stream() = default;
 
-vec_cview sha3_stream::next() {
+vec_cview hash_stream::next() {
     auto hash = _data.data();
     for (std::size_t i = 0; i < _data.size(); i += _hash_size) {
         vec_cview view = get_next_ptx();
@@ -50,7 +50,7 @@ vec_cview sha3_stream::next() {
     return make_view(_data.cbegin(), osize());
 }
 
-vec_cview sha3_stream::get_next_ptx()
+vec_cview hash_stream::get_next_ptx()
 {
     if (_prepared_stream_source) {
         return _prepared_stream_source->next();
@@ -59,4 +59,4 @@ vec_cview sha3_stream::get_next_ptx()
     }
 }
 
-} // namespace sha3
+} // namespace hash
