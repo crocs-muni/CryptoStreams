@@ -83,6 +83,21 @@ private:
 };
 
 /**
+ * @brief Stream outputing a constant value for n iterations
+ */
+struct repeating_stream : stream {
+    repeating_stream(const json& config, default_seed_source &seeder, const std::size_t osize);
+    repeating_stream(const std::size_t osize, std::unique_ptr<stream> source, const unsigned period);
+
+    vec_cview next() override;
+
+private:
+    std::unique_ptr<stream> _source;
+    const unsigned _period;
+    unsigned _i;
+};
+
+/**
  * @brief Stream outputing a constant value
  */
 struct single_value_stream : stream {
