@@ -41,5 +41,5 @@ Oneclick/exec/*.xml
 
 # IDE files
 .idea
-
+cmake-build-*
 
