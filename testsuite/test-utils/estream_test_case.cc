@@ -6,12 +6,10 @@
 
 namespace testsuite {
     const json estream_test_case::base_config = {
-            {"type",           "estream"},
-            {"init-frequency", "only-once"},
-            {"generator",      "pcg32"},
-            {"plaintext-type", {{"type", "test-stream"}}},
-            {"iv-type",        {{"type", "test-stream"}}},
-            {"key-type",       {{"type", "test-stream"}}},
+            {"type",      "estream"},
+            {"plaintext", {{"type", "test-stream"}}},
+            {"iv",        {{"type", "test-stream"}}},
+            {"key",       {{"type", "test-stream"}}},
     };
 
     void estream_test_case::test(std::unique_ptr<estream_interface> &encryptor) const {
@@ -43,9 +41,9 @@ namespace testsuite {
     std::unique_ptr<stream> estream_test_case::prepare_stream() {
         _stream_config["algorithm"] = _algorithm;
         _stream_config["round"] = _round;
-        _stream_config["plaintext-type"]["outputs"] = _plaintext;
-        _stream_config["iv-type"]["outputs"] = _iv;
-        _stream_config["key-type"]["outputs"] = _key;
+        _stream_config["plaintext"]["outputs"] = _plaintext;
+        _stream_config["iv"]["outputs"] = _iv;
+        _stream_config["key"]["outputs"] = _key;
         _stream_config["block-size"] = block_size();
 
         seed_seq_from<pcg32> seeder(seed1);

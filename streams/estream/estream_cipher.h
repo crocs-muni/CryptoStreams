@@ -9,16 +9,15 @@
 
 struct estream_interface;
 
-std::unique_ptr<estream_interface> create_estream_cipher(const std::string& name, const core::optional<unsigned> round);
+std::unique_ptr<estream_interface> create_estream_cipher(const std::string& name, const unsigned round);
 
 struct estream_cipher {
-  estream_cipher(const std::string& name, const core::optional<unsigned> round, const std::size_t iv_size, const std::size_t key_size);
+  estream_cipher(const std::string& name, const unsigned round, const std::size_t iv_size, const std::size_t key_size);
 
   estream_cipher(estream_cipher&&);
   ~estream_cipher();
 
-  void setup_iv(std::unique_ptr<stream>& stream);
-  void setup_key(std::unique_ptr<stream>& stream,  const std::size_t iv_size);
+  void setup_key_iv(std::unique_ptr<stream>& key, std::unique_ptr<stream> &iv);
 
   void encrypt(const std::uint8_t* plaintext, std::uint8_t* ciphertext, const std::size_t size);
   void decrypt(const std::uint8_t* ciphertext, std::uint8_t* plaintext, const std::size_t size);

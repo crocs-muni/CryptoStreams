@@ -54,8 +54,7 @@ namespace testsuite {
         estream_test_case(const std::string&& algorithm, const std::size_t round)
                 : test_case(algorithm, round, "estream")
                 , _stream_config(base_config)
-                , _cipher(create_estream_cipher(_algorithm,
-                                        core::optional<unsigned>{unsigned(_round)}))
+                , _cipher(create_estream_cipher(_algorithm, unsigned(_round)))
         {}
 
         /** Setter for single test vector **/
