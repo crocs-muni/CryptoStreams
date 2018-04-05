@@ -6,6 +6,8 @@ add_library(others STATIC EXCLUDE_FROM_ALL
     hash_functions/sha2/sha256_factory
     hash_functions/md5/md5
     hash_functions/md5/md5_factory
+    hash_functions/gost/gost
+    hash_functions/gost/gost_factory
     hash_functions/ripemd160/ripemd160
     hash_functions/ripemd160/ripemd160_factory
     hash_functions/tiger/tiger
