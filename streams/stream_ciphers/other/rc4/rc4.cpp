@@ -13,7 +13,8 @@
 *********************************************************************/
 
 
-namespace block {
+namespace stream_ciphers {
+namespace others {
 
 #include <stdlib.h>
 
@@ -53,28 +54,29 @@ static void arcfour_generate_stream(std::uint8_t state[], std::uint8_t out[], co
     }
 }
 
-void rc4::keysetup(const std::uint8_t* key, const std::uint64_t keysize) {
-    _ctx.key = std::make_unique<std::uint8_t[]>(keysize);
-    std::copy_n(key, keysize, _ctx.key.get());
-    arcfour_key_setup(_ctx.state, _ctx.key.get(), int(keysize));
+void rc4::keysetup(const u8* key, const u32 key_bitsize, const u32 iv_bitsize) {
+    _ctx.key = std::make_unique<std::uint8_t[]>(key_bitsize / 8);
+    std::copy_n(key, key_bitsize / 8, _ctx.key.get());
+    arcfour_key_setup(_ctx.state, _ctx.key.get(), int(key_bitsize / 8));
+    if (iv_bitsize > 0)
+        throw std::runtime_error("RC4 is not using IV");
 }
 
-void rc4::ivsetup(const std::uint8_t* iv, const std::uint64_t ivsize) {
-    throw std::runtime_error("not implemented yet");
-}
+void rc4::ivsetup(const u8* iv) { }
 
-void rc4::encrypt(const std::uint8_t* plaintext, std::uint8_t* ciphertext) {
+void rc4::encrypt_bytes(const u8 *plaintext, u8 *ciphertext, const u32 ptx_size) {
     // prepare stream
-    auto stream = std::make_unique<std::uint8_t[]>(_block_size);
-    arcfour_generate_stream(_ctx.state, stream.get(), _block_size);
+    auto stream = std::make_unique<std::uint8_t[]>(ptx_size);
+    arcfour_generate_stream(_ctx.state, stream.get(), ptx_size);
     // xor it with input
-    for (unsigned i = 0; i < _block_size; ++i) {
+    for (unsigned i = 0; i < ptx_size; ++i) {
         ciphertext[i] = plaintext[i] ^ stream[i];
     }
 }
 
-void rc4::decrypt(const std::uint8_t* ciphertext, std::uint8_t* plaintext) {
-    encrypt(ciphertext, plaintext);
+void rc4::decrypt_bytes(const u8* ciphertext, u8* plaintext, const u32 ctx_size) {
+    encrypt_bytes(ciphertext, plaintext, ctx_size);
 }
 
-} // namespace block
+} // namespace others
+} // namespace stream_ciphers

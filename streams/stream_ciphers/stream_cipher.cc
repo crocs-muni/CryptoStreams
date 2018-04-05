@@ -31,7 +31,8 @@
 // #include "estream/yamb/ecrypt-sync.h"        // stopped working after IDE update
 #include "estream/zk-crypt/ecrypt-sync.h"
 
-#include "other/chacha/ecrypt-sync.h"
+#include "other/chacha/chacha.h"
+#include "other/rc4/rc4.h"
 
 std::unique_ptr<stream_interface> create_stream_cipher(const std::string& name, const unsigned round) {
     // clang-format off
@@ -65,7 +66,8 @@ std::unique_ptr<stream_interface> create_stream_cipher(const std::string& name, 
     if (name == "Zk-Crypt")         return std::make_unique<ECRYPT_Zkcrypt>();
 
     // other
-    if (name == "Chacha")           return std::make_unique<Chacha>(round);
+    if (name == "Chacha")           return std::make_unique<stream_ciphers::others::Chacha>(round);
+    if (name == "RC4")              return std::make_unique<stream_ciphers::others::rc4>(round);
     // clang-format on
 
   throw std::runtime_error("requested eSTREAM cipher named \"" + name +

@@ -14,11 +14,11 @@ struct stream_interface {
 
     virtual void init() = 0;
 
-    virtual void keysetup(const u8* key, u32 keysize, u32 ivsize) = 0;
+    virtual void keysetup(const u8* key, const u32 keysize, const u32 ivsize) = 0;
     virtual void ivsetup(const u8* iv) = 0;
 
-    virtual void encrypt_bytes(const u8* plaintext, u8* ciphertext, u32 msglen) = 0;
-    virtual void decrypt_bytes(const u8* ciphertext, u8* plaintext, u32 msglen) = 0;
+    virtual void encrypt_bytes(const u8* plaintext, u8* ciphertext, const u32 msglen) = 0;
+    virtual void decrypt_bytes(const u8* ciphertext, u8* plaintext, const u32 msglen) = 0;
 
 protected:
     const int _rounds;

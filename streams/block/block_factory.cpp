@@ -16,7 +16,6 @@ std::unique_ptr<block_cipher> make_block_cipher(const std::string& name,
     if (name == "CAMELLIA")  return std::make_unique<camellia::camellia>(round, encrypt);
     if (name == "CAST")  return std::make_unique<cast::cast>(round);
     if (name == "IDEA")  return std::make_unique<idea::idea>(round, encrypt);
-    if (name == "RC4")  return std::make_unique<rc4>(round, block_size);
     if (name == "GOST")  return std::make_unique<gost>(round);
     if (name == "SIMON")  return std::make_unique<simon>(round, block_size, key_size);
     if (name == "SPECK")  return std::make_unique<speck>(round, block_size, key_size);

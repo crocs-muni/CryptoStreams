@@ -13,7 +13,10 @@ D. J. Bernstein
 Public domain.
 */
 
-#include "ecrypt-sync.h"
+#include "chacha.h"
+
+namespace stream_ciphers {
+namespace others {
 
 #define ROTATE(v,c) (ROTL32(v,c))
 #define XOR(v,w) ((v) ^ (w))
@@ -49,16 +52,10 @@ static void salsa20_wordtobyte(u8 output[64],const u32 input[16], unsigned nr)
     for (i = 0;i < 16;++i) U32TO8_LITTLE(output + 4 * i,x[i]);
 }
 
-void Chacha::init(void)
-{
-
-    return;
-}
-
 static const char sigma[] = "expand 32-byte k";
 static const char tau[] = "expand 16-byte k";
 
-void Chacha::keysetup(const u8 *k,u32 kbits,u32 ivbits)
+void Chacha::keysetup(const u8 *k, const u32 kbits, const u32 ivbits)
 {
     CHACHA_ctx * x = &_ctx;
     const char *constants;
@@ -91,8 +88,9 @@ void Chacha::ivsetup(const u8 *iv)
     x->input[15] = U8TO32_LITTLE(iv + 4);
 }
 
-void Chacha::encrypt_bytes(const u8 *m,u8 *c,u32 bytes)
+void Chacha::encrypt_bytes(const u8 *m, u8 *c, const u32 msglen)
 {
+    u32 bytes = msglen;
     u8 output[64];
     int i;
     CHACHA_ctx * x = &_ctx;
@@ -116,14 +114,10 @@ void Chacha::encrypt_bytes(const u8 *m,u8 *c,u32 bytes)
     }
 }
 
-void Chacha::decrypt_bytes(const u8 *c,u8 *m,u32 bytes)
+void Chacha::decrypt_bytes(const u8 *c, u8 *m, const u32 bytes)
 {
     encrypt_bytes(c,m,bytes);
 }
 
-void Chacha::keystream_bytes(u8 *stream,u32 bytes)
-{
-    u32 i;
-    for (i = 0;i < bytes;++i) stream[i] = 0;
-    encrypt_bytes(stream,stream,bytes);
-}
+} // namespace others
+} // namespace stream_ciphers

@@ -10,7 +10,6 @@
 #include "ciphers/aes/aes.h"
 #include "ciphers/aria/aria_block.h"
 #include "ciphers/camellia/camellia_block.h"
-#include "ciphers/rc4/rc4.h"
 #include "ciphers/simon/simon.h"
 #include "ciphers/speck/speck.h"
 #include "ciphers/des/single_des.h"

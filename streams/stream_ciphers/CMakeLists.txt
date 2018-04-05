@@ -104,8 +104,8 @@ add_library(stream_ciphers STATIC EXCLUDE_FROM_ALL
     #    estream/cryptmt/sse2.cpp          # do not include!
     #    estream/decim/decim-128.c         # do not include!
 
-    other/chacha/ecrypt-sync.h
-    other/chacha/chacha.cpp
+    other/chacha/chacha
+    other/rc4/rc4
     )
 
 target_link_libraries(stream_ciphers eacirc-core)

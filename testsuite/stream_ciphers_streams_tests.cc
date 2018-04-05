@@ -13,6 +13,10 @@ TEST(chacha, test_vectors) {
     testsuite::stream_cipher_test_case("Chacha", 12)();
 }
 
+TEST(rc4, test_vectors) {
+    testsuite::stream_cipher_test_case("RC4", 1)();
+}
+
 TEST(decim, test_vectors) {
     testsuite::stream_cipher_test_case("DECIM", 8)();
 }

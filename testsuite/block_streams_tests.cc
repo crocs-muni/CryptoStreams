@@ -74,10 +74,6 @@ TEST(triple_des, test_vectors) {
     testsuite::block_test_case("TRIPLE-DES", 16)();
 }
 
-TEST(rc4, test_vectors) {
-    testsuite::block_test_case("RC4", 1)();
-}
-
 TEST(tea, test_vectors) {
     testsuite::block_test_case("TEA", 32)();
 }
