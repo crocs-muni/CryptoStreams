@@ -1,5 +1,4 @@
-#ifndef EACIRC_STREAMS_TEST_STREAMS_H
-#define EACIRC_STREAMS_TEST_STREAMS_H
+#pragma once
 
 #include "stream.h"
 #include "common_functions.h"
@@ -18,5 +17,3 @@ namespace testsuite {
     };
 }
 
-
-#endif //EACIRC_STREAMS_TEST_STREAMS_H

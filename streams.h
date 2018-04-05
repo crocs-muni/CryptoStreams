@@ -11,8 +11,8 @@
 #include <testsuite/test-utils/test_streams.h>
 #endif
 
-#ifdef BUILD_estream
-#include <streams/estream/estream_stream.h>
+#ifdef BUILD_stream_ciphers
+#include <streams/stream_ciphers/stream_stream.h>
 #endif
 
 #ifdef BUILD_block
