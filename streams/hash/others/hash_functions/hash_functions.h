@@ -1,4 +1,5 @@
 #include "sha1/sha1_factory.h"
 #include "sha2/sha256_factory.h"
 #include "md5/md5_factory.h"
+#include "tiger/tiger_factory.h"
 #include "whirlpool/whirlpool_factory.h"
