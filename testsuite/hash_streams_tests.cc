@@ -111,6 +111,10 @@ TEST(md5, test_vectors) {
     testsuite::other_test_case("MD5", 64)();
 }
 
+TEST(ripemd160, test_vectors) {
+    testsuite::other_test_case("RIPEMD160", 80)();
+}
+
 TEST(tiger, test_vectors) {
     testsuite::other_test_case("Tiger", 24)();
 }
