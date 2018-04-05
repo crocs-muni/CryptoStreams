@@ -6,6 +6,9 @@
 
 #include "ecrypt-sync.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 #define ROTL29(v, n) (unsigned)(((v) << (n)) | ((v) >> (29 - (n)))) & 0xFFFFFFF8
 #define ROTR29(v, n) ROTL29(v, 29 - (n))
 
@@ -621,3 +624,7 @@ void mult(u32 a, u32 b, u32* c) {
 }
 
 /*********************************************************/
+
+
+} // namespace estream
+} // namespace stream_ciphers

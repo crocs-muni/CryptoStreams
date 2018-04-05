@@ -40,7 +40,7 @@ namespace testsuite {
         json _stream_config;
 
         /** Pointer to raw function instance **/
-        std::unique_ptr<stream_interface> _cipher;
+        std::unique_ptr<stream_ciphers::stream_interface> _cipher;
     public:
 
         /**
@@ -53,7 +53,7 @@ namespace testsuite {
         stream_cipher_test_case(const std::string&& algorithm, const std::size_t round)
                 : test_case(algorithm, round, "estream")
                 , _stream_config(base_config)
-                , _cipher(create_stream_cipher(_algorithm, unsigned(_round)))
+                , _cipher(stream_ciphers::create_stream_cipher(_algorithm, unsigned(_round)))
         {}
 
         /** Setter for single test vector **/
@@ -82,7 +82,7 @@ namespace testsuite {
          * Test raw function with current test vector
          * @param encryptor
          */
-        void test(std::unique_ptr<stream_interface>& encryptor) const;
+        void test(std::unique_ptr<stream_ciphers::stream_interface>& encryptor) const;
 
         /**
          * Test stream for current function with current test vector
@@ -90,7 +90,7 @@ namespace testsuite {
          * @param encryptor Stream for current function
          * @param decryptor Pointer to raw function instance
          */
-        void test(std::unique_ptr<stream>&& encryptor, std::unique_ptr<stream_interface>& decryptor) const;
+        void test(std::unique_ptr<stream>&& encryptor, std::unique_ptr<stream_ciphers::stream_interface>& decryptor) const;
 
         /**
          * Create new instance of stream for current function

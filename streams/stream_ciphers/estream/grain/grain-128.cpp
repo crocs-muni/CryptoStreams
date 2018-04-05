@@ -21,6 +21,9 @@
 #include "ecrypt-sync.h"
 #include <iostream>
 
+namespace stream_ciphers {
+namespace estream {
+
 void ECRYPT_Grain::ECRYPT_init(void) {}
 /*
  * Function: grain_keystream
@@ -223,3 +226,6 @@ void ECRYPT_Grain::ECRYPT_decrypt_bytes(const u8* ciphertext, u8* plaintext, u32
         plaintext[i] = ciphertext[i] ^ k;
     }
 }
+
+} // namespace estream
+} // namespace stream_ciphers

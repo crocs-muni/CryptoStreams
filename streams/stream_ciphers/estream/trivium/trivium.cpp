@@ -14,6 +14,9 @@
 
 #include <stdexcept>
 
+namespace stream_ciphers {
+namespace estream {
+
 /* ------------------------------------------------------------------------- */
 
 /*
@@ -330,3 +333,7 @@ void ECRYPT_Trivium::TRIVIUM_process_bytes(
 }
 
 /* ------------------------------------------------------------------------- */
+
+
+} // namespace estream
+} // namespace stream_ciphers

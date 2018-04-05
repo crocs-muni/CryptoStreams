@@ -18,6 +18,9 @@
 #include <stdio.h>
 #endif
 
+namespace stream_ciphers {
+namespace estream {
+
 /* This is a permutation of all the values between 0 and 255, */
 /* used by the key setup and IV setup.                        */
 /* It is computed by the init function. It can also be        */
@@ -396,3 +399,6 @@ void ECRYPT_Py::ECRYPT_encrypt_bytes(const u8* plaintext, u8* ciphertext, u32 ms
 void ECRYPT_Py::ECRYPT_decrypt_bytes(const u8* ciphertext, u8* plaintext, u32 msglen) {
     PY_process_bytes(1, &_ctx, ciphertext, plaintext, msglen);
 }
+
+} // namespace estream
+} // namespace stream_ciphers

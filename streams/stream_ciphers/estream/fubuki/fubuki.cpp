@@ -85,6 +85,9 @@
 #include "ecrypt-sync.h"
 #include <stdio.h>
 
+namespace stream_ciphers {
+namespace estream {
+
 /* This is a stream cipher. One word means a 32 bit word. */
 /* Tuple words will be gather to make one Block. */
 /* Typically Tuple is 4. Log_Tuple is log2(Tuple) */
@@ -910,3 +913,7 @@ void ECRYPT_Fubuki::ECRYPT_decrypt_bytes(const u8* ciphertext,
     }
     hmndecode(ctx, ciphertext, plaintext, msglen, _rounds);
 }
+
+
+} // namespace estream
+} // namespace stream_ciphers

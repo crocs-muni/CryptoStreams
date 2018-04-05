@@ -2,6 +2,9 @@
 #include "unrolliv.h"
 #include "unrollmain.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 #define MAGSIZE 128
 #define MIXER 0x5656565656565656
 
@@ -96,3 +99,6 @@ void ECRYPT_Mag::ECRYPT_encrypt_bytes(const u8* plaintext, u8* ciphertext, u32 m
 void ECRYPT_Mag::ECRYPT_decrypt_bytes(const u8* ciphertext, u8* plaintext, u32 msglen) {
     MAG_process_bytes(1, &_ctx, ciphertext, plaintext, msglen);
 }
+
+} // namespace estream
+} // namespace stream_ciphers

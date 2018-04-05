@@ -61,6 +61,9 @@
 
 #include "achterbahn.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 /* ------------------------------------------------------------------------- *
  * ECRYPT API functions
  * ------------------------------------------------------------------------- */
@@ -1271,3 +1274,7 @@ int main(void) {
 /* ------------------------------------------------------------------------- */
 
 #endif
+
+
+} // namespace estream
+} // namespace stream_ciphers

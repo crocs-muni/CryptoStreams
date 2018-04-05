@@ -269,7 +269,7 @@ make_stream(const json& config, default_seed_source& seeder, const std::size_t o
 
 #ifdef BUILD_stream_ciphers
     else if (type == "estream" or type == "stream-others")
-        return std::make_unique<stream_stream>(config, seeder, osize, stream);
+        return std::make_unique<stream_ciphers::stream_stream>(config, seeder, osize, stream);
 #endif
 #ifdef BUILD_hash
     else if (type == "other_hash" || type == "sha3")

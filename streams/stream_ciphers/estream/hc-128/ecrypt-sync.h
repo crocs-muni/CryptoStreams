@@ -12,6 +12,9 @@
 #include "../../stream_interface.h"
 #include "../ecrypt-portable.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 /* ------------------------------------------------------------------------- */
 
 /* Cipher parameters */
@@ -359,6 +362,9 @@ public:
 #if (HC128_VARIANT > HC128_MAXVARIANT)
 #error this variant does not exist
 #endif
+
+} // namespace estream
+} // namespace stream_ciphers
 
 /* ------------------------------------------------------------------------- */
 

@@ -28,6 +28,9 @@
 #include "../ecrypt-portable.h"
 #include "ecrypt-sync.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 /* -------------------------------------------------------------------------- */
 
 /* Square a 32-bit unsigned integer to obtain the 64-bit result and return */
@@ -316,3 +319,7 @@ void ECRYPT_Rabbit::ECRYPT_encrypt_bytes(const u8* plaintext, u8* ciphertext, u3
 void ECRYPT_Rabbit::ECRYPT_decrypt_bytes(const u8* ciphertext, u8* plaintext, u32 msglen) {
     RABBIT_process_bytes(1, &_ctx, ciphertext, plaintext, msglen);
 }
+
+
+} // namespace estream
+} // namespace stream_ciphers

@@ -7,6 +7,9 @@
 /* Include the header file ecrypt-sync.h, edited for MICKEY-128 v 2 */
 #include "ecrypt-sync.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 /* Declare static variables, independent of key or IV */
 
 u32 R_Mask[5];
@@ -281,3 +284,6 @@ void ECRYPT_Mickey::ECRYPT_encrypt_bytes(const u8* plaintext, u8* ciphertext, u3
 void ECRYPT_Mickey::ECRYPT_decrypt_bytes(const u8* ciphertext, u8* plaintext, u32 msglen) {
     MICKEY_process_bytes(1, &_ctx, ciphertext, plaintext, msglen);
 }
+
+} // namespace estream
+} // namespace stream_ciphers

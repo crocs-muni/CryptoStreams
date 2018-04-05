@@ -32,6 +32,9 @@
 #include<string.h>
 #include"ecrypt-sync.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 
 
 
@@ -58,5 +61,8 @@ void decim_step(DECIM_ctx *ctx);
 void decim_process_buffer(DECIM_ctx *ctx, int *is_stream_byte, u8 *stream_byte);
 
 
+
+} // namespace estream
+} // namespace stream_ciphers
 
 

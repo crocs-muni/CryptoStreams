@@ -5,6 +5,8 @@
 #include <eacirc-core/json.h>
 #include <eacirc-core/random.h>
 
+namespace stream_ciphers {
+
 struct stream_stream : stream {
     stream_stream(const json& config, default_seed_source& seeder, const std::size_t osize, core::optional<stream *> plt_stream);
 
@@ -28,3 +30,5 @@ private:
 
     stream_cipher _algorithm;
 };
+
+} // namespace stream_ciphers

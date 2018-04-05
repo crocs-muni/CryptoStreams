@@ -11,6 +11,9 @@
 
 #include "ecrypt-sync.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 /* Two S-boxes, the first is only temporary, the second will contain the 16-bit inversion S-Box*/
 u16 POWER[65536];
 u16 INV[65536];
@@ -248,3 +251,7 @@ void ECRYPT_Sfinks::ECRYPT_encrypt_bytes(const u8* plaintext, u8* ciphertext, u3
 void ECRYPT_Sfinks::ECRYPT_decrypt_bytes(const u8* ciphertext, u8* plaintext, u32 msglen) {
     SFINKS_process_bytes(1, &_ctx, ciphertext, plaintext, msglen);
 }
+
+
+} // namespace estream
+} // namespace stream_ciphers

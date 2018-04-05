@@ -13,6 +13,9 @@
 #include "ecrypt-sync.h"
 #include <string.h>
 
+namespace stream_ciphers {
+namespace estream {
+
 /* Helper macros */
 
 /* ABC_UPPER_PART
@@ -957,3 +960,6 @@ void ECRYPT_ABC::ECRYPT_decrypt_bytes(const u8* ciphertext, u8* plaintext, u32 m
     // this implementation computes with msglen in bits instead of in bytes
     ABC_process_bytes(1, &_ctx, ciphertext, plaintext, 8 * msglen);
 }
+
+} // namespace estream
+} // namespace stream_ciphers

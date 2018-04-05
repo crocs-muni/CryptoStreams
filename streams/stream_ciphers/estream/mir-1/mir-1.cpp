@@ -1,5 +1,8 @@
 #include "mir1.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 /* ------------------------------------------------------------------------- */
 /* Functions Implementation */
 /* ------------------------------------------------------------------------- */
@@ -110,3 +113,7 @@ void ECRYPT_Mir::MIR1_keystream_bytes(MIR1_ctx* ctx,
 }
 
 /* ------------------------------------------------------------------------- */
+
+
+} // namespace estream
+} // namespace stream_ciphers

@@ -11,6 +11,9 @@
 #include <string.h>
 
 #include "ecrypt-sync.h"
+
+namespace stream_ciphers {
+namespace estream {
 /* #define SLOW_CODE 1 */
 #if defined(__GNUC__)
 #define INLINE __inline__
@@ -520,3 +523,6 @@ void ECRYPT_Cryptmt::CRYPTMT_decrypt_blocks(CRYPTMT_ctx* ctx,
                                             u32 blocks) {
     CRYPTMT_encrypt_blocks(ctx, ciphertext, plaintext, blocks);
 }
+
+} // namespace estream
+} // namespace stream_ciphers

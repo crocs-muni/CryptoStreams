@@ -6,6 +6,10 @@ Public domain.
 
 #include "ecrypt-sync.h"
 #include <iostream>
+
+namespace stream_ciphers {
+namespace estream {
+
 #define ROTATE(v, c) (ROTL32(v, c))
 #define XOR(v, w) ((v) ^ (w))
 #define PLUS(v, w) (U32V((v) + (w)))
@@ -132,3 +136,6 @@ void ECRYPT_Salsa::SALSA_keystream_bytes(void* x, u8* stream, u32 bytes) {
         stream[i] = 0;
     ECRYPT_encrypt_bytes(stream, stream, bytes);
 }
+
+} // namespace estream
+} // namespace stream_ciphers

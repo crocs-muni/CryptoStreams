@@ -1,5 +1,8 @@
 #include "ecrypt-sync.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 /* ------------------------------------------------------------------------- */
 
 /* My functions */
@@ -50,3 +53,7 @@ const u16 fdk_mask = 0x2020,			/* feedback from cells 14 and 6 */
 u8 wt_mod2[256] = {0};					/* binary weight of all bytes */
 
 /* ------------------------------------------------------------------------- */
+
+
+} // namespace estream
+} // namespace stream_ciphers

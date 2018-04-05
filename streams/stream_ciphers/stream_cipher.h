@@ -9,6 +9,8 @@
 
 #include "stream_interface.h"
 
+namespace stream_ciphers {
+
 std::unique_ptr<stream_interface> create_stream_cipher(const std::string& name, const unsigned round);
 
 struct stream_cipher {
@@ -29,3 +31,5 @@ protected:
   std::unique_ptr<stream_interface> _encryptor;
   std::unique_ptr<stream_interface> _decryptor;
 };
+
+} // namespace stream_ciphers

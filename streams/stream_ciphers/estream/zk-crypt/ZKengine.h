@@ -23,6 +23,9 @@ Code IS NOT OPTIMIZED for speed
 #include "ZKdef.h"
 
 
+namespace stream_ciphers {
+namespace estream {
+
 
 static const int nLFSR_Len[8] ={13,19,18,14,15,17, 16, 16}; /* register length */
 
@@ -135,5 +138,8 @@ static const BYTE MACnibMix[32] =  { 3, 2, 1, 0, 7, 6, 5, 4,11,10, 9, 8,15,14,13
 	BYTE  getBitAtLocation(DWORD in , DWORD loc);
 	DWORD revereseBits(DWORD in, int len);
 
+
+} // namespace estream
+} // namespace stream_ciphers
 
 #endif /* #ifndef ZKENGINE_H */

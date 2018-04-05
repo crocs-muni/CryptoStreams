@@ -9,6 +9,9 @@
 #include "ecrypt-sync.h"
 #include <iostream>
 
+namespace stream_ciphers {
+namespace estream {
+
 void ECRYPT_Edon80::ECRYPT_init(void) {}
 
 /* Here is the actual definition of ECRYPT_keysetup */
@@ -352,3 +355,6 @@ void ECRYPT_Edon80::EDON80_keystream_bytes(EDON80_ctx* ctx, u8* keystream, u32 l
         keystream[j] = X;
     }
 }
+
+} // namespace estream
+} // namespace stream_ciphers

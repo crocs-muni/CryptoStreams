@@ -4,6 +4,9 @@
 #include "../ecrypt-portable.h"
 #include "ecrypt-sync.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 #ifndef _Mir1_DATASTRUCTURES_AND_TYPES_DEFINED
 #define _Mir1_DATASTRUCTURES_AND_TYPES_DEFINED
 /* ------------------------------------------------------------------------- */
@@ -110,6 +113,9 @@ const ull C3=U64C(0x4812481248124812);
      ctx->b.w.w1  = ctx->a.w.w1 ^ ctx->x2.w.w1;       \
      ctx->a.v     = r0.v + ctx->b.v;
 
+
+} // namespace estream
+} // namespace stream_ciphers
 
 #endif
 

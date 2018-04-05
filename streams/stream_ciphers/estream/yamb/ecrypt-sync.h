@@ -10,8 +10,11 @@
 #ifndef YAMB_SYNC
 #define YAMB_SYNC
 
-#include "../../estream_interface.h"
+#include "../../stream_interface.h"
 #include "../ecrypt-portable.h"
+
+namespace stream_ciphers {
+namespace estream {
 
 /* ------------------------------------------------------------------------- */
 
@@ -334,6 +337,9 @@ public:
 #if (YAMB_VARIANT > YAMB_MAXVARIANT)
 #error this variant does not exist
 #endif
+
+} // namespace estream
+} // namespace stream_ciphers
 
 /* ------------------------------------------------------------------------- */
 

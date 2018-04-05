@@ -12,6 +12,9 @@
 #include "dragon-sboxes.cpp"
 #include "ecrypt-sync.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 /**
  * The DRAGON_OFFSET macro calculates the position of the
  * ith_element within the circular buffer that represents the
@@ -352,3 +355,6 @@ void ECRYPT_Dragon::DRAGON_process_bytes(int action, /* 0 = encrypt; 1 = decrypt
         output[i] ^= input[i];
     }
 }
+
+} // namespace estream
+} // namespace stream_ciphers

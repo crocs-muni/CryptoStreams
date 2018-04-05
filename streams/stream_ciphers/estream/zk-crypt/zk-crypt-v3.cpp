@@ -15,6 +15,9 @@ Code IS NOT OPTIMIZED for speed
 
 #include "ZKengine.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 /*********************************************************************
 /* Construction
 *********************************************************************/
@@ -1505,3 +1508,7 @@ void ECRYPT_Zkcrypt::ECRYPT_encrypt_bytes(const u8* plaintext, u8* ciphertext, u
 void ECRYPT_Zkcrypt::ECRYPT_decrypt_bytes(const u8* ciphertext, u8* plaintext, u32 msglen) {
     ZKCRYPT_process_bytes(1, &_ctx, ciphertext, plaintext, msglen);
 }
+
+
+} // namespace estream
+} // namespace stream_ciphers

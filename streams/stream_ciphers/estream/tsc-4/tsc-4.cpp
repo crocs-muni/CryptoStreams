@@ -4,6 +4,9 @@
 
 #include "ecrypt-sync.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 const u8 S[16] = {9, 2, 11, 15, 3, 0, 14, 4, 10, 13, 12, 5, 6, 8, 7, 1};
 
 u8 tsc(TSC4_ctx* ctx, int numRounds);
@@ -185,3 +188,7 @@ void ECRYPT_Tsc4::ECRYPT_encrypt_bytes(const u8* plaintext, u8* ciphertext, u32 
 void ECRYPT_Tsc4::ECRYPT_decrypt_bytes(const u8* ciphertext, u8* plaintext, u32 msglen) {
     TSC4_process_bytes(1, &_ctx, ciphertext, plaintext, msglen);
 }
+
+
+} // namespace estream
+} // namespace stream_ciphers

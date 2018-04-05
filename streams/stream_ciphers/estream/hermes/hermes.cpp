@@ -15,6 +15,9 @@
 
 #include "ecrypt-sync.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 #define K_LENGTH 16
 #define X_LENGTH 17
 #define O_LENGTH 8
@@ -263,3 +266,6 @@ void ECRYPT_Hermes::ECRYPT_encrypt_bytes(const u8* plaintext, u8* ciphertext, u3
 void ECRYPT_Hermes::ECRYPT_decrypt_bytes(const u8* ciphertext, u8* plaintext, u32 msglen) {
     HERMES_process_bytes(1, &_ctx, ciphertext, plaintext, msglen);
 }
+
+} // namespace estream
+} // namespace stream_ciphers

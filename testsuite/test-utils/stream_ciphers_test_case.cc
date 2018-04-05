@@ -12,7 +12,7 @@ namespace testsuite {
             {"key",       {{"type", "test-stream"}}},
     };
 
-    void stream_cipher_test_case::test(std::unique_ptr<stream_interface> &encryptor) const {
+    void stream_cipher_test_case::test(std::unique_ptr<stream_ciphers::stream_interface> &encryptor) const {
         size_t size = _plaintext.size();
         std::vector<value_type> cipher(size);
 
@@ -51,7 +51,7 @@ namespace testsuite {
         return make_stream(_stream_config, seeder, block_size());
     }
 
-    void stream_cipher_test_case::test(std::unique_ptr<stream>&& encryptor, std::unique_ptr<stream_interface>& decryptor) const {
+    void stream_cipher_test_case::test(std::unique_ptr<stream>&& encryptor, std::unique_ptr<stream_ciphers::stream_interface>& decryptor) const {
         vec_cview ciphertext = encryptor->next();
 
         std::vector<value_type> plain(ciphertext.size());

@@ -2,6 +2,9 @@
 
 #include <string.h>
 
+namespace stream_ciphers {
+namespace estream {
+
 void ECRYPT_Pomaranch::ECRYPT_init(void) {
     u16 i, j;
 
@@ -208,3 +211,6 @@ void ECRYPT_Pomaranch::ECRYPT_encrypt_bytes(const u8* plaintext, u8* ciphertext,
 void ECRYPT_Pomaranch::ECRYPT_decrypt_bytes(const u8* ciphertext, u8* plaintext, u32 msglen) {
     POMARANCH_process_bytes(1, &_ctx, ciphertext, plaintext, msglen);
 }
+
+} // namespace estream
+} // namespace stream_ciphers

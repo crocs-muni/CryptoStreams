@@ -9,6 +9,9 @@
 #include "../ecrypt-portable.h"
 #include "ecrypt-sync.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 #define SL 64
 
 static const u32 sbox[256] = {
@@ -478,3 +481,6 @@ void extendsbox(DICING_ctx* ctx) {
         pt++;
     }
 }
+
+} // namespace estream
+} // namespace stream_ciphers

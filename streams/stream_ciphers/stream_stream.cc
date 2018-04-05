@@ -1,6 +1,8 @@
 #include "stream_stream.h"
 #include "streams.h"
 
+namespace stream_ciphers {
+
 stream_stream::stream_stream(const json& config, default_seed_source& seeder, const std::size_t osize, core::optional<stream *> plt_stream)
     : stream(osize)
     , _reinit(config.at("key").at("type") == "repeating-stream" || config.at("iv").at("type") == "repeating-stream")
@@ -45,3 +47,5 @@ vec_cview stream_stream::get_next_ptx()
         return _source->next();
     }
 }
+
+} // namespace stream_ciphers

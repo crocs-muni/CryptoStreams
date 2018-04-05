@@ -34,40 +34,42 @@
 #include "other/chacha/chacha.h"
 #include "other/rc4/rc4.h"
 
+namespace stream_ciphers {
+
 std::unique_ptr<stream_interface> create_stream_cipher(const std::string& name, const unsigned round) {
     // clang-format off
     // eSTREAM
-    if (name == "ABC")              return std::make_unique<ECRYPT_ABC>();
-    if (name == "Achterbahn")       return std::make_unique<ECRYPT_Achterbahn>();
-    if (name == "CryptMT")          return std::make_unique<ECRYPT_Cryptmt>();
-    if (name == "DECIM")            return std::make_unique<ECRYPT_Decim>(round);
-    if (name == "DICING")           return std::make_unique<ECRYPT_Dicing>();
-    if (name == "Dragon")           return std::make_unique<ECRYPT_Dragon>(round);
-    if (name == "Edon80")           return std::make_unique<ECRYPT_Edon80>();
-    if (name == "F-FCSR")           return std::make_unique<ECRYPT_FFCSR>(round);
-    if (name == "Fubuki")           return std::make_unique<ECRYPT_Fubuki>(round);
-    if (name == "Grain")            return std::make_unique<ECRYPT_Grain>(round);
-    if (name == "HC-128")           return std::make_unique<ECRYPT_HC128>();
-    if (name == "Hermes")           return std::make_unique<ECRYPT_Hermes>(round);
-    if (name == "LEX")              return std::make_unique<ECRYPT_Lex>(round);
-    if (name == "MAG")              return std::make_unique<ECRYPT_Mag>();
-    if (name == "MICKEY")           return std::make_unique<ECRYPT_Mickey>(round);
-    if (name == "Mir-1")            return std::make_unique<ECRYPT_Mir>();
-    if (name == "Pomaranch")        return std::make_unique<ECRYPT_Pomaranch>();
-    if (name == "Py")               return std::make_unique<ECRYPT_Py>();
-    if (name == "Rabbit")           return std::make_unique<ECRYPT_Rabbit>(round);
-    if (name == "Salsa20")          return std::make_unique<ECRYPT_Salsa>(round);
-    if (name == "SFINKS")           return std::make_unique<ECRYPT_Sfinks>();
-    if (name == "SOSEMANUK")        return std::make_unique<ECRYPT_Sosemanuk>(round);
-    if (name == "Trivium")          return std::make_unique<ECRYPT_Trivium>(round);
-    if (name == "TSC-4")            return std::make_unique<ECRYPT_Tsc4>(round);
-    if (name == "WG")               return std::make_unique<ECRYPT_Wg>();
-    // if (name == "Yamb")             return std::make_unique<ECRYPT_Yamb>();
-    if (name == "Zk-Crypt")         return std::make_unique<ECRYPT_Zkcrypt>();
+    if (name == "ABC")              return std::make_unique<estream::ECRYPT_ABC>();
+    if (name == "Achterbahn")       return std::make_unique<estream::ECRYPT_Achterbahn>();
+    if (name == "CryptMT")          return std::make_unique<estream::ECRYPT_Cryptmt>();
+    if (name == "DECIM")            return std::make_unique<estream::ECRYPT_Decim>(round);
+    if (name == "DICING")           return std::make_unique<estream::ECRYPT_Dicing>();
+    if (name == "Dragon")           return std::make_unique<estream::ECRYPT_Dragon>(round);
+    if (name == "Edon80")           return std::make_unique<estream::ECRYPT_Edon80>();
+    if (name == "F-FCSR")           return std::make_unique<estream::ECRYPT_FFCSR>(round);
+    if (name == "Fubuki")           return std::make_unique<estream::ECRYPT_Fubuki>(round);
+    if (name == "Grain")            return std::make_unique<estream::ECRYPT_Grain>(round);
+    if (name == "HC-128")           return std::make_unique<estream::ECRYPT_HC128>();
+    if (name == "Hermes")           return std::make_unique<estream::ECRYPT_Hermes>(round);
+    if (name == "LEX")              return std::make_unique<estream::ECRYPT_Lex>(round);
+    if (name == "MAG")              return std::make_unique<estream::ECRYPT_Mag>();
+    if (name == "MICKEY")           return std::make_unique<estream::ECRYPT_Mickey>(round);
+    if (name == "Mir-1")            return std::make_unique<estream::ECRYPT_Mir>();
+    if (name == "Pomaranch")        return std::make_unique<estream::ECRYPT_Pomaranch>();
+    if (name == "Py")               return std::make_unique<estream::ECRYPT_Py>();
+    if (name == "Rabbit")           return std::make_unique<estream::ECRYPT_Rabbit>(round);
+    if (name == "Salsa20")          return std::make_unique<estream::ECRYPT_Salsa>(round);
+    if (name == "SFINKS")           return std::make_unique<estream::ECRYPT_Sfinks>();
+    if (name == "SOSEMANUK")        return std::make_unique<estream::ECRYPT_Sosemanuk>(round);
+    if (name == "Trivium")          return std::make_unique<estream::ECRYPT_Trivium>(round);
+    if (name == "TSC-4")            return std::make_unique<estream::ECRYPT_Tsc4>(round);
+    if (name == "WG")               return std::make_unique<estream::ECRYPT_Wg>();
+    // if (name == "Yamb")             return std::make_unique<estream::ECRYPT_Yamb>();
+    if (name == "Zk-Crypt")         return std::make_unique<estream::ECRYPT_Zkcrypt>();
 
     // other
-    if (name == "Chacha")           return std::make_unique<stream_ciphers::others::Chacha>(round);
-    if (name == "RC4")              return std::make_unique<stream_ciphers::others::rc4>(round);
+    if (name == "Chacha")           return std::make_unique<others::Chacha>(round);
+    if (name == "RC4")              return std::make_unique<others::rc4>(round);
     // clang-format on
 
   throw std::runtime_error("requested eSTREAM cipher named \"" + name +
@@ -109,3 +111,5 @@ void stream_cipher::decrypt(const u8* ciphertext, u8* plaintext, std::size_t siz
   // BEWARE: only able to proccess max 2GB of plaintext
   _decryptor->decrypt_bytes(ciphertext, plaintext, u32(size));
 }
+
+} // namespace stream_ciphers

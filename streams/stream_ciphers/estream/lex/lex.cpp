@@ -34,6 +34,9 @@
 #include <assert.h>
 #include <stdlib.h>
 
+namespace stream_ciphers {
+namespace estream {
+
 #define FULL_UNROLL 1 /* Use unrolled implementation */
 
 static const u32 Te0[256] = {
@@ -755,3 +758,7 @@ void ECRYPT_Lex::ECRYPT_encrypt_bytes(const u8* plaintext, u8* ciphertext, u32 m
 void ECRYPT_Lex::ECRYPT_decrypt_bytes(const u8* ciphertext, u8* plaintext, u32 msglen) {
     LEX_process_bytes(1, &_ctx, ciphertext, plaintext, msglen);
 }
+
+
+} // namespace estream
+} // namespace stream_ciphers

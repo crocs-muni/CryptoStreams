@@ -16,6 +16,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+namespace stream_ciphers {
+namespace estream {
+
 
 /* feedback polynomial d */
 #define d0 0x3DD4254E    /* lower weight bits */
@@ -42,3 +45,6 @@ void insertIV(
 FFCSR_ctx *ctx, 
 const u8*iv
 );
+
+} // namespace estream
+} // namespace stream_ciphers

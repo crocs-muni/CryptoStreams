@@ -2,6 +2,7 @@
 
 #include "estream/ecrypt-portable.h"
 
+namespace stream_ciphers {
 
 struct stream_interface {
     stream_interface()
@@ -58,3 +59,6 @@ struct estream_interface : stream_interface {
     virtual void ECRYPT_encrypt_bytes(const u8* plaintext, u8* ciphertext, u32 msglen) = 0;
     virtual void ECRYPT_decrypt_bytes(const u8* ciphertext, u8* plaintext, u32 msglen) = 0;
 };
+
+
+} // namespace stream_ciphers

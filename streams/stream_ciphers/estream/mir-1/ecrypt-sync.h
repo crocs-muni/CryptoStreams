@@ -13,6 +13,9 @@
 #include "../../stream_interface.h"
 #include "../ecrypt-portable.h"
 
+namespace stream_ciphers {
+namespace estream {
+
 #ifndef _Mir1_DATASTRUCTURES_AND_TYPES_DEFINED
 #define _Mir1_DATASTRUCTURES_AND_TYPES_DEFINED
 /* ------------------------------------------------------------------------- */
@@ -282,6 +285,9 @@ public:
 #if (MIR1_VARIANT > MIR1_MAXVARIANT)
 #error this variant does not exist
 #endif
+
+} // namespace estream
+} // namespace stream_ciphers
 
 /* ------------------------------------------------------------------------- */
 
