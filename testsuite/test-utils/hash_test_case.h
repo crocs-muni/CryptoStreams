@@ -35,7 +35,7 @@ namespace testsuite {
          * then create new stream using make_stream function
          * @return Pointer to instance of stream
          */
-        std::unique_ptr<stream> prepare_stream();
+        std::unique_ptr<stream> prepare_stream() override ;
 
         /**
          * Test raw function with current test vector
@@ -49,7 +49,7 @@ namespace testsuite {
          * will step by step load all test vectors and test each with raw
          * function and stream
          */
-        void operator()();
+        void operator()() override;
 
         /** Setter for single test vector **/
         void update_test_vector(const std::vector<value_type> &&plaintext,
@@ -66,13 +66,6 @@ namespace testsuite {
          * {ciphertext in hex}
          * {bitsize-of-plaintext2} {plaintext2 in hex}
          * {ciphertext2 in hex}
-         *
-         * STRUCTURE OF CIPHERTEXT
-         * two options
-         * - whole plaintext
-         * - tuples (index where ciphertext begins) (ciphretext in hex)
-         *     for example "0 FF 5 EE" means that first byte is FF and sixth byte is EE
-         *
          *
          * @param input stream
          * @param test_case test_case instance
