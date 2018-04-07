@@ -5,8 +5,19 @@
 #include <stdexcept>
 
 namespace block {
+bool single_des_next_bit(const std::uint8_t* key, const unsigned i) {
+    const unsigned byte_pos = 6 - (i / 8);
+    return key[byte_pos] & (0b1 << (i % 8));
+}
+
 void single_des::keysetup(const std::uint8_t* key, const std::uint64_t keysize) {
-    std::copy_n(key, keysize, _ctx.key);
+    if (keysize != 7) {
+        throw std::runtime_error("DES keysize has to be 7 B long.");
+    }
+    for (unsigned i = 0; i < 7 * 8; ++i) {
+        const unsigned byte_pos = 7 - (i / 7);
+        _ctx.key[byte_pos] |= single_des_next_bit(key, i) << ((i % 7) + 1);
+    }
     if (_ctx.en) {
         des_key_setup(_ctx.key, _ctx.schedule, DES_ENCRYPT);
     } else {

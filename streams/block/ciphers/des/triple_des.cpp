@@ -5,8 +5,19 @@
 #include <stdexcept>
 
 namespace block {
+bool triple_des_next_bit(const std::uint8_t* key, const unsigned i) {
+    const unsigned byte_pos = 20 - (i / 8);
+    return key[byte_pos] & (0b1 << (i % 8));
+}
+
 void triple_des::keysetup(const std::uint8_t* key, const std::uint64_t keysize) {
-    std::copy_n(key, keysize, _ctx.key);
+    if (keysize != 21) {
+        throw std::runtime_error("3-DES keysize has to be 21 B long.");
+    }
+    for (unsigned i = 0; i < 21 * 8; ++i) {
+        const unsigned byte_pos = 23 - (i / 7);
+        _ctx.key[byte_pos] |= triple_des_next_bit(key, i) << ((i % 7) + 1);
+    }
     if (_ctx.en) {
         three_des_key_setup(_ctx.key, _ctx.schedule, DES_ENCRYPT);
     } else {
