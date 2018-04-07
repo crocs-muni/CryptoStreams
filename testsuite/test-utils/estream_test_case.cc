@@ -63,7 +63,7 @@ namespace testsuite {
         decryptor->ECRYPT_decrypt_bytes(ciphertext.data(), plain.data(), ciphertext.size());
 
         vec_cview plain_view = vec_cview(plain.cbegin(), plain.cend());
-        ASSERT_EQ(plain_view, make_cview(_plaintext));
+        ASSERT_EQ(plain_view.copy_to_vector(), _plaintext);
     }
 
     void estream_test_case::operator()() {
