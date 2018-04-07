@@ -349,6 +349,7 @@ private:
     std::unique_ptr<stream> _source;
 };
 
+
 struct column_fixed_position_stream : stream {
     column_fixed_position_stream(const json& config, default_seed_source& seeder, const std::size_t osize, const std::size_t position);
 
@@ -359,6 +360,126 @@ private:
     std::unique_ptr<stream> _source;
 };
 
+/**
+ * @brief Stream with bits generated according to bernoulli distribution.
+ */
+struct bernoulli_distribution_stream : stream {
+    template <typename Seeder>
+    bernoulli_distribution_stream(const json& config, Seeder&& seeder, const std::size_t osize)
+            : stream(osize)
+            , _rng(std::forward<Seeder>(seeder))
+            , _distribution(std::bernoulli_distribution(double(config.value("p", 0.5)))) { }
+
+    vec_cview next() override {
+        std::generate_n(_data.data(), osize(), [this]() {
+            uint8_t out = 0;
+            for (unsigned i = 0; i < 8; ++i) {
+                out |= (_distribution(_rng) << i);
+            }
+            return out;
+        });
+        return make_cview(_data);
+    }
+
+private:
+    pcg32 _rng;
+    std::bernoulli_distribution _distribution;
+};
+
+/**
+ * @brief Stream with bits generated according to binomial distribution.
+ */
+struct binomial_distribution_stream : stream {
+    template <typename Seeder>
+    binomial_distribution_stream(const json& config, Seeder&& seeder, const std::size_t osize)
+            : stream(osize)
+            , _rng(std::forward<Seeder>(seeder))
+            , _distribution(uint8_t(config.value("max-value", std::numeric_limits<uint8_t>::max())),
+                            double(config.value("p", 0.5))) { }
+
+    vec_cview next() override {
+        std::generate_n(_data.data(), osize(), [this]() {return _distribution(_rng);});
+        return make_cview(_data);
+    }
+
+private:
+    pcg32 _rng;
+    std::binomial_distribution<uint8_t> _distribution;
+};
+
+/**
+ * @brief Stream with bits generated according to normal distribution.
+ *
+ * Cutted distribution tails outside of 4 times standard deviation.
+ */
+struct normal_distribution_stream : stream {
+    template <typename Seeder>
+    normal_distribution_stream(const json& config, Seeder&& seeder, const std::size_t osize)
+            : stream(osize)
+            , _rng(std::forward<Seeder>(seeder))
+            , _distribution(double(config.value("mean", 0)),
+                            double(config.value("std-dev", 1.0))) { }
+
+    vec_cview next() override {
+        std::generate_n(_data.data(), osize(), [this]() {
+            double res;
+            double sigma_count = 4.0;
+            double std_dev = _distribution.stddev();
+            do {
+                 res = _distribution(_rng);
+            } while (res < -sigma_count * std_dev or res > sigma_count * std_dev);
+            double normalized_value = res / (2 * sigma_count * std_dev) + 0.5; // normalized to [0, 1];
+            return uint8_t(normalized_value * std::numeric_limits<uint8_t>::max());
+        });
+        return make_cview(_data);
+    }
+
+private:
+    pcg32 _rng;
+    std::normal_distribution<double> _distribution;
+};
+
+/**
+ * @brief Stream with bits generated according to poisson distribution.
+ */
+struct poisson_distribution_stream : stream {
+    template <typename Seeder>
+    poisson_distribution_stream(const json& config, Seeder&& seeder, const std::size_t osize)
+            : stream(osize)
+            , _rng(std::forward<Seeder>(seeder))
+            , _distribution(double(config.value("mean", std::numeric_limits<uint8_t>::max() / 2))) { }
+
+    vec_cview next() override {
+        std::generate_n(_data.data(), osize(), [this]() {return _distribution(_rng);});
+        return make_cview(_data);
+    }
+
+private:
+    pcg32 _rng;
+    std::poisson_distribution<uint8_t> _distribution;
+};
+
+/**
+ * @brief Stream with bits generated according to exponential distribution.
+ */
+struct exponential_distribution_stream : stream {
+    template <typename Seeder>
+    exponential_distribution_stream(const json& config, Seeder&& seeder, const std::size_t osize)
+            : stream(osize)
+            , _rng(std::forward<Seeder>(seeder))
+            , _distribution(double(config.value("lambda", 1))) { }
+
+    vec_cview next() override {
+        std::generate_n(_data.data(), osize(), [this]() {
+            return uint8_t(_distribution(_rng));
+        });
+        return make_cview(_data);
+    }
+
+private:
+    pcg32 _rng;
+    std::exponential_distribution<double> _distribution;
+};
 
 /**
  * \brief Stream of true bits
