@@ -54,7 +54,7 @@ namespace testsuite {
          * then create new stream using make_stream function
          * @return Pointer to instance of stream
          */
-        std::unique_ptr<stream> prepare_stream();
+        std::unique_ptr<stream> prepare_stream() override;
 
         /**
          * Test raw function with current test vector
@@ -76,7 +76,7 @@ namespace testsuite {
          * will step by step load all test vectors and test each with raw
          * function and stream
          */
-        void operator()();
+        void operator()() override;
 
         /**
          * Reads test vector from input stream
@@ -85,10 +85,12 @@ namespace testsuite {
          * {key in hex}
          * {plaintext in hex}
          * {ciphertext in hex}
+         * {initialization-vector in hex} # Only in case _load_iv is true
          * {newline}
          * {key in hex}
          * {plaintext in hex}
          * {ciphertext in hex}
+         * {initialization-vector in hex} # Only in case _load_iv is true
          *
          * @param input stream
          * @param test_case test_case instance

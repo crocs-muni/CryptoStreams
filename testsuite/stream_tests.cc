@@ -252,7 +252,52 @@ TEST(rnd_plt_ctx_streams, aes_single_vector) {
     };
 #endif
 
-    ASSERT_EQ(make_cview(expected_data), view);
+    ASSERT_EQ(expected_data, view.copy_to_vector());
+}
+
+TEST(rho_streams, aes_vector) {
+    const json json_config = {
+        {"type", "rho-stream"},
+        {"source", {
+             {"type", "block"},
+             {"init-frequency", "only-once"},
+             {"algorithm", "AES"},
+             {"round", 10},
+             {"block-size", 16},
+             {"plaintext", {{"type", "dummy-stream"}}},
+             {"key-size", 16},
+             {"key", {{"type", "false-stream"}}},
+             {"iv", {{"type", "pcg32-stream"}}}
+         }
+        }
+    };
+
+    json aes_json_config = {
+         {"type", "block"},
+         {"init-frequency", "only-once"},
+         {"algorithm", "AES"},
+         {"round", 10},
+         {"block-size", 16},
+         {"plaintext", {{"type", "test-stream"}}},
+         {"key-size", 16},
+         {"key", {{"type", "false-stream"}}},
+         {"iv", {{"type", "pcg32-stream"}}}
+    };
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    std::unique_ptr<stream> tested_stream = make_stream(json_config, seeder, 16);
+    std::vector<value_type> prev(16);
+
+    for (unsigned i = 0; i < testing_size; ++i) {
+        aes_json_config["plaintext"]["outputs"] = prev;
+        std::unique_ptr<stream> reference_stream = make_stream(aes_json_config, seeder, 16);
+
+        vec_cview tested_view = tested_stream->next();
+        vec_cview reference_view = reference_stream->next();
+
+        ASSERT_EQ(reference_view.copy_to_vector(), tested_view.copy_to_vector());
+        std::copy(tested_view.begin(), tested_view.end(), prev.begin());
+    }
 }
 
 
