@@ -97,3 +97,7 @@ TEST(noekeon, test_vectors) {
 TEST(shacal2, test_vectors) {
     testsuite::block_test_case("SHACAL2", 64)();
 }
+
+TEST(twofish, test_vectors) {
+    testsuite::block_test_case("TWOFISH", 16)();
+}
