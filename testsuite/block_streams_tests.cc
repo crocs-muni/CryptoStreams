@@ -89,3 +89,7 @@ TEST(kuznyechik, test_vectors) {
 TEST(misty1, test_vectors) {
     testsuite::block_test_case("MISTY1", 8)();
 }
+
+TEST(noekeon, test_vectors) {
+    testsuite::block_test_case("NOEKEON", 16)();
+}
