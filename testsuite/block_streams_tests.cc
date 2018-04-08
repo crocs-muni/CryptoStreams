@@ -81,3 +81,7 @@ TEST(cast, test_vectors) {
 TEST(kasumi, test_vectors) {
     testsuite::block_test_case("KASUMI", 8)();
 }
+
+TEST(kuznyechik, test_vectors) {
+    testsuite::block_test_case("KUZNYECHIK", 10)();
+}
