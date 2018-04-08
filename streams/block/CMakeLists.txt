@@ -30,6 +30,8 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/kasumi/kasumi_factory
     ciphers/kuznyechik/kuznyechik
     ciphers/kuznyechik/kuznyechik_factory
+    ciphers/misty1/misty1
+    ciphers/misty1/misty1_factory
     )
 
 target_link_libraries(block eacirc-core)
