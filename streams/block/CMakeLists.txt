@@ -26,6 +26,10 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/idea/idea_block
     ciphers/cast/cast
     ciphers/cast/cast_block
+    ciphers/kasumi/kasumi
+    ciphers/kasumi/kasumi_factory
+    ciphers/kuznyechik/kuznyechik
+    ciphers/kuznyechik/kuznyechik_factory
     )
 
 target_link_libraries(block eacirc-core)
