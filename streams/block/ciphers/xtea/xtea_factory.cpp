@@ -16,12 +16,12 @@ namespace block {
 
     void xtea_factory::encrypt(const std::uint8_t* plaintext,
                               std::uint8_t* ciphertext) {
-        _xtea.encrypt_n(plaintext, ciphertext, 1/*, _rounds*/);
+        _xtea.encrypt_n(plaintext, ciphertext, 1, _rounds);
     }
 
     void xtea_factory::decrypt(const std::uint8_t* ciphertext,
                               std::uint8_t* plaintext) {
-        _xtea.decrypt_n(ciphertext, plaintext, 1/*, _rounds*/);
+        _xtea.decrypt_n(ciphertext, plaintext, 1, _rounds);
     }
 
 }

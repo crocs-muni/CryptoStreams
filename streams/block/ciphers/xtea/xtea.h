@@ -21,8 +21,8 @@
  class XTEA final
     {
     public:
-       void encrypt_n(const uint8_t in[], uint8_t out[], size_t blocks) const;
-       void decrypt_n(const uint8_t in[], uint8_t out[], size_t blocks) const;
+       void encrypt_n(const uint8_t in[], uint8_t out[], size_t blocks, unsigned int rounds) const;
+       void decrypt_n(const uint8_t in[], uint8_t out[], size_t blocks, unsigned int rounds) const;
  /*
        void clear() override;
        std::string name() const override { return "XTEA"; }
