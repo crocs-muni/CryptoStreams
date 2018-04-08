@@ -28,6 +28,7 @@ std::unique_ptr<block_cipher> make_block_cipher(const std::string& name,
     if (name == "KUZNYECHIK") return std::make_unique<kuznyechik_factory>(round);
     if (name == "MISTY1") return std::make_unique<misty1_factory>(round);
     if (name == "NOEKEON") return std::make_unique<noekeon_factory>(round);
+    if (name == "SHACAL2") return std::make_unique<shacal2_factory>(round);
     // clang-format on
 
     throw std::runtime_error("requested block cipher named \"" + name +

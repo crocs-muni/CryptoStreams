@@ -93,3 +93,7 @@ TEST(misty1, test_vectors) {
 TEST(noekeon, test_vectors) {
     testsuite::block_test_case("NOEKEON", 16)();
 }
+
+TEST(shacal2, test_vectors) {
+    testsuite::block_test_case("SHACAL2", 64)();
+}

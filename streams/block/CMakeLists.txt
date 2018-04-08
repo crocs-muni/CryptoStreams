@@ -34,6 +34,8 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/misty1/misty1_factory
     ciphers/noekeon/noekeon
     ciphers/noekeon/noekeon_factory
+    ciphers/shacal2/shacal2
+    ciphers/shacal2/shacal2_factory
     )
 
 target_link_libraries(block eacirc-core)
