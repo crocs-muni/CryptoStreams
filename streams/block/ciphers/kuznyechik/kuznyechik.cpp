@@ -270,18 +270,20 @@ kuzn_encrypt(struct kuzn_ctx *ctx, const uint8_t *in, uint8_t *out, unsigned int
 	uint8_t tmp[16];
 
 	assert(ctx != NULL && in != NULL && out != NULL);
-	for (int i = 0; i < rounds; ++i){
-        int j = i;
-		if (i == 0)
-			LSX(tmp, in, ctx->keys, ctx);
-		else {
-			if (i == 9) {
-				X_func(out, tmp, ctx->keys + (16 * j));
-				break; // last round
-			}
-			LSX(tmp, tmp, ctx->keys + (16 * j) , ctx);
-		}
-	}
+	assert (rounds > 1 or rounds < 10);
+
+	LSX(tmp, in, ctx->keys, ctx);		if (rounds == 1) goto copy_to_out;	//K1
+	LSX(tmp, tmp, ctx->keys + 16, ctx);	if (rounds == 2) goto copy_to_out;	//K2
+	LSX(tmp, tmp, ctx->keys + 16 * 2, ctx);	if (rounds == 3) goto copy_to_out;	//K3
+	LSX(tmp, tmp, ctx->keys + 16 * 3, ctx);	if (rounds == 4) goto copy_to_out;	//K4
+	LSX(tmp, tmp, ctx->keys + 16 * 4, ctx);	if (rounds == 5) goto copy_to_out;	//K5
+	LSX(tmp, tmp, ctx->keys + 16 * 5, ctx);	if (rounds == 6) goto copy_to_out;	//K6
+	LSX(tmp, tmp, ctx->keys + 16 * 6, ctx);	if (rounds == 7) goto copy_to_out;	//K7
+	LSX(tmp, tmp, ctx->keys + 16 * 7, ctx);	if (rounds == 8) goto copy_to_out;	//K8
+	LSX(tmp, tmp, ctx->keys + 16 * 8, ctx);	if (rounds == 9) goto copy_to_out;	//K9
+	X_func(out, tmp, ctx->keys + 16 * 9);	if (rounds == 10) return;		//K10
+	copy_to_out:
+	memcpy(out, tmp, 16);
 }
 
 void

@@ -176,33 +176,29 @@ namespace Botan {
             uint16_t B2 = load_be<uint16_t>(in, 2);
             uint16_t B3 = load_be<uint16_t>(in, 3);
 
-            uint16_t T0, T1;
-            const uint16_t* RK;
             for (size_t j = 0; j != (rounds*3); j += 3){
-                if (j%2 == 0) {
-                    RK = &m_EK[8 * j/2];
+                const uint16_t* RK = &m_EK[8 * j];
 
-                    B1 ^= B0 & RK[0];
-                    B0 ^= B1 | RK[1];
-                    B3 ^= B2 & RK[2];
-                    B2 ^= B3 | RK[3];
+                B1 ^= B0 & RK[0];
+                B0 ^= B1 | RK[1];
+                B3 ^= B2 & RK[2];
+                B2 ^= B3 | RK[3];
 
-                    T0  = FI(B0 ^ RK[ 4], RK[ 5], RK[ 6]) ^ B1;
-                    T1  = FI(B1 ^ RK[ 7], RK[ 8], RK[ 9]) ^ T0;
-                    T0  = FI(T0 ^ RK[10], RK[11], RK[12]) ^ T1;
+                uint16_t T0, T1;
 
-                    B2 ^= T1 ^ RK[13];
-                    B3 ^= T0;
-                }
-                else {
+                T0  = FI(B0 ^ RK[ 4], RK[ 5], RK[ 6]) ^ B1;
+                T1  = FI(B1 ^ RK[ 7], RK[ 8], RK[ 9]) ^ T0;
+                T0  = FI(T0 ^ RK[10], RK[11], RK[12]) ^ T1;
 
-                    T0  = FI(B2 ^ RK[14], RK[15], RK[16]) ^ B3;
-                    T1  = FI(B3 ^ RK[17], RK[18], RK[19]) ^ T0;
-                    T0  = FI(T0 ^ RK[20], RK[21], RK[22]) ^ T1;
+                B2 ^= T1 ^ RK[13];
+                B3 ^= T0;
 
-                    B0 ^= T1 ^ RK[23];
-                    B1 ^= T0;
-                }
+                T0  = FI(B2 ^ RK[14], RK[15], RK[16]) ^ B3;
+                T1  = FI(B3 ^ RK[17], RK[18], RK[19]) ^ T0;
+                T0  = FI(T0 ^ RK[20], RK[21], RK[22]) ^ T1;
+
+                B0 ^= T1 ^ RK[23];
+                B1 ^= T0;
             }
 
             B1 ^= B0 & m_EK[96];
@@ -231,32 +227,29 @@ namespace Botan {
             uint16_t B2 = load_be<uint16_t>(in, 0);
             uint16_t B3 = load_be<uint16_t>(in, 1);
 
-            uint16_t T0, T1;
-            const uint16_t* RK;
             for (size_t j = 0; j != (rounds*3); j += 3){
-                if (j%2 == 0) {
-                    RK = &m_DK[8 * j/2];
-                    B2 ^= B3 | RK[0];
-                    B3 ^= B2 & RK[1];
-                    B0 ^= B1 | RK[2];
-                    B1 ^= B0 & RK[3];
+                const uint16_t* RK = &m_DK[8 * j];
 
-                    T0  = FI(B2 ^ RK[ 4], RK[ 5], RK[ 6]) ^ B3;
-                    T1  = FI(B3 ^ RK[ 7], RK[ 8], RK[ 9]) ^ T0;
-                    T0  = FI(T0 ^ RK[10], RK[11], RK[12]) ^ T1;
+                B2 ^= B3 | RK[0];
+                B3 ^= B2 & RK[1];
+                B0 ^= B1 | RK[2];
+                B1 ^= B0 & RK[3];
 
-                    B0 ^= T1 ^ RK[13];
-                    B1 ^= T0;
-                }
-                else{
+                uint16_t T0, T1;
 
-                    T0  = FI(B0 ^ RK[14], RK[15], RK[16]) ^ B1;
-                    T1  = FI(B1 ^ RK[17], RK[18], RK[19]) ^ T0;
-                    T0  = FI(T0 ^ RK[20], RK[21], RK[22]) ^ T1;
+                T0  = FI(B2 ^ RK[ 4], RK[ 5], RK[ 6]) ^ B3;
+                T1  = FI(B3 ^ RK[ 7], RK[ 8], RK[ 9]) ^ T0;
+                T0  = FI(T0 ^ RK[10], RK[11], RK[12]) ^ T1;
 
-                    B2 ^= T1 ^ RK[23];
-                    B3 ^= T0;
-                }
+                B0 ^= T1 ^ RK[13];
+                B1 ^= T0;
+
+                T0  = FI(B0 ^ RK[14], RK[15], RK[16]) ^ B1;
+                T1  = FI(B1 ^ RK[17], RK[18], RK[19]) ^ T0;
+                T0  = FI(T0 ^ RK[20], RK[21], RK[22]) ^ T1;
+
+                B2 ^= T1 ^ RK[23];
+                B3 ^= T0;
             }
 
             B2 ^= B3 | m_DK[96];

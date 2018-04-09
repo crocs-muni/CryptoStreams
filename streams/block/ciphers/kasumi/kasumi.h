@@ -1,5 +1,5 @@
 /**
- * Source: https://botan.randombit.net/doxygen/dir_c85d3e3c5052e9ad9ce18c6863244a25.html
+ * Source: https://github.com/randombit/botan/tree/release-2/src/lib/block/kasumi
  */
  /**
  * KASUMI

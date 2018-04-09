@@ -1,5 +1,5 @@
 /**
- * Source : https://github.com/dzruyk/kuznyechik_cipherx
+ * Source : https://github.com/dzruyk/kuznyechik_cipher
  */
 
 #ifndef __KUZN_H__

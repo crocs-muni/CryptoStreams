@@ -87,7 +87,7 @@ TEST(kuznyechik, test_vectors) {
 }
 
 TEST(misty1, test_vectors) {
-    testsuite::block_test_case("MISTY1", 8)();
+    testsuite::block_test_case("MISTY1", 4)();
 }
 
 TEST(noekeon, test_vectors) {

@@ -191,44 +191,39 @@
     {
     //verify_key_set(m_EK.empty() == false);
  
-    for(size_t i = 0; i != blocks; ++i)
-       {
-       uint16_t B0 = load_be<uint16_t>(in, 0);
-       uint16_t B1 = load_be<uint16_t>(in, 1);
-       uint16_t B2 = load_be<uint16_t>(in, 2);
-       uint16_t B3 = load_be<uint16_t>(in, 3);
+    for(size_t i = 0; i != blocks; ++i) {
+        uint16_t B0 = load_be<uint16_t>(in, 0);
+        uint16_t B1 = load_be<uint16_t>(in, 1);
+        uint16_t B2 = load_be<uint16_t>(in, 2);
+        uint16_t B3 = load_be<uint16_t>(in, 3);
 
-       uint16_t R;
-       uint16_t L;
-       uint16_t *K;
-       for(size_t j = 0; j != rounds; j += 1)
-          {
-          if (j % 2 == 0) {
-              K = (uint16_t*)&m_EK[8 * j];
+        for (size_t j = 0; j != rounds; j += 2) {
 
-              R = B1 ^ (rotl<1>(B0) & K[0]);
-              L = B0 ^ (rotl<1>(R) | K[1]);
+            const uint16_t *K = &m_EK[8 * j];
 
-              L = FI(L ^ K[2], K[3]) ^ R;
-              R = FI(R ^ K[4], K[5]) ^ L;
-              L = FI(L ^ K[6], K[7]) ^ R;
-          }
-          else {
-              R = B2 ^= R;
-              L = B3 ^= L;
+            uint16_t R = B1 ^(rotl<1>(B0) & K[0]);
+            uint16_t L = B0 ^(rotl<1>(R) | K[1]);
 
-              R = FI(R ^ K[10], K[11]) ^ L;
-              L = FI(L ^ K[12], K[13]) ^ R;
-              R = FI(R ^ K[14], K[15]) ^ L;
+            L = FI(L ^ K[2], K[3]) ^ R;
+            R = FI(R ^ K[4], K[5]) ^ L;
+            L = FI(L ^ K[6], K[7]) ^ R;
 
-              R ^= (rotl<1>(L) & K[8]);
-              L ^= (rotl<1>(R) | K[9]);
+            if (j +1 == rounds)
+                break;
 
-              B0 ^= L;
-              B1 ^= R;
-          }
-          }
- 
+            R = B2 ^= R;
+            L = B3 ^= L;
+
+            R = FI(R ^ K[10], K[11]) ^ L;
+            L = FI(L ^ K[12], K[13]) ^ R;
+            R = FI(R ^ K[14], K[15]) ^ L;
+
+            R ^= (rotl<1>(L) & K[8]);
+            L ^= (rotl<1>(R) | K[9]);
+
+            B0 ^= L;
+            B1 ^= R;
+        }
        store_be(out, B0, B1, B2, B3);
  
        in += BLOCK_SIZE;
@@ -249,33 +244,35 @@
        uint16_t B1 = load_be<uint16_t>(in, 1);
        uint16_t B2 = load_be<uint16_t>(in, 2);
        uint16_t B3 = load_be<uint16_t>(in, 3);
- 
-       for(size_t j = 0; j != 8; j += 2)
-          {
-          const uint16_t* K = &m_EK[8*(6-j)];
- 
-          uint16_t L = B2, R = B3;
- 
-          L = FI(L ^ K[10], K[11]) ^ R;
-          R = FI(R ^ K[12], K[13]) ^ L;
-          L = FI(L ^ K[14], K[15]) ^ R;
- 
-          L ^= (rotl<1>(R) & K[8]);
-          R ^= (rotl<1>(L) | K[9]);
- 
-          R = B0 ^= R;
-          L = B1 ^= L;
- 
-          L ^= (rotl<1>(R) & K[0]);
-          R ^= (rotl<1>(L) | K[1]);
- 
-          R = FI(R ^ K[2], K[3]) ^ L;
-          L = FI(L ^ K[4], K[5]) ^ R;
-          R = FI(R ^ K[6], K[7]) ^ L;
- 
-          B2 ^= L;
-          B3 ^= R;
-          }
+
+       for(size_t j = 0; j != rounds; j += 2) {
+           const uint16_t* K = &m_EK[8*(6-j)];
+
+           uint16_t L = B2, R = B3;
+
+           L = FI(L ^ K[10], K[11]) ^ R;
+           R = FI(R ^ K[12], K[13]) ^ L;
+           L = FI(L ^ K[14], K[15]) ^ R;
+
+           L ^= (rotl<1>(R) & K[8]);
+           R ^= (rotl<1>(L) | K[9]);
+
+           if (j + 1 == rounds)
+               break;
+
+           R = B0 ^= R;
+           L = B1 ^= L;
+
+           L ^= (rotl<1>(R) & K[0]);
+           R ^= (rotl<1>(L) | K[1]);
+
+           R = FI(R ^ K[2], K[3]) ^ L;
+           L = FI(L ^ K[4], K[5]) ^ R;
+           R = FI(R ^ K[6], K[7]) ^ L;
+
+           B2 ^= L;
+           B3 ^= R;
+       }
  
        store_be(out, B0, B1, B2, B3);
  
