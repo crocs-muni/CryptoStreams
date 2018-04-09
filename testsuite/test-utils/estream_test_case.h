@@ -100,7 +100,7 @@ namespace testsuite {
          * then create new stream using make_stream function
          * @return Pointer to instance of stream
          */
-        std::unique_ptr<stream> prepare_stream();
+        std::unique_ptr<stream> prepare_stream() override;
 
         /**
          * test case is actually a functor which can done whole testing
@@ -108,7 +108,7 @@ namespace testsuite {
          * will step by step load all test vectors and test each with raw
          * function and stream
          */
-        void operator()();
+        void operator()() override;
 
         /**
          * Reads test vector from input stream
