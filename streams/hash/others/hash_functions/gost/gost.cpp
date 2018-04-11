@@ -76,7 +76,7 @@ void rhash_gost_cryptopro_init(gost_ctx *ctx)
 		((sbox) + 512)[(tmp >> 16) & 0xff] ^ ((sbox) + 768)[tmp >> 24];
 
 /* encrypt a block with the given key */
-/* ph4r05: round reduced version from the macro below */
+/* ph4r05: round reduced version from the GOST_ENCRYPT macro */
 void gost_encrypt_fnc(unsigned int * result, unsigned int i, const unsigned int * key, const unsigned int * hash,
                       const unsigned int * sbox, unsigned nr)
 {
@@ -99,7 +99,8 @@ void gost_encrypt_fnc(unsigned int * result, unsigned int i, const unsigned int 
 }
 
 /* encrypt a block with the given key */
-# define GOST_ENCRYPT(result, i, key, hash, sbox, nr) \
+/* Original round function, kept for reference */
+# define GOST_ENCRYPT(result, i, key, hash, sbox) \
 	r = hash[i], l = hash[i + 1]; \
 	GOST_ENCRYPT_ROUND(key[0], key[1], sbox) \
 	GOST_ENCRYPT_ROUND(key[2], key[3], sbox) \
@@ -157,7 +158,7 @@ static void rhash_gost_block_compress(gost_ctx *ctx, const unsigned* block, unsi
         /* encryption: s_i := E_{key_i} (h_i) */
         {
 //             unsigned l, r, tmp;
-//             GOST_ENCRYPT(s, i, key, ctx->hash, sbox, nr);
+//             GOST_ENCRYPT(s, i, key, ctx->hash, sbox);
             gost_encrypt_fnc(s, i, key, ctx->hash, sbox, nr);
         }
 
