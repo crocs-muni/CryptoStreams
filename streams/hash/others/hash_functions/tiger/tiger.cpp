@@ -157,9 +157,9 @@ static void rhash_tiger_process_block(uint64_t state[3], uint64_t* block, unsign
 #else
     pass_rr(a, b, c, 5, 0, nr);
 	key_schedule;
-    pass_rr(c, a, b, 7, 0, nr);
+    pass_rr(c, a, b, 7, 1, nr);
 	key_schedule;
-    pass_rr(b, c, a, 9, 0, nr);
+    pass_rr(b, c, a, 9, 2, nr);
 #endif
 
     /* feedforward operation */
