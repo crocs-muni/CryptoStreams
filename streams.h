@@ -11,8 +11,8 @@
 #include <testsuite/test-utils/test_streams.h>
 #endif
 
-#ifdef BUILD_estream
-#include <streams/estream/estream_stream.h>
+#ifdef BUILD_stream_ciphers
+#include <streams/stream_ciphers/stream_stream.h>
 #endif
 
 #ifdef BUILD_block
@@ -80,6 +80,21 @@ struct file_stream : stream {
 private:
     const std::string _path;
     std::ifstream _istream;
+};
+
+/**
+ * @brief Stream outputing a constant value for n iterations
+ */
+struct repeating_stream : stream {
+    repeating_stream(const json& config, default_seed_source &seeder, const std::size_t osize);
+    repeating_stream(const std::size_t osize, std::unique_ptr<stream> source, const unsigned period);
+
+    vec_cview next() override;
+
+private:
+    std::unique_ptr<stream> _source;
+    const unsigned _period;
+    unsigned _i;
 };
 
 /**

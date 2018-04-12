@@ -29,7 +29,6 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/twofish/std_defs.h
     ciphers/simon/simon
     ciphers/speck/speck
-    ciphers/rc4/rc4
     ciphers/des/des
     ciphers/des/single_des
     ciphers/des/triple_des 

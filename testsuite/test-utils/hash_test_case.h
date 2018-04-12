@@ -1,5 +1,4 @@
-#ifndef EACIRC_STREAMS_SHA3_TEST_CASE_H
-#define EACIRC_STREAMS_SHA3_TEST_CASE_H
+#pragma once
 
 #include <streams/hash/sha3/sha3_interface.h>
 #include <streams/hash/hash_interface.h>
@@ -114,5 +113,3 @@ namespace testsuite {
     };
 }
 
-
-#endif //EACIRC_STREAMS_SHA3_TEST_CASE_H

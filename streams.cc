@@ -30,6 +30,29 @@ vec_cview single_value_stream::next()
     return make_cview(_data);
 }
 
+
+repeating_stream::repeating_stream(const json& config, default_seed_source &seeder, const std::size_t osize)
+    : stream(osize)
+    , _source(make_stream(config.at("source"), seeder, osize))
+    , _period(unsigned(config.value("period", 0)))
+    , _i(0) { }
+
+
+repeating_stream::repeating_stream(const std::size_t osize, std::unique_ptr<stream> source, const unsigned period)
+    : stream(osize)
+    , _source(std::move(source))
+    , _period(period)
+    , _i(0) { }
+
+vec_cview repeating_stream::next()
+{
+    if (_i % _period == 0) {
+        _data = _source->next().copy_to_vector();
+    }
+    ++_i;
+    return make_cview(_data);
+}
+
 counter::counter(const std::size_t osize)
     : stream(osize) {
     std::fill(_data.begin(), _data.end(), std::numeric_limits<value_type>::min());
@@ -211,6 +234,8 @@ make_stream(const json& config, default_seed_source& seeder, const std::size_t o
         return std::make_unique<pcg32_stream>(seeder, osize);
     else if (type == "single-value-stream")
         return std::make_unique<single_value_stream>(config.at("source"), seeder, osize);
+    else if (type == "repeating-stream")
+        return std::make_unique<repeating_stream>(config.at("source"), seeder, osize);
     else if (type == "rnd-plt-ctx-stream")
         return std::make_unique<rnd_plt_ctx_stream>(config.at("source"), seeder, osize);
     else if (type == "rho-stream")
@@ -242,9 +267,9 @@ make_stream(const json& config, default_seed_source& seeder, const std::size_t o
         return std::make_unique<testsuite::test_stream>(config);
 #endif
 
-#ifdef BUILD_estream
-    else if (type == "estream")
-        return std::make_unique<estream_stream>(config, seeder, osize, stream);
+#ifdef BUILD_stream_ciphers
+    else if (type == "estream" or type == "stream-others")
+        return std::make_unique<stream_ciphers::stream_stream>(config, seeder, osize, stream);
 #endif
 #ifdef BUILD_hash
     else if (type == "other_hash" || type == "sha3")
