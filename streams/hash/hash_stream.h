@@ -1,21 +1,27 @@
 #pragma once
 
 #include "stream.h"
-#include <memory>
 #include <eacirc-core/json.h>
-#include <eacirc-core/random.h>
 #include <eacirc-core/optional.h>
+#include <eacirc-core/random.h>
+#include <memory>
 
 namespace hash {
 
 struct hash_interface;
 
-template <typename I> void hash_data(hash_interface& hasher, const I& data, std::uint8_t* hash, const std::size_t hash_size);
-
+template <typename I>
+void hash_data(hash_interface &hasher,
+               const I &data,
+               std::uint8_t *hash,
+               const std::size_t hash_size);
 
 struct hash_stream : stream {
-    hash_stream(const json& config, default_seed_source& seeder, const std::size_t osize, core::optional<stream *> plt_stream);
-    hash_stream(hash_stream&&);
+    hash_stream(const json &config,
+                default_seed_source &seeder,
+                const std::size_t osize,
+                core::optional<stream *> plt_stream);
+    hash_stream(hash_stream &&);
     ~hash_stream() override;
 
     vec_cview next() override;

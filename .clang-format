@@ -1,0 +1,13 @@
+---
+BasedOnStyle:    LLVM
+AccessModifierOffset: -4
+AllowShortFunctionsOnASingleLine: Inline
+BinPackArguments: false
+BinPackParameters: false
+BreakConstructorInitializersBeforeComma: true
+ContinuationIndentWidth: 4
+ColumnLimit: 100
+IndentWidth: 4
+NamespaceIndentation: None
+PointerAlignment: Right
+...

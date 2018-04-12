@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 // Main file which triggers all tests in testsuite
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     /* initialize google test framework */
     ::testing::InitGoogleTest(&argc, argv);
 

@@ -1,17 +1,18 @@
 #include "hash_factory.h"
+#include "hash_interface.h"
 #include "others/hash_functions/hash_functions.h"
 #include "sha3/hash_functions/hash_functions.h"
-#include "hash_interface.h"
 
 namespace hash {
 
-void _check_rounds(const std::string& algorithm, const unsigned rounds) {
+void _check_rounds(const std::string &algorithm, const unsigned rounds) {
     if (rounds > 0)
         throw std::runtime_error{"requested hash algorithm named \"" + algorithm +
                                  "\" cannot be limited in rounds"};
 }
 
-std::unique_ptr<hash_interface> hash_factory::create(const std::string& name, const unsigned rounds) {
+std::unique_ptr<hash_interface> hash_factory::create(const std::string &name,
+                                                     const unsigned rounds) {
     // clang-format off
     if (name == "Abacus")         return std::make_unique<sha3::Abacus>(rounds);
     if (name == "ARIRANG")        return std::make_unique<sha3::Arirang>(rounds);

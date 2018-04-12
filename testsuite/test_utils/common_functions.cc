@@ -10,10 +10,9 @@ value_type hex_to_bin(const char input) {
     if (input >= 'a' && input <= 'f')
         return input - 'a' + 10;
     throw std::invalid_argument("Invalid input string");
-
 }
 
-std::vector<value_type> hex_string_to_binary(const std::string& str) {
+std::vector<value_type> hex_string_to_binary(const std::string &str) {
     assert(str.length() % 2 == 0);
     std::vector<value_type> output(str.length() / 2);
 

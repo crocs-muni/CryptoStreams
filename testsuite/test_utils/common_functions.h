@@ -18,6 +18,6 @@ value_type hex_to_bin(const char input);
  * @param str String to convert
  * @attention Function works only for strings with even length
  */
-std::vector<value_type> hex_string_to_binary(const std::string& str);
+std::vector<value_type> hex_string_to_binary(const std::string &str);
 
 } // namespace testsuite
