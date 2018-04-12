@@ -51,7 +51,7 @@ namespace testsuite {
         const static json base_config;
 
         stream_cipher_test_case(const std::string&& algorithm, const std::size_t round)
-                : test_case(algorithm, round, "estream")
+                : test_case(algorithm, round, "stream_cipher")
                 , _stream_config(base_config)
                 , _cipher(stream_ciphers::create_stream_cipher(_algorithm, unsigned(_round)))
         {}

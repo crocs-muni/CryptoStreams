@@ -6,7 +6,7 @@
 
 namespace testsuite {
     const json stream_cipher_test_case::base_config = {
-            {"type",      "estream"},
+            {"type",      "stream_cipher"},
             {"plaintext", {{"type", "test-stream"}}},
             {"iv",        {{"type", "test-stream"}}},
             {"key",       {{"type", "test-stream"}}},

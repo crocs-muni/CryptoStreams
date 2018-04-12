@@ -9,17 +9,6 @@
 
 namespace testsuite {
 
-
-    const json sha3_test_case::base_config = {
-            {"type", "sha3"},
-            {"source", {{"type", "test-stream"}}}
-    };
-
-    const json other_test_case::base_config = {
-            {"type", "other_hash"},
-            {"source", {{"type", "test-stream"}}}
-    };
-
     void hash_test_case::test() const {
         std::unique_ptr<hash::hash_interface> hasher = hash::hash_factory::create(_algorithm, unsigned(_round));
         std::size_t hash_size = _ciphertext.size();
@@ -64,14 +53,18 @@ namespace testsuite {
 
     std::unique_ptr<stream> hash_test_case::prepare_stream() {
         std::size_t hash_size =  _ciphertext.size();
-        _stream_config["algorithm"] = _algorithm;
-        _stream_config["round"] = _round;
-        _stream_config["input-size"] = _plaintext.size();
-        _stream_config["source"]["outputs"] = _plaintext;
-        _stream_config["hash-size"] = hash_size;
+        json config_instance = {
+            {"type", "hash"},
+            {"source", {{"type", "test-stream"}}}
+        };
+        config_instance["algorithm"] = _algorithm;
+        config_instance["round"] = _round;
+        config_instance["input-size"] = _plaintext.size();
+        config_instance["source"]["outputs"] = _plaintext;
+        config_instance["hash-size"] = hash_size;
 
         seed_seq_from<pcg32> seeder(seed1);
-        return make_stream(_stream_config, seeder, hash_size);
+        return make_stream(config_instance, seeder, hash_size);
     }
 
     std::istream &operator>>(std::istream &input, hash_test_case &test_case) {

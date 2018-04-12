@@ -10,22 +10,26 @@
 namespace testsuite {
 
     class hash_test_case : test_case {
+    private:
+
+        /**
+         * base JSON configuration which all estream functions has in common
+         * _stream_config is created based on this, but with addition of
+         * function specific properties e.g. name of function, number of rounds
+         */
+        const static json base_config;
 
     protected:
         /** size of plaintext **/
         size_t _length;
 
-        /** JSON configuration for making stream using make_stream() **/
-        json _stream_config;
-
     public:
 
         const size_t& length() const;
 
-        hash_test_case(const std::string& algorithm, const std::size_t round, const json& base_config, const std::string& competition)
-                : test_case(algorithm, round, competition)
+        hash_test_case(const std::string& algorithm, const std::size_t round)
+                : test_case(algorithm, round, "hash")
                 , _length(0)
-                , _stream_config(base_config)
                 {}
 
         /**
@@ -71,44 +75,6 @@ namespace testsuite {
          * @return input stream
          */
         friend std::istream &operator>>(std::istream &input, hash_test_case &test_case);
-
-    };
-
-    /** test case for functions from sha3 competition **/
-    class sha3_test_case : public hash_test_case {
-
-    private:
-
-        /**
-         * base JSON configuration which all estream functions has in common
-         * _stream_config is created based on this, but with addition of
-         * function specific properties e.g. name of function, number of rounds
-         */
-        const static json base_config;
-
-    public:
-
-        sha3_test_case(const std::string&& algorithm, const std::size_t round)
-                : hash_test_case(algorithm, round, base_config, "sha3")
-        {}
-    };
-
-    class other_test_case : public hash_test_case {
-
-    private:
-
-        /**
-         * base JSON configuration which all estream functions has in common
-         * _stream_config is created based on this, but with addition of
-         * function specific properties e.g. name of function, number of rounds
-         */
-        const static json base_config;
-
-    public:
-
-        other_test_case(const std::string&& algorithm, const std::size_t round)
-                : hash_test_case(algorithm, round, base_config, "other_hash")
-        {}
 
     };
 }
