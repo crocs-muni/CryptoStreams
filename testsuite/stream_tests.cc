@@ -6,7 +6,7 @@
 #include "stream.h"
 #include "streams.h"
 #include <eacirc-core/seed.h>
-#include <testsuite/test-utils/test_case.h>
+#include <testsuite/test_utils/test_case.h>
 
 const static int testing_size = 1536;
 
@@ -215,17 +215,17 @@ TEST(column_streams, basic_test_with_counter) {
 
 TEST(rnd_plt_ctx_streams, aes_single_vector) {
     const json json_config = {
-        {"type", "rnd-plt-ctx-stream"},
+        {"type", "rnd_plt_ctx_stream"},
         {"source", {
              {"type", "block"},
-             {"init-frequency", "only-once"},
+             {"init_frequency", "only_once"},
              {"algorithm", "AES"},
              {"round", 10},
-             {"block-size", 16},
-             {"plaintext", {{"type", "pcg32-stream"}}},
-             {"key-size", 16},
-             {"key", {{"type", "pcg32-stream"}}},
-             {"iv", {{"type", "pcg32-stream"}}}
+             {"block_size", 16},
+             {"plaintext", {{"type", "pcg32_stream"}}},
+             {"key_size", 16},
+             {"key", {{"type", "pcg32_stream"}}},
+             {"iv", {{"type", "pcg32_stream"}}}
          }
         }
     };
@@ -257,31 +257,31 @@ TEST(rnd_plt_ctx_streams, aes_single_vector) {
 
 TEST(rho_streams, aes_vector) {
     const json json_config = {
-        {"type", "rho-stream"},
+        {"type", "rho_stream"},
         {"source", {
              {"type", "block"},
-             {"init-frequency", "only-once"},
+             {"init_frequency", "only_once"},
              {"algorithm", "AES"},
              {"round", 10},
-             {"block-size", 16},
-             {"plaintext", {{"type", "dummy-stream"}}},
-             {"key-size", 16},
-             {"key", {{"type", "false-stream"}}},
-             {"iv", {{"type", "pcg32-stream"}}}
+             {"block_size", 16},
+             {"plaintext", {{"type", "dummy_stream"}}},
+             {"key_size", 16},
+             {"key", {{"type", "false_stream"}}},
+             {"iv", {{"type", "pcg32_stream"}}}
          }
         }
     };
 
     json aes_json_config = {
          {"type", "block"},
-         {"init-frequency", "only-once"},
+         {"init_frequency", "only_once"},
          {"algorithm", "AES"},
          {"round", 10},
-         {"block-size", 16},
-         {"plaintext", {{"type", "test-stream"}}},
-         {"key-size", 16},
-         {"key", {{"type", "false-stream"}}},
-         {"iv", {{"type", "pcg32-stream"}}}
+         {"block_size", 16},
+         {"plaintext", {{"type", "test_stream"}}},
+         {"key_size", 16},
+         {"key", {{"type", "false_stream"}}},
+         {"iv", {{"type", "pcg32_stream"}}}
     };
 
     seed_seq_from<pcg32> seeder(testsuite::seed1);

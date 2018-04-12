@@ -8,8 +8,8 @@ namespace block {
 
     static int64_t reinit_freq(const json& config) {
         try {
-            std::string init_freq = config.at("init-frequency");
-            if (init_freq == "only-once") {
+            std::string init_freq = config.at("init_frequency");
+            if (init_freq == "only_once") {
                 return -1;
             } else {
                 int64_t init_freq_int = std::stoll(init_freq);
@@ -19,7 +19,7 @@ namespace block {
                 return init_freq_int;
             }
         } catch (std::out_of_range& e) {
-            // this field is voluntary, we return presumed value "only-once"
+            // this field is voluntary, we return presumed value "only_once"
             return -1;
         }
     }
@@ -27,14 +27,14 @@ namespace block {
     block_stream::block_stream(const json& config, default_seed_source& seeder, const std::size_t osize, core::optional<stream *> plt_stream)
         : stream(osize)
         , _round(config.at("round"))
-        , _block_size(config.at("block-size"))
+        , _block_size(config.at("block_size"))
         , _reinit_freq(reinit_freq(config))
         , _i(0)
         , _source(make_stream(config.at("plaintext"), seeder, osize))
         , _iv(make_stream(config.at("iv"), seeder, _block_size))
-        , _key(make_stream(config.at("key"), seeder, unsigned(config.at("key-size"))))
+        , _key(make_stream(config.at("key"), seeder, unsigned(config.at("key_size"))))
         , _encryptor(make_block_cipher(config.at("algorithm"), unsigned(_round),
-                                       unsigned(_block_size), unsigned(config.at("key-size")), true))
+                                       unsigned(_block_size), unsigned(config.at("key_size")), true))
         , _prepared_stream_source(!plt_stream ? nullptr : *plt_stream)
     {
         logger::info() << "stream source is block cipher: " << config.at("algorithm") << std::endl;

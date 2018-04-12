@@ -26,8 +26,8 @@ void hash_data(hash_interface& hasher, const I& data, std::uint8_t* hash, const 
 hash_stream::hash_stream(const json& config, default_seed_source &seeder, const std::size_t osize, core::optional<stream *> plt_stream)
     : stream(osize) // round osize to multiple of _hash_input_size
     , _round(config.at("round"))
-    , _hash_size(std::size_t(config.at("hash-size")))
-    , _source(make_stream(config.at("source"), seeder, config.value("input-size", _hash_size))) // if input size is not defined, use hash-size
+    , _hash_size(std::size_t(config.at("hash_size")))
+    , _source(make_stream(config.at("source"), seeder, config.value("input_size", _hash_size))) // if input size is not defined, use hash-size
     , _prepared_stream_source(!plt_stream ? nullptr : *plt_stream)
     , _hasher(hash_factory::create(config.at("algorithm"), unsigned(_round))) {
     if (osize % _hash_size != 0) // not necessary wrong, but we never needed this, we always did this by mistake. Change to warning if needed

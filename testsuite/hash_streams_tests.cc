@@ -6,7 +6,7 @@
 #include "stream.h"
 #include "streams.h"
 
-#include "testsuite/test-utils/hash_test_case.h"
+#include "testsuite/test_utils/hash_test_case.h"
 
 /** Source of test vectors http://csrc.nist.gov/groups/ST/hash/sha-3/index.html */
 

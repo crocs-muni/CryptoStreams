@@ -7,9 +7,9 @@
 namespace testsuite {
     const json stream_cipher_test_case::base_config = {
             {"type",      "stream_cipher"},
-            {"plaintext", {{"type", "test-stream"}}},
-            {"iv",        {{"type", "test-stream"}}},
-            {"key",       {{"type", "test-stream"}}},
+            {"plaintext", {{"type", "test_stream"}}},
+            {"iv",        {{"type", "test_stream"}}},
+            {"key",       {{"type", "test_stream"}}},
     };
 
     void stream_cipher_test_case::test(std::unique_ptr<stream_ciphers::stream_interface> &encryptor) const {
@@ -44,7 +44,7 @@ namespace testsuite {
         _stream_config["plaintext"]["outputs"] = _plaintext;
         _stream_config["iv"]["outputs"] = _iv;
         _stream_config["key"]["outputs"] = _key;
-        _stream_config["block-size"] = block_size();
+        _stream_config["block_size"] = block_size();
 
         seed_seq_from<pcg32> seeder(seed1);
 

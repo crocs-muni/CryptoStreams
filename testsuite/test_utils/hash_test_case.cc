@@ -55,13 +55,13 @@ namespace testsuite {
         std::size_t hash_size =  _ciphertext.size();
         json config_instance = {
             {"type", "hash"},
-            {"source", {{"type", "test-stream"}}}
+            {"source", {{"type", "test_stream"}}}
         };
         config_instance["algorithm"] = _algorithm;
         config_instance["round"] = _round;
-        config_instance["input-size"] = _plaintext.size();
+        config_instance["input_size"] = _plaintext.size();
         config_instance["source"]["outputs"] = _plaintext;
-        config_instance["hash-size"] = hash_size;
+        config_instance["hash_size"] = hash_size;
 
         seed_seq_from<pcg32> seeder(seed1);
         return make_stream(config_instance, seeder, hash_size);

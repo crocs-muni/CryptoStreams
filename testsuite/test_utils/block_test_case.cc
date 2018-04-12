@@ -8,10 +8,10 @@ namespace testsuite {
 
     const json block_test_case::base_config = {
         {"type", "block"},
-        {"init-frequency", "only-once"},
-        {"plaintext", {{"type", "test-stream"}}},
-        {"iv", {{"type", "test-stream"}}},
-        {"key", {{"type", "test-stream"}}}
+        {"init_frequency", "only_once"},
+        {"plaintext", {{"type", "test_stream"}}},
+        {"iv", {{"type", "test_stream"}}},
+        {"key", {{"type", "test_stream"}}}
     };
 
     void block_test_case::test() const {
@@ -70,12 +70,12 @@ namespace testsuite {
         _stream_config["round"] = _round;
         _stream_config["key"]["outputs"] = _key;
         _stream_config["plaintext"]["outputs"] = _plaintext;
-        _stream_config["block-size"] = block_size;
-        _stream_config["key-size"] = _key.size();
+        _stream_config["block_size"] = block_size;
+        _stream_config["key_size"] = _key.size();
         if (_load_iv) {
             _stream_config["mode"] = ""; // TODO: write mode here
             _stream_config["iv"]["outputs"] = _iv;
-            _stream_config["iv-size"] = _iv.size();
+            _stream_config["iv_size"] = _iv.size();
         } else {
             _stream_config["iv"]["outputs"] = _iv;
         }

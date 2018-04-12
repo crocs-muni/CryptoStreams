@@ -8,7 +8,7 @@
 #include <random>
 
 #ifdef BUILD_testsuite
-#include <testsuite/test-utils/test_streams.h>
+#include <testsuite/test_utils/test_streams.h>
 #endif
 
 #ifdef BUILD_stream_ciphers
@@ -394,7 +394,7 @@ struct binomial_distribution_stream : stream {
     binomial_distribution_stream(const json& config, Seeder&& seeder, const std::size_t osize)
             : stream(osize)
             , _rng(std::forward<Seeder>(seeder))
-            , _distribution(uint8_t(config.value("max-value", std::numeric_limits<uint8_t>::max())),
+            , _distribution(uint8_t(config.value("max_value", std::numeric_limits<uint8_t>::max())),
                             double(config.value("p", 0.5))) { }
 
     vec_cview next() override {
@@ -418,7 +418,7 @@ struct normal_distribution_stream : stream {
             : stream(osize)
             , _rng(std::forward<Seeder>(seeder))
             , _distribution(double(config.value("mean", 0)),
-                            double(config.value("std-dev", 1.0))) { }
+                            double(config.value("std_dev", 1.0))) { }
 
     vec_cview next() override {
         std::generate_n(_data.data(), osize(), [this]() {

@@ -221,70 +221,70 @@ make_stream(const json& config, default_seed_source& seeder, const std::size_t o
         throw std::runtime_error("Stream " + type + " cannot have osize 0.");
 
     // trivial source only streams
-    if (type == "dummy-stream")
+    if (type == "dummy_stream")
         return std::make_unique<dummy_stream>(osize);
-    else if (type == "file-stream")
+    else if (type == "file_stream")
         return std::make_unique<file_stream>(config, osize);
-    else if (type == "true-stream")
+    else if (type == "true_stream")
         return std::make_unique<true_stream>(osize);
-    else if (type == "false-stream")
+    else if (type == "false_stream")
         return std::make_unique<false_stream>(osize);
-    else if (type == "mt19937-stream")
+    else if (type == "mt19937_stream")
         return std::make_unique<mt19937_stream>(seeder, osize);
-    else if (type == "pcg32-stream" or type == "random-stream")
+    else if (type == "pcg32_stream" or type == "random_stream")
         return std::make_unique<pcg32_stream>(seeder, osize);
 
     // types of plaintext (also only sources)
-    else if (type == "rnd-plt-ctx-stream")
+    else if (type == "rnd_plt_ctx_stream")
         return std::make_unique<rnd_plt_ctx_stream>(config.at("source"), seeder, osize);
-    else if (type == "rho-stream")
+    else if (type == "rho_stream")
         return std::make_unique<rho_stream>(config.at("source"), seeder, osize);
     else if (type == "counter")
         return std::make_unique<counter>(osize);
-    else if (type == "random-start-counter")
+    else if (type == "random_start_counter")
         return std::make_unique<random_start_counter>(seeder, osize);
     else if (type == "sac")
         return std::make_unique<sac_stream>(seeder, osize);
-    else if (type == "sac-fixed-position") {
+    else if (type == "sac_fixed_position") {
         const std::size_t pos = std::size_t(config.at("position"));
         return std::make_unique<sac_fixed_pos_stream>(seeder, osize, pos);
     }
-    else if (type == "sac-2d-all-positions")
+    else if (type == "sac_2d_all_positions")
         return std::make_unique<sac_2d_all_pos>(seeder, osize);
-    else if (type == "hw-counter")
+    else if (type == "hw_counter")
         return std::make_unique<hw_counter>(config, seeder, osize);
 
     // sources with statistical distribution
-    else if (type == "bernoulli-distribution")
+    else if (type == "bernoulli_distribution")
         return std::make_unique<bernoulli_distribution_stream>(config, seeder, osize);
-    else if (type == "binomial-distribution")
+    else if (type == "binomial_distribution")
         return std::make_unique<binomial_distribution_stream>(config, seeder, osize);
-    else if (type == "normal-distribution")
+    else if (type == "normal_distribution")
         return std::make_unique<normal_distribution_stream>(config, seeder, osize);
-    else if (type == "poisson-distribution")
+    else if (type == "poisson_distribution")
         return std::make_unique<poisson_distribution_stream>(config, seeder, osize);
-    else if (type == "exponential-distribution")
+    else if (type == "exponential_distribution")
         return std::make_unique<exponential_distribution_stream>(config, seeder, osize);
 
     // modifiers -- streams that has other stream as an input (but these are used as source before cipher)
-    else if (type == "single-value-stream")
+    else if (type == "single_value_stream")
         return std::make_unique<single_value_stream>(config.at("source"), seeder, osize);
-    else if (type == "repeating-stream")
+    else if (type == "repeating_stream")
         return std::make_unique<repeating_stream>(config.at("source"), seeder, osize);
 
     // postprocessing modifiers -- streams that has cipher stream as an input
-    else if (type == "xor-stream")
+    else if (type == "xor_stream")
         return std::make_unique<xor_stream>(config, seeder, osize);
     else if (type == "column")
         return std::make_unique<column_stream>(config, seeder, osize);
-    else if (type == "column-fixed-position") {
+    else if (type == "column_fixed_position") {
         const std::size_t pos = std::size_t(config.at("position"));
         return std::make_unique<column_fixed_position_stream>(config, seeder, osize, pos);
     }
 
     // cryptoprimitives
 #if (BUILD_testsuite && TEST_STREAM)
-    else if (type == "test-stream")
+    else if (type == "test_stream")
         return std::make_unique<testsuite::test_stream>(config);
 #endif
 
