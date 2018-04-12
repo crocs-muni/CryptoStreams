@@ -55,7 +55,7 @@ protected:
     static std::string get_test_vectors_filename(const std::string &algorithm,
                                                  const std::size_t round,
                                                  const std::string &competition) {
-        return "resources/test-resources/" + competition + "/" + algorithm + "/test-vectors-" +
+        return "resources/test_resources/" + competition + "/" + algorithm + "/test_vectors_" +
                std::to_string(round) + ".txt";
     }
 
