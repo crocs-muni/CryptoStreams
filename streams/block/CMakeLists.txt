@@ -3,7 +3,7 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     block_cipher
     block_factory
     ciphers/common_fun.h
-    # === eSTREAM cipher files ===
+    # === block cipher files ===
     ciphers/tea/tea
     ciphers/aes/aes
     ciphers/aria/aria
@@ -14,14 +14,25 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/gost/gost_block
     ciphers/seed/seed
     ciphers/seed/seed_block
+    ciphers/blowfish/blowfish
+    ciphers/blowfish/blowfish_factory
+    ciphers/mars/mars
+    ciphers/mars/mars_ref
+    ciphers/rc6/rc6
+    ciphers/rc6/rc6_ref
+    ciphers/serpent/serpent
+    ciphers/serpent/serpent-ref
+    ciphers/serpent/serpent-aux
+    ciphers/serpent/serpent-api.h
+    ciphers/serpent/serpent-tables.h
+    ciphers/twofish/twofish
+    ciphers/twofish/std_defs.h
     ciphers/simon/simon
     ciphers/speck/speck
     ciphers/rc4/rc4
     ciphers/des/des
     ciphers/des/single_des
-    ciphers/des/triple_des    
-    ciphers/blowfish/blowfish
-    ciphers/blowfish/blowfish_factory
+    ciphers/des/triple_des 
     ciphers/idea/idea
     ciphers/idea/idea_block
     ciphers/cast/cast

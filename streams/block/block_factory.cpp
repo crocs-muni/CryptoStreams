@@ -23,6 +23,10 @@ std::unique_ptr<block_cipher> make_block_cipher(const std::string& name,
     if (name == "SINGLE-DES")  return std::make_unique<single_des>(round, encrypt);
     if (name == "TRIPLE-DES")  return std::make_unique<triple_des>(round, encrypt);
     if (name == "BLOWFISH") return std::make_unique<blowfish_factory>(round);
+    if (name == "MARS") return std::make_unique<mars::mars>(round, encrypt);
+    if (name == "RC6") return std::make_unique<rc6::rc6>(round, encrypt);
+    if (name == "SERPENT") return std::make_unique<serpent::serpent>(round, encrypt);
+    if (name == "TWOFISH") return std::make_unique<twofish::twofish>(round);
     if (name == "SEED") return std::make_unique<seed::seed>(round);
     if (name == "KASUMI") return std::make_unique<kasumi_factory>(round);
     if (name == "KUZNYECHIK") return std::make_unique<kuznyechik_factory>(round);

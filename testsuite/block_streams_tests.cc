@@ -18,6 +18,22 @@ TEST(blowfish, test_vectors) {
     testsuite::block_test_case("BLOWFISH", 16)();
 }
 
+TEST(mars, test_vectors) {
+    testsuite::block_test_case("MARS", 32)();
+}
+
+TEST(rc6, test_vectors) {
+    testsuite::block_test_case("RC6", 20)();
+}
+
+TEST(serpent, test_vectors) {
+    testsuite::block_test_case("SERPENT", 32)();
+}
+
+TEST(twofish, test_vectors) {
+    testsuite::block_test_case("TWOFISH", 16)();
+}
+
 TEST(camellia, test_vectors) {
     testsuite::block_test_case("CAMELLIA", 18)();
     testsuite::block_test_case("CAMELLIA", 24)();

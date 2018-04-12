@@ -48,3 +48,4 @@ TEST(tsc4, test_vectors) {
 TEST(trivium, test_vectors) {
     testsuite::estream_test_case("Trivium", 9)();
 }
+
