@@ -1,12 +1,12 @@
-#include <gtest/gtest.h>
-#include <streams/stream_ciphers/stream_interface.h>
 #include <eacirc-core/json.h>
 #include <eacirc-core/optional.h>
-#include <testsuite/test-utils/common_functions.h>
-#include <streams/stream_ciphers/stream_cipher.h>
-#include <fstream>
-#include <testsuite/test-utils/stream_ciphers_test_case.h>
 #include <eacirc-core/seed.h>
+#include <fstream>
+#include <gtest/gtest.h>
+#include <streams/stream_ciphers/stream_cipher.h>
+#include <streams/stream_ciphers/stream_interface.h>
+#include <testsuite/test_utils/common_functions.h>
+#include <testsuite/test_utils/stream_ciphers_test_case.h>
 
 TEST(chacha, test_vectors) {
     testsuite::stream_cipher_test_case("Chacha", 20)();
@@ -52,4 +52,3 @@ TEST(tsc4, test_vectors) {
 TEST(trivium, test_vectors) {
     testsuite::stream_cipher_test_case("Trivium", 9)();
 }
-

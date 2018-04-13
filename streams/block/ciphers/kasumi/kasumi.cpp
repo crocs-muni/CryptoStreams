@@ -208,11 +208,11 @@
             R = FI(R ^ K[4], K[5]) ^ L;
             L = FI(L ^ K[6], K[7]) ^ R;
 
-            if (j +1 == rounds)
-                break;
-
             R = B2 ^= R;
             L = B3 ^= L;
+
+            if (j + 1 == rounds)
+                break;
 
             R = FI(R ^ K[10], K[11]) ^ L;
             L = FI(L ^ K[12], K[13]) ^ R;
@@ -257,11 +257,11 @@
            L ^= (rotl<1>(R) & K[8]);
            R ^= (rotl<1>(L) | K[9]);
 
-           if (j + 1 == rounds)
-               break;
-
            R = B0 ^= R;
            L = B1 ^= L;
+
+           if (j + 1 == rounds)
+               break;
 
            L ^= (rotl<1>(R) & K[0]);
            R ^= (rotl<1>(L) | K[1]);

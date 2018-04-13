@@ -36,7 +36,8 @@
 
 namespace stream_ciphers {
 
-std::unique_ptr<stream_interface> create_stream_cipher(const std::string& name, const unsigned round) {
+std::unique_ptr<stream_interface> create_stream_cipher(const std::string &name,
+                                                       const unsigned round) {
     // clang-format off
     // eSTREAM
     if (name == "ABC")              return std::make_unique<estream::ECRYPT_ABC>();
@@ -72,11 +73,14 @@ std::unique_ptr<stream_interface> create_stream_cipher(const std::string& name, 
     if (name == "RC4")              return std::make_unique<others::rc4>(round);
     // clang-format on
 
-  throw std::runtime_error("requested eSTREAM cipher named \"" + name +
-                           "\" is either broken or does not exists");
+    throw std::runtime_error("requested eSTREAM cipher named \"" + name +
+                             "\" is either broken or does not exists");
 }
 
-stream_cipher::stream_cipher(const std::string& name, const unsigned round, const std::size_t iv_size, const std::size_t key_size)
+stream_cipher::stream_cipher(const std::string &name,
+                             const unsigned round,
+                             const std::size_t iv_size,
+                             const std::size_t key_size)
     : _iv(iv_size)
     , _key(key_size)
     , _encryptor(create_stream_cipher(name, round))
@@ -85,31 +89,31 @@ stream_cipher::stream_cipher(const std::string& name, const unsigned round, cons
     _decryptor->init();
 }
 
-stream_cipher::stream_cipher(stream_cipher&&) = default;
+stream_cipher::stream_cipher(stream_cipher &&) = default;
 stream_cipher::~stream_cipher() = default;
 
-void stream_cipher::setup_key_iv(std::unique_ptr<stream>& key, std::unique_ptr<stream>& iv) {
-  vec_cview key_data = key->next();
-  _key.assign(key_data.begin(), key_data.end());
+void stream_cipher::setup_key_iv(std::unique_ptr<stream> &key, std::unique_ptr<stream> &iv) {
+    vec_cview key_data = key->next();
+    _key.assign(key_data.begin(), key_data.end());
 
-  _encryptor->keysetup(_key.data(), u32(8 * key->osize()), u32(8 * iv->osize()));
-  _decryptor->keysetup(_key.data(), u32(8 * key->osize()), u32(8 * iv->osize()));
+    _encryptor->keysetup(_key.data(), u32(8 * key->osize()), u32(8 * iv->osize()));
+    _decryptor->keysetup(_key.data(), u32(8 * key->osize()), u32(8 * iv->osize()));
 
-  vec_cview  iv_data = iv->next();
-  _iv.assign(iv_data.begin(), iv_data.end());
+    vec_cview iv_data = iv->next();
+    _iv.assign(iv_data.begin(), iv_data.end());
 
-  _encryptor->ivsetup(_iv.data());
-  _decryptor->ivsetup(_iv.data());
+    _encryptor->ivsetup(_iv.data());
+    _decryptor->ivsetup(_iv.data());
 }
 
-void stream_cipher::encrypt(const u8* plaintext, u8* ciphertext, std::size_t size) {
-  // BEWARE: only able to proccess max 2GB of plaintext
-  _encryptor->encrypt_bytes(plaintext, ciphertext, u32(size));
+void stream_cipher::encrypt(const u8 *plaintext, u8 *ciphertext, std::size_t size) {
+    // BEWARE: only able to proccess max 2GB of plaintext
+    _encryptor->encrypt_bytes(plaintext, ciphertext, u32(size));
 }
 
-void stream_cipher::decrypt(const u8* ciphertext, u8* plaintext, std::size_t size) {
-  // BEWARE: only able to proccess max 2GB of plaintext
-  _decryptor->decrypt_bytes(ciphertext, plaintext, u32(size));
+void stream_cipher::decrypt(const u8 *ciphertext, u8 *plaintext, std::size_t size) {
+    // BEWARE: only able to proccess max 2GB of plaintext
+    _decryptor->decrypt_bytes(ciphertext, plaintext, u32(size));
 }
 
 } // namespace stream_ciphers

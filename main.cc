@@ -1,7 +1,7 @@
 #include "generator.h"
-#include <eacirc-core/version.h>
 #include <eacirc-core/cmd.h>
 #include <eacirc-core/logger.h>
+#include <eacirc-core/version.h>
 #include <limits>
 
 void test_environment() {
@@ -21,7 +21,7 @@ static cmd<config> options{{"-h", "--help", "display help message", &config::hel
                            {"-v", "--version", "display program version", &config::version},
                            {"-c", "--config", "specify the config file to load", &config::config}};
 
-int main(const int argc, const char** argv) try {
+int main(const int argc, const char **argv) try {
     auto cfg = options.parse(make_view(argv, argc));
 
     if (cfg.help) {
@@ -38,7 +38,7 @@ int main(const int argc, const char** argv) try {
     }
 
     return 0;
-} catch (std::exception& e) {
+} catch (std::exception &e) {
     logger::error(e.what());
     return 1;
 }

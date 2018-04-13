@@ -4,7 +4,7 @@ namespace block {
 
 struct block_cipher;
 
-std::unique_ptr<block_cipher> make_block_cipher(const std::string& name,
+std::unique_ptr<block_cipher> make_block_cipher(const std::string &name,
                                                 const std::size_t round,
                                                 const std::size_t block_size,
                                                 const std::size_t key_size,
@@ -39,4 +39,4 @@ std::unique_ptr<block_cipher> make_block_cipher(const std::string& name,
                              "\" is either broken or does not exists");
 }
 
-} //namespace block
+} // namespace block

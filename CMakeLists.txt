@@ -80,16 +80,16 @@ if (BUILD_testsuite)
             testsuite/hash_streams_tests.cc
             testsuite/stream_ciphers_streams_tests.cc
             testsuite/block_streams_tests.cc
-            testsuite/test-utils/test_streams
-            testsuite/test-utils/hash_test_case
-            testsuite/test-utils/stream_ciphers_test_case
-            testsuite/test-utils/block_test_case
-            testsuite/test-utils/common_functions
-            testsuite/test-utils/test_case.h)
+            testsuite/test_utils/test_streams
+            testsuite/test_utils/hash_test_case
+            testsuite/test_utils/stream_ciphers_test_case
+            testsuite/test_utils/block_test_case
+            testsuite/test_utils/common_functions
+            testsuite/test_utils/test_case.h)
 
     target_compile_definitions(testsuite PUBLIC "TEST_STREAM=1")
 
-    file(COPY testsuite/test-resources DESTINATION resources)
+    file(COPY testsuite/test_resources DESTINATION resources)
 
     # Standard linking to gtest stuff.
     target_link_libraries(testsuite gtest gtest_main)

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <eacirc-core/json.h>
-#include <eacirc-core/view.h>
 #include <eacirc-core/dataset.h>
+#include <eacirc-core/json.h>
 #include <eacirc-core/logger.h>
+#include <eacirc-core/view.h>
 #include <vector>
 
 using value_type = std::uint8_t;
@@ -15,13 +15,9 @@ struct stream {
 
     virtual vec_cview next() = 0;
 
-    vec_cview get_data() const {
-        return make_cview(_data);
-    }
+    vec_cview get_data() const { return make_cview(_data); }
 
-    void set_data(vec_cview data) {
-        std::copy(data.begin(), data.end(), _data.begin());
-    }
+    void set_data(vec_cview data) { std::copy(data.begin(), data.end(), _data.begin()); }
 
     std::size_t osize() const { return _osize; }
 

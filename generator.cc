@@ -6,8 +6,8 @@
 #include <pcg/pcg_random.hpp>
 
 #include <fstream>
-#include <sstream>
 #include <iomanip>
+#include <sstream>
 
 static std::ifstream open_config_file(const std::string path) {
     std::ifstream file(path);
@@ -16,9 +16,9 @@ static std::ifstream open_config_file(const std::string path) {
     return file;
 }
 
-static std::string out_name(json const& config) {
-    auto fname_it = config.find("file-name");
-    if (fname_it != config.end()){
+static std::string out_name(json const &config) {
+    auto fname_it = config.find("file_name");
+    if (fname_it != config.end()) {
         return *fname_it;
     }
 
@@ -31,7 +31,7 @@ static std::string out_name(json const& config) {
     std::string a = config_ref.at("algorithm");
     ss << a << "_r";
     ss << std::setw(2) << std::setfill('0') << std::size_t(config_ref.at("round"));
-    ss << "_b" << config_ref.at("block-size");
+    ss << "_b" << config_ref.at("block_size");
     ss << ".bin";
     return ss.str();
 }
@@ -39,24 +39,24 @@ static std::string out_name(json const& config) {
 generator::generator(const std::string config)
     : generator(open_config_file(config)) {}
 
-generator::generator(json const& config)
+generator::generator(json const &config)
     : _config(config)
     , _seed(seed::create(config.at("seed")))
-    , _tv_count(config.at("tv-count"))
+    , _tv_count(config.at("tv_count"))
     , _o_file_name(out_name(config)) {
 
     seed_seq_from<pcg32> main_seeder(_seed);
 
-    _stream_a = make_stream(config.at("stream"), main_seeder, std::size_t(config.at("tv-size")));
+    _stream_a = make_stream(config.at("stream"), main_seeder, std::size_t(config.at("tv_size")));
 }
 
 void generator::generate() {
 
     auto stdout_it = _config.find("stdout");
     std::unique_ptr<std::ostream> ofstream_ptr;
-    std::ostream * o_file = nullptr;
+    std::ostream *o_file = nullptr;
 
-    if (stdout_it == _config.end() || stdout_it->get<bool>() == false){
+    if (stdout_it == _config.end() || stdout_it->get<bool>() == false) {
         ofstream_ptr = std::make_unique<std::ofstream>(_o_file_name, std::ios::binary);
         o_file = ofstream_ptr.get();
     } else {

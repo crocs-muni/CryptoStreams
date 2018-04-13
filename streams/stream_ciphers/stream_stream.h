@@ -1,14 +1,17 @@
 #pragma once
 
-#include "stream_cipher.h"
 #include "stream.h"
+#include "stream_cipher.h"
 #include <eacirc-core/json.h>
 #include <eacirc-core/random.h>
 
 namespace stream_ciphers {
 
 struct stream_stream : stream {
-    stream_stream(const json& config, default_seed_source& seeder, const std::size_t osize, core::optional<stream *> plt_stream);
+    stream_stream(const json &config,
+                  default_seed_source &seeder,
+                  const std::size_t osize,
+                  core::optional<stream *> plt_stream);
 
     vec_cview next() override;
 
