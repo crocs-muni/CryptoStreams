@@ -207,7 +207,7 @@ inline uint32_t make_uint32(uint8_t i0, uint8_t i1, uint8_t i2, uint8_t i3)
        uint32_t L, R;
        load_be(in + BLOCK_SIZE*(4*blocks4+i), L, R);
  
-       for(size_t r = 0; r != 32; ++r)
+       for(size_t r = 0; r != rounds; ++r)
           {
           L += (((R << 4) ^ (R >> 5)) + R) ^ EK[2*r];
           R += (((L << 4) ^ (L >> 5)) + L) ^ EK[2*r+1];
@@ -255,7 +255,7 @@ inline uint32_t make_uint32(uint8_t i0, uint8_t i1, uint8_t i2, uint8_t i3)
        uint32_t L, R;
        load_be(in + BLOCK_SIZE*(4*blocks4+i), L, R);
  
-       for(size_t r = 0; r != 32; ++r)
+       for(size_t r = 0; r != rounds; ++r)
           {
           R -= (((L << 4) ^ (L >> 5)) + L) ^ m_EK[63 - 2*r];
           L -= (((R << 4) ^ (R >> 5)) + R) ^ m_EK[62 - 2*r];
