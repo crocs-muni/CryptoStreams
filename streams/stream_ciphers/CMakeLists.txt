@@ -40,8 +40,9 @@ add_library(stream_ciphers STATIC EXCLUDE_FROM_ALL
     estream/dicing/ecrypt-sync.h
     estream/decim/decimv2.h
     estream/decim/ecrypt-sync.h
-    estream/cryptmt/ecrypt-sync.h
-    estream/cryptmt/params.h
+    # Doesn't work on debian
+    # estream/cryptmt/ecrypt-sync.h
+    # estream/cryptmt/params.h
     estream/achterbahn/achterbahn.h
     estream/achterbahn/ecrypt-sync.h
     estream/abc/abc.h
@@ -89,7 +90,7 @@ add_library(stream_ciphers STATIC EXCLUDE_FROM_ALL
     estream/dragon/dragon-sboxes.cpp
     estream/dicing/dicing-v2.cpp
     estream/decim/decim-v2.cpp
-    estream/cryptmt/cryptmt-v3.cpp
+    # estream/cryptmt/cryptmt-v3.cpp # Doesn't work on debian
     estream/achterbahn/achterbahn-128-80.cpp
     estream/abc/abc-v3.cpp
     estream/trivium/trivium.cpp
