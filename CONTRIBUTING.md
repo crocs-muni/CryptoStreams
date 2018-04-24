@@ -2,7 +2,7 @@
 
 ### I am a student (doing thesis)
 
-Write Petr Svenda <xsvenda@fi.muni.cz> for permissions for CRoCS randomness testing repositories.
+Write Petr Svenda <svenda@fi.muni.cz> for permissions for CRoCS randomness testing repositories.
 
 ### I am a cryptologist, I have a cipher for your tool
 
@@ -10,7 +10,7 @@ Great, we are glad to hear that. Look for example [block cipher](https://github.
 
 ### Other, I would like to help
 
-We suggest you start with ["good first issue"](https://github.com/crocs-muni/CryptoStreams/issues). Please, comment the issue to mark it as "in progress" by you. If you have any questions, discuss it in the issue. Push the changes as pull request with an overview of the changes. If you have a more general problem, write Petr Svenda <xsvenda@fi.muni.cz>.
+We suggest you start with ["good first issue"](https://github.com/crocs-muni/CryptoStreams/issues). Please, comment the issue to mark it as "in progress" by you. If you have any questions, discuss it in the issue. Push the changes as pull request with an overview of the changes. If you have a more general problem, write Petr Svenda <svenda@fi.muni.cz>.
 
 ## Submitting issues
 
