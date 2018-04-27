@@ -10,21 +10,44 @@ matrix:
         apt:
           sources: ['ubuntu-toolchain-r-test']
           packages: ['g++-5']
-      env: [CC_COMPILER=gcc-5, CXX_COMPILER=g++-5, BUILD_testsuite=ON, TEST_COMMAND=./testsuite]
+      env: [CC_COMPILER=gcc-5, CXX_COMPILER=g++-5, BUILD_testsuite=ON, TEST_COMMAND=./testsuite, BUILD_TYPE=gcc]
     - os: linux
       compiler: clang-3.7
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
           packages: ['g++-5', 'clang-3.7']
-      env: [CC_COMPILER=clang-3.7, CXX_COMPILER=clang++-3.7, BUILD_testsuite=ON, TEST_COMMAND=./testsuite]
+      env: [CC_COMPILER=clang-3.7, CXX_COMPILER=clang++-3.7, BUILD_testsuite=ON, TEST_COMMAND=./testsuite, BUILD_TYPE=clang_basic]
+    - os: linux
+      compiler: clang-6.0
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0']
+          packages: ['g++-5', 'clang-6.0']
+      env:
+        - CC_COMPILER=clang-6.0
+        - CXX_COMPILER=clang++-6.0
+        - BUILD_testsuite=ON
+        - TEST_COMMAND=./testsuite
+        - BUILD_TYPE=clang_asan
 
 before_script:
   - wget --no-check-certificate https://cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.sh
   - sh cmake-3.5.2-Linux-x86_64.sh --exclude-subdir --prefix=$HOME
+  - |
+    if [ "$BUILD_TYPE" = "clang_asan" ]; then
+      export CFLAGS="-fno-omit-frame-pointer -fsanitize=address"
+      export LDFLAGS="-fno-omit-frame-pointer -fsanitize=address"
+    fi
 
 script:
   - mkdir -p build && cd build
-  - CC=$CC_COMPILER CXX=$CXX_COMPILER cmake .. -DCMAKE_BUILD_TYPE=Debug -DBUILD_testsuite=$BUILD_testsuite
+  - |
+    CC=$CC_COMPILER CXX=$CXX_COMPILER \
+        cmake .. \
+        -DCMAKE_BUILD_TYPE=Debug \
+        -DCMAKE_CXX_FLAGS_DEBUG="${CMAKE_CXX_FLAGS_DEBUG} $CFLAGS" \
+        -DCMAKE_LINKER_FLAGS_DEBUG="${DCMAKE_LINKER_FLAGS_DEBUG} $LDFLAGS" \
+        -DBUILD_testsuite=$BUILD_testsuite
   - make
   - $TEST_COMMAND
