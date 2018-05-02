@@ -30,6 +30,30 @@ matrix:
         - BUILD_testsuite=ON
         - TEST_COMMAND=./testsuite
         - BUILD_TYPE=clang_asan
+    - os: linux
+      compiler: clang-6.0
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0']
+          packages: ['g++-5', 'clang-6.0']
+      env:
+        - CC_COMPILER=clang-6.0
+        - CXX_COMPILER=clang++-6.0
+        - BUILD_testsuite=ON
+        - TEST_COMMAND=./testsuite
+        - BUILD_TYPE=clang_msan
+    - os: linux
+      compiler: clang-6.0
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0']
+          packages: ['g++-5', 'clang-6.0']
+      env:
+        - CC_COMPILER=clang-6.0
+        - CXX_COMPILER=clang++-6.0
+        - BUILD_testsuite=ON
+        - TEST_COMMAND=./testsuite
+        - BUILD_TYPE=clang_ubsan
 
 before_script:
   - wget --no-check-certificate https://cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.sh
@@ -38,6 +62,16 @@ before_script:
     if [ "$BUILD_TYPE" = "clang_asan" ]; then
       export CFLAGS="-fno-omit-frame-pointer -fsanitize=address"
       export LDFLAGS="-fno-omit-frame-pointer -fsanitize=address"
+    fi
+  - |
+    if [ "$BUILD_TYPE" = "clang_msan" ]; then
+      export CFLAGS="-fno-omit-frame-pointer -fsanitize=memory"
+      export LDFLAGS="-fno-omit-frame-pointer -fsanitize=memory"
+    fi
+  - |
+    if [ "$BUILD_TYPE" = "clang_ubsan" ]; then
+      export CFLAGS="-fno-omit-frame-pointer -fsanitize=undefined"
+      export LDFLAGS="-fno-omit-frame-pointer -fsanitize=undefined"
     fi
 
 script:
