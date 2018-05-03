@@ -52,7 +52,7 @@ matrix:
         - CC_COMPILER=clang-6.0
         - CXX_COMPILER=clang++-6.0
         - BUILD_testsuite=ON
-        - TEST_COMMAND=./testsuite | tee >(grep error > ubsan_errors.log) && cat ubsan_errors.log && if [[ -s ubsan_errors.log ]] ; then exit 1 ; fi
+        - TEST_COMMAND=./testsuite > testsuite.log 2>&1 ; cat testsuite.log && ! grep error testsuite.log
         - BUILD_TYPE=clang_ubsan
 
 before_script:
