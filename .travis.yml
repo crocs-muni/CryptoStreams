@@ -52,7 +52,7 @@ matrix:
         - CC_COMPILER=clang-6.0
         - CXX_COMPILER=clang++-6.0
         - BUILD_testsuite=ON
-        - TEST_COMMAND=./testsuite
+        - TEST_COMMAND=./testsuite | tee >(grep error > ubsan_errors.log) && cat ubsan_errors.log && if [[ -s ubsan_errors.log ]] ; then exit 1 ; fi
         - BUILD_TYPE=clang_ubsan
 
 before_script:
@@ -70,8 +70,8 @@ before_script:
     fi
   - |
     if [ "$BUILD_TYPE" = "clang_ubsan" ]; then
-      export CFLAGS="-fno-omit-frame-pointer -fsanitize=undefined"
-      export LDFLAGS="-fno-omit-frame-pointer -fsanitize=undefined"
+      export CFLAGS="-fno-omit-frame-pointer -fsanitize=undefined -fsanitize=integer -fsanitize=nullability"
+      export LDFLAGS="-fno-omit-frame-pointer -fsanitize=undefined -fsanitize=integer -fsanitize=nullability"
     fi
 
 script:
