@@ -281,8 +281,10 @@ std::unique_ptr<stream> make_stream(const json &config,
         const std::size_t pos = std::size_t(config.at("position"));
         return std::make_unique<column_fixed_position_stream>(config, seeder, osize, pos);
     }
+    else if (type == "square_lsb_msb_xor")
+        return std::make_unique<square_lsb_msb_xor>(config, seeder, osize);
 
-        // cryptoprimitives
+    // cryptoprimitives
 #if (BUILD_testsuite && TEST_STREAM)
     else if (type == "test_stream")
         return std::make_unique<testsuite::test_stream>(config);

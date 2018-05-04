@@ -286,3 +286,42 @@ TEST(rho_streams, aes_vector) {
         std::copy(tested_view.begin(), tested_view.end(), prev.begin());
     }
 }
+
+TEST(square_lsb_msb_xor, aes_vector) {
+    const json json_config = {{"type", "square_lsb_msb_xor"},
+                              {"size", 16},
+                              {"source",
+                               {{"type", "block"},
+                                {"init_frequency", "only_once"},
+                                {"algorithm", "AES"},
+                                {"round", 10},
+                                {"block_size", 16},
+                                {"plaintext", {{"type", "counter"}}},
+                                {"key_size", 16},
+                                {"key", {{"type", "false_stream"}}},
+                                {"iv", {{"type", "false_stream"}}}}}};
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+
+    EXPECT_THROW(make_stream(json_config, seeder, 3), std::runtime_error); // 128 % 3 != 0
+    EXPECT_THROW(make_stream(json_config, seeder, 16), std::runtime_error); // 16 B is not supported
+    std::unique_ptr<stream> tested_stream = make_stream(json_config, seeder, 8);
+
+    vec_cview view = tested_stream->next();
+    std::vector<value_type> expected_data = {
+        0x4f, 0xdd, 0x3b, 0x37, 0x96, 0x9e, 0x6c, 0xd6
+    };
+    ASSERT_EQ(expected_data, view.copy_to_vector());
+
+    view = tested_stream->next();
+    expected_data = {
+        0x26, 0x55, 0x70, 0x9c, 0x04, 0xb6, 0x43, 0x6b
+    };
+    ASSERT_EQ(expected_data, view.copy_to_vector());
+
+    view = tested_stream->next();
+    expected_data = {
+        0xc1, 0x10, 0x64, 0x17, 0x27, 0x92, 0xac, 0xf2
+    };
+    ASSERT_EQ(expected_data, view.copy_to_vector());
+}

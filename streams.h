@@ -481,6 +481,63 @@ private:
 };
 
 /**
+ * @brief Stream with bits generated according to exponential distribution.
+ */
+struct square_lsb_msb_xor : stream {
+    template <typename Seeder>
+    square_lsb_msb_xor(const json &config, Seeder &&seeder, const std::size_t osize)
+        : stream(osize)
+        , _source(make_stream(config.at("source"), seeder, std::size_t(config.at("size"))))
+        , _current_pos(0)
+        , _input(_source->next()) {
+        if (osize > 8) {
+            throw std::runtime_error("The postprocessing allows only osize up to 8 bytes");
+        }
+        if (std::size_t(config.at("size")) % osize) {
+            throw std::runtime_error("The input-size has to be multiple of output-size");
+        }
+
+    }
+
+    vec_cview next() override {
+        if (_current_pos == _source->osize()) {
+            _input = _source->next();
+            _current_pos = 0;
+        }
+
+        // load single input
+        unsigned __int128 current_value = 0;
+        for (unsigned i = 0; i < osize(); ++i) {
+            current_value <<= 8;
+            current_value += _input[_current_pos];
+            ++_current_pos;
+        }
+
+        // no overflow here, as osize() <= 8
+        unsigned __int128 square = current_value * current_value;
+
+
+        unsigned __int128 left = square >> (osize() * 8);
+        unsigned __int128 right = (square << (osize() * 8)) >> (osize() * 8);
+        unsigned __int128 xored = left ^ right;
+
+        // store it
+        for (unsigned i = 0; i < osize(); ++i) {
+            unsigned pos = (osize() - 1 - i);
+            _data[pos] = xored & 0xFF;
+            xored >>= 8;
+        }
+
+        return make_cview(_data);
+    }
+
+private:
+    std::unique_ptr<stream> _source;
+    std::size_t _current_pos;
+    vec_cview _input;
+};
+
+/**
  * \brief Stream of true bits
  */
 using true_stream = _impl::const_stream<std::numeric_limits<std::uint8_t>::max()>;
