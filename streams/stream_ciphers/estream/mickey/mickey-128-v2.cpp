@@ -256,7 +256,7 @@ void ECRYPT_Mickey::MICKEY_process_bytes(int action, /* 0 = encrypt; 1 = decrypt
     for (i = 0; i < msglen; i++) {
         output[i] = input[i];
         // numRounds = 8; // default
-        for (j = 0; j < _rounds; j++)
+        for (j = 0; j < 8; j++)
             output[i] ^= CLOCK_KG(ctx, 0, 0) << (7 - j);
     }
 }
@@ -273,7 +273,7 @@ void ECRYPT_Mickey::MICKEY_keystream_bytes(MICKEY_ctx* ctx,
     for (i = 0; i < length; i++) {
         keystream[i] = 0;
 
-        for (j = 0; j < _rounds; j++)
+        for (j = 0; j < 8; j++)
             keystream[i] ^= CLOCK_KG(ctx, 0, 0) << (7 - j);
     }
 }
