@@ -29,6 +29,14 @@ struct block_cipher {
     virtual void encrypt(const std::uint8_t *plaintext, std::uint8_t *ciphertext) = 0;
     virtual void decrypt(const std::uint8_t *ciphertext, std::uint8_t *plaintext) = 0;
 
+    void crypt(const std::uint8_t *in, std::uint8_t *out, const bool run_encryption = true) {
+        if (run_encryption) {
+            encrypt(in, out);
+        } else {
+            decrypt(in, out);
+        }
+    }
+
 protected:
     std::size_t _rounds;
 };
