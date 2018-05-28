@@ -5,7 +5,7 @@
 
 #include "estream/abc/ecrypt-sync.h"
 #include "estream/achterbahn/ecrypt-sync.h"
-#include "estream/cryptmt/ecrypt-sync.h"
+// #include "estream/cryptmt/ecrypt-sync.h" // Doesn't work on debian
 #include "estream/decim/ecrypt-sync.h"
 #include "estream/dicing/ecrypt-sync.h"
 #include "estream/dragon/ecrypt-sync.h"
@@ -42,7 +42,7 @@ std::unique_ptr<stream_interface> create_stream_cipher(const std::string &name,
     // eSTREAM
     if (name == "ABC")              return std::make_unique<estream::ECRYPT_ABC>();
     if (name == "Achterbahn")       return std::make_unique<estream::ECRYPT_Achterbahn>();
-    if (name == "CryptMT")          return std::make_unique<estream::ECRYPT_Cryptmt>();
+    // if (name == "CryptMT")          return std::make_unique<estream::ECRYPT_Cryptmt>(); // Doesn't work on debian
     if (name == "DECIM")            return std::make_unique<estream::ECRYPT_Decim>(round);
     if (name == "DICING")           return std::make_unique<estream::ECRYPT_Dicing>();
     if (name == "Dragon")           return std::make_unique<estream::ECRYPT_Dragon>(round);

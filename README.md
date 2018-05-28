@@ -19,12 +19,15 @@ For more information and details see [project wiki pages](https://github.com/cro
 The framework is developed at the [Centre for Research on Cryptography and Security (formerly Laboratory of Security and Applied Cryptography)](https://www.fi.muni.cz/research/crocs/), [Masaryk University](http://www.muni.cz/), Brno, Czech Republic.
 
 * **Radka Cieslarová** 2015-now (heatmaps ‒ fine-grained function reduction)
-* **Ondrej Dubovec** 2011-2012 (SHA-3 candidates)
-* **Michal Hajas** 2015-now (generator ‒ CAESAR, PRNG)
-* **Karel Kubíček** 2014-now (generator ‒ streams, well-known functions, fix eSTREAM and SHA-3 finalists)
-* **Jiří Novotný** 2014-now (build system)
-* **Matěj Prišťák** 2011-2012 (eStream candidates testing)
+* **Michal Hajas** 2015-now (generator ‒ PRNG, tests)
+* **Dušan Klinec** 2017-now (large number of cryptoprimitives)
+* **Karel Kubíček** 2014-now (initial idea, block ciphers, main developer)
+* **Tamás Rózsa** 2017-now (older cryptoprimitives, visualisation)
 * **Petr Švenda** 2008-now (project lead, initial implementation)
+
+* **Ondrej Dubovec** 2011-2012 (SHA-3 candidates)
+* **Jiří Novotný** 2014-2017 (build system, core library)
+* **Matěj Prišťák** 2011-2012 (eStream candidates testing)
 * **Martin Ukrop** 2012-2016 (SHA-3 & CAESAR candidates)
 
 EACirc developers:
