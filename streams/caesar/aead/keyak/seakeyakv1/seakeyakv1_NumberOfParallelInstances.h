@@ -1,1 +1,0 @@
-#define NumberOfParallelInstances 2
