@@ -34,6 +34,7 @@ private:
     std::unique_ptr<stream> _iv;
     std::unique_ptr<stream> _key;
 
+    const bool _run_encryption;
     std::unique_ptr<block_cipher> _encryptor;
     stream *_prepared_stream_source;
 };

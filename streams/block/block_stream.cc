@@ -37,11 +37,12 @@ block_stream::block_stream(const json &config,
     , _source(make_stream(config.at("plaintext"), seeder, osize))
     , _iv(make_stream(config.at("iv"), seeder, _block_size))
     , _key(make_stream(config.at("key"), seeder, unsigned(config.at("key_size"))))
+    , _run_encryption(config.value("encryption_mode", true))
     , _encryptor(make_block_cipher(config.at("algorithm"),
                                    unsigned(_round),
                                    unsigned(_block_size),
                                    unsigned(config.at("key_size")),
-                                   true))
+                                   _run_encryption))
     , _prepared_stream_source(!plt_stream ? nullptr : *plt_stream) {
     logger::info() << "stream source is block cipher: " << config.at("algorithm") << std::endl;
 
@@ -79,7 +80,7 @@ vec_cview block_stream::next() {
         vec_cview view = get_next_ptx();
         for (auto ptx_beg = view.begin(); ptx_beg != view.end() and ctx_beg != _data.end();
              ptx_beg += _block_size, ctx_beg += _block_size) {
-            _encryptor->encrypt(&(*ptx_beg), &(*ctx_beg));
+            _encryptor->crypt(&(*ptx_beg), &(*ctx_beg), _run_encryption);
         }
     }
 
