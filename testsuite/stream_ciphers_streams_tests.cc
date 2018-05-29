@@ -38,7 +38,7 @@ TEST(lex, test_vectors) {
 }
 
 TEST(mickey, test_vectors) {
-    testsuite::stream_cipher_test_case("MICKEY", 8)();
+    testsuite::stream_cipher_test_case("MICKEY", 1)();
 }
 
 TEST(salsa20, test_vectors) {
