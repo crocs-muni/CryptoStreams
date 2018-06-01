@@ -20,7 +20,7 @@ namespace prng {
     /**
      * TODO docs
      */
-    class uxorshift_generator : public uniform_generator_interface<uint32_t> {
+    class uxorshift_generator : public uniform_generator_interface<4> {
 
     public:
         explicit uxorshift_generator(const json& config, default_seed_source &seeder, bool reseed = false, bool include_seed = false)

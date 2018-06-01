@@ -22,7 +22,7 @@ namespace prng {
      *
      * s : initial state
      */
-    class ulcg_generator : public uniform_generator_interface<uint64_t> {
+    class ulcg_generator : public uniform_generator_interface<7> {
     public:
         ulcg_generator(const json &config, default_seed_source &seeder, int64_t m = 9223372036854775783, int64_t a = 4645906587823291368, int64_t c = 0) : ulcg_generator( // 7B seed and each output has 8B
                 make_stream(config.at("seeder"), seeder, get_viable_number_of_bytes(m)), config.value("reseed_for_each_test_vector", false), config.value("include_seed_in_output", false), m, a, c) {}

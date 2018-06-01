@@ -24,7 +24,7 @@ namespace prng {
      *
      * source of parameters: https://dl.acm.org/citation.cfm?id=169698
      */
-    class umrg_generator : public uniform_generator_interface<uint64_t > {
+    class umrg_generator : public uniform_generator_interface<7> {
     public:
         explicit umrg_generator(const json& config, default_seed_source &seeder, bool reseed = false, bool include_seed = false, uint64_t m = 9223372036854775783,
                                 std::vector<long> a = {2975962250, 2909704450})

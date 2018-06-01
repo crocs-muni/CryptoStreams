@@ -12,7 +12,7 @@ extern "C" {
 
 namespace prng {
 
-    template<typename GENERATOR, typename DELETER, typename OUTPUT_TYPE>
+    template<typename GENERATOR, typename DELETER, std::uint8_t OUTPUT_SIZE>
     class testu01_interface : public prng_interface {
     protected:
         std::function<std::unique_ptr<GENERATOR, DELETER>(const value_type *)> _generator_creator;
@@ -44,15 +44,19 @@ namespace prng {
 
             while (number_of_bytes > 0) {
 
-                OUTPUT_TYPE generated_data = _generator->GetBits(_generator->param,
+                uint64_t generated_data = _generator->GetBits(_generator->param,
                                                               _generator->state); // Get new Bytes from generator
 
-                for (auto i = 0; i < std::min<size_t>(number_of_bytes, sizeof(OUTPUT_TYPE)); i++) {
+                for (auto i = 0; i < sizeof(uint64_t) - OUTPUT_SIZE; i++) {
+                    generated_data >>= 8;
+                }
+
+                for (auto i = 0; i < std::min<size_t>(number_of_bytes, OUTPUT_SIZE); i++) {
                     data[current_index++] = static_cast<std::uint8_t>(generated_data & 0xFF);
                     generated_data >>= 8;
                 }
 
-                number_of_bytes -= std::min<size_t>(number_of_bytes, sizeof(OUTPUT_TYPE));
+                number_of_bytes -= std::min<size_t>(number_of_bytes, OUTPUT_SIZE);
             }
 
             if (_reseed_for_each_test_vector) {
@@ -99,12 +103,12 @@ namespace prng {
         }
     };
 
-    template <typename OUTPUT_TYPE>
-    class uniform_generator_interface : public testu01_interface<unif01_Gen, void (*)(unif01_Gen *), OUTPUT_TYPE> {
+    template <uint8_t OUTPUT_SIZE>
+    class uniform_generator_interface : public testu01_interface<unif01_Gen, void (*)(unif01_Gen *), OUTPUT_SIZE> {
     public:
         uniform_generator_interface(const std::function<std::unique_ptr<unif01_Gen, void (*)(unif01_Gen *)>(
                                             const value_type *)> &creator, std::unique_ptr<stream> &seeder, bool reseed_for_each_test_vector, bool include_seed)
-                : testu01_interface<unif01_Gen, void (*)(unif01_Gen *), OUTPUT_TYPE>(creator, seeder, reseed_for_each_test_vector, include_seed) {}
+                : testu01_interface<unif01_Gen, void (*)(unif01_Gen *), OUTPUT_SIZE>(creator, seeder, reseed_for_each_test_vector, include_seed) {}
     };
 }
 
