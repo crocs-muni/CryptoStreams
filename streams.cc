@@ -217,7 +217,7 @@ std::unique_ptr<stream> make_stream(const json &config,
                                     core::optional<stream *> stream) {
     const std::string type = config.at("type");
 
-    if (osize == 0)
+    if (osize == 0 and type != "dummy_stream") // we allow dummy stream with 0 size
         throw std::runtime_error("Stream " + type + " cannot have osize 0.");
 
     // trivial source only streams
