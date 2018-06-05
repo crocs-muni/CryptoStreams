@@ -38,13 +38,13 @@ static void arcfour_key_setup(std::uint8_t state[state_size], const std::uint8_t
 
 // This does not hold state between calls. It always generates the
 // stream starting from the first  output byte.
-static void arcfour_generate_stream(std::uint8_t state[], std::uint8_t out[], const size_t len)
+// indices i and j has to be part of internal state - they were added to the former API
+static void arcfour_generate_stream(std::uint8_t state[], std::uint8_t out[], const size_t len, int &i, int &j)
 {
-    int i, j;
     size_t idx;
     std::uint8_t t;
 
-    for (idx = 0, i = 0, j = 0; idx < len; ++idx)  {
+    for (idx = 0; idx < len; ++idx)  {
         i = (i + 1) % 256;
         j = (j + state[i]) % 256;
         t = state[i];
@@ -67,7 +67,7 @@ void rc4::ivsetup(const u8* iv) { }
 void rc4::encrypt_bytes(const u8 *plaintext, u8 *ciphertext, const u32 ptx_size) {
     // prepare stream
     auto stream = std::make_unique<std::uint8_t[]>(ptx_size);
-    arcfour_generate_stream(_ctx.state, stream.get(), ptx_size);
+    arcfour_generate_stream(_ctx.state, stream.get(), ptx_size, _ctx.i, _ctx.j);
     // xor it with input
     for (unsigned i = 0; i < ptx_size; ++i) {
         ciphertext[i] = plaintext[i] ^ stream[i];
