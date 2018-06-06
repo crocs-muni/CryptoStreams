@@ -17,12 +17,12 @@ class rc4 : public stream_interface {
     struct rc4_ctx {
 
         rc4_ctx()
-            : state{0}
-            , key_size(0) {}
+            : state{0} {}
 
         std::uint8_t state[256];
         std::unique_ptr<std::uint8_t[]> key;
         std::uint32_t key_size;
+        int i, j;
     } _ctx;
 
 public:

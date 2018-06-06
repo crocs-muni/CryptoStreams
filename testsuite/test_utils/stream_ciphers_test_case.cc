@@ -13,14 +13,13 @@ const json stream_cipher_test_case::base_config = {
     {"key", {{"type", "test_stream"}}},
 };
 
-void stream_cipher_test_case::test(
-    std::unique_ptr<stream_ciphers::stream_interface> &encryptor) const {
+void stream_cipher_test_case::test_encryption() const {
     size_t size = _plaintext.size();
     std::vector<value_type> cipher(size);
 
-    encryptor->keysetup(_key.data(), unsigned(_key.size() * 8), unsigned(_iv.size() * 8));
-    encryptor->ivsetup(_iv.data());
-    encryptor->encrypt_bytes(_plaintext.data(), cipher.data(), unsigned(_plaintext.size()));
+    _cipher->keysetup(_key.data(), unsigned(_key.size() * 8), unsigned(_iv.size() * 8));
+    _cipher->ivsetup(_iv.data());
+    _cipher->encrypt_bytes(_plaintext.data(), cipher.data(), unsigned(_plaintext.size()));
 
     std::stringstream ss;
 
@@ -53,7 +52,7 @@ std::unique_ptr<stream> stream_cipher_test_case::prepare_stream() {
     return make_stream(_stream_config, seeder, block_size());
 }
 
-void stream_cipher_test_case::test(
+void stream_cipher_test_case::test_decryption(
     std::unique_ptr<stream> &&encryptor,
     std::unique_ptr<stream_ciphers::stream_interface> &decryptor) const {
     vec_cview ciphertext = encryptor->next();
@@ -74,10 +73,12 @@ void stream_cipher_test_case::operator()() {
     _test_vectors_tested = 0;
     while (_test_vectors >> *this) {
         _test_vectors_tested++;
-        test(_cipher);
+        test_encryption();
         auto stream = prepare_stream();
         test_case::test(stream);
-        test(prepare_stream(), _cipher);
+        test_decryption(prepare_stream(), _cipher);
+        // specific for stream ciphers:
+        test_different_block_length();
     }
 
     std::cout << "Number of test vectors tested for function: \"" << _algorithm << "\"[" << _round
@@ -112,6 +113,23 @@ void stream_cipher_test_case::compare_ciphertext(const std::string &actual) cons
                   std::get<1>(tuple)); // *2 because sequence starts at std::get<0>(tuple) byte, but
                                        // we are storing each byte on two bytes f. e. FF
     }
+}
+
+void stream_cipher_test_case::test_different_block_length() {
+    _cipher->init();
+    _cipher->keysetup(_key.data(), unsigned(_key.size() * 8), unsigned(_iv.size() * 8));
+    _cipher->ivsetup(_iv.data());
+
+    uint8_t ctx;
+    std::stringstream ss;
+
+    for (auto& ptx : _plaintext) {
+        _cipher->encrypt_bytes(&ptx, &ctx, 1);
+        ss << std::setfill('0') << std::setw(2) << std::hex << int(ctx);
+    }
+
+    std::string ciphertext_str = ss.str();
+    compare_ciphertext(ciphertext_str);
 }
 
 std::istream &operator>>(std::istream &input, stream_cipher_test_case &test_case) {
