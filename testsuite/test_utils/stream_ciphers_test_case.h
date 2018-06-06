@@ -23,6 +23,12 @@ private:
     void compare_ciphertext(const std::string &actual) const;
 
     /**
+     * @brief test_different_block_length tests if encryption byte by byte is same to whole
+     * encryption in one
+     */
+    void test_different_block_length();
+
+    /**
      * cipher text in form of tuples <index where begins ciphertext, ciphertext>
      * for long ciphertext testvectors contains more tuples, if whole ciphertext is given
      * this structure contains only one tuple <0, ciphertext>
@@ -80,7 +86,7 @@ public:
      * Test raw function with current test vector
      * @param encryptor
      */
-    void test(std::unique_ptr<stream_ciphers::stream_interface> &encryptor) const;
+    void test_encryption() const;
 
     /**
      * Test stream for current function with current test vector
@@ -88,7 +94,7 @@ public:
      * @param encryptor Stream for current function
      * @param decryptor Pointer to raw function instance
      */
-    void test(std::unique_ptr<stream> &&encryptor,
+    void test_decryption(std::unique_ptr<stream> &&encryptor,
               std::unique_ptr<stream_ciphers::stream_interface> &decryptor) const;
 
     /**
