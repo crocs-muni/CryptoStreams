@@ -55,6 +55,8 @@ static void arcfour_generate_stream(std::uint8_t state[], std::uint8_t out[], co
 }
 
 void rc4::keysetup(const u8* key, const u32 key_bitsize, const u32 iv_bitsize) {
+    _ctx.i = 0;
+    _ctx.j = 0;
     _ctx.key = std::make_unique<std::uint8_t[]>(key_bitsize / 8);
     std::copy_n(key, key_bitsize / 8, _ctx.key.get());
     arcfour_key_setup(_ctx.state, _ctx.key.get(), int(key_bitsize / 8));
