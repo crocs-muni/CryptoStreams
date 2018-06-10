@@ -14,6 +14,8 @@ namespace prng {
 
     std::unique_ptr<prng_interface>
     create_testu01_interface(const json& configuration, default_seed_source& seeder);
+    std::unique_ptr<prng_interface>
+    create_std_prng_interface(const json& configuration, default_seed_source& seeder);
 
     class prng_factory {
 
@@ -25,7 +27,12 @@ namespace prng {
         std::unique_ptr<prng_interface> create_prng_interface(const json& configuration, default_seed_source& seeder) {
             if(configuration.at("algorithm").get<std::string>().find("testu01") == 0) {
                 return create_testu01_interface(configuration, seeder);
+            } else if (configuration.at("algorithm").get<std::string>().find("std") == 0) {
+                return create_std_prng_interface(configuration, seeder);
             }
+
+            throw std::runtime_error("requested prng named \"" + configuration.at("algorithm").get<std::string>() +
+                                     "\" is either broken or does not exists");
         }
 
         std::unique_ptr<prng_interface> _generator;

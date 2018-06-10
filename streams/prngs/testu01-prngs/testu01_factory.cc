@@ -1,8 +1,6 @@
 //
 // Created by mhajas on 11/14/17.
 //
-#pragma once
-
 #include <memory>
 #include <streams/prngs/prng_interface.h>
 #include <eacirc-core/json.h>

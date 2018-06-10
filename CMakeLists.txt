@@ -83,6 +83,7 @@ if (BUILD_testsuite)
             testsuite/stream_ciphers_streams_tests.cc
             testsuite/block_streams_tests.cc
             testsuite/testu01_prng_tests.cc
+            testsuite/std_prng_tests.cc
             testsuite/test_utils/test_streams
             testsuite/test_utils/hash_test_case
             testsuite/test_utils/stream_ciphers_test_case

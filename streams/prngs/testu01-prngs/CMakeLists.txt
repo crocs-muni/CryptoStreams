@@ -10,7 +10,7 @@ add_library(testu01-prngs STATIC EXCLUDE_FROM_ALL
         ${testu01-includes}
 
         # interface
-        testu01_factory.h
+        testu01_factory.cc
         testu01_interface.h
 
         # unif01

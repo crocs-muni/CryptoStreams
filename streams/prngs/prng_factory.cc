@@ -4,7 +4,6 @@
 
 #include "prng_factory.h"
 #include <memory.h>
-#include <streams/prngs/testu01-prngs/testu01_factory.h>
 namespace prng {
 
     prng_factory::prng_factory(const json& config, default_seed_source& seeder)
