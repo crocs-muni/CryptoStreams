@@ -236,6 +236,18 @@ pipe_in_stream::pipe_in_stream(
     }
 }
 
+tuple_stream::tuple_stream(
+    const nlohmann::json &config,
+    default_seed_source &seeder,
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+    const std::size_t osize)
+    : stream(osize) {
+    for (const auto &stream_cfg : config.at("sources")) {
+        _sources.push_back(make_stream(
+            stream_cfg, seeder, pipes, std::size_t(stream_cfg.value("output_size", 0))));
+    }
+}
+
 std::unique_ptr<stream>
 make_stream(const json &config,
             default_seed_source &seeder,
@@ -291,6 +303,8 @@ make_stream(const json &config,
         return std::make_unique<single_value_stream>(config.at("source"), seeder, pipes, osize);
     else if (type == "repeating_stream")
         return std::make_unique<repeating_stream>(config.at("source"), seeder, pipes, osize);
+    else if (type == "tuple_stream")
+        return std::make_unique<tuple_stream>(config.at("source"), seeder, pipes, osize);
 
     // pipes
     else if (type == "pipe_in_stream")

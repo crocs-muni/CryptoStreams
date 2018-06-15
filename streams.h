@@ -522,7 +522,8 @@ struct pipe_out_stream : stream {
         auto search = pipes.find(pipe_id);
         if (search == pipes.end()) {
             // pipe_id is not yet in hashtable, create new empty entry
-            _source = std::make_shared<std::unique_ptr<stream>>(std::unique_ptr<dummy_stream>(nullptr));
+            _source =
+                std::make_shared<std::unique_ptr<stream>>(std::unique_ptr<dummy_stream>(nullptr));
             pipes[pipe_id] = _source;
         } else {
             // pipe_id is in hashtable, use ptr from pipe_in
@@ -534,6 +535,28 @@ struct pipe_out_stream : stream {
 
 private:
     std::shared_ptr<std::unique_ptr<stream>> _source;
+};
+
+/**
+ * @brief Ordered tuple of streams
+ */
+struct tuple_stream : stream {
+    tuple_stream(const json &config,
+                 default_seed_source &seeder,
+                 std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+                 const std::size_t osize);
+
+    vec_cview next() override {
+        auto beg = _data.begin();
+        for (auto& source : _sources) {
+            vec_cview v = source->next();
+            copy(v.begin(), v.end(), beg);
+            beg += v.end() - v.begin();
+        }
+    }
+
+private:
+    std::vector<std::unique_ptr<stream>> _sources;
 };
 
 /**
