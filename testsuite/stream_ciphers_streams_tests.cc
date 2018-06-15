@@ -8,7 +8,7 @@
 #include <testsuite/test_utils/common_functions.h>
 #include <testsuite/test_utils/stream_ciphers_test_case.h>
 
-/*TEST(chacha, test_vectors) {
+TEST(chacha, test_vectors) {
     testsuite::stream_cipher_test_case("Chacha", 20)();
     testsuite::stream_cipher_test_case("Chacha", 12)();
 }
@@ -51,4 +51,4 @@ TEST(tsc4, test_vectors) {
 
 TEST(trivium, test_vectors) {
     testsuite::stream_cipher_test_case("Trivium", 9)();
-}*/
+}

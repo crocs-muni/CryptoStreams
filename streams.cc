@@ -97,38 +97,6 @@ vec_cview xor_stream::next() {
     return make_cview(_data);
 }
 
-// template <typename Seeder>
-// rnd_plt_ctx_stream::rnd_plt_ctx_stream(const nlohmann::json &config,
-//                                       Seeder &&seeder,
-//                                       const std::size_t osize)
-//    : stream(osize)
-//    , _rng(std::make_unique<pcg32_stream>(seeder, osize / 2))
-//    , _source(make_stream(config, seeder, osize / 2, core::optional<stream *>{_rng.get()})) {}
-
-// vec_cview rnd_plt_ctx_stream::next() {
-//    vec_cview ctx = _source->next();
-//    vec_cview ptx = _rng->get_data();
-
-//    std::copy_n(ptx.begin(), osize() / 2, _data.begin());
-//    std::copy_n(ctx.begin(), osize() / 2, _data.begin() + osize() / 2);
-
-//    return make_cview(_data);
-//}
-
-// template <typename Seeder>
-// rho_stream::rho_stream(const nlohmann::json &config, Seeder &&seeder, const std::size_t osize)
-//    : stream(osize)
-//    , _ptx(std::make_unique<dummy_stream>(osize))
-//    , _source(make_stream(config, seeder, osize, core::optional<stream *>{_ptx.get()})) {}
-
-// vec_cview rho_stream::next() {
-//    _ptx->set_data(make_cview(_data));
-//    vec_cview ctx = _source->next();
-
-//    std::copy(ctx.begin(), ctx.end(), _data.begin());
-//    return make_cview(_data);
-//}
-
 vec_cview hw_counter::next() {
     std::copy_n(_origin_data.begin(), osize(), _data.begin());
     for (const auto &pos : _cur_positions) {

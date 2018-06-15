@@ -139,38 +139,6 @@ private:
     std::unique_ptr<stream> _source;
 };
 
-///**
-// * @brief Stream XORing two parts of internal stream
-// */
-// struct rnd_plt_ctx_stream : stream {
-//    template <typename Seeder>
-//    rnd_plt_ctx_stream(const json &config, Seeder &&seeder, const std::size_t osize);
-
-//    vec_cview next() override;
-
-// private:
-//    std::unique_ptr<stream> _rng;
-//    std::unique_ptr<stream> _source;
-//};
-
-///**
-// * @brief Stream for testing (Pollard) rho-method
-// *
-// * Stateful generator
-// * The last output is used as next input.
-// * Initially starts with vector of zeros.
-// */
-// struct rho_stream : stream {
-//    template <typename Seeder>
-//    rho_stream(const json &config, Seeder &&seeder, const std::size_t osize);
-
-//    vec_cview next() override;
-
-// private:
-//    std::unique_ptr<stream> _ptx;
-//    std::unique_ptr<stream> _source;
-//};
-
 /**
  * @brief Stream for testing strict avalanche criterion
  *
