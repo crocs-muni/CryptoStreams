@@ -286,12 +286,17 @@ make_stream(const json &config,
     else if (type == "exponential_distribution")
         return std::make_unique<exponential_distribution_stream>(config, seeder, osize);
 
-    // modifiers -- streams that has other stream as an input (but these are used as source before
-    // cipher)
+    // modifiers -- streams that has other stream as an input (but are used as source before cipher)
     else if (type == "single_value_stream")
         return std::make_unique<single_value_stream>(config.at("source"), seeder, pipes, osize);
     else if (type == "repeating_stream")
         return std::make_unique<repeating_stream>(config.at("source"), seeder, pipes, osize);
+
+    // pipes
+    else if (type == "pipe_in_stream")
+        return std::make_unique<pipe_in_stream>(config, seeder, pipes, osize);
+    else if (type == "pipe_out_stream")
+        return std::make_unique<pipe_out_stream>(config, pipes);
 
     // postprocessing modifiers -- streams that has cipher stream as an input
     else if (type == "xor_stream")
