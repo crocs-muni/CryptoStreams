@@ -77,7 +77,9 @@ std::unique_ptr<stream> block_test_case::prepare_stream() {
     }
 
     seed_seq_from<pcg32> seeder(seed1);
-    return make_stream(_stream_config, seeder, block_size);
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> map;
+
+    return make_stream(_stream_config, seeder, map, block_size);
 }
 
 std::istream &operator>>(std::istream &input, block_test_case &test_case) {

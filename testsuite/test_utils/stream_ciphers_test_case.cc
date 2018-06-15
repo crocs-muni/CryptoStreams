@@ -49,8 +49,9 @@ std::unique_ptr<stream> stream_cipher_test_case::prepare_stream() {
     _stream_config["block_size"] = block_size();
 
     seed_seq_from<pcg32> seeder(seed1);
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> map;
 
-    return make_stream(_stream_config, seeder, block_size());
+    return make_stream(_stream_config, seeder, map, block_size());
 }
 
 void stream_cipher_test_case::test(

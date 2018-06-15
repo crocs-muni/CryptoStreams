@@ -18,11 +18,13 @@ vec_cview file_stream::next() {
     return make_cview(_data);
 }
 
-single_value_stream::single_value_stream(const json &config,
-                                         default_seed_source &seeder,
-                                         const std::size_t osize)
+single_value_stream::single_value_stream(
+    const json &config,
+    default_seed_source &seeder,
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+    const std::size_t osize)
     : stream(osize) {
-    auto stream = make_stream(config, seeder, osize);
+    auto stream = make_stream(config, seeder, pipes, osize);
     vec_cview single_vector = stream->next();
     std::copy(single_vector.begin(), single_vector.end(), _data.begin());
 }
@@ -31,20 +33,14 @@ vec_cview single_value_stream::next() {
     return make_cview(_data);
 }
 
-repeating_stream::repeating_stream(const json &config,
-                                   default_seed_source &seeder,
-                                   const std::size_t osize)
+repeating_stream::repeating_stream(
+    const json &config,
+    default_seed_source &seeder,
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+    const std::size_t osize)
     : stream(osize)
-    , _source(make_stream(config.at("source"), seeder, osize))
+    , _source(make_stream(config.at("source"), seeder, pipes, osize))
     , _period(unsigned(config.value("period", 0)))
-    , _i(0) {}
-
-repeating_stream::repeating_stream(const std::size_t osize,
-                                   std::unique_ptr<stream> source,
-                                   const unsigned period)
-    : stream(osize)
-    , _source(std::move(source))
-    , _period(period)
     , _i(0) {}
 
 vec_cview repeating_stream::next() {
@@ -79,9 +75,13 @@ random_start_counter::random_start_counter(default_seed_source &seeder, const st
 }
 
 template <typename Seeder>
-xor_stream::xor_stream(const nlohmann::json &config, Seeder &&seeder, const std::size_t osize)
+xor_stream::xor_stream(
+    const json &config,
+    Seeder &&seeder,
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+    const std::size_t osize)
     : stream(osize)
-    , _source(make_stream(config.at("source"), seeder, osize * 2)) {}
+    , _source(make_stream(config.at("source"), seeder, pipes, osize * 2)) {}
 
 vec_cview xor_stream::next() {
     vec_cview in = _source->next();
@@ -97,37 +97,37 @@ vec_cview xor_stream::next() {
     return make_cview(_data);
 }
 
-template <typename Seeder>
-rnd_plt_ctx_stream::rnd_plt_ctx_stream(const nlohmann::json &config,
-                                       Seeder &&seeder,
-                                       const std::size_t osize)
-    : stream(osize)
-    , _rng(std::make_unique<pcg32_stream>(seeder, osize / 2))
-    , _source(make_stream(config, seeder, osize / 2, core::optional<stream *>{_rng.get()})) {}
+// template <typename Seeder>
+// rnd_plt_ctx_stream::rnd_plt_ctx_stream(const nlohmann::json &config,
+//                                       Seeder &&seeder,
+//                                       const std::size_t osize)
+//    : stream(osize)
+//    , _rng(std::make_unique<pcg32_stream>(seeder, osize / 2))
+//    , _source(make_stream(config, seeder, osize / 2, core::optional<stream *>{_rng.get()})) {}
 
-vec_cview rnd_plt_ctx_stream::next() {
-    vec_cview ctx = _source->next();
-    vec_cview ptx = _rng->get_data();
+// vec_cview rnd_plt_ctx_stream::next() {
+//    vec_cview ctx = _source->next();
+//    vec_cview ptx = _rng->get_data();
 
-    std::copy_n(ptx.begin(), osize() / 2, _data.begin());
-    std::copy_n(ctx.begin(), osize() / 2, _data.begin() + osize() / 2);
+//    std::copy_n(ptx.begin(), osize() / 2, _data.begin());
+//    std::copy_n(ctx.begin(), osize() / 2, _data.begin() + osize() / 2);
 
-    return make_cview(_data);
-}
+//    return make_cview(_data);
+//}
 
-template <typename Seeder>
-rho_stream::rho_stream(const nlohmann::json &config, Seeder &&seeder, const std::size_t osize)
-    : stream(osize)
-    , _ptx(std::make_unique<dummy_stream>(osize))
-    , _source(make_stream(config, seeder, osize, core::optional<stream *>{_ptx.get()})) {}
+// template <typename Seeder>
+// rho_stream::rho_stream(const nlohmann::json &config, Seeder &&seeder, const std::size_t osize)
+//    : stream(osize)
+//    , _ptx(std::make_unique<dummy_stream>(osize))
+//    , _source(make_stream(config, seeder, osize, core::optional<stream *>{_ptx.get()})) {}
 
-vec_cview rho_stream::next() {
-    _ptx->set_data(make_cview(_data));
-    vec_cview ctx = _source->next();
+// vec_cview rho_stream::next() {
+//    _ptx->set_data(make_cview(_data));
+//    vec_cview ctx = _source->next();
 
-    std::copy(ctx.begin(), ctx.end(), _data.begin());
-    return make_cview(_data);
-}
+//    std::copy(ctx.begin(), ctx.end(), _data.begin());
+//    return make_cview(_data);
+//}
 
 vec_cview hw_counter::next() {
     std::copy_n(_origin_data.begin(), osize(), _data.begin());
@@ -152,14 +152,16 @@ vec_cview hw_counter::next() {
     return make_cview(_data);
 }
 
-column_stream::column_stream(const json &config,
-                             default_seed_source &seeder,
-                             const std::size_t osize)
+column_stream::column_stream(
+    const json &config,
+    default_seed_source &seeder,
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+    const std::size_t osize)
     : stream(osize)
     , _internal_bit_size(std::size_t(config.at("size")) * 8)
     , _buf(_internal_bit_size)
     , _position(0)
-    , _source(make_stream(config.at("source"), seeder, _internal_bit_size / 8)) {
+    , _source(make_stream(config.at("source"), seeder, pipes, _internal_bit_size / 8)) {
     for (auto &v : _buf)
         v.resize(osize);
 }
@@ -187,13 +189,15 @@ vec_cview column_stream::next() {
     return make_cview(_buf[_position++]); // return and increment
 }
 
-column_fixed_position_stream::column_fixed_position_stream(const json &config,
-                                                           default_seed_source &seeder,
-                                                           const std::size_t osize,
-                                                           const std::size_t position)
+column_fixed_position_stream::column_fixed_position_stream(
+    const json &config,
+    default_seed_source &seeder,
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+    const std::size_t osize,
+    const std::size_t position)
     : stream(osize)
     , _position(position)
-    , _source(make_stream(config.at("source"), seeder, std::size_t(config.at("size")))) {}
+    , _source(make_stream(config.at("source"), seeder, pipes, std::size_t(config.at("size")))) {}
 
 vec_cview column_fixed_position_stream::next() {
     for (auto &val : _data)
@@ -211,10 +215,32 @@ vec_cview column_fixed_position_stream::next() {
     return make_cview(_data); // return and increment
 }
 
-std::unique_ptr<stream> make_stream(const json &config,
-                                    default_seed_source &seeder,
-                                    const std::size_t osize,
-                                    core::optional<stream *> stream) {
+pipe_in_stream::pipe_in_stream(
+    const nlohmann::json &config,
+    default_seed_source &seeder,
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+    const std::size_t osize)
+    : stream(0) {
+    std::string pipe_id = config.at("id");
+
+    auto search = pipes.find(pipe_id);
+    if (search == pipes.end()) {
+        // pipe_id is not yet in hashtable, create new entry
+        _source = std::make_shared<std::unique_ptr<stream>>(
+            make_stream(config.at("source"), seeder, pipes, osize));
+        pipes[pipe_id] = _source;
+    } else {
+        // pipe_id is in hashtable, update the entry for pipe_out
+        *pipes[pipe_id] = make_stream(config.at("source"), seeder, pipes, osize);
+        _source = pipes[pipe_id];
+    }
+}
+
+std::unique_ptr<stream>
+make_stream(const json &config,
+            default_seed_source &seeder,
+            std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+            const std::size_t osize) {
     const std::string type = config.at("type");
 
     if (osize == 0)
@@ -234,11 +260,6 @@ std::unique_ptr<stream> make_stream(const json &config,
     else if (type == "pcg32_stream" or type == "random_stream")
         return std::make_unique<pcg32_stream>(seeder, osize);
 
-    // types of plaintext (also only sources)
-    else if (type == "rnd_plt_ctx_stream")
-        return std::make_unique<rnd_plt_ctx_stream>(config.at("source"), seeder, osize);
-    else if (type == "rho_stream")
-        return std::make_unique<rho_stream>(config.at("source"), seeder, osize);
     else if (type == "counter")
         return std::make_unique<counter>(osize);
     else if (type == "random_start_counter")
@@ -268,37 +289,38 @@ std::unique_ptr<stream> make_stream(const json &config,
     // modifiers -- streams that has other stream as an input (but these are used as source before
     // cipher)
     else if (type == "single_value_stream")
-        return std::make_unique<single_value_stream>(config.at("source"), seeder, osize);
+        return std::make_unique<single_value_stream>(config.at("source"), seeder, pipes, osize);
     else if (type == "repeating_stream")
-        return std::make_unique<repeating_stream>(config.at("source"), seeder, osize);
+        return std::make_unique<repeating_stream>(config.at("source"), seeder, pipes, osize);
 
     // postprocessing modifiers -- streams that has cipher stream as an input
     else if (type == "xor_stream")
-        return std::make_unique<xor_stream>(config, seeder, osize);
+        return std::make_unique<xor_stream>(config, seeder, pipes, osize);
     else if (type == "column")
-        return std::make_unique<column_stream>(config, seeder, osize);
+        return std::make_unique<column_stream>(config, seeder, pipes, osize);
     else if (type == "column_fixed_position") {
         const std::size_t pos = std::size_t(config.at("position"));
-        return std::make_unique<column_fixed_position_stream>(config, seeder, osize, pos);
+        return std::make_unique<column_fixed_position_stream>(config, seeder, pipes, osize, pos);
     }
 
-        // cryptoprimitives
+    // mock streams for testing
 #if (BUILD_testsuite && TEST_STREAM)
     else if (type == "test_stream")
         return std::make_unique<testsuite::test_stream>(config);
 #endif
 
+        // cryptoprimitives streams
 #ifdef BUILD_stream_ciphers
     else if (type == "stream_cipher" or type == "estream")
-        return std::make_unique<stream_ciphers::stream_stream>(config, seeder, osize, stream);
+        return std::make_unique<stream_ciphers::stream_stream>(config, seeder, pipes, osize);
 #endif
 #ifdef BUILD_hash
     else if (type == "hash" || type == "sha3")
-        return std::make_unique<hash::hash_stream>(config, seeder, osize, stream);
+        return std::make_unique<hash::hash_stream>(config, seeder, pipes, osize);
 #endif
 #ifdef BUILD_block
     else if (type == "block")
-        return std::make_unique<block::block_stream>(config, seeder, osize, stream);
+        return std::make_unique<block::block_stream>(config, seeder, pipes, osize);
 #endif
     throw std::runtime_error("requested stream named \"" + type + "\" does not exist");
 }

@@ -80,10 +80,11 @@ private:
  * @brief Stream outputing a constant value for n iterations
  */
 struct repeating_stream : stream {
-    repeating_stream(const json &config, default_seed_source &seeder, const std::size_t osize);
-    repeating_stream(const std::size_t osize,
-                     std::unique_ptr<stream> source,
-                     const unsigned period);
+    repeating_stream(
+        const json &config,
+        default_seed_source &seeder,
+        std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+        const std::size_t osize);
 
     vec_cview next() override;
 
@@ -97,7 +98,11 @@ private:
  * @brief Stream outputing a constant value
  */
 struct single_value_stream : stream {
-    single_value_stream(const json &config, default_seed_source &seeder, const std::size_t osize);
+    single_value_stream(
+        const json &config,
+        default_seed_source &seeder,
+        std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+        const std::size_t osize);
 
     vec_cview next() override;
 };
@@ -123,7 +128,10 @@ struct random_start_counter : counter {
  */
 struct xor_stream : stream {
     template <typename Seeder>
-    xor_stream(const json &config, Seeder &&seeder, const std::size_t osize);
+    xor_stream(const json &config,
+               Seeder &&seeder,
+               std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+               const std::size_t osize);
 
     vec_cview next() override;
 
@@ -131,37 +139,37 @@ private:
     std::unique_ptr<stream> _source;
 };
 
-/**
- * @brief Stream XORing two parts of internal stream
- */
-struct rnd_plt_ctx_stream : stream {
-    template <typename Seeder>
-    rnd_plt_ctx_stream(const json &config, Seeder &&seeder, const std::size_t osize);
+///**
+// * @brief Stream XORing two parts of internal stream
+// */
+// struct rnd_plt_ctx_stream : stream {
+//    template <typename Seeder>
+//    rnd_plt_ctx_stream(const json &config, Seeder &&seeder, const std::size_t osize);
 
-    vec_cview next() override;
+//    vec_cview next() override;
 
-private:
-    std::unique_ptr<stream> _rng;
-    std::unique_ptr<stream> _source;
-};
+// private:
+//    std::unique_ptr<stream> _rng;
+//    std::unique_ptr<stream> _source;
+//};
 
-/**
- * @brief Stream for testing (Pollard) rho-method
- *
- * Stateful generator
- * The last output is used as next input.
- * Initially starts with vector of zeros.
- */
-struct rho_stream : stream {
-    template <typename Seeder>
-    rho_stream(const json &config, Seeder &&seeder, const std::size_t osize);
+///**
+// * @brief Stream for testing (Pollard) rho-method
+// *
+// * Stateful generator
+// * The last output is used as next input.
+// * Initially starts with vector of zeros.
+// */
+// struct rho_stream : stream {
+//    template <typename Seeder>
+//    rho_stream(const json &config, Seeder &&seeder, const std::size_t osize);
 
-    vec_cview next() override;
+//    vec_cview next() override;
 
-private:
-    std::unique_ptr<stream> _ptx;
-    std::unique_ptr<stream> _source;
-};
+// private:
+//    std::unique_ptr<stream> _ptx;
+//    std::unique_ptr<stream> _source;
+//};
 
 /**
  * @brief Stream for testing strict avalanche criterion
@@ -336,7 +344,10 @@ private:
 };
 
 struct column_stream : stream {
-    column_stream(const json &config, default_seed_source &seeder, const std::size_t osize);
+    column_stream(const json &config,
+                  default_seed_source &seeder,
+                  std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+                  const std::size_t osize);
 
     vec_cview next() override;
 
@@ -349,10 +360,12 @@ private:
 };
 
 struct column_fixed_position_stream : stream {
-    column_fixed_position_stream(const json &config,
-                                 default_seed_source &seeder,
-                                 const std::size_t osize,
-                                 const std::size_t position);
+    column_fixed_position_stream(
+        const json &config,
+        default_seed_source &seeder,
+        std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+        const std::size_t osize,
+        const std::size_t position);
 
     vec_cview next() override;
 
@@ -481,6 +494,49 @@ private:
 };
 
 /**
+ * @brief Pipe's sink - stores pointer on the intersnal stream to
+ * the pipes hashtable
+ */
+struct pipe_in_stream : stream {
+    pipe_in_stream(const json &config,
+                   default_seed_source &seeder,
+                   std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+                   const std::size_t osize);
+
+    vec_cview next() override { return (*_source)->next(); }
+
+private:
+    std::shared_ptr<std::unique_ptr<stream>> _source;
+};
+
+/**
+ * @brief Pipe's source
+ */
+struct pipe_out_stream : stream {
+    pipe_out_stream(
+        const json &config,
+        std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes)
+        : stream(0) {
+        std::string pipe_id = config.at("id");
+
+        auto search = pipes.find(pipe_id);
+        if (search == pipes.end()) {
+            // pipe_id is not yet in hashtable, create new empty entry
+            _source = std::make_shared<std::unique_ptr<stream>>(std::unique_ptr<dummy_stream>(nullptr));
+            pipes[pipe_id] = _source;
+        } else {
+            // pipe_id is in hashtable, use ptr from pipe_in
+            _source = pipes[pipe_id];
+        }
+    }
+
+    vec_cview next() override { return (*_source)->get_data(); }
+
+private:
+    std::shared_ptr<std::unique_ptr<stream>> _source;
+};
+
+/**
  * \brief Stream of true bits
  */
 using true_stream = _impl::const_stream<std::numeric_limits<std::uint8_t>::max()>;
@@ -500,8 +556,9 @@ using mt19937_stream = _impl::rng_stream<std::mt19937>;
  */
 using pcg32_stream = _impl::rng_stream<pcg32>;
 
-std::unique_ptr<stream> make_stream(const json &config,
-                                    default_seed_source &seeder,
-                                    std::size_t osize,
-                                    core::optional<stream *> stream = core::nullopt_t{});
+std::unique_ptr<stream>
+make_stream(const json &config,
+            default_seed_source &seeder,
+            std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+            std::size_t osize);
 void stream_to_dataset(dataset &set, std::unique_ptr<stream> &source);

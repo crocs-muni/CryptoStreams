@@ -25,25 +25,25 @@ static int64_t reinit_freq(const json &config) {
     }
 }
 
-block_stream::block_stream(const json &config,
-                           default_seed_source &seeder,
-                           const std::size_t osize,
-                           core::optional<stream *> plt_stream)
+block_stream::block_stream(
+    const json &config,
+    default_seed_source &seeder,
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+    const std::size_t osize)
     : stream(osize)
     , _round(config.at("round"))
     , _block_size(config.at("block_size"))
     , _reinit_freq(reinit_freq(config))
     , _i(0)
-    , _source(make_stream(config.at("plaintext"), seeder, osize))
-    , _iv(make_stream(config.at("iv"), seeder, _block_size))
-    , _key(make_stream(config.at("key"), seeder, unsigned(config.at("key_size"))))
+    , _source(make_stream(config.at("plaintext"), seeder, pipes, osize))
+    , _iv(make_stream(config.at("iv"), seeder, pipes, _block_size))
+    , _key(make_stream(config.at("key"), seeder, pipes, unsigned(config.at("key_size"))))
     , _run_encryption(config.value("encryption_mode", true))
     , _encryptor(make_block_cipher(config.at("algorithm"),
                                    unsigned(_round),
                                    unsigned(_block_size),
                                    unsigned(config.at("key_size")),
-                                   _run_encryption))
-    , _prepared_stream_source(!plt_stream ? nullptr : *plt_stream) {
+                                   _run_encryption)) {
     logger::info() << "stream source is block cipher: " << config.at("algorithm") << std::endl;
 
     if (int(config.at("round")) < 0)
@@ -77,7 +77,7 @@ vec_cview block_stream::next() {
 
     for (auto ctx_beg = _data.begin();
          ctx_beg != _data.end();) { // ctx_beg += _source->osize() from inside
-        vec_cview view = get_next_ptx();
+        vec_cview view = _source->next();
         for (auto ptx_beg = view.begin(); ptx_beg != view.end() and ctx_beg != _data.end();
              ptx_beg += _block_size, ctx_beg += _block_size) {
             _encryptor->crypt(&(*ptx_beg), &(*ctx_beg), _run_encryption);
@@ -85,14 +85,6 @@ vec_cview block_stream::next() {
     }
 
     return make_view(_data.cbegin(), osize());
-}
-
-vec_cview block_stream::get_next_ptx() {
-    if (_prepared_stream_source) {
-        return _prepared_stream_source->next();
-    } else {
-        return _source->next();
-    }
 }
 
 } // namespace block
