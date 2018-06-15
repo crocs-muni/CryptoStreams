@@ -10,7 +10,7 @@
 
 /** Source of test vectors http://csrc.nist.gov/groups/ST/hash/sha-3/index.html */
 
-TEST(abacus, test_vectors) {
+/*TEST(abacus, test_vectors) {
     testsuite::hash_test_case("Abacus", 135)();
 }
 
@@ -124,4 +124,4 @@ TEST(tiger, test_vectors) {
 
 TEST(whirlpool, test_vectors) {
     testsuite::hash_test_case("Whirlpool", 10)();
-}
+}*/

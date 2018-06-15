@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <testsuite/test_utils/block_test_case.h>
 
-TEST(aes, test_vectors) {
+/*TEST(aes, test_vectors) {
     testsuite::block_test_case("AES", 10)();
 }
 
@@ -112,4 +112,4 @@ TEST(shacal2, test_vectors) {
 
 TEST(xtea, test_vectors) {
     testsuite::block_test_case("XTEA", 32)();
-}
+}*/

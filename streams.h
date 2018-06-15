@@ -523,7 +523,7 @@ struct pipe_out_stream : stream {
         if (search == pipes.end()) {
             // pipe_id is not yet in hashtable, create new empty entry
             _source =
-                std::make_shared<std::unique_ptr<stream>>(std::unique_ptr<dummy_stream>(nullptr));
+                std::make_shared<std::unique_ptr<stream>>(std::unique_ptr<stream>(nullptr));
             pipes[pipe_id] = _source;
         } else {
             // pipe_id is in hashtable, use ptr from pipe_in
@@ -553,6 +553,8 @@ struct tuple_stream : stream {
             copy(v.begin(), v.end(), beg);
             beg += v.end() - v.begin();
         }
+
+        return make_cview(_data);
     }
 
 private:

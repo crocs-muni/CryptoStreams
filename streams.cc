@@ -223,15 +223,18 @@ pipe_in_stream::pipe_in_stream(
     : stream(0) {
     std::string pipe_id = config.at("id");
 
+    // substream has to be created in advance
+    // creating it separately in following if would cause inconsistances
+    std::unique_ptr<stream> new_stream = make_stream(config.at("source"), seeder, pipes, osize);
+
     auto search = pipes.find(pipe_id);
     if (search == pipes.end()) {
         // pipe_id is not yet in hashtable, create new entry
-        _source = std::make_shared<std::unique_ptr<stream>>(
-            make_stream(config.at("source"), seeder, pipes, osize));
+        _source = std::make_shared<std::unique_ptr<stream>>(std::move(new_stream));
         pipes[pipe_id] = _source;
     } else {
         // pipe_id is in hashtable, update the entry for pipe_out
-        *pipes[pipe_id] = make_stream(config.at("source"), seeder, pipes, osize);
+        *pipes[pipe_id] = std::move(new_stream);
         _source = pipes[pipe_id];
     }
 }
@@ -255,8 +258,9 @@ make_stream(const json &config,
             const std::size_t osize) {
     const std::string type = config.at("type");
 
-    if (osize == 0)
-        throw std::runtime_error("Stream " + type + " cannot have osize 0.");
+    if (osize == 0) {
+        logger::warning() << "Stream " + type + " have osize 0." << std::endl;
+    }
 
     // trivial source only streams
     if (type == "dummy_stream")
@@ -304,7 +308,7 @@ make_stream(const json &config,
     else if (type == "repeating_stream")
         return std::make_unique<repeating_stream>(config.at("source"), seeder, pipes, osize);
     else if (type == "tuple_stream")
-        return std::make_unique<tuple_stream>(config.at("source"), seeder, pipes, osize);
+        return std::make_unique<tuple_stream>(config, seeder, pipes, osize);
 
     // pipes
     else if (type == "pipe_in_stream")
