@@ -226,7 +226,7 @@ make_stream(const json &config,
             const std::size_t osize) {
     const std::string type = config.at("type");
 
-    if (osize == 0) {
+    if (osize == 0 and type != "dummy_stream") { // we allow dummy stream with 0 size
         logger::warning() << "Stream " + type + " have osize 0." << std::endl;
     }
 
