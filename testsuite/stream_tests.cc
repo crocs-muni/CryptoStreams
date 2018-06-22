@@ -326,5 +326,65 @@ TEST(rho_streams, aes_vector) {
     }
 }
 
+TEST(pipe_streams, pipe_in_fist) {
+    const json json_in = R"({
+         "type": "pipe_in_stream",
+         "id": "id",
+         "source": {
+             "type": "counter"
+         }
+
+     }
+    )"_json;
+    const json json_out = R"({
+         "type": "pipe_out_stream",
+         "id": "id"
+     }
+    )"_json;
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> map;
+
+    std::unique_ptr<stream> pipe_in = make_stream(json_in, seeder, map, 16);
+    std::unique_ptr<stream> pipe_out = make_stream(json_out, seeder, map, 16);
+
+    for (unsigned i = 0; i < 4; ++i) {
+        vec_cview in_view = pipe_in->next();
+        vec_cview out_view = pipe_out->next();
+
+        ASSERT_EQ(in_view.copy_to_vector(), out_view.copy_to_vector());
+    }
+}
+
+TEST(pipe_streams, pipe_out_fist) {
+    const json json_in = R"({
+         "type": "pipe_in_stream",
+         "id": "id",
+         "source": {
+             "type": "counter"
+         }
+
+     }
+    )"_json;
+    const json json_out = R"({
+         "type": "pipe_out_stream",
+         "id": "id"
+     }
+    )"_json;
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> map;
+
+    std::unique_ptr<stream> pipe_out = make_stream(json_out, seeder, map, 16);
+    std::unique_ptr<stream> pipe_in = make_stream(json_in, seeder, map, 16);
+
+    for (unsigned i = 0; i < 4; ++i) {
+        vec_cview in_view = pipe_in->next();
+        vec_cview out_view = pipe_out->next();
+
+        ASSERT_EQ(in_view.copy_to_vector(), out_view.copy_to_vector());
+    }
+}
+
 // TODO: add test for creation of the pipes
 //       we should test both orders of creation
