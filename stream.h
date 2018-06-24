@@ -4,6 +4,7 @@
 #include <eacirc-core/json.h>
 #include <eacirc-core/logger.h>
 #include <eacirc-core/view.h>
+#include <unordered_map>
 #include <vector>
 
 using value_type = std::uint8_t;

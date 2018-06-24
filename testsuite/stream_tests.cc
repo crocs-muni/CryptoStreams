@@ -197,8 +197,10 @@ TEST(column_streams, basic_test_with_counter) {
     json json_config = {{"size", 5}, {"source", {{"type", "counter"}}}};
 
     seed_seq_from<pcg32> seeder(testsuite::seed1);
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> map;
 
-    std::unique_ptr<column_stream> stream = std::make_unique<column_stream>(json_config, seeder, 5);
+    std::unique_ptr<column_stream> stream =
+        std::make_unique<column_stream>(json_config, seeder, map, 5);
 
     // TODO: finish column test
     //    for(auto it : stream->next()) {
@@ -207,37 +209,59 @@ TEST(column_streams, basic_test_with_counter) {
 }
 
 TEST(rnd_plt_ctx_streams, aes_single_vector) {
-    const json json_config = {{"type", "rnd_plt_ctx_stream"},
-                              {"source",
-                               {{"type", "block"},
-                                {"init_frequency", "only_once"},
-                                {"algorithm", "AES"},
-                                {"round", 10},
-                                {"block_size", 16},
-                                {"plaintext", {{"type", "pcg32_stream"}}},
-                                {"key_size", 16},
-                                {"key", {{"type", "pcg32_stream"}}},
-                                {"iv", {{"type", "pcg32_stream"}}}}}};
+    const json json_config = R"({
+         "type": "tuple_stream",
+         "sources": [{
+                 "type": "block",
+                 "output_size": 16,
+                 "init_frequency": "only_once",
+                 "algorithm": "AES",
+                 "round": 10,
+                 "block_size": 16,
+                 "plaintext": {
+                     "type": "pipe_in_stream",
+                     "id": "ptx_stream",
+                     "source": {
+                         "type": "pcg32_stream"
+                     }
+                 },
+                 "key_size": 16,
+                 "key": {
+                     "type": "pcg32_stream"
+                 },
+                 "iv": {
+                     "type": "pcg32_stream"
+                 }
+             },
+             {
+                 "type": "pipe_out_stream",
+                 "id": "ptx_stream"
+             }
+         ]
+     }
+    )"_json;
 
     seed_seq_from<pcg32> seeder(testsuite::seed1);
-    std::unique_ptr<stream> stream = make_stream(json_config, seeder, 32);
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> map;
+
+    std::unique_ptr<stream> stream = make_stream(json_config, seeder, map, 32);
 
     vec_cview view = stream->next();
 
     // fixed expected data AES 10 rounds, with PTX choosen by PCG32 with fixed seed testsuite::seed1
 #if defined(__clang__) // if compiler is clang, data are different from gcc :(
     std::vector<value_type> expected_data = {
+        0x99, 0x72, 0x5d, 0x0a, 0xac, 0xcb, 0x1a, 0x99,
+        0x50, 0xe6, 0x27, 0x53, 0x00, 0x87, 0x8b, 0x57, // ctx
         0x02, 0x6c, 0xc7, 0x6f, 0xaf, 0x91, 0x91, 0xb4,
-        0x82, 0x4c, 0x67, 0x8c, 0x22, 0x66, 0x39, 0x90, // ptx
-        0xd5, 0x36, 0xd3, 0x30, 0xf5, 0xe5, 0xde, 0x87,
-        0x75, 0x54, 0x82, 0x19, 0xf2, 0xb9, 0xa6, 0xcc // ctx
+        0x82, 0x4c, 0x67, 0x8c, 0x22, 0x66, 0x39, 0x90 // ptx
     };
 #elif defined(__GNUC__) || defined(__GNUG__)
     std::vector<value_type> expected_data = {
+        0x21, 0x66, 0xaf, 0xa3, 0xe2, 0xf9, 0x1d, 0xc3,
+        0xc1, 0xd8, 0xf6, 0xa6, 0xcf, 0xbb, 0xbb, 0x23, // ctx
         0xc5, 0x1e, 0xf0, 0xd7, 0x40, 0x1c, 0xa5, 0xea,
-        0x6f, 0x85, 0x11, 0x1e, 0x55, 0x74, 0x64, 0xcc, // ptx
-        0x54, 0x30, 0x76, 0x5f, 0xbf, 0xa7, 0x0d, 0xcb,
-        0xf0, 0x9b, 0xb3, 0xc0, 0xbe, 0x2b, 0xba, 0xaf // ctx
+        0x6f, 0x85, 0x11, 0x1e, 0x55, 0x74, 0x64, 0xcc // ptx
     };
 #elif defined(_MSC_VER) // MS data unknown
     std::vector<value_type> expected_data = {
@@ -249,17 +273,30 @@ TEST(rnd_plt_ctx_streams, aes_single_vector) {
 }
 
 TEST(rho_streams, aes_vector) {
-    const json json_config = {{"type", "rho_stream"},
-                              {"source",
-                               {{"type", "block"},
-                                {"init_frequency", "only_once"},
-                                {"algorithm", "AES"},
-                                {"round", 10},
-                                {"block_size", 16},
-                                {"plaintext", {{"type", "dummy_stream"}}},
-                                {"key_size", 16},
-                                {"key", {{"type", "false_stream"}}},
-                                {"iv", {{"type", "pcg32_stream"}}}}}};
+    const json json_config = R"({
+         "type": "pipe_in_stream",
+         "id": "rho_ptx",
+         "source": {
+                 "type": "block",
+                 "init_frequency": "only_once",
+                 "algorithm": "AES",
+                 "round": 10,
+                 "block_size": 16,
+                 "plaintext": {
+                     "type": "pipe_out_stream",
+                     "id": "rho_ptx"
+                 },
+                 "key_size": 16,
+                 "key": {
+                     "type": "false_stream"
+                 },
+                 "iv": {
+                     "type": "pcg32_stream"
+                 }
+             }
+
+     }
+    )"_json;
 
     json aes_json_config = {{"type", "block"},
                             {"init_frequency", "only_once"},
@@ -272,12 +309,14 @@ TEST(rho_streams, aes_vector) {
                             {"iv", {{"type", "pcg32_stream"}}}};
 
     seed_seq_from<pcg32> seeder(testsuite::seed1);
-    std::unique_ptr<stream> tested_stream = make_stream(json_config, seeder, 16);
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> map;
+
+    std::unique_ptr<stream> tested_stream = make_stream(json_config, seeder, map, 16);
     std::vector<value_type> prev(16);
 
     for (unsigned i = 0; i < testing_size; ++i) {
         aes_json_config["plaintext"]["outputs"] = prev;
-        std::unique_ptr<stream> reference_stream = make_stream(aes_json_config, seeder, 16);
+        std::unique_ptr<stream> reference_stream = make_stream(aes_json_config, seeder, map, 16);
 
         vec_cview tested_view = tested_stream->next();
         vec_cview reference_view = reference_stream->next();
@@ -286,3 +325,66 @@ TEST(rho_streams, aes_vector) {
         std::copy(tested_view.begin(), tested_view.end(), prev.begin());
     }
 }
+
+TEST(pipe_streams, pipe_in_fist) {
+    const json json_in = R"({
+         "type": "pipe_in_stream",
+         "id": "id",
+         "source": {
+             "type": "counter"
+         }
+
+     }
+    )"_json;
+    const json json_out = R"({
+         "type": "pipe_out_stream",
+         "id": "id"
+     }
+    )"_json;
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> map;
+
+    std::unique_ptr<stream> pipe_in = make_stream(json_in, seeder, map, 16);
+    std::unique_ptr<stream> pipe_out = make_stream(json_out, seeder, map, 16);
+
+    for (unsigned i = 0; i < 4; ++i) {
+        vec_cview in_view = pipe_in->next();
+        vec_cview out_view = pipe_out->next();
+
+        ASSERT_EQ(in_view.copy_to_vector(), out_view.copy_to_vector());
+    }
+}
+
+TEST(pipe_streams, pipe_out_fist) {
+    const json json_in = R"({
+         "type": "pipe_in_stream",
+         "id": "id",
+         "source": {
+             "type": "counter"
+         }
+
+     }
+    )"_json;
+    const json json_out = R"({
+         "type": "pipe_out_stream",
+         "id": "id"
+     }
+    )"_json;
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> map;
+
+    std::unique_ptr<stream> pipe_out = make_stream(json_out, seeder, map, 16);
+    std::unique_ptr<stream> pipe_in = make_stream(json_in, seeder, map, 16);
+
+    for (unsigned i = 0; i < 4; ++i) {
+        vec_cview in_view = pipe_in->next();
+        vec_cview out_view = pipe_out->next();
+
+        ASSERT_EQ(in_view.copy_to_vector(), out_view.copy_to_vector());
+    }
+}
+
+// TODO: add test for creation of the pipes
+//       we should test both orders of creation

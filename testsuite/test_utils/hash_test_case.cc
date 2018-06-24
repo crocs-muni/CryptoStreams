@@ -65,7 +65,9 @@ std::unique_ptr<stream> hash_test_case::prepare_stream() {
     config_instance["hash_size"] = hash_size;
 
     seed_seq_from<pcg32> seeder(seed1);
-    return make_stream(config_instance, seeder, hash_size);
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> map;
+
+    return make_stream(config_instance, seeder, map, hash_size);
 }
 
 std::istream &operator>>(std::istream &input, hash_test_case &test_case) {

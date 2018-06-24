@@ -3,18 +3,18 @@
 
 namespace stream_ciphers {
 
-stream_stream::stream_stream(const json &config,
-                             default_seed_source &seeder,
-                             const std::size_t osize,
-                             core::optional<stream *> plt_stream)
+stream_stream::stream_stream(
+    const json &config,
+    default_seed_source &seeder,
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+    const std::size_t osize)
     : stream(osize)
     , _reinit(config.at("key").at("type") == "repeating_stream" or
               config.at("iv").at("type") == "repeating_stream")
     , _block_size(config.at("block_size"))
-    , _iv_stream(make_stream(config.at("iv"), seeder, config.value("iv_size", default_iv_size)))
-    , _key_stream(make_stream(config.at("key"), seeder, config.value("key_size", default_key_size)))
-    , _source(make_stream(config.at("plaintext"), seeder, _block_size))
-    , _prepared_stream_source(!plt_stream ? nullptr : *plt_stream)
+    , _iv_stream(make_stream(config.at("iv"), seeder, pipes, config.value("iv_size", default_iv_size)))
+    , _key_stream(make_stream(config.at("key"), seeder, pipes, config.value("key_size", default_key_size)))
+    , _source(make_stream(config.at("plaintext"), seeder, pipes, _block_size))
     , _plaintext(osize)
     , _algorithm(config.at("algorithm"),
                  unsigned(config.at("round")),
@@ -37,7 +37,7 @@ vec_cview stream_stream::next() {
         _algorithm.setup_key_iv(_key_stream, _iv_stream);
     }
     for (auto beg = _plaintext.begin(); beg != _plaintext.end(); beg += _block_size) {
-        vec_cview view = get_next_ptx();
+        vec_cview view = _source->next();
 
         std::move(view.begin(), view.end(), beg);
     }
@@ -45,14 +45,6 @@ vec_cview stream_stream::next() {
     _algorithm.encrypt(_plaintext.data(), _data.data(), _plaintext.size());
 
     return make_cview(_data);
-}
-
-vec_cview stream_stream::get_next_ptx() {
-    if (_prepared_stream_source) {
-        return _prepared_stream_source->next();
-    } else {
-        return _source->next();
-    }
 }
 
 } // namespace stream_ciphers
