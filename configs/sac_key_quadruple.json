@@ -1,0 +1,49 @@
+{
+    "notes": "Stream of tuples of random plaintext and corresponding ciphertext = (ctx, ptx)",
+    "seed": "1fe40505e131963c",
+    "tv_size": 72,
+    "tv_count": 500000000,
+    "stream": {
+        "type": "tuple_stream",
+        "sources": [{
+            "type": "stream-cipher",
+            "algorithm": "Salsa20",
+            "round": 20
+            "output_size": 32,
+            "block_size": 16,
+            "plaintext": {
+                "type": "false_stream"
+            },
+            "key_size": 32,
+            "key": {
+                "type": "repeating_stream",
+                "period": 1,
+                "source": {
+                    "type": "pipe_in_stream",
+                    "id": "key",
+                    "source": {
+                        "type": "sac"
+                    }
+                }
+            },
+            "iv_size": 8,
+            "iv": {
+                "type": "repeating_stream",
+                "period": 2,
+                "source": {
+                    "type": "pipe_in_stream",
+                    "id": "iv",
+                    "source": {
+                        "type": "pcg32_stream"
+                    }
+                }
+            }
+        },{
+            "type": "pipe_out_stream",
+            "id": "iv"
+        },{
+            "type": "pipe_out_stream",
+            "id": "key"
+        }]
+    }
+}

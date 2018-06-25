@@ -1,0 +1,28 @@
+{
+    "notes": "Stream of using previous ciphertext as new key (testing rho properties)",
+    "seed": "1fe40505e131963c",
+    "tv_size": 16,
+    "tv_count": 500000000,
+    "stream": {
+        "type": "pipe_in_stream",
+        "id": "rho_ptx",
+        "source": {
+            "type": "block",
+            "init_frequency": "1",
+            "algorithm": "AES",
+            "round": 10,
+            "block_size": 16,
+            "plaintext": {
+                "type": "false_stream"
+            },
+            "key_size": 16,
+            "key": {
+                "type": "pipe_out_stream",
+                "id": "rho_ptx"
+            },
+            "iv": {
+                "type": "pcg32_stream"
+            }
+        }
+    }
+}

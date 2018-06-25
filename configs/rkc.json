@@ -1,0 +1,34 @@
+{
+    "notes": "Stream of tuples of random key, and corresponding ciphertext = (ctx, key)",
+    "seed": "1fe40505e131963c",
+    "tv_size": 32,
+    "tv_count": 250000000,
+    "stream": {
+        "type": "tuple_stream",
+        "sources": [{
+            "type": "block",
+            "output_size": 16,
+            "init_frequency": "1",
+            "algorithm": "AES",
+            "round": 10,
+            "block_size": 16,
+            "plaintext": {
+                "type": "pcg32_stream"
+            },
+            "key_size": 16,
+            "key": {
+                "type": "pipe_in_stream",
+                "id": "key_stream",
+                "source": {
+                    "type": "pcg32_stream"
+                }
+            },
+            "iv": { 
+                "type": "pcg32_stream"
+            }
+        },{
+            "type": "pipe_out_stream",
+            "id": "key_stream"
+        }]
+    }
+}
