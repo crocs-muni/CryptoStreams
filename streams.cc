@@ -274,7 +274,7 @@ make_stream(const json &config,
     else if (type == "single_value_stream")
         return std::make_unique<single_value_stream>(config.at("source"), seeder, pipes, osize);
     else if (type == "repeating_stream")
-        return std::make_unique<repeating_stream>(config.at("source"), seeder, pipes, osize);
+        return std::make_unique<repeating_stream>(config, seeder, pipes, osize);
     else if (type == "tuple_stream")
         return std::make_unique<tuple_stream>(config, seeder, pipes, osize);
 
