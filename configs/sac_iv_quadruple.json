@@ -8,7 +8,7 @@
         "sources": [{
             "type": "stream-cipher",
             "algorithm": "Salsa20",
-            "round": 20
+            "round": 20,
             "output_size": 32,
             "block_size": 16,
             "plaintext": {
