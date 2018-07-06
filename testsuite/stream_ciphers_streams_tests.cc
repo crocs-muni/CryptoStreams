@@ -45,6 +45,10 @@ TEST(salsa20, test_vectors) {
     testsuite::stream_cipher_test_case("Salsa20", 20)();
 }
 
+TEST(rabbit, test_vectors) {
+    testsuite::stream_cipher_test_case("Rabbit", 4)();
+}
+
 TEST(tsc4, test_vectors) {
     testsuite::stream_cipher_test_case("TSC-4", 32)();
 }
