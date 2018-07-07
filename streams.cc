@@ -147,9 +147,12 @@ vec_cview column_stream::next() {
         for (std::size_t i = 0; i < osize() * 8; ++i) {
             auto vec = _source->next().data();
 
-            // something like matrix transpose
+            // something like matrix transposition
             for (std::size_t j = 0; j < _internal_bit_size; ++j) {
-                _buf[j][i / 8] += ((vec[j / 8] & (0x1 << (j % 8))) >> j) << (i % 8);
+                // select current bit (&), move it as least significant (>>) and then move it to the
+                // position given by _i_ - which column you should store to
+                _buf[j][i / 8] |= ((vec[j / 8] & (0x1 << (7 - (j % 8)))) >> (7 - (j % 8)))
+                                  << (7 - (i % 8));
             }
         }
     }
