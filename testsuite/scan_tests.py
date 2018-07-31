@@ -44,8 +44,7 @@ def analyze_block_ciphers():
 
 def analyze_hash_funs():
     # try to keep this empty:
-    set_of_untested = set(['keccak',  # definitely have to test
-        'skein',  # definitely have to test
+    set_of_untested = set([
         'bmw', 'blender', 'crunch', 'boole', 'sarmal',  # probably should test
         'khichidi', 'fugue', 'spectralhash', 'mcssha3', 'lane', 'nasha', 'edon', 'essence', 'wamm', 'shavite3', 'meshhash', 'shamata', 'waterfall', 'shabal', 'streamhash', 'chi',  # would be nice to test, but it is ok
         'lux', 'swifftx', 'enrupt', 'tib3', 'vortex', 'ecoh', 'sandstorm'  # no code = no tests
@@ -76,7 +75,7 @@ def analyze_hash_funs():
 
 def analyze_stream_ciphers():
     # try to keep this empty:
-    set_of_untested = set(['hc-128', 'sosemanuk', 'ffcsr',  # definitely have to test
+    set_of_untested = set([
         'mir-1', 'py', 'sfinks', 'pomaranch', 'mag', 'dicing', 'wg', 'achterbahn', 'dragon',  # probably should test
         'edon80', 'zk-crypt', 'cryptmt', 'abc',  # no-run - test can find why
         'yamb', 'polarbear', 'moustique', 'nls'  # no-compile = no tests
