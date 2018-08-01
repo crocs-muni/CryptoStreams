@@ -1,3 +1,6 @@
+/**
+  * Test vectors source: http://www.skein-hash.info/downloads
+  */
 #ifndef SKEIN_SHA3_H
 #define SKEIN_SHA3_H
 
