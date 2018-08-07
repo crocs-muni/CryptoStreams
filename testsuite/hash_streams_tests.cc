@@ -114,6 +114,10 @@ TEST(sha2, test_vectors) {
     testsuite::hash_test_case("SHA2", 64)();
 }
 
+TEST(sha3, test_vectors) {
+    testsuite::hash_test_case("SHA3", 24)();
+}
+
 TEST(md5, test_vectors) {
     testsuite::hash_test_case("MD5", 64)();
 }

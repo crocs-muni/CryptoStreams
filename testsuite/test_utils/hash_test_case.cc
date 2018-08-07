@@ -39,9 +39,8 @@ void hash_test_case::operator()() {
     while (_test_vectors >> *this) {
         _test_vectors_tested++;
         test();
-        if (length() != 0 &&
-            length() % 8 ==
-                0) { // unfortunately our sha3 streams are built so that it fits only multiple of 8
+        if (length() != 0 && length() % 8 == 0) {
+            // unfortunately our sha3 streams are built so that it fits only multiple of 8
             auto stream = prepare_stream();
             test_case::test(stream);
         }

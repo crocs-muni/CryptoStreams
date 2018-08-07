@@ -1,5 +1,3 @@
-#pragma once
-
 #include "md5_factory.h"
 
 namespace others {
