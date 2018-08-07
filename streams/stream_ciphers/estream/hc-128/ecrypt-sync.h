@@ -1,4 +1,7 @@
-/* ecrypt-sync.h */
+/**
+ * Version: http://www.ecrypt.eu.org/stream/svn/viewcvs.cgi/ecrypt/trunk/submissions/hc-256/hc-128/200701b/?rev=193
+ * (test vectors in parent directory for the newest commit)
+ */ /* ecrypt-sync.h */
 
 /*
  * Header file for synchronous stream ciphers without authentication

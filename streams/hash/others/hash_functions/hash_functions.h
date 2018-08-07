@@ -3,5 +3,6 @@
 #include "ripemd160/ripemd160_factory.h"
 #include "sha1/sha1_factory.h"
 #include "sha2/sha256_factory.h"
+#include "sha3/sha3_factory.h"
 #include "tiger/tiger_factory.h"
 #include "whirlpool/whirlpool_factory.h"

@@ -66,6 +66,10 @@ TEST(jh, test_vectors) {
     testsuite::hash_test_case("JH", 42)();
 }
 
+TEST(keccak, test_vectors) {
+    testsuite::hash_test_case("Keccak", 24)();
+}
+
 TEST(lesamnta, test_vectors) {
     testsuite::hash_test_case("Lesamnta", 32)();
 }
@@ -82,6 +86,10 @@ TEST(md6, test_vectors) {
 
 TEST(simd, test_vectors) {
     testsuite::hash_test_case("SIMD", 4)();
+}
+
+TEST(skein, test_vectors) {
+    testsuite::hash_test_case("Skein", 72)();
 }
 
 TEST(tangle, test_vectors) {
@@ -104,6 +112,10 @@ TEST(sha1, test_vectors) {
 
 TEST(sha2, test_vectors) {
     testsuite::hash_test_case("SHA2", 64)();
+}
+
+TEST(sha3, test_vectors) {
+    testsuite::hash_test_case("SHA3", 24)();
 }
 
 TEST(md5, test_vectors) {
