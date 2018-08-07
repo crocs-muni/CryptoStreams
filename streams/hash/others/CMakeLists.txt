@@ -4,6 +4,10 @@ add_library(others STATIC EXCLUDE_FROM_ALL
     hash_functions/sha1/sha1_factory
     hash_functions/sha2/sha256
     hash_functions/sha2/sha256_factory
+    hash_functions/sha3/sha3
+    hash_functions/sha3/sha3_factory
+    hash_functions/sha3/byte_order.h
+    hash_functions/sha3/byte_order.c
     hash_functions/md5/md5
     hash_functions/md5/md5_factory
     hash_functions/gost/gost
