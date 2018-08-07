@@ -90,6 +90,10 @@ def analyze_stream_ciphers():
     tests = set(map(lambda x: x.lower(), tests))
     
     # special fixes:
+    if 'f-fcsr' in tests:
+        tests.add('ffcsr')
+        tests.remove('f-fcsr')
+        
 
     if (folders - set_of_untested) - tests:
         print("[Error] missing tests of following functions: " + str((folders - set_of_untested) - tests))
