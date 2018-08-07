@@ -1,5 +1,3 @@
-#pragma once
-
 #include "sha1_factory.h"
 
 namespace others{
