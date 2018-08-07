@@ -83,6 +83,7 @@ std::unique_ptr<hash_interface> hash_factory::create(const std::string &name,
 
     if (name == "SHA1")           return std::make_unique<others::sha1_factory>(rounds);
     if (name == "SHA2")           return std::make_unique<others::sha256_factory>(rounds);
+    if (name == "SHA3")           return std::make_unique<others::sha3_factory>(rounds);
     if (name == "MD5")            return std::make_unique<others::md5_factory>(rounds);
     if (name == "Gost")           return std::make_unique<others::Gost>(rounds);
     if (name == "RIPEMD160")      return std::make_unique<others::Ripemd160>(rounds);
