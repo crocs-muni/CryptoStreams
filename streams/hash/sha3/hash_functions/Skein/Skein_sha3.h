@@ -1,5 +1,7 @@
 /**
   * Test vectors source: http://www.skein-hash.info/downloads
+  * Used version is v1.3 (2010-10-26):
+  * http://www.skein-hash.info/sites/default/files/NIST_CD_102610.zip
   */
 #ifndef SKEIN_SHA3_H
 #define SKEIN_SHA3_H
