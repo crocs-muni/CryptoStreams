@@ -27,12 +27,12 @@
 # Addres sanitizer
 [address]
 # DSHA
-src:/streams/hash/sha3/hash_functions/DynamicSHA/DSHA_sha3.cpp
+src:streams/hash/sha3/hash_functions/DynamicSHA/DSHA_sha3.cpp
 
 
 # Memory sanitizer
 [memory]
-
+src:eacirc-core/external/*
 
 # Undefined behavior sanitizer
 # Check groups (like undefined) can’t be used in suppressions file, only fine-grained checks are supported.
