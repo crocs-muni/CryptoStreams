@@ -1,0 +1,40 @@
+### Documentation: https://clang.llvm.org/docs/SanitizerSpecialCaseList.html#format
+
+## Lines starting with # are ignored.
+## Turn off checks for the source file (use absolute path or path relative
+## to the current working directory):
+#src:/path/to/source/file.c
+## Turn off checks for a particular functions (use mangled names):
+#fun:MyFooBar
+#fun:_Z8MyFooBarv
+## Extended regular expressions are supported:
+#fun:bad_(foo|bar)
+#src:bad_source[1-9].c
+## Shell like usage of * is supported (* is treated as .*):
+#src:bad/sources/*
+#fun:*BadFunction*
+## Specific sanitizer tools may introduce categories.
+#src:/special/path/*=special_sources
+## Sections can be used to limit blacklist entries to specific sanitizers
+#[address]
+#fun:*BadASanFunc*
+## Section names are regular expressions
+#[cfi-vcall|cfi-icall]
+#fun:*BadCfiCall
+## Entries without sections are placed into [*] and apply to all sanitizers
+
+### Our part:
+# Addres sanitizer
+[address]
+# DSHA
+src:/streams/hash/sha3/hash_functions/DynamicSHA/DSHA_sha3.cpp
+
+
+# Memory sanitizer
+[memory]
+
+
+# Undefined behavior sanitizer
+# Check groups (like undefined) can’t be used in suppressions file, only fine-grained checks are supported.
+
+

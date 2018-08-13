@@ -60,18 +60,18 @@ before_script:
   - sh cmake-3.5.2-Linux-x86_64.sh --exclude-subdir --prefix=$HOME
   - |
     if [ "$BUILD_TYPE" = "clang_asan" ]; then
-      export CFLAGS="-fno-omit-frame-pointer -fsanitize=address"
-      export LDFLAGS="-fno-omit-frame-pointer -fsanitize=address"
+      export CFLAGS="-fno-omit-frame-pointer -fsanitize=address -fsanitize-blacklist=../.sanitizers_blacklist.txt"
+      export LDFLAGS="-fno-omit-frame-pointer -fsanitize=address -fsanitize-blacklist=../.sanitizers_blacklist.txt"
     fi
   - |
     if [ "$BUILD_TYPE" = "clang_msan" ]; then
-      export CFLAGS="-fno-omit-frame-pointer -fsanitize=memory"
-      export LDFLAGS="-fno-omit-frame-pointer -fsanitize=memory"
+      export CFLAGS="-fno-omit-frame-pointer -fsanitize=memory -fsanitize-blacklist=../.sanitizers_blacklist.txt"
+      export LDFLAGS="-fno-omit-frame-pointer -fsanitize=memory -fsanitize-blacklist=../.sanitizers_blacklist.txt"
     fi
   - |
     if [ "$BUILD_TYPE" = "clang_ubsan" ]; then
-      export CFLAGS="-fno-omit-frame-pointer -fsanitize=undefined -fsanitize=integer -fsanitize=nullability"
-      export LDFLAGS="-fno-omit-frame-pointer -fsanitize=undefined -fsanitize=integer -fsanitize=nullability"
+      export CFLAGS="-fno-omit-frame-pointer -fsanitize=undefined -fsanitize=integer -fsanitize=nullability -fsanitize-blacklist=../.sanitizers_blacklist.txt"
+      export LDFLAGS="-fno-omit-frame-pointer -fsanitize=undefined -fsanitize=integer -fsanitize=nullability -fsanitize-blacklist=../.sanitizers_blacklist.txt"
     fi
 
 script:
