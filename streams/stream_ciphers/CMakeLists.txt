@@ -33,8 +33,8 @@ add_library(stream_ciphers STATIC EXCLUDE_FROM_ALL
     estream/grain/ecrypt-sync.h
     estream/grain/grain-128.h
     estream/fubuki/ecrypt-sync.h
-    estream/ffcsr/ecrypt-sync.h
-    estream/ffcsr/ffcsrh-sync.h
+    estream/f-fcsr/ecrypt-sync.h
+    estream/f-fcsr/ffcsrh-sync.h
     estream/edon80/ecrypt-sync.h
     estream/dragon/ecrypt-sync.h
     estream/dicing/ecrypt-sync.h
@@ -84,7 +84,7 @@ add_library(stream_ciphers STATIC EXCLUDE_FROM_ALL
     estream/hc-128/hc-128.cpp
     estream/grain/grain-128.cpp
     estream/fubuki/fubuki.cpp
-    estream/ffcsr/f-fcsr-h.cpp
+    estream/f-fcsr/f-fcsr-h.cpp
     estream/edon80/edon80.cpp
     estream/dragon/dragon.cpp
     estream/dragon/dragon-sboxes.cpp

@@ -10,15 +10,13 @@ namespace sha3 {
 /* select the context size and init the context */
 int Skein::Init(int hashbitlen)
     {
-#if SKEIN_256_NIST_MAX_HASH_BITS
     if (hashbitlen <= SKEIN_256_NIST_MAX_HASHBITS)
         {
         Skein_Assert(hashbitlen > 0,BAD_HASHLEN);
         skeinState.statebits = 64*SKEIN_256_STATE_WORDS;
         return Skein_256_Init(&skeinState.u.ctx_256,(size_t) hashbitlen, _num_rounds);
         }
-#endif
-    if (hashbitlen <= SKEIN_512_NIST_MAX_HASHBITS)
+    else if (hashbitlen <= SKEIN_512_NIST_MAX_HASHBITS)
         {
         skeinState.statebits = 64*SKEIN_512_STATE_WORDS;
         return Skein_512_Init(&skeinState.u.ctx_512,(size_t) hashbitlen, _num_rounds);
