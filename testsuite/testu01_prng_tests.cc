@@ -8,8 +8,6 @@
 #include <streams/prngs/testu01-prngs/testu01_interface.h>
 #include <streams/prngs/testu01-prngs/functions/umrg/umrg_generator.h>
 #include <streams/prngs/testu01-prngs/functions/uxorshift/uxorshift_generator.h>
-#include <streams/prngs/testu01-prngs/functions/ucarry/ucarry_generator.h>
-#include <streams/prngs/testu01-prngs/functions/unif01/dummy_generator.h>
 #include <eacirc-core/seed.h>
 
 

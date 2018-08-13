@@ -55,9 +55,6 @@ generator::generator(json const &config)
     , _seed(seed::create(config.at("seed")))
     , _tv_count(config.at("tv_count"))
     , _o_file_name(out_name(config)) {
-
-    std::cout << _o_file_name << std::endl;
-
     seed_seq_from<pcg32> main_seeder(_seed);
     std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> map;
 

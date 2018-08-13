@@ -28,12 +28,12 @@
  *
 \*************************************************************************/
 
-#include "../../includes/gdef.h"
-#include "../../includes/util.h"
-#include "../../includes/num.h"
-#include "../../includes/chrono.h"
-#include "../../includes/swrite.h"
-#include "../../includes/unif01.h"
+#include "gdef.h"
+#include "util.h"
+#include "num.h"
+#include "chrono.h"
+#include "swrite.h"
+#include "unif01.h"
 
 #include <math.h>
 #include <stdio.h>

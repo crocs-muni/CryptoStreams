@@ -14,8 +14,7 @@ add_library(testu01-prngs STATIC EXCLUDE_FROM_ALL
         testu01_interface.h
 
         # unif01
-        functions/unif01/unif01.c # unif01.h is basic header file needed for all geenrators so it is in include directory not here
-        functions/unif01/dummy_generator.h
+        includes/unif01.c # unif01.h is basic header file needed for all geenrators so it is in include directory not here
 
         # ulcg
         functions/ulcg/ulcg.h
@@ -26,11 +25,6 @@ add_library(testu01-prngs STATIC EXCLUDE_FROM_ALL
         functions/umrg/umrg.h
         functions/umrg/umrg.c
         functions/umrg/umrg_generator.h
-
-        # ucarry
-        functions/ucarry/ucarry.h
-        functions/ucarry/ucarry.c
-        functions/ucarry/ucarry_generator.h
 
         # uxorshift
         functions/uxorshift/uxorshift.h
