@@ -26,11 +26,11 @@ namespace prng {
      */
     class umrg_generator : public uniform_generator_interface<7> {
     public:
-        explicit umrg_generator(const json& config, default_seed_source &seeder, bool reseed = false, bool include_seed = false, uint64_t m = 9223372036854775783,
-                                std::vector<long> a = {2975962250, 2909704450})
-                : umrg_generator(make_stream(config.at("seeder"), seeder, a.size() * get_viable_number_of_bytes(m)), config.value("reseed_for_each_test_vector", false), config.value("include_seed_in_output", false), m, a) {}
+        explicit umrg_generator(const json& config, default_seed_source &seeder, std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+                bool reseed = false, uint64_t m = 9223372036854775783, std::vector<long> a = {2975962250, 2909704450})
+                : umrg_generator(make_stream(config.at("seeder"), seeder, pipes, a.size() * get_viable_number_of_bytes(m)), config.value("reseed_for_each_test_vector", false), m, a) {}
 
-        explicit umrg_generator(std::unique_ptr<stream> seeder, bool reseed, bool include_seed, uint64_t m, std::vector<long>& a)
+        explicit umrg_generator(std::unique_ptr<stream> seeder, bool reseed, uint64_t m, std::vector<long>& a)
                 : uniform_generator_interface(
                 [m, a](const value_type *seed) mutable -> auto {
                     std::vector<long> s(a.size());
@@ -46,7 +46,7 @@ namespace prng {
 
                     return std::unique_ptr<unif01_Gen, void (*)(unif01_Gen *)>(umrg_CreateMRG(m, static_cast<int>(a.size()), a.data(), s.data()), umrg_DeleteMRG);
                 }
-                , seeder, reseed, include_seed
+                , seeder, reseed
         ) {}
 
         stream* get_seeder_stream() {

@@ -14,12 +14,12 @@ namespace prng {
 
 
     std::unique_ptr<prng_interface>
-    create_testu01_interface(const json& configuration, default_seed_source& seeder) {
+    create_testu01_interface(const json& configuration, default_seed_source& seeder, std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes) {
         std::string name = configuration.at("algorithm");
 
-        if(name == "testu01-ulcg") return std::make_unique<ulcg_generator>(configuration, seeder);
-        if(name == "testu01-umrg") return std::make_unique<umrg_generator>(configuration, seeder);
-        if(name == "testu01-uxorshift") return std::make_unique<uxorshift_generator>(configuration, seeder);
+        if(name == "testu01-ulcg") return std::make_unique<ulcg_generator>(configuration, seeder, pipes);
+        if(name == "testu01-umrg") return std::make_unique<umrg_generator>(configuration, seeder, pipes);
+        if(name == "testu01-uxorshift") return std::make_unique<uxorshift_generator>(configuration, seeder, pipes);
 
         throw std::runtime_error("requested testu01 prng named \"" + name +
                                  "\" is either broken or does not exists");

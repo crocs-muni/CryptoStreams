@@ -23,10 +23,10 @@ namespace prng {
     class uxorshift_generator : public uniform_generator_interface<4> {
 
     public:
-        explicit uxorshift_generator(const json& config, default_seed_source &seeder, bool reseed = false, bool include_seed = false)
-                : uxorshift_generator(make_stream(config.at("seeder"), seeder, 8 * sizeof(uint32_t)), config.value("reseed_for_each_test_vector", false), config.value("include_seed_in_output", false)) {}
+        explicit uxorshift_generator(const json& config, default_seed_source &seeder, std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes)
+                : uxorshift_generator(make_stream(config.at("seeder"), seeder, pipes, 8 * sizeof(uint32_t)), config.value("reseed_for_each_test_vector", false)) {}
 
-        explicit uxorshift_generator(std::unique_ptr<stream> seeder, bool reseed, bool include_seed)
+        explicit uxorshift_generator(std::unique_ptr<stream> seeder, bool reseed)
                 : uniform_generator_interface(
                 [](const value_type *seed) {
                     std::vector<uint32_t> s(8);
@@ -41,7 +41,6 @@ namespace prng {
                     }
 
                     return std::unique_ptr<unif01_Gen, void (*)(unif01_Gen *)>(uxorshift_CreateXorshift13(s.data()), uxorshift_DeleteGen);
-                }
-                , seeder, reseed, include_seed) {}
+                }, seeder, reseed) {}
     };
 }

@@ -318,7 +318,7 @@ make_stream(const json &config,
 #endif
 #ifdef BUILD_prngs
     else if (type == "prng")
-        return std::make_unique<prng::prng_stream>(config, seeder, osize);
+        return std::make_unique<prng::prng_stream>(config, seeder, osize, pipes);
 #endif
     throw std::runtime_error("requested stream named \"" + type + "\" does not exist");
 }

@@ -13,9 +13,9 @@ namespace prng {
         return make_cview(_data);
     }
 
-    prng_stream::prng_stream(const json& config, default_seed_source& seeder, std::size_t osize)
+    prng_stream::prng_stream(const json& config, default_seed_source& seeder, std::size_t osize, std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes)
             : stream(osize)
-            , _generator(std::make_unique<prng_factory>(config, seeder))
+            , _generator(std::make_unique<prng_factory>(config, seeder, pipes))
             , _data(osize)
     {}
 }

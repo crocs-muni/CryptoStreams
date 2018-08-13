@@ -16,26 +16,17 @@ namespace prng {
         std::unique_ptr<stream> _seeder;
         vec_cview _seed;
         Generator _generator;
-        bool _include_seed_for_each_test_vector; // in each test vector
         bool _reseed_for_each_test_vector;
 
     public:
-        explicit std_prng_interface(std::unique_ptr<stream> &seeder, bool reseed_for_each_test_vector, bool include_seed)
+        explicit std_prng_interface(std::unique_ptr<stream> &seeder, bool reseed_for_each_test_vector)
                 : _seeder(std::move(seeder))
                 , _seed(_seeder->next())
                 , _generator(*reinterpret_cast<const SeedType*>(_seed.data()))
-                , _include_seed_for_each_test_vector(include_seed)
                 , _reseed_for_each_test_vector(reseed_for_each_test_vector) {}
 
         void generate_bits(std::uint8_t *data, size_t number_of_bytes) override {
             size_t current_index = 0;
-
-            if (_include_seed_for_each_test_vector) {
-                for (auto i : _seed) {
-                    data[current_index++] = i;
-                    number_of_bytes--;
-                }
-            }
 
             while (number_of_bytes > 0) {
 

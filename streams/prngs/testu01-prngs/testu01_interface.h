@@ -19,28 +19,19 @@ namespace prng {
         std::unique_ptr<stream> _seeder;
         vec_cview _seed;
         std::unique_ptr<GENERATOR, DELETER> _generator;
-        bool _include_seed_for_each_test_vector; // in each test vector
         bool _reseed_for_each_test_vector;
 
     public:
         explicit testu01_interface(const std::function<std::unique_ptr<GENERATOR, DELETER>(const value_type *)> &creator,
-                                   std::unique_ptr<stream> &seeder, bool reseed_for_each_test_vector, bool include_seed)
+                                   std::unique_ptr<stream> &seeder, bool reseed_for_each_test_vector)
                 : _generator_creator(std::move(creator))
                 , _seeder(std::move(seeder))
                 , _seed(_seeder->next())
                 , _generator(_generator_creator(_seed.data()))
-                , _include_seed_for_each_test_vector(include_seed)
                 , _reseed_for_each_test_vector(reseed_for_each_test_vector) {}
 
         void generate_bits(std::uint8_t *data, size_t number_of_bytes) override {
             int current_index = 0;
-
-            if (_include_seed_for_each_test_vector) {
-                for (auto i : _seed) {
-                    data[current_index++] = i;
-                    number_of_bytes--;
-                }
-            }
 
             while (number_of_bytes > 0) {
 
@@ -103,8 +94,8 @@ namespace prng {
     class uniform_generator_interface : public testu01_interface<unif01_Gen, void (*)(unif01_Gen *), OUTPUT_SIZE> {
     public:
         uniform_generator_interface(const std::function<std::unique_ptr<unif01_Gen, void (*)(unif01_Gen *)>(
-                                            const value_type *)> &creator, std::unique_ptr<stream> &seeder, bool reseed_for_each_test_vector, bool include_seed)
-                : testu01_interface<unif01_Gen, void (*)(unif01_Gen *), OUTPUT_SIZE>(creator, seeder, reseed_for_each_test_vector, include_seed) {}
+                                            const value_type *)> &creator, std::unique_ptr<stream> &seeder, bool reseed_for_each_test_vector)
+                : testu01_interface<unif01_Gen, void (*)(unif01_Gen *), OUTPUT_SIZE>(creator, seeder, reseed_for_each_test_vector) {}
     };
 }
 

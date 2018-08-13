@@ -16,7 +16,7 @@ namespace prng {
 
     class prng_stream : public stream {
     public:
-        prng_stream(const json& config, default_seed_source& seeder, std::size_t osize);
+        prng_stream(const json& config, default_seed_source& seeder, std::size_t osize, std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes);
 
         vec_cview next() override;
 

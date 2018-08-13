@@ -11,10 +11,10 @@ namespace prng {
     
     class subtract_with_carry_generator : public std_prng_interface<std::ranlux24_base, uint32_t, uint32_t> {
     public:
-        subtract_with_carry_generator(const json &config, default_seed_source &seeder) : subtract_with_carry_generator(
-                make_stream(config.at("seeder"), seeder, 4), config.value("reseed_for_each_test_vector", false), config.value("include_seed_in_output", false)) {}
+        subtract_with_carry_generator(const json &config, default_seed_source &seeder, std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes) : subtract_with_carry_generator(
+                make_stream(config.at("seeder"), seeder, pipes, 4), config.value("reseed_for_each_test_vector", false)) {}
 
-        explicit subtract_with_carry_generator(std::unique_ptr<stream> seeder, bool reseed, bool include_seed)
-                : std_prng_interface(seeder, reseed, include_seed) {}
+        explicit subtract_with_carry_generator(std::unique_ptr<stream> seeder, bool reseed)
+                : std_prng_interface(seeder, reseed) {}
     };
 }

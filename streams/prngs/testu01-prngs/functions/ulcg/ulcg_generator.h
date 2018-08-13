@@ -24,10 +24,10 @@ namespace prng {
      */
     class ulcg_generator : public uniform_generator_interface<7> {
     public:
-        ulcg_generator(const json &config, default_seed_source &seeder, int64_t m = 9223372036854775783, int64_t a = 4645906587823291368, int64_t c = 0) : ulcg_generator( // 7B seed and each output has 8B
-                make_stream(config.at("seeder"), seeder, get_viable_number_of_bytes(m)), config.value("reseed_for_each_test_vector", false), config.value("include_seed_in_output", false), m, a, c) {}
+        ulcg_generator(const json &config, default_seed_source &seeder, std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes, int64_t m = 9223372036854775783, int64_t a = 4645906587823291368, int64_t c = 0) : ulcg_generator( // 7B seed and each output has 8B
+                make_stream(config.at("seeder"), seeder, pipes, get_viable_number_of_bytes(m)), config.value("reseed_for_each_test_vector", false), m, a, c) {}
 
-        explicit ulcg_generator(std::unique_ptr<stream> seeder, bool reseed, bool include_seed, int64_t m, int64_t a, int64_t c)
+        explicit ulcg_generator(std::unique_ptr<stream> seeder, bool reseed, int64_t m, int64_t a, int64_t c)
                 : uniform_generator_interface(
                 [m, a, c](const value_type *seed) {
 
@@ -41,7 +41,7 @@ namespace prng {
                                                                                ulcg_DeleteGen);
                 }
 
-                , seeder, reseed, include_seed
+                , seeder, reseed
         ) {}
     };
 }
