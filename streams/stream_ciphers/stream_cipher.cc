@@ -10,7 +10,7 @@
 #include "estream/dicing/ecrypt-sync.h"
 #include "estream/dragon/ecrypt-sync.h"
 #include "estream/edon80/ecrypt-sync.h"
-#include "estream/ffcsr/ecrypt-sync.h"
+#include "estream/f-fcsr/ecrypt-sync.h"
 #include "estream/fubuki/ecrypt-sync.h"
 #include "estream/grain/ecrypt-sync.h"
 #include "estream/hc-128/ecrypt-sync.h"
