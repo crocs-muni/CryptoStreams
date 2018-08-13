@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <eacirc-core/sanitizers_macros.h>
 
 #ifdef __GNUC_
 #include <stdint.h>
@@ -768,6 +769,7 @@ void Twister::twister_mini_round()
 
 /***************************************************************************/
 
+DISABLE_CLANG_SANITIZERS("address")
 void Twister::twister_output(uint64_t *hashval)
 {
   int i;

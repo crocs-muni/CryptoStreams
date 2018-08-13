@@ -1,4 +1,5 @@
 #include "DSHA2_sha3.h"
+#include <eacirc-core/sanitizers_macros.h>
 
 namespace sha3 {
 
@@ -103,6 +104,7 @@ for (i=0;i<(databitlen+7)/8;i++)
 return SUCCESS;
 }
 
+DISABLE_CLANG_SANITIZERS("address")
 int DSHA2::Final(BitSequence *hashval)
 {
 //HashReturn HReturn;

@@ -10,6 +10,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
+#include <eacirc-core/sanitizers_macros.h>
 #include "speck.h"
 
 
@@ -133,6 +134,7 @@ void Speck_Encrypt_32(const uint8_t round_limit, const uint8_t *key_schedule, co
 }
 
 
+DISABLE_CLANG_SANITIZERS("address")
 void Speck_Encrypt_48(const uint8_t round_limit, const uint8_t *key_schedule, const uint8_t *plaintext,
                       uint8_t *ciphertext){
 
@@ -173,6 +175,7 @@ void Speck_Encrypt_64(const uint8_t round_limit, const uint8_t *key_schedule, co
     }
 }
 
+DISABLE_CLANG_SANITIZERS("address")
 void Speck_Encrypt_96(const uint8_t round_limit, const uint8_t *key_schedule, const uint8_t *plaintext,
                       uint8_t *ciphertext){
     const uint8_t word_size = 48;
@@ -233,6 +236,7 @@ void Speck_Decrypt_32(const uint8_t round_limit, const uint8_t *key_schedule, co
     }
 }
 
+DISABLE_CLANG_SANITIZERS("address")
 void Speck_Decrypt_48(const uint8_t round_limit, const uint8_t *key_schedule, const uint8_t *ciphertext,
                       uint8_t *plaintext) {
 
@@ -274,6 +278,7 @@ void Speck_Decrypt_64(const uint8_t round_limit, const uint8_t *key_schedule, co
     }
 }
 
+DISABLE_CLANG_SANITIZERS("address")
 void Speck_Decrypt_96(const uint8_t round_limit, const uint8_t *key_schedule, const uint8_t *ciphertext,
                       uint8_t *plaintext) {
     const uint8_t word_size = 48;

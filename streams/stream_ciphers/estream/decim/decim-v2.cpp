@@ -27,6 +27,7 @@
 */
 
 #include "decimv2.h"
+#include <eacirc-core/sanitizers_macros.h>
 
 namespace stream_ciphers {
 namespace estream {
@@ -275,6 +276,7 @@ void ECRYPT_Decim::DECIM_keystream_bytes(DECIM_ctx* ctx, u8* keystream, u32 leng
  * Here follows the auxiliary functions
  * */
 
+DISABLE_CLANG_SANITIZERS("address")
 void decim_lfsr_clock(DECIM_ctx* ctx) {
     memcpy(ctx->lfsr_state, ctx->lfsr_state + 1, 16);
     memcpy(ctx->lfsr_state + 16, ctx->lfsr_state + 17, 16);
