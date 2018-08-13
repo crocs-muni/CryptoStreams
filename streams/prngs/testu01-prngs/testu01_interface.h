@@ -47,10 +47,6 @@ namespace prng {
                 uint64_t generated_data = _generator->GetBits(_generator->param,
                                                               _generator->state); // Get new Bytes from generator
 
-                for (auto i = 0; i < sizeof(uint64_t) - OUTPUT_SIZE; i++) {
-                    generated_data >>= 8;
-                }
-
                 for (auto i = 0; i < std::min<size_t>(number_of_bytes, OUTPUT_SIZE); i++) {
                     data[current_index++] = static_cast<std::uint8_t>(generated_data & 0xFF);
                     generated_data >>= 8;
