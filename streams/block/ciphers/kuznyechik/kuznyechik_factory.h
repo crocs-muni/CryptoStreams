@@ -2,7 +2,6 @@
 
 
 #include "../../block_cipher.h"
-#include <linux/types.h>
 #include "kuznyechik.h"
 
 namespace block {

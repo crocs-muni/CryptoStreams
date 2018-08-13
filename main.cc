@@ -14,12 +14,12 @@ void test_environment() {
 struct config {
     bool help = false;
     bool version = false;
-    std::string config = "generator.json";
+    std::string cfg = "generator.json";
 };
 
 static cmd<config> options{{"-h", "--help", "display help message", &config::help},
                            {"-v", "--version", "display program version", &config::version},
-                           {"-c", "--config", "specify the config file to load", &config::config}};
+                           {"-c", "--config", "specify the config file to load", &config::cfg}};
 
 int main(const int argc, const char **argv) try {
     auto cfg = options.parse(make_view(argv, argc));
@@ -33,7 +33,7 @@ int main(const int argc, const char **argv) try {
     } else {
         test_environment();
 
-        generator app(cfg.config);
+        generator app(cfg.cfg);
         app.generate();
     }
 

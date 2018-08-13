@@ -8,7 +8,7 @@
 #include <memory>
 
 struct generator {
-    generator(const std::string cofig);
+    generator(const std::string config);
 
     generator(std::istream &config)
         : generator(json::parse(config)) {}

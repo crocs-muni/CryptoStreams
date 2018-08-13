@@ -497,7 +497,7 @@ typedef u32 unative;
 
 #else
 
-#define inline __inline
+//#define inline __inline
 #endif
 
 #if defined( __INTEL_COMPILER ) || defined( _MSC_VER )
