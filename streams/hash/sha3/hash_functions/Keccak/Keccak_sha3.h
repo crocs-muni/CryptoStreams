@@ -1,3 +1,6 @@
+/**
+  * Test vectors source: https://github.com/gvanas/KeccakCodePackage/blob/master/tests/TestVectors/ShortMsgKAT_SHA3-256.txt
+  */
 #ifndef KECCAK_SHA3_H
 #define KECCAK_SHA3_H
 

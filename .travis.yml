@@ -28,3 +28,5 @@ script:
   - CC=$CC_COMPILER CXX=$CXX_COMPILER cmake .. -DCMAKE_BUILD_TYPE=Debug -DBUILD_testsuite=$BUILD_testsuite
   - make
   - $TEST_COMMAND
+  - cd ..
+  - python3 ./testsuite/scan_tests.py 

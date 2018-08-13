@@ -1,5 +1,3 @@
-#pragma once
-
 #include "sha256_factory.h"
 
 namespace others{
