@@ -15,6 +15,7 @@
 
 #include "../../stream_interface.h"
 #include "../ecrypt-portable.h"
+#include <stdexcept>
 
 namespace stream_ciphers {
 namespace estream {
@@ -88,7 +89,10 @@ class ECRYPT_Mickey : public estream_interface {
 
 public:
     ECRYPT_Mickey(int rounds)
-        : estream_interface(rounds) {}
+        : estream_interface() {
+        if (rounds != 1)
+            throw std::runtime_error("MICKEY cipher does not operate with rounds.");
+    }
     /* Mandatory functions */
 
     /*

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.4)
-project(eacirc-streams)
+project(crypto-streams)
 
 find_package(Git)
 
@@ -25,21 +25,21 @@ endif()
 
 
 # === Provide sources as library
-set(eacirc-streams-sources
+set(crypto-streams-sources
         stream.h
         streams.h
         streams.cc
         )
 
-add_library(eacirc-streams-lib STATIC
-        ${eacirc-streams-sources}
+add_library(crypto-streams-lib STATIC
+        ${crypto-streams-sources}
         )
 
-set_target_properties(eacirc-streams-lib PROPERTIES
+set_target_properties(crypto-streams-lib PROPERTIES
         LINKER_LANGUAGE CXX
         )
 
-target_link_libraries(eacirc-streams-lib eacirc-core)
+target_link_libraries(crypto-streams-lib eacirc-core)
 
 add_subdirectory(eacirc-core)
 
@@ -52,17 +52,17 @@ add_subdirectory(streams/block)
 option(BUILD_testsuite "Build all tests." OFF)
 
 # === eacirc generator executable
-add_executable(eacirc-streams main.cc generator)
+add_executable(crypto-streams main.cc generator)
 
-set_target_properties(eacirc-streams PROPERTIES
+set_target_properties(crypto-streams PROPERTIES
         LINKER_LANGUAGE CXX
         )
 
-target_link_libraries(eacirc-streams eacirc-core eacirc-streams-lib)
+target_link_libraries(crypto-streams eacirc-core crypto-streams-lib)
 
-build_stream(eacirc-streams stream_ciphers)
-build_stream(eacirc-streams hash)
-build_stream(eacirc-streams block)
+build_stream(crypto-streams stream_ciphers)
+build_stream(crypto-streams hash)
+build_stream(crypto-streams block)
 
 ##############
 # Building of testsuite
@@ -74,7 +74,7 @@ if (BUILD_testsuite)
 
     # === testsuite executable
     add_executable(testsuite
-            ${eacirc-streams-sources}
+            ${crypto-streams-sources}
             testsuite/test_main.cc
             testsuite/stream_tests.cc
             testsuite/hash_streams_tests.cc

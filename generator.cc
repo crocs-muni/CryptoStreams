@@ -46,8 +46,9 @@ generator::generator(json const &config)
     , _o_file_name(out_name(config)) {
 
     seed_seq_from<pcg32> main_seeder(_seed);
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> map;
 
-    _stream_a = make_stream(config.at("stream"), main_seeder, std::size_t(config.at("tv_size")));
+    _stream_a = make_stream(config.at("stream"), main_seeder, map, std::size_t(config.at("tv_size")));
 }
 
 void generator::generate() {

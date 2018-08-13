@@ -15,15 +15,14 @@ struct block_stream : public stream {
 public:
     block_stream(const json &config,
                  default_seed_source &seeder,
-                 const std::size_t osize,
-                 core::optional<stream *> plt_stream);
+                 std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+                 const std::size_t osize);
     block_stream(block_stream &&);
     ~block_stream() override;
 
     vec_cview next() override;
 
 private:
-    vec_cview get_next_ptx();
 
     const std::size_t _round;
     const std::size_t _block_size;
@@ -34,8 +33,8 @@ private:
     std::unique_ptr<stream> _iv;
     std::unique_ptr<stream> _key;
 
+    const bool _run_encryption;
     std::unique_ptr<block_cipher> _encryptor;
-    stream *_prepared_stream_source;
 };
 
 } // namespace block

@@ -10,13 +10,12 @@ namespace stream_ciphers {
 struct stream_stream : stream {
     stream_stream(const json &config,
                   default_seed_source &seeder,
-                  const std::size_t osize,
-                  core::optional<stream *> plt_stream);
+                  std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
+                  const std::size_t osize);
 
     vec_cview next() override;
 
 private:
-    vec_cview get_next_ptx();
 
     const bool _reinit;
     const std::size_t _block_size;
@@ -27,7 +26,6 @@ private:
     std::unique_ptr<stream> _key_stream;
 
     std::unique_ptr<stream> _source;
-    stream *_prepared_stream_source;
 
     std::vector<std::uint8_t> _plaintext;
 
