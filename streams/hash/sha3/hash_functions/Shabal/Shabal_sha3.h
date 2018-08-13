@@ -69,7 +69,7 @@ typedef enum {
  */
 typedef struct {
 	BitSequence buffer[SHABAL_BLOCK_SIZE * 4];
-    std::size_t buffer_ptr;
+    size_t buffer_ptr;
 	unsigned last_byte_significant_bits;
 	int hashbitlen;
 	shabal_word32 A[SHABAL_PARAM_R];
