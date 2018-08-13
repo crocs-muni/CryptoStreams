@@ -1,5 +1,5 @@
 ### Documentation: https://clang.llvm.org/docs/SanitizerSpecialCaseList.html#format
-
+src:*
 ## Lines starting with # are ignored.
 ## Turn off checks for the source file (use absolute path or path relative
 ## to the current working directory):
@@ -26,8 +26,10 @@
 ### Our part:
 # Addres sanitizer
 [address]
+# disable everything to see, if it works
+src:*
 # DSHA
-src:streams/hash/sha3/hash_functions/DynamicSHA/DSHA_sha3.cpp
+src:streams/hash/sha3/hash_functions/DynamicSHA/*
 
 
 # Memory sanitizer
