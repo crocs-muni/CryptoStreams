@@ -390,11 +390,11 @@ TEST(column_streams, test_with_counter) {
         ASSERT_EQ(precomputed[i], data.copy_to_vector());
 
         // code used to generate reference data code:
-        /*std::cout << "{";
-        for (auto & val : data) {
-            std::cout << "0x" << std::hex << unsigned(val) << ", ";
-        }
-        std::cout << "},\n";*/
+        //std::cout << "{";
+        //for (auto & val : data) {
+        //    std::cout << "0x" << std::hex << unsigned(val) << ", ";
+        //}
+        //std::cout << "},\n";
     }
 
 

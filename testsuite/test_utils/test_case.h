@@ -15,7 +15,7 @@
 namespace testsuite {
 
 /** seed is not actually used but some functions needs it as argument **/
-const static seed seed1 = seed::create("1fe40505e131963c");
+const static seed seed1 = seed("1fe40505e131963c");
 
 /**
  * this is abstract parent of all test cases, contains all functions and variables
