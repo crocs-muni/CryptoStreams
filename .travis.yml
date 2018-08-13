@@ -81,7 +81,7 @@ script:
         cmake .. \
         -DCMAKE_BUILD_TYPE=Debug \
         -DCMAKE_CXX_FLAGS_DEBUG="${CMAKE_CXX_FLAGS_DEBUG} $CFLAGS" \
-        -DCMAKE_LINKER_FLAGS_DEBUG="${DCMAKE_LINKER_FLAGS_DEBUG} $LDFLAGS" \
+        -DCMAKE_EXE_LINKER_FLAGS_DEBUG="${DCMAKE_LINKER_FLAGS_DEBUG} $LDFLAGS" \
         -DBUILD_testsuite=$BUILD_testsuite
   - make
   - $TEST_COMMAND
