@@ -23,6 +23,7 @@ int sha1_factory::Hash(int hash_bitsize, const hash::BitSequence *data, hash::Da
     Init(hash_bitsize);
     Update(data, data_bitsize);
     Final(hash);
+	return 0;
 }
 
 }

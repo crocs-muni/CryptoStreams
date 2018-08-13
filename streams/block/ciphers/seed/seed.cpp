@@ -38,7 +38,7 @@
 # include <cstdlib>
 # include <cstring>
 # ifdef _WIN32
-#  include <cmemory>
+#include <memory>
 # endif
 
 namespace block {

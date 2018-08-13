@@ -25,7 +25,7 @@
 #include <stdlib.h>
 
 #include <vector>
-
+#include <algorithm>
 #include "../../block_cipher.h"
 
 namespace block {

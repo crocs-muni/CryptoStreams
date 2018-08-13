@@ -54,6 +54,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <cstdint>
 
 namespace block {
 namespace serpent {
@@ -157,8 +158,8 @@ const unsigned SERPENT_MAX_ROUNDS = 32; /* max # of rounds */
     parameters at the bottom of the structs as appropriate.
     */
 
-typedef u_int8_t  BYTE;
-typedef u_int32_t WORD;
+typedef int8_t  BYTE;
+typedef int32_t WORD;
 /* This must be at least 32 bits. If the machine has a longer word size,
    the top bits will just be ignored. */
 
