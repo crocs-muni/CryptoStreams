@@ -20,7 +20,8 @@ extern "C" {
 #elif defined(__BYTE_ORDER) && __BYTE_ORDER == __LITTLE_ENDIAN ||                                  \
     defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ ||                        \
     defined(__LITTLE_ENDIAN__) || defined(__ARMEL__) || defined(__THUMBEL__) ||                    \
-    defined(__AARCH64EL__) || defined(_MIPSEL) || defined(__MIPSEL) || defined(__MIPSEL__)
+    defined(__AARCH64EL__) || defined(_MIPSEL) || defined(__MIPSEL) || defined(__MIPSEL__) ||	   \
+	defined(_WIN32)
 // It's a little-endian target architecture
 #define PLATFORM_BYTE_ORDER IS_LITTLE_ENDIAN
 
