@@ -50,7 +50,7 @@ namespace block {
         uint32_t b2 = blk[2];
         uint32_t b3 = blk[3];
 
-        for (i = 0; i < LEA_NUMBER_OF_ROUNDS; i += 4, rk += 4) {
+        for (i = 0; i < _rounds; i += 4, rk += 4) {
             b3 = rot32r3((b2 ^ RK(rk, 1)) + (b3 ^ RK(rk, 0)));
             b2 = rot32r5((b1 ^ RK(rk, 2)) + (b2 ^ RK(rk, 0)));
             b1 = rot32l9((b0 ^ RK(rk, 3)) + (b1 ^ RK(rk, 0)));
@@ -87,7 +87,7 @@ namespace block {
         uint32_t b2 = blk[2];
         uint32_t b3 = blk[3];
 
-        for (i = LEA_NUMBER_OF_ROUNDS - 1, rk += 92; i >= 0; i -= 4, rk -= 4) {
+        for (i = _rounds - 1, rk += 92; i >= 0; i -= 4, rk -= 4) {
             b0 = (rot32r9(b0) - (b3 ^ RK(rk, 3))) ^ RK(rk, 0);
             b1 = (rot32l5(b1) - (b0 ^ RK(rk, 2))) ^ RK(rk, 0);
             b2 = (rot32l3(b2) - (b1 ^ RK(rk, 1))) ^ RK(rk, 0);

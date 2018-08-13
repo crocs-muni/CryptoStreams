@@ -17,7 +17,7 @@ namespace block {
 
         uint16_t sbox0, sbox1;
         uint8_t i;
-        for ( i = 0; i < RECTANGLE_NUMBER_OF_ROUNDS; ++i ) {
+        for ( i = 0; i < _rounds; ++i ) {
             // AddRoundKey
             w0 ^= READ_ROUND_KEY_WORD(*(roundKeys16));
             w1 ^= READ_ROUND_KEY_WORD(*(roundKeys16+1));
@@ -69,7 +69,7 @@ namespace block {
 
         uint16_t sbox0;
         uint8_t i;
-        for ( i = 0; i < RECTANGLE_NUMBER_OF_ROUNDS; ++i ) {
+        for ( i = 0; i < _rounds; ++i ) {
             //Inverse AddRoundKey
             w0 ^= READ_ROUND_KEY_WORD(*(roundKeys16));
             w1 ^= READ_ROUND_KEY_WORD(*(roundKeys16+1));

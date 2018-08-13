@@ -27,7 +27,7 @@ namespace block {
         v[3] ^= READ_ROUND_KEY_DOUBLE_WORD(k[3]);
 
         /* Chaskey permutation*/
-        for (i = 0; i < CHASKEY_NUMBER_OF_ROUNDS; ++i) {
+        for (i = 0; i < _rounds; ++i) {
             v[0] += v[1];
             v[1] = rol(v[1], 5);
             v[1] ^= v[0];
@@ -63,7 +63,7 @@ namespace block {
         v[3] ^= READ_ROUND_KEY_DOUBLE_WORD(k[3]);
 
         /* Chaskey permutation */
-        for (i = 0; i < CHASKEY_NUMBER_OF_ROUNDS; ++i) {
+        for (i = 0; i < _rounds; ++i) {
             v[2] = ror(v[2], 16);
             v[1] ^= v[2];
             v[1] = ror(v[1], 7);

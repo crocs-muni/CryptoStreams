@@ -23,7 +23,7 @@ namespace block {
             data[j] ^= READ_ROUND_KEY_WORD(key[j]);
         }
 
-        for (i = 0; i < FANTOMAS_NUMBER_OF_ROUNDS; i++) {
+        for (i = 0; i < _rounds; i++) {
             /* Round constant */
             data[0] ^= READ_LBOX_WORD(LBox1[i + 1]);
 
@@ -61,7 +61,7 @@ namespace block {
             data[j] ^= READ_ROUND_KEY_WORD(key[j]);
         }
 
-        for (i = 0; i < FANTOMAS_NUMBER_OF_ROUNDS; i++)
+        for (i = _rounds; i >= 1; i--)
         {
             /* LBox layer (tables) */
             for (j = 0; j < 8; j++)
@@ -80,7 +80,7 @@ namespace block {
             }
 
             /* Round constant */
-            data[0] ^= READ_LBOX_WORD(LBox1[12 - i]);
+            data[0] ^= READ_LBOX_WORD(LBox1[i]);
         }
     }
 

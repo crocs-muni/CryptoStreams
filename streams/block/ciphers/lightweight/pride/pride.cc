@@ -37,7 +37,9 @@ namespace block {
         uint8_t temp[4];
 
         for(i=0;i<8;i++) block[i] ^= READ_ROUND_KEY_BYTE(_key[i]);
-        for(i=0;i<19;i++) encryption_round_function(block,_key+8*(i+1), temp);
+        for(i=0;i<_rounds - 1;i++) {
+            encryption_round_function(block,_key+8*(i+1), temp);
+        }
         for(i=0;i<8;i++) block[i] ^= READ_ROUND_KEY_BYTE(_key[i + 160]);
         S_layer(block);
         for(i=0;i<8;i++) block[i] ^= READ_ROUND_KEY_BYTE(_key[i]);
@@ -49,7 +51,7 @@ namespace block {
 
         for(i=0;i<8;i++) block[i] ^= READ_ROUND_KEY_BYTE(_key[i]);
         S_layer(block);
-        for(i=1;i<PRIDE_NUMBER_OF_ROUNDS;i++) decryption_round_function(block,_key+PRIDE_BLOCK_SIZE*i, temp);
+        for(i=1;i<_rounds;i++) decryption_round_function(block,_key+PRIDE_BLOCK_SIZE*i, temp);
         for(i=0;i<PRIDE_BLOCK_SIZE;i++) block[i] ^= READ_ROUND_KEY_BYTE(_key[i])^READ_ROUND_KEY_BYTE(_key[160+i]);
     }
 

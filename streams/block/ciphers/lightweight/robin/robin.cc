@@ -24,7 +24,7 @@ namespace block {
             data[j] ^= READ_ROUND_KEY_WORD(key[j]);
         }
 
-        for (i = 0; i < ROBIN_NUMBER_OF_ROUNDS; i++)
+        for (i = 0; i < _rounds; i++)
         {
             /* Round constant */
             data[0] ^= READ_LBOX_WORD(LBox1[i + 1]);
@@ -65,7 +65,7 @@ namespace block {
             data[j] ^= READ_ROUND_KEY_WORD(key[j]);
         }
 
-        for (i = 0; i < ROBIN_NUMBER_OF_ROUNDS; i++)
+        for (i = _rounds; i > 0; i--)
         {
             /* LBox layer (tables) */
             for (j = 0; j < 8; j++)
@@ -84,7 +84,7 @@ namespace block {
             }
 
             /* Round constant */
-            data[0] ^= READ_LBOX_WORD(LBox1[16 - i]);
+            data[0] ^= READ_LBOX_WORD(LBox1[i]);
         }
     }
 }

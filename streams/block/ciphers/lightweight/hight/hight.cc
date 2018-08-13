@@ -138,7 +138,7 @@ namespace block {
 
         EncryptInitialTransfomation(block, _key);
 
-        for (i = 0; i < HIGHT_NUMBER_OF_ROUNDS; ++i) {
+        for (i = 0; i < _rounds; ++i) {
             EncryptRoundFunction(block, prk);
             prk += 4;
         }
@@ -152,7 +152,7 @@ namespace block {
 
         DecryptFinalTransfomation(block, _key);
 
-        for(i = 0; i < HIGHT_NUMBER_OF_ROUNDS; ++i) {
+        for(i = 0; i < _rounds; ++i) {
             DecryptRoundFunction(block, prk);
             prk -= 4;
         }

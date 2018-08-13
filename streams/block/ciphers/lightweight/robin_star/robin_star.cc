@@ -27,7 +27,7 @@ namespace block {
             data[j] ^= READ_ROUND_KEY_WORD(key[j]);
         }
 
-        for (i = 0; i < ROBIN_STAR_NUMBER_OF_ROUNDS; i++)
+        for (i = 0; i < _rounds; i++)
         {
             /* Round constant */
             u = t;
@@ -54,7 +54,8 @@ namespace block {
             {
                 data[j] ^= READ_ROUND_KEY_WORD(key[j]);
             }
-        }    }
+        }
+    }
 
     void robin_star::Decrypt(uint8_t *block) {
         /*
@@ -65,7 +66,7 @@ namespace block {
          */
         uint16_t *data = (uint16_t *)block;
         uint16_t *key = (uint16_t *)_key;
-        uint16_t t = 32985;
+        uint16_t t = 2199 * (_rounds - 1);
         uint16_t u;
         uint8_t i, j;
 
@@ -76,7 +77,7 @@ namespace block {
             data[j] ^= READ_ROUND_KEY_WORD(key[j]);
         }
 
-        for (i = 0; i < ROBIN_STAR_NUMBER_OF_ROUNDS; i++)
+        for (i = 0; i < _rounds; i++)
         {
             /* LBox layer (tables) */
             for (j = 0; j < 8; j++)
@@ -103,5 +104,6 @@ namespace block {
                 data[j] ^= u;
             }
             t -= 2199;
-        }    }
+        }
+    }
 }

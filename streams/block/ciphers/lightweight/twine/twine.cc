@@ -79,7 +79,7 @@ namespace block {
         uint8_t i, r;
 
 
-        for (r = 0; r < 35; r++)
+        for (r = 0; r < _rounds; r++)
         {
             /* F-function */
             for (i = 0; i < 8; ++i)
@@ -184,7 +184,7 @@ namespace block {
         uint8_t i, r;
 
 
-        for (r = 35; r > 0; r--)
+        for (r = _rounds; r > 0; r--)
         {
             for (i = 0; i < 8; i++)
             {

@@ -37,7 +37,7 @@ namespace block {
     void road_runner_k128::Decrypt(uint8_t *block) {
         uint8_t i, temp[4] = {0}, key_ctr = 0;
         for(i=0;i<4;i++) block[i] ^= READ_ROUND_KEY_BYTE(this->_key[i+20]);
-        for(i=1;i<=ROAD_RUNNER_NUMBER_OF_ROUNDS128;i++)
+        for(i=1;i<=_rounds;i++)
         {
             rrr_enc_dec_round(block,this->_key+key_ctr,i);
             key_ctr += 12;
@@ -50,7 +50,7 @@ namespace block {
     void road_runner_k128::Encrypt(uint8_t *block) {
         uint8_t i, temp[4] = {0}, key_ctr = 4;
         for(i=0;i<4;i++) block[i] ^= READ_ROUND_KEY_BYTE(this->_key[i]);
-        for(i=ROAD_RUNNER_NUMBER_OF_ROUNDS128;i>0;i--)
+        for(i=_rounds;i>0;i--)
         {
             rrr_enc_dec_round(block,this->_key+key_ctr,i);
             key_ctr += 12;
@@ -90,7 +90,7 @@ namespace block {
     void road_runner_k80::Encrypt(uint8_t *block) {
         uint8_t i, temp[4] = {0}, key_ctr = 4;
         for(i=0;i<4;i++) block[i] ^= READ_ROUND_KEY_BYTE(this->_key[i]);
-        for(i=ROAD_RUNNER_NUMBER_OF_ROUNDS80;i>0;i--)
+        for(i=_rounds;i>0;i--)
         {
             rrr_enc_dec_round(block,this->_key+key_ctr,i);
             key_ctr += 12;
@@ -103,7 +103,7 @@ namespace block {
     void road_runner_k80::Decrypt(uint8_t *block) {
         uint8_t i, temp[4] = {0}, key_ctr = 0;
         for(i=0;i<4;i++) block[i] ^= READ_ROUND_KEY_BYTE(this->_key[i+2]);
-        for(i=1;i<=ROAD_RUNNER_NUMBER_OF_ROUNDS80;i++)
+        for(i=1;i<=_rounds;i++)
         {
             rrr_enc_dec_round(block,this->_key+key_ctr,i);
             key_ctr += 12;

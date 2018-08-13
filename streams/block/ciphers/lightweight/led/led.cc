@@ -43,7 +43,7 @@ namespace block {
         }
 
         AddKey(state, _key, 0);
-        for(i = 0; i < (LED_NUMBER_OF_ROUNDS >> 2); i++)
+        for(i = 0; i < (_rounds >> 2); i++)
         {
             for(j = 0; j < 4; j++)
             {
@@ -76,7 +76,7 @@ namespace block {
             }
         }
 
-        for(i = (LED_NUMBER_OF_ROUNDS >> 2) - 1; i >= 0; i--)
+        for(i = (_rounds >> 2) - 1; i >= 0; i--)
         {
             AddKey(state, _key, i+1);
             for(j = 3; j >= 0; j--)

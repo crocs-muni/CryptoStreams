@@ -72,7 +72,7 @@ namespace block {
         uint32_t *RoundKeys = (uint32_t *)_key;
 
 
-        for (i = 0; i < SPARX_NUMBER_OF_ROUNDS; i++)
+        for (i = 0; i < _rounds; i++)
         {
             round_f(left, right, &RoundKeys[6 * i]);
         }
@@ -96,7 +96,7 @@ namespace block {
         *right ^= READ_ROUND_KEY_DOUBLE_WORD(RoundKeys[6 * SPARX_NUMBER_OF_ROUNDS + 1]);
 
 
-        for (i = SPARX_NUMBER_OF_ROUNDS - 1; i >= 0 ; i--)
+        for (i = _rounds - 1; i >= 0 ; i--)
         {
             round_f_inverse(left, right, &RoundKeys[6 * i]);
         }
@@ -154,7 +154,7 @@ namespace block {
         uint16_t *RoundKeys = (uint16_t *)_key;
 
 
-        for (i = 0; i < SPARX_NUMBER_OF_ROUNDS; i++)
+        for (i = 0; i < _rounds; i++)
         {
             round_f(Block, &RoundKeys[32 * i]);
         }
@@ -181,7 +181,7 @@ namespace block {
         }
 
 
-        for (i = SPARX_NUMBER_OF_ROUNDS - 1; i >= 0 ; i--)
+        for (i = _rounds - 1; i >= 0 ; i--)
         {
             round_f_inverse(Block, &RoundKeys[32 * i]);
         }

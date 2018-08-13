@@ -59,7 +59,7 @@ namespace block {
 
         *x2 ^= READ_ROUND_KEY_WORD(rk[51]);
         *x0 ^= READ_ROUND_KEY_WORD(rk[50]);
-        for (i = 0; i < PICCOLO_NUMBER_OF_ROUNDS - 1; ++i)
+        for (i = 0; i < _rounds - 1; ++i)
         {
             *x1 = *x1 ^ F(*x0) ^ READ_ROUND_KEY_WORD(rk[2 * i]);
             *x3 = *x3 ^ F(*x2) ^ READ_ROUND_KEY_WORD(rk[2 * i + 1]);
@@ -81,7 +81,7 @@ namespace block {
 
         *x2 ^= READ_ROUND_KEY_WORD(rk[53]);
         *x0 ^= READ_ROUND_KEY_WORD(rk[52]);
-        for (i = 0; i < PICCOLO_NUMBER_OF_ROUNDS - 1; ++i) {
+        for (i = 0; i < _rounds - 1; ++i) {
             if ((i & 0x01) == 0) {
                 *x1 = *x1 ^ F(*x0) ^ READ_ROUND_KEY_WORD(rk[2 * PICCOLO_NUMBER_OF_ROUNDS - 2 * i - 2]);
                 *x3 = *x3 ^ F(*x2) ^ READ_ROUND_KEY_WORD(rk[2 * PICCOLO_NUMBER_OF_ROUNDS - 2 * i - 1]);

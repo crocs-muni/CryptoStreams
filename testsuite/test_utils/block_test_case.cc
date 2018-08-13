@@ -26,6 +26,33 @@ void block_test_case::test() const {
     ASSERT_EQ(output_ciphertext, _ciphertext);
 }
 
+void block_test_case::testRoundReducedEncryptDecrypt(uint32_t block_size, uint32_t key_size, uint32_t rounds) const {
+
+    std::unique_ptr<block::block_cipher> encryptor =
+            block::make_block_cipher(_algorithm, rounds, block_size, key_size, true);
+
+    std::vector<value_type> key(key_size);
+    std::vector<value_type> plaintext(block_size);
+
+    encryptor->keysetup(key.data(), key.size());
+
+    std::vector<value_type> encrypted(block_size);
+    encryptor->encrypt(plaintext.data(), encrypted.data());
+
+    std::unique_ptr<block::block_cipher> decryptor =
+            block::make_block_cipher(_algorithm, rounds, block_size, key_size, false);
+
+    decryptor->keysetup(key.data(), key.size());
+
+    std::vector<value_type> decrypted(block_size);
+    decryptor->decrypt(encrypted.data(), decrypted.data());
+
+    std::cout << "Started testing " << _algorithm << " with rounds " << rounds << std::endl;
+    ASSERT_EQ(plaintext, decrypted);
+    std::cout << "Tested " << _algorithm << " with rounds " << rounds << std::endl;
+}
+
+
 void block_test_case::test(std::unique_ptr<stream> &&block_stream) const {
     std::unique_ptr<block::block_cipher> decryptor =
         block::make_block_cipher(_algorithm, _round, _plaintext.size(), _key.size(), false);

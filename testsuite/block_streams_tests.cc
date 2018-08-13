@@ -119,57 +119,233 @@ TEST(chaskey, test_vectors) {
     testsuite::block_test_case("CHASKEY", 16)();
 }
 
+TEST(chaskey, round_reduction) {
+    testsuite::block_test_case util("CHASKEY", 16);
+
+    for(auto i = 1; i <= 16; i++) {
+        util.testRoundReducedEncryptDecrypt(16, 16, i);
+    }
+}
+
 TEST(fantomas, test_vectors) {
     testsuite::block_test_case("FANTOMAS", 12)();
+}
+
+TEST(fantomas, round_reduction) {
+    testsuite::block_test_case util("FANTOMAS", 12);
+
+    for(auto i = 1; i <= 12; i++) {
+        util.testRoundReducedEncryptDecrypt(16, 16, i);
+    }
 }
 
 TEST(hight, test_vectors) {
     testsuite::block_test_case("HIGHT", 32)();
 }
 
+//TEST(hight, round_reduction) { doesn't work
+//    testsuite::block_test_case util("HIGHT", 32);
+//
+//    for(auto i = 1; i <= 32; i++) {
+//        util.testRoundReducedEncryptDecrypt(8, 16, i);
+//    }
+//}
+
 TEST(lblock, test_vectors) {
     testsuite::block_test_case("LBLOCK", 32)();
 }
+
+//TEST(lblock, round_reduction) {
+//    testsuite::block_test_case util("LBLOCK", 32);
+//
+//    for(auto i = 1; i <= 32; i++) {
+//        util.testRoundReducedEncryptDecrypt(8, 10, i);
+//    }
+//}
 
 TEST(lea, test_vectors) {
     testsuite::block_test_case("LEA", 24)();
 }
 
+//TEST(lea, round_reduction) {
+//    testsuite::block_test_case util("LEA", 24);
+//
+//    for(auto i = 1; i <= 24; i++) {
+//        util.testRoundReducedEncryptDecrypt(16, 16, i);
+//    }
+//}
+
 TEST(led, test_vectors) {
     testsuite::block_test_case("LED", 48)();
+}
+
+TEST(led, round_reduction) {
+    testsuite::block_test_case util("LED", 48);
+
+    for(auto i = 1; i <= 48; i++) {
+        util.testRoundReducedEncryptDecrypt(8, 10, i);
+    }
 }
 
 TEST(piccolo, test_vectors) {
     testsuite::block_test_case("PICCOLO", 25)();
 }
 
+//TEST(piccolo, round_reduction) {
+//    testsuite::block_test_case util("PICCOLO", 25);
+//
+//    for(auto i = 1; i <= 25; i++) {
+//        util.testRoundReducedEncryptDecrypt(8, 10, i);
+//    }
+//}
+
 TEST(pride, test_vectors) {
     testsuite::block_test_case("PRIDE", 20)();
 }
 
+//TEST(pride, round_reduction) {
+//    testsuite::block_test_case util("PRIDE", 20);
+//
+//    for(auto i = 1; i <= 20; i++) {
+//        util.testRoundReducedEncryptDecrypt(8, 16, i);
+//    }
+//}
+
 TEST(prince, test_vectors) {
     testsuite::block_test_case("PRINCE", 12)();
+}
+
+TEST(prince, round_reduction) {
+    testsuite::block_test_case util("PRINCE", 12);
+
+    for(auto i = 1; i <= 24; i++) {
+        util.testRoundReducedEncryptDecrypt(8, 16, i);
+    }
 }
 
 TEST(rc5_20, test_vectors) {
     testsuite::block_test_case("RC5-20", 20)();
 }
 
-TEST(rectangle, test_vectors) {
+TEST(rc5_20, round_reduction) {
+    testsuite::block_test_case util("RC5-20", 20);
+
+    for(auto i = 1; i <= 20; i++) {
+        util.testRoundReducedEncryptDecrypt(8, 16, i);
+    }
+}
+
+TEST(rectangle_k80, test_vectors) {
     testsuite::block_test_case("RECTANGLE-K80", 25)();
+}
+
+TEST(rectangle_k128, test_vectors) {
     testsuite::block_test_case("RECTANGLE-K128", 25)();
 }
 
-TEST(road_runner, test_vectors) {
+
+//TEST(rectangle_k80, round_reduction) {
+//    testsuite::block_test_case util("RECTANGLE-K80", 25);
+//
+//    for(auto i = 1; i <= 25; i++) {
+//        util.testRoundReducedEncryptDecrypt(8, 10, i);
+//    }
+//}
+//
+//TEST(rectangle_k128, round_reduction) {
+//    testsuite::block_test_case util("RECTANGLE-K128", 25);
+//
+//    for(auto i = 1; i <= 25; i++) {
+//        util.testRoundReducedEncryptDecrypt(8, 16, i);
+//    }
+//}
+
+TEST(road_runner_k128, test_vectors) {
     testsuite::block_test_case("ROAD-RUNNER-K128", 12)();
+}
+
+TEST(road_runner_k80, test_vectors) {
     testsuite::block_test_case("ROAD-RUNNER-K80", 10)();
 }
 
-TEST(sparx, test_vectors) {
+
+TEST(road_runner_k128, round_reduction) {
+    testsuite::block_test_case util("ROAD-RUNNER-K128", 12);
+
+    for(auto i = 1; i <= 12; i++) {
+        util.testRoundReducedEncryptDecrypt(8, 16, i);
+    }
+}
+
+TEST(road_runner_k80, round_reduction) {
+
+    testsuite::block_test_case util("ROAD-RUNNER-K80", 10);
+
+    for(auto i = 1; i <= 10; i++) {
+        util.testRoundReducedEncryptDecrypt(8, 10, i);
+    }
+}
+
+TEST(robin, test_vectors) {
+    testsuite::block_test_case("ROBIN", 16)();
+}
+
+TEST(robin, round_reduction) {
+
+    testsuite::block_test_case util("ROBIN", 16);
+
+    for(auto i = 1; i <= 16; i++) {
+        util.testRoundReducedEncryptDecrypt(16, 16, i);
+    }
+}
+
+TEST(robin_star, test_vectors) {
+    testsuite::block_test_case("ROBIN-STAR", 16)();
+}
+
+TEST(robin_star, round_reduction) {
+
+    testsuite::block_test_case util("ROBIN-STAR", 16);
+
+    for(auto i = 1; i <= 16; i++) {
+        util.testRoundReducedEncryptDecrypt(16, 16, i);
+    }
+}
+
+TEST(sparx_b64, test_vectors) {
     testsuite::block_test_case("SPARX-B64", 8)();
+}
+
+TEST(sparx_b128, test_vectors) {
     testsuite::block_test_case("SPARX-B128", 8)();
+}
+
+TEST(sparx_b64, round_reduction) {
+    testsuite::block_test_case util("SPARX-B64", 8);
+
+    for(auto i = 1; i <= 8; i++) {
+        util.testRoundReducedEncryptDecrypt(8, 16, i);
+    }
+}
+
+TEST(sparx_b128, round_reduction) {
+
+    testsuite::block_test_case util("SPARX-B128", 8);
+
+    for(auto i = 1; i <= 8; i++) {
+        util.testRoundReducedEncryptDecrypt(16, 16, i);
+    }
 }
 
 TEST(twine, test_vectors) {
     testsuite::block_test_case("TWINE", 35)();
+}
+
+TEST(twine, round_reduction) {
+
+    testsuite::block_test_case util("TWINE", 35);
+
+    for(auto i = 1; i <= 35; i++) {
+        util.testRoundReducedEncryptDecrypt(8, 10, i);
+    }
 }
