@@ -5,7 +5,6 @@
 #include <streams/prngs/prng_interface.h>
 #include <eacirc-core/json.h>
 #include <memory.h>
-//#include <streams/prngs/testu01-prngs/functions/unif01/dummy_generator.h>
 #include <streams/prngs/testu01-prngs/functions/ulcg/ulcg_generator.h>
 #include <streams/prngs/testu01-prngs/functions/umrg/umrg_generator.h>
 #include <streams/prngs/testu01-prngs/functions/uxorshift/uxorshift_generator.h>

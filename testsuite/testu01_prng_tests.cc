@@ -12,8 +12,8 @@
 
 
 TEST(LCG, basic_test) {
-    auto test = std::make_unique<prng::ulcg_generator>(std::make_unique<false_stream>(1), false, 500 + 1, 1,
-                                                       1); // +1 in order to avoid last zero
+    auto test = std::make_unique<prng::ulcg_generator>(std::make_unique<false_stream>(1), false, 500 + 1, 1, 1);
+    // +1 in order to avoid last zero
     std::vector<uint8_t> data(500 * 7);
     test->generate_bits(data.data(), data.size());
 

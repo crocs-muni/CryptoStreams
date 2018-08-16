@@ -2,8 +2,7 @@
 // Created by mhajas on 11/14/17.
 //
 
-#ifndef EACIRC_STREAMS_GENERATOR_H
-#define EACIRC_STREAMS_GENERATOR_H
+#pragma once
 
 #include <eacirc-core/json.h>
 #include <eacirc-core/random.h>
@@ -40,6 +39,3 @@ namespace prng {
         std::unique_ptr<prng_interface> _generator;
     };
 }
-
-
-#endif //EACIRC_STREAMS_GENERATOR_H

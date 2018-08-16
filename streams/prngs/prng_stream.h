@@ -5,9 +5,7 @@
 
 /**  Change to factory only , use uint8_t, b**/
 
-#ifndef EACIRC_STREAMS_PRNG_STREAM_H
-#define EACIRC_STREAMS_PRNG_STREAM_H
-
+#pragma once
 
 #include <stream.h>
 #include "prng_factory.h"
@@ -25,6 +23,3 @@ namespace prng {
         std::vector<uint8_t> _data;
     };
 }
-
-
-#endif //EACIRC_STREAMS_PRNG_STREAM_H

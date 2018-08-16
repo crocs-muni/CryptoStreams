@@ -2,8 +2,7 @@
 // Created by mhajas on 11/14/17.
 //
 
-#ifndef EACIRC_STREAMS_PRNG_INTERFACE_H
-#define EACIRC_STREAMS_PRNG_INTERFACE_H
+#pragma once
 
 #include <memory>
 namespace prng {
@@ -13,4 +12,3 @@ namespace prng {
         virtual void generate_bits(unsigned char* data, size_t number_of_bytes) = 0;
     };
 }
-#endif //EACIRC_STREAMS_PRNG_INTERFACE_H

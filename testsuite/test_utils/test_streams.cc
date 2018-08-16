@@ -9,7 +9,9 @@ testsuite::test_stream::test_stream(const json &config)
 vec_cview testsuite::test_stream::next() {
     size_t current_position = _position;
 
-    if (++_position >= _data.size()) _position = 0;
+    if (++_position >= _data.size()) {
+        _position = 0;
+    }
     return make_cview(_data.at(current_position));
 }
 

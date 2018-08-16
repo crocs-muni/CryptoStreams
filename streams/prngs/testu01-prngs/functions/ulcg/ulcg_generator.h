@@ -2,8 +2,7 @@
 // Created by mhajas on 1/8/18.
 //
 
-#ifndef EACIRC_STREAMS_ULCG_GENERATOR_H
-#define EACIRC_STREAMS_ULCG_GENERATOR_H
+#pragma once
 
 #include <streams.h>
 #include <streams/prngs/testu01-prngs/testu01_interface.h>
@@ -45,5 +44,3 @@ namespace prng {
         ) {}
     };
 }
-
-#endif //EACIRC_STREAMS_ULCG_GENERATOR_H
