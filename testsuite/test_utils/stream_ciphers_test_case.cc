@@ -43,9 +43,9 @@ const json &stream_cipher_test_case::stream_config() const {
 std::unique_ptr<stream> stream_cipher_test_case::prepare_stream() {
     _stream_config["algorithm"] = _algorithm;
     _stream_config["round"] = _round;
-    _stream_config["plaintext"]["outputs"] = _plaintext;
-    _stream_config["iv"]["outputs"] = _iv;
-    _stream_config["key"]["outputs"] = _key;
+    _stream_config["plaintext"]["outputs"] = {_plaintext};
+    _stream_config["iv"]["outputs"] = {_iv};
+    _stream_config["key"]["outputs"] = {_key};
     _stream_config["block_size"] = block_size();
 
     seed_seq_from<pcg32> seeder(seed1);

@@ -29,9 +29,20 @@ static std::string out_name(json const &config) {
         config_ref = config_ref.at("source");
     }
     std::string a = config_ref.at("algorithm");
-    ss << a << "_r";
-    ss << std::setw(2) << std::setfill('0') << std::size_t(config_ref.at("round"));
-    ss << "_b" << config_ref.at("block_size");
+
+    ss << a;
+
+    auto round = config_ref.value("round", -1);
+    if (round != -1) {
+        ss << "_r";
+        ss << std::setw(2) << std::setfill('0') << round;
+    }
+
+    auto block_size = config_ref.value("block_size", -1);
+    if (block_size != -1) {
+        ss << "_b" << block_size;
+    }
+
     ss << ".bin";
     return ss.str();
 }
@@ -44,7 +55,6 @@ generator::generator(json const &config)
     , _seed(seed::create(config.at("seed")))
     , _tv_count(config.at("tv_count"))
     , _o_file_name(out_name(config)) {
-
     seed_seq_from<pcg32> main_seeder(_seed);
     std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> map;
 

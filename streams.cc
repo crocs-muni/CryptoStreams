@@ -316,6 +316,10 @@ make_stream(const json &config,
     else if (type == "block")
         return std::make_unique<block::block_stream>(config, seeder, pipes, osize);
 #endif
+#ifdef BUILD_prngs
+    else if (type == "prng")
+        return std::make_unique<prng::prng_stream>(config, seeder, osize, pipes);
+#endif
     throw std::runtime_error("requested stream named \"" + type + "\" does not exist");
 }
 
