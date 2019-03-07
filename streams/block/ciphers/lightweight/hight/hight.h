@@ -2,8 +2,7 @@
 // Created by mhajas on 7/8/18.
 //
 
-#ifndef CRYPTO_STREAMS_HIGHT_H
-#define CRYPTO_STREAMS_HIGHT_H
+#pragma once
 
 #include <streams/block/ciphers/lightweight/lightweight.h>
 #include <streams/block/ciphers/lightweight/common/cipher.h>
@@ -89,6 +88,3 @@ namespace block {
     };
 
 }
-
-
-#endif //CRYPTO_STREAMS_HIGHT_H

@@ -2,8 +2,7 @@
 // Created by mhajas on 7/7/18.
 //
 
-#ifndef CRYPTO_STREAMS_FANTOMAS_H
-#define CRYPTO_STREAMS_FANTOMAS_H
+#pragma once
 
 #include <streams/block/ciphers/lightweight/lightweight.h>
 #include <streams/block/ciphers/lightweight/common/cipher.h>
@@ -249,6 +248,3 @@ namespace block {
     };
 
 }
-
-
-#endif //CRYPTO_STREAMS_FANTOMAS_H

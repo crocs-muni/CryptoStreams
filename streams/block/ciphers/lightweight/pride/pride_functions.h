@@ -27,8 +27,7 @@
  */
 
 
-#ifndef PRIDE_FUNCTIONS_H
-#define PRIDE_FUNCTIONS_H
+#pragma once
 
 #define SWAP(x) (((x)>>4)^((x)<<4))
 #define ROTL(x) (((x)<<1)^(x>>7))
@@ -127,6 +126,4 @@
 	L1Inv(data, temp)\
 	L2Inv(data, temp)\
 	L3(data, temp)
-
-#endif /* PRIDE_FUNCTIONS_H */
 

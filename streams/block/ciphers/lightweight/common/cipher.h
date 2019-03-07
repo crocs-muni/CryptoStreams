@@ -27,8 +27,7 @@
  *
  */
 
-#ifndef CIPHER_H
-#define CIPHER_H
+#pragma once
 
 /*
  *
@@ -121,5 +120,3 @@
 #define READ_ROUND_KEY_WORD(x) READ_RAM_DATA_WORD(x)
 #define READ_ROUND_KEY_DOUBLE_WORD(x) READ_RAM_DATA_DOUBLE_WORD(x)
 
-
-#endif /* CIPHER_H */

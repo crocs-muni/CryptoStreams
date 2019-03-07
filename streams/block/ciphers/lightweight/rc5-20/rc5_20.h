@@ -2,8 +2,7 @@
 // Created by mhajas on 7/21/18.
 //
 
-#ifndef CRYPTO_STREAMS_RC5_20_H
-#define CRYPTO_STREAMS_RC5_20_H
+#pragma once
 
 #include <streams/block/ciphers/lightweight/lightweight.h>
 
@@ -96,6 +95,3 @@ namespace block {
     };
 
 }
-
-
-#endif //CRYPTO_STREAMS_RC5_20_H

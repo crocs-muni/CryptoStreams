@@ -2,8 +2,7 @@
 // Created by mhajas on 7/21/18.
 //
 
-#ifndef CRYPTO_STREAMS_LED_H
-#define CRYPTO_STREAMS_LED_H
+#pragma once
 
 #include <streams/block/ciphers/lightweight/lightweight.h>
 #include <cstring>
@@ -81,6 +80,3 @@ namespace block {
         void Decrypt(uint8_t *block) override;
     };
 }
-
-
-#endif //CRYPTO_STREAMS_LED_H

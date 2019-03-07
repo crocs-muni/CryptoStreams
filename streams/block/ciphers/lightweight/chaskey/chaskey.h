@@ -2,8 +2,7 @@
 // Created by mhajas on 7/6/18.
 //
 
-#ifndef CRYPTO_STREAMS_CHASKEY_H
-#define CRYPTO_STREAMS_CHASKEY_H
+#pragma once
 
 #include <streams/block/ciphers/lightweight/lightweight.h>
 #include "../../../block_cipher.h"
@@ -31,5 +30,3 @@ namespace block {
 
 } //namespace block
 
-
-#endif //CRYPTO_STREAMS_CHASKEY_H

@@ -2,8 +2,7 @@
 // Created by mhajas on 7/21/18.
 //
 
-#ifndef CRYPTO_STREAMS_LEA_H
-#define CRYPTO_STREAMS_LEA_H
+#pragma once
 
 #define LEA_BLOCK_SIZE 16
 #define LEA_KEY_SIZE 16
@@ -29,6 +28,3 @@ namespace block {
         void Decrypt(uint8_t *block) override;
     };
 }
-
-
-#endif //CRYPTO_STREAMS_LEA_H

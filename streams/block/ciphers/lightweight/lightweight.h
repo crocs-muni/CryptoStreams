@@ -2,8 +2,7 @@
 // Created by mhajas on 7/6/18.
 //
 
-#ifndef CRYPTO_STREAMS_LIGHTWEIGHT_H
-#define CRYPTO_STREAMS_LIGHTWEIGHT_H
+#pragma once
 
 #include <streams/block/block_cipher.h>
 #include <stdexcept>
@@ -47,6 +46,3 @@ namespace block {
     };
 
 } // namespace
-
-
-#endif //CRYPTO_STREAMS_LIGHTWEIGHT_H
