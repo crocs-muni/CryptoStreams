@@ -28,6 +28,22 @@
 #include "ciphers/tea/tea.h"
 #include "ciphers/twofish/twofish.h"
 #include "ciphers/xtea/xtea_factory.h"
+#include "ciphers/lightweight/chaskey/chaskey.h"
+#include "ciphers/lightweight/fantomas/fantomas.h"
+#include "ciphers/lightweight/hight/hight.h"
+#include "ciphers/lightweight/lblock/lblock.h"
+#include "ciphers/lightweight/lea/lea.h"
+#include "ciphers/lightweight/led/led.h"
+#include "ciphers/lightweight/piccolo/piccolo.h"
+#include "ciphers/lightweight/pride/pride.h"
+#include "ciphers/lightweight/prince/prince.h"
+#include "ciphers/lightweight/rc5-20/rc5_20.h"
+#include "ciphers/lightweight/rectangle/rectangle.h"
+#include "ciphers/lightweight/road_runner/road_runner.h"
+#include "ciphers/lightweight/robin/robin.h"
+#include "ciphers/lightweight/robin_star/robin_star.h"
+#include "ciphers/lightweight/sparx/sparx.h"
+#include "ciphers/lightweight/twine/twine.h"
 
 namespace block {
 std::unique_ptr<block_cipher> make_block_cipher(const std::string &name,

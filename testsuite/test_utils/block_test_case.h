@@ -71,6 +71,8 @@ public:
      */
     void test(std::unique_ptr<stream> &&encryptor) const;
 
+    void testRoundReducedEncryptDecrypt(uint32_t block_size, uint32_t key_size, uint32_t rounds) const;
+
     /**
      * test case is actually a functor which can done whole testing
      * It is necessary to have function name and round number and it

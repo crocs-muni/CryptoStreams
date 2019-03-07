@@ -48,6 +48,30 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/shacal2/shacal2_factory
     ciphers/xtea/xtea
     ciphers/xtea/xtea_factory
+
+    ciphers/lightweight/lightweight.h
+    ciphers/lightweight/common/cipher.h
+    ciphers/lightweight/common/rotations/rot8.h
+    ciphers/lightweight/common/rotations/rot16.h
+    ciphers/lightweight/common/rotations/rot32.h
+
+    ciphers/lightweight/chaskey/chaskey
+    ciphers/lightweight/fantomas/fantomas
+    ciphers/lightweight/hight/hight
+    ciphers/lightweight/lblock/lblock
+    ciphers/lightweight/lea/lea
+    ciphers/lightweight/led/led
+    ciphers/lightweight/piccolo/piccolo
+    ciphers/lightweight/pride/pride
+    ciphers/lightweight/pride/pride_functions.h
+    ciphers/lightweight/prince/prince
+    ciphers/lightweight/rc5-20/rc5_20
+    ciphers/lightweight/rectangle/rectangle
+    ciphers/lightweight/road_runner/road_runner
+    ciphers/lightweight/robin/robin
+    ciphers/lightweight/robin_star/robin_star
+    ciphers/lightweight/sparx/sparx
+    ciphers/lightweight/twine/twine
     )
 
 target_link_libraries(block eacirc-core)
