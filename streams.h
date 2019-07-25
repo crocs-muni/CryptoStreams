@@ -81,6 +81,19 @@ private:
 };
 
 /**
+ * @brief Stream outputing a constant vector
+ */
+struct const_stream : stream {
+    const_stream(const json &config, const std::size_t osize);
+
+    vec_cview next() override;
+
+private:
+    static void fromHex(std::vector<value_type> &res, const std::string &hex);
+    std::vector<value_type> _data;
+};
+
+/**
  * @brief Stream outputing a constant value for n iterations
  */
 struct repeating_stream : stream {
