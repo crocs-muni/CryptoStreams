@@ -46,6 +46,39 @@ TEST(counter_stream, basic_test) {
     }
 }
 
+TEST(const_stream, basic_test) {
+    {
+        const json json_config = {{"value", "aA"}}; // shall pass
+        std::make_unique<const_stream>(json_config, 1);
+    }
+    {
+        const json json_config = {{"value", ""}};
+        EXPECT_THROW(std::make_unique<const_stream>(json_config, 4), std::runtime_error);
+    }
+    {
+        const json json_config = {{"value", "1122334"}}; // odd length
+        EXPECT_THROW(std::make_unique<const_stream>(json_config, 4), std::runtime_error);
+    }
+    {
+        const json json_config = {{"value", "1122334g"}}; // bad charset
+        EXPECT_THROW(std::make_unique<const_stream>(json_config, 4), std::runtime_error);
+    }
+    {
+        const json json_config = {{"value", "112233"}}; // invalid length
+        EXPECT_THROW(std::make_unique<const_stream>(json_config, 4), std::runtime_error);
+    }
+
+    const json json_config = {{"value", "dEAdc0d3"}}; // OK, combined case
+    auto stream = std::make_unique<const_stream>(json_config, 4);
+    for (int i = 0; i < 5; ++i) {
+        auto c = stream->next().copy_to_vector();
+        ASSERT_EQ(c[0], 0xde);
+        ASSERT_EQ(c[1], 0xad);
+        ASSERT_EQ(c[2], 0xc0);
+        ASSERT_EQ(c[3], 0xd3);
+    }
+}
+
 TEST(sac_streams, basic_test) {
     seed_seq_from<pcg32> seeder(testsuite::seed1);
     std::unique_ptr<sac_stream> stream = std::make_unique<sac_stream>(seeder, 16);

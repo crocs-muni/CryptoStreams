@@ -1,4 +1,6 @@
 #include "streams.h"
+#include <cerrno>
+#include <climits>
 
 file_stream::file_stream(const json &config, const std::size_t osize)
     : stream(osize)
@@ -15,6 +17,42 @@ vec_cview file_stream::next() {
     if (_istream.eof())
         throw std::runtime_error("end of file " + _path + " reached, not enough data!");
 
+    return make_cview(_data);
+}
+
+const_stream::const_stream(const json &config, const std::size_t osize)
+    : stream(osize) {
+
+    const std::string value = config.at("value");
+    fromHex(_data, value);
+    if (_data.size() != osize) {
+        throw std::runtime_error(std::string("Input value length ") + std::to_string(_data.size()) +
+                                 " does not match required size " + std::to_string(osize));
+    }
+}
+
+void const_stream::fromHex(std::vector<value_type> &res, const std::string &hex) {
+    if (hex.size() & 1) {
+        throw std::runtime_error("Input length is not divisible by 2");
+    }
+
+    res.reserve(hex.size() / 2);
+    for (size_t i = 0; i < hex.size(); i += 2) {
+        char *endptr = nullptr;
+        const auto chunk = hex.substr(i, 2);
+        const char *nptr = chunk.c_str();
+        errno = 0;
+        auto cbyte = strtol(nptr, &endptr, 16);
+        if ((cbyte == 0 && errno != 0) || cbyte == LONG_MIN || cbyte == LONG_MAX ||
+            endptr - nptr < 2) {
+            throw std::runtime_error(std::string("Hex decoding failed at pos ") +
+                                     std::to_string(i));
+        }
+        res.push_back((value_type)cbyte);
+    }
+}
+
+vec_cview const_stream::next() {
     return make_cview(_data);
 }
 
@@ -242,6 +280,8 @@ make_stream(const json &config,
         return std::make_unique<true_stream>(osize);
     else if (type == "false_stream")
         return std::make_unique<false_stream>(osize);
+    else if (type == "const_stream")
+        return std::make_unique<const_stream>(config, osize);
     else if (type == "mt19937_stream")
         return std::make_unique<mt19937_stream>(seeder, osize);
     else if (type == "pcg32_stream" or type == "random_stream")
