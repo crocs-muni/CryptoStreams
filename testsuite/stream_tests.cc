@@ -226,6 +226,40 @@ TEST(hw_counter, period_test) {
     }
 }
 
+TEST(hw_counter, init_state_test) {
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+
+    { // OK
+        const json json_config = {
+            {"increase_hw", false}, {"hw", 4}, {"initial_state", {0, 1, 2, 3}}};
+        std::make_unique<hw_counter>(json_config, seeder, 8);
+    }
+    { // invalid count
+        const json json_config = {{"increase_hw", false}, {"hw", 2}, {"initial_state", {0}}};
+        EXPECT_THROW(std::make_unique<hw_counter>(json_config, seeder, 8), std::runtime_error);
+    }
+    { // out of bounds
+        const json json_config = {{"increase_hw", false}, {"hw", 2}, {"initial_state", {0, 8 * 8}}};
+        EXPECT_THROW(std::make_unique<hw_counter>(json_config, seeder, 8), std::runtime_error);
+    }
+    { // sequence
+        const json json_config = {
+            {"increase_hw", false}, {"hw", 4}, {"initial_state", {0, 1, 1, 2}}};
+        EXPECT_THROW(std::make_unique<hw_counter>(json_config, seeder, 8), std::runtime_error);
+    }
+
+    const json json_config = {
+        {"increase_hw", false}, {"hw", 4}, {"initial_state", {0, 13, 14, 15}}};
+    auto stream = std::make_unique<hw_counter>(json_config, seeder, 2); // 16 bits
+    auto c1 = stream->next().copy_to_vector();
+    ASSERT_EQ(c1[0], 0x01);
+    ASSERT_EQ(c1[1], 0xe0);
+
+    auto c2 = stream->next().copy_to_vector();
+    ASSERT_EQ(c2[0], 0x1e);
+    ASSERT_EQ(c2[1], 0x00);
+}
+
 TEST(column_streams, test_with_counter) {
     json json_config = R"({
        "type": "column_stream",

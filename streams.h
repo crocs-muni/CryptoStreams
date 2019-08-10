@@ -280,22 +280,27 @@ struct hw_counter : stream {
             std::fill_n(_origin_data.begin(), osize, 0);
         }
 
-        combination_init();
+        auto initial_state = config.find("initial_state");
+        if (initial_state != config.end()) {
+            combination_init_state(*initial_state, osize);
+        } else {
+            combination_init();
+        }
     }
 
     hw_counter(const std::size_t osize)
-            : stream(osize)
-            , _rng()
-            , _origin_data(osize)
-            , _increase_hw(true)
-            , _randomize_overflow(false)
-            , _cur_hw(1) {
+        : stream(osize)
+        , _rng()
+        , _origin_data(osize)
+        , _increase_hw(true)
+        , _randomize_overflow(false)
+        , _cur_hw(1) {
         if (_cur_hw == 0 || _cur_hw > osize * 8) {
             throw std::runtime_error("Invalid Hamming weight for the given output size");
         }
         if (_randomize_overflow && _increase_hw) {
             throw std::runtime_error(
-                    "Randomize overflow and increase counter are mutually exclusive");
+                "Randomize overflow and increase counter are mutually exclusive");
         }
 
         std::fill_n(_origin_data.begin(), osize, 0);
@@ -316,6 +321,36 @@ private:
         _cur_positions.clear();
         for (std::size_t i = 0; i < _cur_hw; ++i) {
             _cur_positions.push_back(i);
+        }
+    }
+
+    void combination_init_state(const json &initial_state, size_t osize) {
+        if (!initial_state.is_array()) {
+            throw std::runtime_error("initial_state has to be an array of integers");
+        }
+        if (initial_state.size() != _cur_hw) {
+            throw std::runtime_error("initial_state length is inconsistent with hw parameter");
+        }
+
+        _cur_positions.clear();
+        _cur_positions.reserve(_cur_hw);
+        std::size_t prevValue = 0;
+        std::size_t iter = 0;
+        for (auto const &cur : initial_state) {
+            if (!cur.is_number()) {
+                throw std::runtime_error("All elements need to be a number");
+            }
+            auto curValue = cur.get<size_t>();
+            if (iter > 0 && curValue <= prevValue) {
+                throw std::runtime_error("Element indices have to be strictly increasing sequence");
+            }
+            if (curValue >= osize * 8) {
+                throw std::runtime_error("Element index is out of bounds");
+            }
+
+            _cur_positions.push_back(curValue);
+            prevValue = curValue;
+            iter += 1;
         }
     }
 
