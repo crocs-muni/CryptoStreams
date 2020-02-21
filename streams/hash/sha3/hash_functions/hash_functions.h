@@ -44,7 +44,7 @@
 #include "StreamHash/StreamHash_sha3.h"
 // #include "SWIFFTX/Swifftx_sha3.h"
 #include "Tangle/Tangle_sha3.h"
-// #include "TIB3/Tib_sha3.h"
+#include "TIB3/Tib_sha3.h"
 #include "Tangle2/Tangle2_sha3.h"
 #include "Twister/Twister_sha3.h"
 //#include "Vortex/Vortex_sha3.h"

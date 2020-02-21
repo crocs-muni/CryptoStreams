@@ -74,7 +74,7 @@ std::unique_ptr<hash_interface> hash_factory::create(const std::string &name,
     }
     // if (name == "SWIFFTX")        return std::make_unique<Swifftx>(rounds);
     if (name == "Tangle")         return std::make_unique<sha3::Tangle>(rounds);
-    // if (name == "TIB3")           return std::make_unique<Tib>(rounds);
+    if (name == "TIB3")           return std::make_unique<sha3::Tib>(rounds);
     if (name == "Twister")        return std::make_unique<sha3::Twister>(rounds);
     //if (name == "Vortex")         return std::make_unique<Vortex>(rounds);
     if (name == "WaMM")           return std::make_unique<sha3::WaMM>(rounds);

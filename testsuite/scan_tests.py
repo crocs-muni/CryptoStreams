@@ -49,9 +49,9 @@ def analyze_block_ciphers():
 def analyze_hash_funs():
     # try to keep this empty:
     set_of_untested = set([
-        'bmw', 'blender', 'crunch', 'boole', 'sarmal',  # probably should test
-        'khichidi', 'fugue', 'spectralhash', 'mcssha3', 'lane', 'nasha', 'edon', 'essence', 'wamm', 'shavite3', 'meshhash', 'shamata', 'waterfall', 'shabal', 'streamhash', 'chi',  # would be nice to test, but it is ok
-        'lux', 'swifftx', 'enrupt', 'tib3', 'vortex', 'ecoh', 'sandstorm'  # no code = no tests
+        'bmw', 'crunch', 'boole',   # probably should test
+        'khichidi', 'fugue', 'spectralhash', 'mcssha3', 'lane', 'nasha', 'edon', 'essence', 'wamm', 'shavite3', 'meshhash', 'shamata', 'waterfall', 'shabal', 'streamhash',  # would be nice to test, but it is ok
+        'lux', 'swifftx', 'enrupt', 'vortex', 'ecoh', 'sandstorm'  # no code = no tests
     ])
     folders = get_folder_names('streams/hash/others/')
     folders.update(get_folder_names('streams/hash/sha3/'))
@@ -101,7 +101,7 @@ def analyze_stream_ciphers():
     elif (tests - folders):
         print("[Warning] following functions tested, but they miss folders: " + str(tests - folders))
     else:
-        print("[OK] Hash functions are fine")
+        print("[OK] Stream cipher are fine")
     return 0
 
 
