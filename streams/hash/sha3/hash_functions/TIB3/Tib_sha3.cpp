@@ -1,5 +1,7 @@
 #include "Tib_sha3.h"
 
+namespace sha3{
+
 int Tib::Init(int hashbitlen){
 	switch (hashbitlen){
 	case 256: 	tibState.hashbitlen = 256;
@@ -50,4 +52,5 @@ Tib::Tib(const int numRounds) {
 	} else {
 		tibNumRounds = numRounds;
 	}
+}
 }

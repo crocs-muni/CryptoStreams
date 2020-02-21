@@ -82,6 +82,9 @@ add_library(sha3 STATIC EXCLUDE_FROM_ALL
     hash_functions/WaMM/WaMMTappingPrimes
     hash_functions/Waterfall/Waterfall_sha3
     hash_functions/Tangle2/Tangle2_sha3
+    hash_functions/TIB3/inupfin256
+    hash_functions/TIB3/inupfin512
+    hash_functions/TIB3/Tib_sha3
     #    hash_functions/ECOH/ecoh.param
     #    hash_functions/ECOH/Ecoh_sha3
     #    hash_functions/EnRUPT/EnRUPT_opt
@@ -90,8 +93,5 @@ add_library(sha3 STATIC EXCLUDE_FROM_ALL
     #    hash_functions/SANDstorm/Sandstorm_sha3
     #    hash_functions/SWIFFTX/SWIFFTX
     #    hash_functions/SWIFFTX/Swifftx_sha3
-    #    hash_functions/TIB3/inupfin256
-    #    hash_functions/TIB3/inupfin512
-    #    hash_functions/TIB3/Tib_sha3
     )
 target_link_libraries(sha3 eacirc-core)

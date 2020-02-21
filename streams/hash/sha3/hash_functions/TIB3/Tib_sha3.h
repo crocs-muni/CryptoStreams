@@ -5,8 +5,9 @@
 extern "C" {
 #include "inupfin.h"
 }
+namespace sha3 {
 
-class Tib : public SHA3 {
+class Tib : public sha3_interface {
 
 #define TIB_DEFAULT_ROUNDS 16
 
@@ -24,4 +25,5 @@ int Hash(int hashbitlen, const BitSequence *data, DataLength databitlen, BitSequ
 
 };
 
+}
 #endif

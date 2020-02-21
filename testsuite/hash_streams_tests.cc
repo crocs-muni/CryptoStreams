@@ -137,3 +137,21 @@ TEST(tiger, test_vectors) {
 TEST(whirlpool, test_vectors) {
     testsuite::hash_test_case("Whirlpool", 10)();
 }
+
+// Source: http://csrc.nist.gov/groups/ST/hash/sha-3/Round1/submissions_rnd1.html
+TEST(blender, test_vectors) {
+    testsuite::hash_test_case("Blender", 32)();
+}
+
+TEST(sarmal, test_vectors) {
+    testsuite::hash_test_case("Sarmal", 16)();
+    testsuite::hash_test_case("Sarmal", 20)();
+}
+
+TEST(tib3, test_vectors) {
+    testsuite::hash_test_case("TIB3", 16)();
+}
+
+TEST(chi, test_vectors) {
+    testsuite::hash_test_case("CHI", 40)();
+}

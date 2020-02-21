@@ -35,5 +35,5 @@
  
  typedef swift_int16_t intptr_t;
  typedef swift_uint16_t uintptr_t;
- 
+
  #endif
