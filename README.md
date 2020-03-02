@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/crocs-muni/eacirc.svg?branch=master)](https://travis-ci.org/crocs-muni/eacirc)
+[![Build Status](https://travis-ci.org/crocs-muni/CryptoStreams.svg?branch=master)](https://travis-ci.org/crocs-muni/eacirc)
 [![Coverity status](https://scan.coverity.com/projects/7192/badge.svg)](https://scan.coverity.com/projects/crocs-muni-eacirc)
 [![Latest release](https://img.shields.io/github/release/crocs-muni/EACirc-streams.svg)](https://github.com/crocs-muni/EACirc-streams/releases/latest)
 [![DOI](https://zenodo.org/badge/84541435.svg)](https://zenodo.org/badge/latestdoi/84541435)
@@ -18,14 +18,16 @@ For more information and details see [project wiki pages](https://github.com/cro
 ## Authors
 The framework is developed at the [Centre for Research on Cryptography and Security (formerly Laboratory of Security and Applied Cryptography)](https://www.fi.muni.cz/research/crocs/), [Masaryk University](http://www.muni.cz/), Brno, Czech Republic.
 
-* **Radka Cieslarová** 2015-now (heatmaps ‒ fine-grained function reduction)
-* **Michal Hajas** 2015-now (generator ‒ PRNG, tests)
+
 * **Dušan Klinec** 2017-now (large number of cryptoprimitives)
-* **Karel Kubíček** 2014-now (initial idea, block ciphers, main developer)
-* **Tamás Rózsa** 2017-now (older cryptoprimitives, visualisation)
+* **Karel Kubíček** 2014-now (former main developer, block ciphers)
+* **Tamás Rózsa** 2017-now (older cryptoprimitives, test coverage)
 * **Petr Švenda** 2008-now (project lead, initial implementation)
 
+
+* **Radka Cieslarová** 2015-now (heatmaps ‒ fine-grained function reduction)
 * **Ondrej Dubovec** 2011-2012 (SHA-3 candidates)
+* **Michal Hajas** 2015-2019 (generator ‒ PRNG, lightweight crypto, tests)
 * **Jiří Novotný** 2014-2017 (build system, core library)
 * **Matěj Prišťák** 2011-2012 (eStream candidates testing)
 * **Martin Ukrop** 2012-2016 (SHA-3 & CAESAR candidates)
