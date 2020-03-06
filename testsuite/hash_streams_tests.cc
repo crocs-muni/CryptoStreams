@@ -155,3 +155,24 @@ TEST(tib3, test_vectors) {
 TEST(chi, test_vectors) {
     testsuite::hash_test_case("CHI", 40)();
 }
+
+TEST(bmw, test_vectors) {
+    testsuite::hash_test_case("BMW", 16)();
+}
+
+TEST(SHAvite3, test_vectors) {
+    testsuite::hash_test_case("SHAvite3", 12)();
+    testsuite::hash_test_case("SHAvite3", 14)();
+}
+
+TEST(Shabal, test_vectors) {
+    testsuite::hash_test_case("Shabal", 0)();
+}
+
+TEST(ESSENCE, test_vectors) {
+    testsuite::hash_test_case("ESSENCE", 32)();
+}
+
+TEST(MCSSHA3, test_vectors) {
+    testsuite::hash_test_case("MCSSHA3", 0)();
+}
