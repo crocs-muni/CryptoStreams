@@ -176,3 +176,7 @@ TEST(ESSENCE, test_vectors) {
 TEST(MCSSHA3, test_vectors) {
     testsuite::hash_test_case("MCSSHA3", 0)();
 }
+
+TEST(Boole, test_vectors) {
+    testsuite::hash_test_case("Boole", 16)();
+}
