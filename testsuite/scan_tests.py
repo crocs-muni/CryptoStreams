@@ -49,7 +49,7 @@ def analyze_block_ciphers():
 def analyze_hash_funs():
     # try to keep this empty:
     set_of_untested = set([
-        'crunch', 'boole',   # probably should test
+        'crunch',   # probably should test
         'khichidi', 'fugue', 'spectralhash', 'lane', 'nasha', 'edon', 'wamm', 'meshhash', 'shamata', 'waterfall', 'streamhash',  # would be nice to test, but it is ok
         'lux', 'swifftx', 'enrupt', 'vortex', 'ecoh', 'sandstorm'  # no code = no tests
     ])
