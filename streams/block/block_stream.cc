@@ -43,7 +43,8 @@ block_stream::block_stream(
                                    unsigned(_round),
                                    unsigned(_block_size),
                                    unsigned(config.at("key_size")),
-                                   _run_encryption)) {
+                                   _run_encryption,
+                                   &config)) {
     logger::info() << "stream source is block cipher: " << config.at("algorithm") << std::endl;
 
     if (int(config.at("round")) < 0)
