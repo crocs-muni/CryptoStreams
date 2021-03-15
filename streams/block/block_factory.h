@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <stdexcept>
+#include <eacirc-core/json.h>
 
 #include "ciphers/aes/aes.h"
 #include "ciphers/aria/aria_block.h"
@@ -45,11 +46,13 @@
 #include "ciphers/lightweight/robin_star/robin_star.h"
 #include "ciphers/lightweight/sparx/sparx.h"
 #include "ciphers/lightweight/twine/twine.h"
+#include "ciphers/lowmc/lowmc.h"
 
 namespace block {
 std::unique_ptr<block_cipher> make_block_cipher(const std::string &name,
                                                 const std::size_t round,
                                                 const std::size_t block_size,
                                                 const std::size_t key_size,
-                                                const bool encrypt);
+                                                const bool encrypt,
+                                                const nlohmann::json * config = nullptr);
 }

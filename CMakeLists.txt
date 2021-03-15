@@ -20,9 +20,13 @@ if(CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
 elseif (MSVC AND (MSVC_VERSION GREATER 1700))
     # nothing special yet
 else()
-    message(FATAL_ERROR "unsuported compiler id:${CMAKE_CXX_COMPILER_ID}, path: ${CMAKE_CXX_COMPILER}")
+    message(FATAL_ERROR "unsupported compiler id:${CMAKE_CXX_COMPILER_ID}, path: ${CMAKE_CXX_COMPILER}")
 endif()
 
+option(BUILD_testsuite "Build all tests." OFF)
+if (BUILD_testsuite)
+    add_definitions(-DBUILD_testsuite)
+endif()
 
 # === Provide sources as library
 set(crypto-streams-sources
@@ -49,8 +53,6 @@ add_subdirectory(streams/block)
 add_subdirectory(streams/prngs)
 
 ## Executables
-
-option(BUILD_testsuite "Build all tests." OFF)
 
 # === eacirc generator executable
 add_executable(crypto-streams main.cc generator)
@@ -105,6 +107,5 @@ if (BUILD_testsuite)
     build_stream(testsuite hash)
     build_stream(testsuite block)
     build_stream(testsuite prngs)
-    add_definitions(-DBUILD_testsuite)
 
 endif()

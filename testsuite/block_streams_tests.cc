@@ -349,3 +349,7 @@ TEST(twine, round_reduction) {
         util.testRoundReducedEncryptDecrypt(8, 10, i);
     }
 }
+
+TEST(lowmc, test_vectors) {
+    testsuite::block_test_case("LOWMC", 12)();
+}
