@@ -72,6 +72,10 @@ add_library(block STATIC EXCLUDE_FROM_ALL
     ciphers/lightweight/robin_star/robin_star
     ciphers/lightweight/sparx/sparx
     ciphers/lightweight/twine/twine
+
+    ciphers/lowmc/lowmc_ref
+    ciphers/lowmc/lowmc.cpp
+    ciphers/lowmc/lowmc.h
     )
 
 target_link_libraries(block eacirc-core)

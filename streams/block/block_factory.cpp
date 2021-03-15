@@ -8,7 +8,8 @@ std::unique_ptr<block_cipher> make_block_cipher(const std::string &name,
                                                 const std::size_t round,
                                                 const std::size_t block_size,
                                                 const std::size_t key_size,
-                                                const bool encrypt) {
+                                                const bool encrypt,
+                                                const nlohmann::json * config) {
     // clang-format off
     if (name == "TEA")  return std::make_unique<tea>(round);
     if (name == "AES")  return std::make_unique<aes>(round);
@@ -52,6 +53,7 @@ std::unique_ptr<block_cipher> make_block_cipher(const std::string &name,
     if (name == "SPARX-B64") return std::make_unique<sparx_b64>(round);
     if (name == "SPARX-B128") return std::make_unique<sparx_b128>(round);
     if (name == "TWINE") return std::make_unique<twine>(round);
+    if (name == "LOWMC") return std::make_unique<lowmc::lowmc>(round, encrypt, block_size, key_size, config);
     // clang-format on
 
     throw std::runtime_error("requested block cipher named \"" + name +
