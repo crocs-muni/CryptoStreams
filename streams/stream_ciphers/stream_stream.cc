@@ -12,8 +12,8 @@ stream_stream::stream_stream(
     , _reinit(config.at("key").at("type") == "repeating_stream" or
               config.at("iv").at("type") == "repeating_stream")
     , _block_size(config.at("block_size"))
-    , _iv_stream(make_stream(config.at("iv"), seeder, pipes, config.value("iv_size", default_iv_size)))
-    , _key_stream(make_stream(config.at("key"), seeder, pipes, config.value("key_size", default_key_size)))
+    , _iv_stream(make_stream(config.at("iv"), seeder, pipes, config.value("iv_size", std::size_t(default_iv_size))))
+    , _key_stream(make_stream(config.at("key"), seeder, pipes, config.value("key_size", std::size_t(default_key_size))))
     , _source(make_stream(config.at("plaintext"), seeder, pipes, _block_size))
     , _plaintext(osize)
     , _algorithm(config.at("algorithm"),

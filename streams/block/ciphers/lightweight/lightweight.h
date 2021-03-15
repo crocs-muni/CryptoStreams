@@ -25,6 +25,8 @@ namespace block {
         }
 
         void ivsetup(const std::uint8_t *iv, const std::uint64_t ivsize) override {
+            (void)iv;
+            (void)ivsize;
             throw std::runtime_error("IVs are not implemented for lightweight algorithms");
         }
 
