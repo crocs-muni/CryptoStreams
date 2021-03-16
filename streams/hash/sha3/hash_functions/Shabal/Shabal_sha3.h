@@ -4,6 +4,7 @@
 #include <limits.h>
 #include "../../sha3_interface.h"
 
+#include <cstddef>  // EACIRC: manual edit: apple compatibility
 #if defined __STDC__ && __STDC_VERSION__ >= 199901L
 #include <stdint.h>
 #ifdef UINT32_MAX
