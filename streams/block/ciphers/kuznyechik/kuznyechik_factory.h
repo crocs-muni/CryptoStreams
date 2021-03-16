@@ -2,7 +2,14 @@
 
 
 #include "../../block_cipher.h"
+#if defined(__APPLE__)			// EACIRC: manual edit: apple compatibility
+# include <stdint.h>
+typedef int32_t __s32;
+typedef uint8_t __u8;
+typedef uint16_t __u16;
+#else
 #include <linux/types.h>
+#endif
 #include "kuznyechik.h"
 
 namespace block {
