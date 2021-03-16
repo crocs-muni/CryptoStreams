@@ -36,3 +36,10 @@ EACirc developers:
 * [**EACirc developers**](https://github.com/crocs-muni/eacirc#authors) ‒ EACirc is randomness testing tool. We use it to test randomness property of cryptographic function. The implementation of the Generator comes from EACirc implementation.
 
  
+### Troubleshooting - OSX
+
+If you have compile problems on OSX, define the following environment variable:
+
+```bash
+LDFLAGS=-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
+```
