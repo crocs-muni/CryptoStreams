@@ -14,7 +14,8 @@ RUN set -ex && \
         g++ \
         git \
         make \
-        pkg-config
+        pkg-config \
+        libboost-random-dev
 
 ## Packager cleanup, best practices
 RUN set -ex && rm -rf /var/lib/apt/lists/*
