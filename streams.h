@@ -46,7 +46,7 @@ template <typename Generator> struct rng_stream : stream {
 
     vec_cview next() override {
         std::generate_n(_data.data(), osize(), [this]() {
-            return std::uniform_int_distribution<std::uint8_t>()(_rng);
+            return eacirc::uniform_int_distribution<std::uint8_t>()(_rng);
         });
         return make_cview(_data);
     }
@@ -174,10 +174,10 @@ struct sac_stream : stream {
     vec_cview next() override {
         if (_first) {
             std::generate_n(_data.data(), osize(), [this]() {
-                return std::uniform_int_distribution<std::uint8_t>()(_rng);
+                return eacirc::uniform_int_distribution<std::uint8_t>()(_rng);
             });
         } else {
-            std::uniform_int_distribution<std::size_t> dist{0, (osize() * 8) - 1};
+            eacirc::uniform_int_distribution<std::size_t> dist{0, (osize() * 8) - 1};
             std::size_t pos = dist(_rng);
 
             _data[pos / 8] ^= (1 << (pos % 8));
@@ -208,7 +208,7 @@ struct sac_fixed_pos_stream : stream {
     vec_cview next() override {
         if (_first) {
             std::generate_n(_data.data(), osize(), [this]() {
-                return std::uniform_int_distribution<std::uint8_t>()(_rng);
+                return eacirc::uniform_int_distribution<std::uint8_t>()(_rng);
             });
         } else {
             _data[_flip_bit_position / 8] ^= (1 << (_flip_bit_position % 8));
@@ -234,7 +234,7 @@ struct sac_2d_all_pos : stream {
     vec_cview next() override {
         if (_flip_bit_position == 0) {
             std::generate_n(_data.data(), osize(), [this]() {
-                return std::uniform_int_distribution<std::uint8_t>()(_rng);
+                return eacirc::uniform_int_distribution<std::uint8_t>()(_rng);
             });
             std::copy_n(_data.begin(), osize(), _origin_data.begin());
         } else {
@@ -313,7 +313,7 @@ struct hw_counter : stream {
 private:
     void randomize() {
         std::generate_n(_origin_data.data(), osize(), [this]() {
-            return std::uniform_int_distribution<std::uint8_t>()(_rng);
+            return eacirc::uniform_int_distribution<std::uint8_t>()(_rng);
         });
     }
 
