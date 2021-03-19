@@ -8,16 +8,16 @@ matrix:
       compiler: gcc-5
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-5']
+          sources: ['ubuntu-toolchain-r-test', 'boost-latest']
+          packages: ['g++-5', 'libboost-iostreams1.58-dev']
       env: [CC_COMPILER=gcc-5, CXX_COMPILER=g++-5, BUILD_testsuite=ON, TEST_COMMAND=./testsuite]
     - os: linux
-      compiler: clang-3.7
+      compiler: clang-3.9
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
-          packages: ['g++-5', 'clang-3.7']
-      env: [CC_COMPILER=clang-3.7, CXX_COMPILER=clang++-3.7, BUILD_testsuite=ON, TEST_COMMAND=./testsuite]
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.9', 'boost-latest']
+          packages: ['g++-5', 'clang-3.9', 'libboost-iostreams1.58-dev']
+      env: [CC_COMPILER=clang-3.9, CXX_COMPILER=clang++-3.9, BUILD_testsuite=ON, TEST_COMMAND=./testsuite]
 
 before_script:
   - wget --no-check-certificate https://cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.sh
@@ -25,7 +25,7 @@ before_script:
 
 script:
   - mkdir -p build && cd build
-  - CC=$CC_COMPILER CXX=$CXX_COMPILER cmake .. -DCMAKE_BUILD_TYPE=Debug -DBUILD_testsuite=$BUILD_testsuite
+  - CC=$CC_COMPILER CXX=$CXX_COMPILER cmake .. -DCMAKE_BUILD_TYPE=Debug -DBUILD_testsuite=$BUILD_testsuite -DPORTABLE_RANDOMNESS=OFF
   - make
   - $TEST_COMMAND
   - cd ..
