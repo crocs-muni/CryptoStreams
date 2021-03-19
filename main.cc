@@ -1,4 +1,5 @@
 #include "generator.h"
+#include "version.h"
 #include <eacirc-core/cmd.h>
 #include <eacirc-core/logger.h>
 #include <eacirc-core/version.h>
@@ -29,7 +30,7 @@ int main(const int argc, const char **argv) try {
 
         options.print(std::cerr);
     } else if (cfg.version) {
-        std::cerr << "Generator version " VERSION_TAG << std::endl;
+        std::cerr << "Generator version " CRYPTOSTREAMS_VERSION_TAG << ", eacirc-core: " << VERSION_TAG << std::endl;
     } else {
         test_environment();
 
