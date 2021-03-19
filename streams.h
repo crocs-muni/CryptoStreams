@@ -55,6 +55,13 @@ private:
     Generator _rng;
 };
 
+// Seeding consistent with the old PCG32 implementation and non-compliant seed_seq
+struct rng_pcg32_stream : public rng_stream<pcg32> {
+    template <typename Seeder>
+    rng_pcg32_stream(Seeder &&seeder, const std::size_t osize)
+        : rng_stream<pcg32>(seed_seq_pcg32<Seeder>(seeder), osize) {}
+};
+
 } // namespace _impl
 
 /**
@@ -619,7 +626,7 @@ using mt19937_stream = _impl::rng_stream<std::mt19937>;
 /**
  * \brief Stream of data produced by PCG (Permutation Congruential Generator)
  */
-using pcg32_stream = _impl::rng_stream<pcg32>;
+using pcg32_stream = _impl::rng_pcg32_stream;
 
 std::unique_ptr<stream>
 make_stream(const json &config,
