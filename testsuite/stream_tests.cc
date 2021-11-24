@@ -5,8 +5,9 @@
 #include "stream.h"
 #include "streams.h"
 #include "gtest/gtest.h"
-#include "streams/stream_ciphers/stream_cipher.h"
 #include <eacirc-core/seed.h>
+#include <streams/stream_ciphers/stream_cipher.h>
+#include <streams/block/block_factory.h>
 #include <testsuite/test_utils/test_case.h>
 
 const static int testing_size = 1536;
@@ -713,3 +714,79 @@ TEST(stream_first_block, RC4) {
         ASSERT_TRUE(memcmp(expected[i].data(), data.data(), block_size) == 0);
     }
 }
+
+TEST(stream_first_block, AES) {
+    json json_config = R"({
+        "type": "block",
+        "algorithm": "AES",
+        "round": 5,
+        "block_size": 16,
+        "plaintext": {
+            "type": "false_stream"
+        },
+        "key_size": 16,
+        "key": {
+        "type": "xor_stream",
+        "source": {
+        "type": "tuple_stream",
+        "sources": [
+          {
+            "type": "counter",
+            "output_size": 16
+          },
+          {
+            "type": "single_value_stream",
+            "output_size": 16,
+            "source": {
+              "type": "tuple_stream",
+              "sources": [
+                {
+                  "type": "false_stream",
+                  "output_size": 15
+                },
+                {
+                  "type": "const_stream",
+                  "output_size": 1,
+                  "value": "00"
+                }
+              ]
+            }
+          }
+        ]
+        }
+        },
+        "iv_size": 0,
+        "iv": {
+        "type": "false_stream"
+        },
+        "init_frequency": "1"
+    })"_json;
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> map;
+
+    std::unique_ptr<block::block_stream> stream =
+        std::make_unique<block::block_stream>(json_config, seeder, map, 16);
+
+    const size_t block_size = 16;
+    const size_t tv_count = 200;
+    auto aes = block::make_block_cipher("AES", 5);
+
+    // Compute expected values
+    std::vector<std::vector<value_type>> expected;
+    u8 key[16] = {0};
+    u8 plaintext[block_size] = {0};
+    for(size_t cblock = 0; cblock < tv_count; ++cblock){
+        std::vector<value_type> ciphertext(block_size);
+        key[0] = cblock + 2;  // block ciphers waste first key vector on reinit
+        aes->keysetup(key, 16);
+        aes->encrypt(plaintext, ciphertext.data());
+        expected.push_back(ciphertext);
+    }
+
+    for (unsigned i = 0; i < expected.size(); ++i) {
+        vec_cview data = stream->next();
+        ASSERT_TRUE(memcmp(expected[i].data(), data.data(), block_size) == 0);
+    }
+}
+
