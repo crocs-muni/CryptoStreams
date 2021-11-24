@@ -51,8 +51,8 @@
 namespace block {
 std::unique_ptr<block_cipher> make_block_cipher(const std::string &name,
                                                 const std::size_t round,
-                                                const std::size_t block_size,
-                                                const std::size_t key_size,
-                                                const bool encrypt,
+                                                const std::size_t block_size = 0,
+                                                const std::size_t key_size = 0,
+                                                const bool encrypt = true,
                                                 const nlohmann::json * config = nullptr);
 }
