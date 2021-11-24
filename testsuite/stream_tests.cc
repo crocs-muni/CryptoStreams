@@ -5,6 +5,7 @@
 #include "stream.h"
 #include "streams.h"
 #include "gtest/gtest.h"
+#include "streams/stream_ciphers/stream_cipher.h"
 #include <eacirc-core/seed.h>
 #include <testsuite/test_utils/test_case.h>
 
@@ -631,5 +632,84 @@ TEST(pipe_streams, pipe_out_fist) {
         vec_cview out_view = pipe_out->next();
 
         ASSERT_EQ(in_view.copy_to_vector(), out_view.copy_to_vector());
+    }
+}
+
+TEST(stream_first_block, RC4) {
+    json json_config = R"({
+        "type": "stream_cipher",
+        "generator": "pcg32",
+        "algorithm": "RC4",
+        "round": 1,
+        "block_size": 32,
+        "plaintext": {
+          "type": "false_stream"
+        },
+        "key_size": 16,
+        "key": {
+          "type": "xor_stream",
+          "source": {
+            "type": "tuple_stream",
+            "sources": [
+              {
+                "type": "counter",
+                "output_size": 16
+              },
+              {
+                "type": "single_value_stream",
+                "output_size": 16,
+                "source": {
+                  "type": "tuple_stream",
+                  "sources": [
+                    {
+                      "type": "false_stream",
+                      "output_size": 15
+                    },
+                    {
+                      "type": "const_stream",
+                      "output_size": 1,
+                      "value": "00"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "iv_size": 0,
+        "iv": {
+          "type": "repeating_stream",
+          "period": 1,
+          "source": {
+            "type": "false_stream"
+          }
+        }
+    })"_json;
+
+    seed_seq_from<pcg32> seeder(testsuite::seed1);
+    std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> map;
+
+    std::unique_ptr<stream_ciphers::stream_stream> stream =
+        std::make_unique<stream_ciphers::stream_stream>(json_config, seeder, map, 32);
+
+    const size_t block_size = 32;
+    const size_t tv_count = 200;
+    auto rc4 = stream_ciphers::create_stream_cipher("RC4", 1);
+
+    // Compute expected values
+    std::vector<std::vector<value_type>> expected;
+    u8 key[16] = {0};
+    u8 plaintext[block_size] = {0};
+    for(size_t cblock = 0; cblock < tv_count; ++cblock){
+        std::vector<value_type> ciphertext(block_size);
+        key[0] = cblock + 1;
+        rc4->keysetup(key, 8 * 16, 0);
+        rc4->encrypt_bytes(plaintext, ciphertext.data(), block_size);
+        expected.push_back(ciphertext);
+    }
+
+    for (unsigned i = 0; i < expected.size(); ++i) {
+        vec_cview data = stream->next();
+        ASSERT_TRUE(memcmp(expected[i].data(), data.data(), block_size) == 0);
     }
 }
