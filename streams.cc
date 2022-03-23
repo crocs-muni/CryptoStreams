@@ -254,9 +254,16 @@ tuple_stream::tuple_stream(
     std::unordered_map<std::string, std::shared_ptr<std::unique_ptr<stream>>> &pipes,
     const std::size_t osize)
     : stream(osize) {
+    size_t acc_size = 0;
     for (const auto &stream_cfg : config.at("sources")) {
+        const auto cur_osize = std::size_t(stream_cfg.value("output_size", 0));
+        acc_size += cur_osize;
         _sources.push_back(make_stream(
-            stream_cfg, seeder, pipes, std::size_t(stream_cfg.value("output_size", 0))));
+            stream_cfg, seeder, pipes, cur_osize));
+    }
+    if (acc_size > osize) {
+        throw std::runtime_error(std::string("Tuple size components are larger than tuple buffer, components: ")
+                                 + std::to_string(acc_size) + " vs tuple osize: " + std::to_string(osize));
     }
 }
 
