@@ -6,6 +6,7 @@
 
 #include "../../block_cipher.h"
 #include <memory>
+#include <stdexcept>
 
 namespace block {
 

@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <memory>
 #include <string>
+#include <stdexcept>
 
 #include "ciphers/aes/aes.h"
 #include "ciphers/aria/aria_block.h"

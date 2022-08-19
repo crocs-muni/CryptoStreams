@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <stdexcept>
 
 namespace hash {
 

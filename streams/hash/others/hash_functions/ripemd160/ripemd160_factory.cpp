@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <memory>
+#include <stdexcept>
 #include "ripemd160_factory.h"
 
 using namespace hash;

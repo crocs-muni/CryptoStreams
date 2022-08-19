@@ -1,5 +1,6 @@
 #include "rc4.h"
 #include <algorithm>
+#include <stdexcept>
 
 
 /*********************************************************************

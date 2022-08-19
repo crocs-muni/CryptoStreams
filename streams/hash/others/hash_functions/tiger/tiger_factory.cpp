@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <memory>
+#include <stdexcept>
 #include "tiger_factory.h"
 
 using namespace hash;
