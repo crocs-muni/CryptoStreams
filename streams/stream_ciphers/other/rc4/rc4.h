@@ -6,6 +6,7 @@
 
 #include "../../stream_interface.h"
 #include <memory>
+#include <cstdint>
 
 namespace stream_ciphers {
 namespace others {
