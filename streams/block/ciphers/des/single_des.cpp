@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <stdexcept>
+#include <memory>
 
 namespace block {
 bool single_des_next_bit(const std::uint8_t* key, const unsigned i) {
@@ -14,6 +15,8 @@ void single_des::keysetup(const std::uint8_t* key, const std::uint64_t keysize) 
     if (keysize != 7) {
         throw std::runtime_error("DES keysize has to be 7 B long.");
     }
+
+    memset(_ctx.key, 0, sizeof(uint8_t) * 8);
     for (unsigned i = 0; i < 7 * 8; ++i) {
         const unsigned byte_pos = 7 - (i / 7);
         _ctx.key[byte_pos] |= single_des_next_bit(key, i) << ((i % 7) + 1);
