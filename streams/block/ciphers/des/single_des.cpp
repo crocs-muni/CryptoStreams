@@ -3,7 +3,7 @@
 
 #include <algorithm>
 #include <stdexcept>
-#include <memory>
+#include <cstring>
 
 namespace block {
 bool single_des_next_bit(const std::uint8_t* key, const unsigned i) {
